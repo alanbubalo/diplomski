@@ -1,0 +1,425 @@
+% ============================================================
+%  Literatura — diplomski rad (Alan Bubalo)
+%  Organizirano po poglavljima.
+%
+%  LEGENDA:
+%   (✓)  metapodaci provjereni iz izvora
+%   (!)  PROVJERITI RUČNO — izvor blokiran ili nepotpun
+%   (~)  upozorenje na kvalitetu izvora (preprint / grey literature / slides)
+% ============================================================
+
+
+% ============================================================
+%  TEMELJNE / OPĆE REFERENCE (sjeme — provjereni klasici)
+% ============================================================
+
+@inproceedings{garciamolina1987sagas,
+  author    = {Garcia-Molina, Hector and Salem, Kenneth},
+  title      = {Sagas},
+  booktitle = {Proceedings of the 1987 ACM SIGMOD International Conference on Management of Data},
+  pages      = {249--259},
+  year       = {1987},
+  publisher = {ACM},
+  doi        = {10.1145/38713.38742}
+}
+
+@online{fowler2014circuitbreaker,
+  author = {Fowler, Martin},
+  title  = {CircuitBreaker},
+  year   = {2014},
+  url    = {https://martinfowler.com/bliki/CircuitBreaker.html},
+  urldate = {2026-06-25}
+}
+
+@book{nygard2018releaseit,
+  author    = {Nygard, Michael T.},
+  title     = {Release It! Design and Deploy Production-Ready Software},
+  edition   = {2},
+  year       = {2018},
+  publisher = {Pragmatic Bookshelf},
+  isbn       = {978-1680502398}
+}
+
+@book{richardson2018microservices,
+  author    = {Richardson, Chris},
+  title      = {Microservices Patterns: With Examples in Java},
+  year       = {2018},
+  publisher = {Manning Publications},
+  isbn       = {978-1617294549}
+}
+
+@online{brooker2015timeouts,
+  author  = {Brooker, Marc},
+  title   = {Timeouts, retries, and backoff with jitter},
+  year     = {2015},
+  organization = {Amazon Web Services Builders' Library},
+  url      = {https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/},
+  urldate = {2026-06-25}
+}
+
+@article{brewer2012cap,
+  author  = {Brewer, Eric},
+  title    = {CAP Twelve Years Later: How the ''Rules'' Have Changed},
+  journal = {Computer},
+  volume   = {45},
+  number   = {2},
+  pages    = {23--29},
+  year     = {2012},
+  doi      = {10.1109/MC.2012.37}
+}
+
+@book{tanenbaum2017distributed,
+  author    = {Tanenbaum, Andrew S. and van Steen, Maarten},
+  title      = {Distributed Systems},
+  edition   = {3},
+  year       = {2017},
+  publisher = {Pearson},
+  isbn       = {978-1543057386}
+}
+
+
+% ============================================================
+%  POGLAVLJE 2 — Pozadina i kontekst (fiskalizacija)
+% ============================================================
+
+% (✓) Evolucija hrvatske fiskalizacije 1.0 -> 2.0
+@article{gojkovic2025fiscalization,
+  author  = {Gojkovi{\'c}, Hrvojka and Mulovi{\'c} Trgovac, Ana},
+  title   = {Fiscalization in {Croatia}: Evolution from 1.0 to 2.0 -- Technical, Legal, and Business Changes},
+  journal = {E4E -- Education for Entrepreneurship},
+  year    = {2025},
+  volume  = {15},
+  number  = {2},
+  pages   = {22--35},
+  doi     = {10.38190/ope.15.2.2},
+  url     = {https://hrcak.srce.hr/file/493316}
+}
+
+% (✓) Pravni okvir Fiskalizacije 2.0 i učinci na male poduzetnike
+@article{miklosevic2025fiskalizacija,
+  author  = {Miklo{\v{s}}evi{\'c}, Ivana},
+  title   = {Fiskalizacija 2.0: Pravni okvir, digitalna transformacija i u{\v{c}}inci na mikro i male poduzetnike u {Republici Hrvatskoj}},
+  journal = {Festung -- {\v{c}}asopis za interdisciplinarna istra{\v{z}}ivanja u poslovanju},
+  year    = {2025},
+  number  = {1},
+  pages   = {7--14},
+  url     = {https://hrcak.srce.hr/file/483513}
+}
+
+% (✓)(~) Usvajanje e-fakturiranja u velikim B2B poduzećima.
+%     Dohvaćeno preko preglednika. UPOZORENJE: časopis (TCSMMST) djeluje
+%     predatorski/grey-literature (cPGuard captcha, scope-creep) — koristi
+%     oprezno, kao ilustraciju, ne kao temelj.
+@article{perera2025einvoicing,
+  author  = {Perera, Nimal and Wickramanayake, Suresh},
+  title   = {Evaluating the Adoption of Electronic Invoicing Standards in Large B2B Enterprises: Determinants, Barriers, and Strategic Implications},
+  journal = {Transactions on Computational Science, Mathematical Modeling, and Simulation Techniques},
+  year    = {2025},
+  volume  = {15},
+  number  = {9},
+  url     = {https://bibherald.com/index.php/TCSMMST/article/view/2025-SEP-04},
+  note    = {grey literature -- provjeri vjerodostojnost časopisa}
+}
+
+
+% ============================================================
+%  POGLAVLJE 3 — Distribuirani sustavi i tolerancija na greške
+% ============================================================
+
+% (✓) Partial failure bugs (fault injection, Legolas)
+@inproceedings{wu2024legolas,
+  author    = {Wu, Haoze and Pan, Jia and Huang, Peng},
+  title     = {Efficient Exposure of Partial Failure Bugs in Distributed Systems with Inferred Abstract States},
+  booktitle = {21st USENIX Symposium on Networked Systems Design and Implementation (NSDI 24)},
+  year      = {2024},
+  pages     = {1267--1283},
+  isbn      = {978-1-939133-39-7},
+  address   = {Santa Clara, CA},
+  publisher = {USENIX Association},
+  url       = {https://www.usenix.org/conference/nsdi24/presentation/wu-haoze}
+}
+
+% (✓)(~) Partial failures + security — PREPRINT (nije recenzirano)
+@misc{vinjam2025failureaware,
+  author = {Vinjam, Sandhya},
+  title  = {A Failure-Aware Security Framework for Distributed Systems Under Partial Failures},
+  year   = {2025},
+  howpublished = {SSRN working paper},
+  note   = {SSRN abstract no. 6122687; preprint, nije recenzirano},
+  doi    = {10.2139/ssrn.6122687},
+  url    = {https://ssrn.com/abstract=6122687}
+}
+
+% (✓) Partial failure u reaktivnom programiranju
+@inproceedings{myter2017handling,
+  author    = {Myter, Florian and Scholliers, Christophe and De Meuter, Wolfgang},
+  title     = {Handling Partial Failures in Distributed Reactive Programming},
+  booktitle = {Proceedings of the 4th ACM SIGPLAN International Workshop on Reactive and Event-Based Languages and Systems (REBLS 2017)},
+  year      = {2017},
+  pages     = {1--8},
+  publisher = {Association for Computing Machinery},
+  doi       = {10.1145/3141858.3141859},
+  isbn      = {978-1-4503-5515-5}
+}
+
+% (✓) Pregled modernih pristupa pouzdanim distribuiranim sustavima
+@article{talaver2023reliable,
+  author  = {Talaver, Oleh V. and Vakaliuk, Tetiana A.},
+  title   = {Reliable Distributed Systems: Review of Modern Approaches},
+  journal = {Journal of Edge Computing},
+  year    = {2023},
+  volume  = {2},
+  number  = {1},
+  pages   = {84--101},
+  doi     = {10.55056/jec.586}
+}
+
+% (✓) Survey pouzdanosti u distribuiranim sustavima
+@article{ahmed2013survey,
+  author  = {Ahmed, Waseem and Wu, Yong Wei},
+  title   = {A Survey on Reliability in Distributed Systems},
+  journal = {Journal of Computer and System Sciences},
+  year    = {2013},
+  volume  = {79},
+  number  = {8},
+  pages   = {1243--1255},
+  doi     = {10.1016/j.jcss.2013.02.006},
+  issn    = {0022-0000},
+  publisher = {Elsevier}
+}
+
+% (✓) Birmanov udžbenik. Potvrđeno preko preglednika: academia.edu hosta
+%     kopiju (684 str., pokriva RPC/CORBA/web services -> izdanje 2005).
+%     Citiramo knjigu izravno (academia.edu citat pripisuje samo uploadera).
+@book{birman2005reliable,
+  author    = {Birman, Kenneth P.},
+  title     = {Reliable Distributed Systems: Technologies, Web Services, and Applications},
+  publisher = {Springer},
+  year      = {2005},
+  isbn      = {978-0-387-21509-9}
+}
+
+
+% ============================================================
+%  POGLAVLJE 4 — Pristupi toleranciji na greške
+%  (retry / timeout / circuit breaker / resilience / outbox)
+% ============================================================
+
+% --- Circuit breaker ---
+% (✓)
+@article{molchanov2018circuitbreaker,
+  author  = {Molchanov, Heorhii and Zhmaiev, Anatolii},
+  title   = {Circuit Breaker in Systems Based on Microservices Architecture},
+  journal = {Advanced Information Systems},
+  year    = {2018},
+  volume  = {2},
+  number  = {4},
+  pages   = {74--77},
+  doi     = {10.20998/2522-9052.2018.4.13}
+}
+
+% (✓)
+@article{falahah2021circuitbreaker,
+  author  = {Falahah and Surendro, Kridanto and Sunindyo, Wikan Danar},
+  title   = {Circuit Breaker in Microservices: State of the Art and Future Prospects},
+  journal = {IOP Conference Series: Materials Science and Engineering},
+  year    = {2021},
+  volume  = {1077},
+  number  = {1},
+  pages   = {012065},
+  doi     = {10.1088/1757-899X/1077/1/012065}
+}
+
+% (✓) Model-based analiza resilience obrazaca (circuit breaker + retry) — ICSA 2020
+@inproceedings{mendonca2020resiliency,
+  author    = {Mendon\c{c}a, Nabor C. and Aderaldo, Carlos M. and C\^{a}mara, Javier and Garlan, David},
+  title     = {Model-Based Analysis of Microservice Resiliency Patterns},
+  booktitle = {2020 IEEE International Conference on Software Architecture (ICSA)},
+  year      = {2020},
+  pages     = {114--124},
+  publisher = {IEEE},
+  doi       = {10.1109/ICSA47634.2020.00019}
+}
+
+% --- Retry / exponential backoff ---
+% (!)(~) PROVJERITI RUČNO — ResearchGate blokiran (403), low-tier časopis (IRJMETS).
+@article{vemasani2024expbackoff,
+  author  = {Vemasani, Preetham and Vuppalapati, Sai Mahesh and Modi, Suraj and Ponnusamy, Sivakumar},
+  title   = {Exponential Backoff: A Comprehensive Approach to Handling Failures in Distributed Architectures},
+  journal = {International Research Journal of Modernization in Engineering, Technology and Science (IRJMETS)},
+  year    = {2024},
+  volume  = {6},
+  number  = {4},
+  doi     = {10.56726/IRJMETS53376},
+  note    = {PROVJERITI autore/DOI -- izvor blokiran; low-tier časopis}
+}
+
+% (✓)(~) Temeljna analiza backoffa (kontekst je 802.11 MAC, ne mikroservisi)
+@article{kwak2005expbackoff,
+  author  = {Kwak, Byung-Jae and Song, Nah-Oak and Miller, Leonard E.},
+  title   = {Performance Analysis of Exponential Backoff},
+  journal = {IEEE/ACM Transactions on Networking},
+  year    = {2005},
+  volume  = {13},
+  number  = {2},
+  pages   = {343--355},
+  doi     = {10.1109/TNET.2005.845533}
+}
+
+% --- Timeout ---
+% (✓)
+@article{gorbenko2020timeout,
+  author  = {Gorbenko, Anatoliy and Tarasyuk, Olga},
+  title   = {Exploring Timeout as a Performance and Availability Factor of Distributed Replicated Database Systems},
+  journal = {Radioelectronic and Computer Systems},
+  year    = {2020},
+  number  = {4},
+  pages   = {98--105},
+  issn    = {1814-4225},
+  doi     = {10.32620/reks.2020.4.09}
+}
+
+% (✓) Stvarni timeout problemi u cloud sustavima
+@inproceedings{dai2018timeout,
+  author    = {Dai, Ting and He, Jingzhu and Gu, Xiaohui and Lu, Shan},
+  title     = {Understanding Real-World Timeout Problems in Cloud Server Systems},
+  booktitle = {2018 IEEE International Conference on Cloud Engineering (IC2E)},
+  year      = {2018},
+  pages     = {1--11},
+  publisher = {IEEE},
+  doi       = {10.1109/IC2E.2018.00022}
+}
+
+% --- Resilience patterns ---
+% (✓) Self-healing / resilience obrasci za event-driven mikroservise
+@article{beereddy2025selfhealing,
+  author  = {Beereddy, Karthik Reddy},
+  title   = {Self-Healing Streaming Architecture: Resilience Patterns for Event-Driven Microservices},
+  journal = {Journal of Computer Science and Technology Studies},
+  year    = {2025},
+  volume  = {7},
+  number  = {8},
+  pages   = {254--268},
+  doi     = {10.32996/jcsts.2025.7.8.30}
+}
+
+% (~) Predavanja (slides) — slaba kao primarni izvor; razmotriti Newman/Fowler izravno
+@misc{padhye2023microservices,
+  author       = {Padhye, Rohan and Hilton, Michael},
+  title        = {Microservices},
+  howpublished = {Lecture slides, 17-313 Foundations of Software Engineering, Carnegie Mellon University},
+  year         = {2023},
+  note         = {Fall 2023}
+}
+
+% --- Outbox pattern (async — Pogl. 4 / implementacija Pogl. 7) ---
+% (✓)(~) Grey literature — low-tier časopis (IJIRMPS), Zenodo DOI
+@article{tanneru2024optimizing,
+  author  = {Tanneru, Bhargavi},
+  title   = {Optimizing Real-Time Data Synchronization in Microservices Using Reactive Design Patterns},
+  journal = {International Journal of Innovative Research in Engineering \& Multidisciplinary Physical Sciences (IJIRMPS)},
+  year    = {2024},
+  volume  = {12},
+  number  = {4},
+  doi     = {10.5281/zenodo.14850925},
+  issn    = {2349-7300},
+  note    = {grey literature}
+}
+
+% (✓) Outbox + retry + error handling u event-driven arhitekturi
+@article{dhanaraj2025resilient,
+  author  = {Dhanaraj, Anandan},
+  title   = {Building Resilient Systems: Error Handling, Retry Mechanisms, and Predictive Analytics in Event-Driven Architecture},
+  journal = {Journal of Computer Science and Technology Studies (JCSTS)},
+  year    = {2025},
+  volume  = {7},
+  number  = {7},
+  pages   = {317--324},
+  doi     = {10.32996/jcsts.2025.7.7.34},
+  issn    = {2709-104X},
+  publisher = {Al-Kindi Center for Research and Development}
+}
+
+
+% ============================================================
+%  POGLAVLJE 5 — Upravljanje distribuiranim tijekovima rada
+%  (distribuirane transakcije / SAGA / kompenzacija)
+% ============================================================
+
+% (✗) NEDOSTUPNO — emergingsociety.org je sada parkirana/mrtva domena
+%     (redirecta na prazan /lander). Časopis vjerojatno ugašen; izvor je
+%     nepovratan i upitne vjerodostojnosti. PREPORUKA: izbaci ga i osloni
+%     se na garciamolina1987sagas + daraghmi2022saga za SAGA obrazac.
+
+% (✓) Poboljšani SAGA obrazac za distribuirane transakcije
+@article{daraghmi2022saga,
+  author  = {Daraghmi, Eman and Zhang, Cheng-Pu and Yuan, Shyan-Ming},
+  title   = {Enhancing Saga Pattern for Distributed Transactions within a Microservices Architecture},
+  journal = {Applied Sciences},
+  year    = {2022},
+  volume  = {12},
+  number  = {12},
+  pages   = {6242},
+  doi     = {10.3390/app12126242},
+  issn    = {2076-3417},
+  publisher = {MDPI}
+}
+
+% (✓) Optimistički commit protokol za distribuirane transakcije
+@article{levy1991optimistic,
+  author    = {Levy, Eliezer and Korth, Henry F. and Silberschatz, Abraham},
+  title     = {An Optimistic Commit Protocol for Distributed Transaction Management},
+  journal   = {ACM SIGMOD Record},
+  year      = {1991},
+  volume    = {20},
+  number    = {2},
+  pages     = {88--97},
+  doi       = {10.1145/119995.115800},
+  publisher = {Association for Computing Machinery}
+}
+
+% (✓) Upravljanje transakcijama u heterogenim distribuiranim bazama
+@article{gligor1986transaction,
+  author  = {Gligor, Virgil D. and Popescu-Zeletin, Radu},
+  title   = {Transaction Management in Distributed Heterogeneous Database Management Systems},
+  journal = {Information Systems},
+  year    = {1986},
+  volume  = {11},
+  number  = {4},
+  pages   = {287--297},
+  doi     = {10.1016/0306-4379(86)90009-8},
+  issn    = {0306-4379},
+  publisher = {Elsevier}
+}
+
+% (✓) Koreografija vs. orkestracija u mikroservisima
+@article{rudrabhatla2018comparison,
+  author  = {Rudrabhatla, Chaitanya K.},
+  title   = {Comparison of Event Choreography and Orchestration Techniques in Microservice Architecture},
+  journal = {International Journal of Advanced Computer Science and Applications (IJACSA)},
+  year    = {2018},
+  volume  = {9},
+  number  = {8},
+  doi     = {10.14569/IJACSA.2018.090804}
+}
+
+% (✓) Upravljanje podacima u mikroservisima (eventual consistency)
+@inproceedings{laigner2021data,
+  author    = {Laigner, Rodrigo and Zhou, Yongluan and Salles, Marcos Antonio Vaz and Liu, Yijian and Kalinowski, Marcos},
+  title     = {Data Management in Microservices: State of the Practice, Challenges, and Research Directions},
+  booktitle = {Proceedings of the VLDB Endowment (VLDB '21)},
+  year      = {2021},
+  eprint    = {2103.00170},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.DB},
+  doi       = {10.48550/arXiv.2103.00170}
+}
+
+% (✓) Formalni pristup oporavku kompenzacijskim transakcijama
+@techreport{korth1990compensating,
+  author      = {Korth, Henry F. and Levy, Eliezer and Silberschatz, Abraham},
+  title       = {A Formal Approach to Recovery by Compensating Transactions},
+  institution = {Department of Computer Sciences, The University of Texas at Austin},
+  year        = {1990},
+  number      = {TR-90-14}
+}

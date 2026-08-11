@@ -1,0 +1,114 @@
+% ============================================================
+%  Preamble — paketi i postavke
+% ============================================================
+
+% ---- Kodiranje i jezik -------------------------------------
+\usepackage[T1]{fontenc}          % UTF-8 je zadan od LaTeX 2018, inputenc nije potreban
+\usepackage{lmodern}
+\usepackage[croatian]{babel}
+\usepackage{csquotes}             % biblatex ga traži uz babel
+
+% ---- Raspored stranice -------------------------------------
+\usepackage[a4paper,left=3cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{indentfirst}          % uvuci i prvi odlomak nakon naslova
+\usepackage{microtype}
+
+% ---- Grafika i tablice -------------------------------------
+\usepackage{graphicx}
+\graphicspath{{slike/}}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{enumitem}
+
+% ---- Dijagrami (TikZ) --------------------------------------
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, calc}
+
+% ---- Matematika --------------------------------------------
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% ---- Listanje koda (PHP / Laravel) -------------------------
+\usepackage{listings}
+\definecolor{codebg}{rgb}{0.97,0.97,0.97}
+\definecolor{codekw}{rgb}{0.12,0.29,0.55}
+\definecolor{codecomment}{rgb}{0.40,0.55,0.40}
+\definecolor{codestring}{rgb}{0.60,0.20,0.20}
+\lstdefinestyle{kod}{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{codekw}\bfseries,
+  commentstyle=\color{codecomment}\itshape,
+  stringstyle=\color{codestring},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=8pt,
+  breaklines=true,
+  showstringspaces=false,
+  frame=single,
+  rulecolor=\color{gray!40},
+  tabsize=2,
+  captionpos=b,
+  extendedchars=true,
+  literate=%
+    {č}{{\v c}}1 {ć}{{\'c}}1 {ž}{{\v z}}1 {š}{{\v s}}1 {đ}{{\dj}}1
+    {Č}{{\v C}}1 {Ć}{{\'C}}1 {Ž}{{\v Z}}1 {Š}{{\v S}}1 {Đ}{{\DJ}}1
+}
+\lstset{style=kod}
+\lstdefinelanguage{PHP}{
+  morekeywords={abstract,and,array,class,const,echo,else,elseif,extends,
+    final,for,foreach,function,if,implements,interface,namespace,new,
+    private,protected,public,return,static,throw,try,catch,finally,use,
+    while,yield,match,fn,enum,readonly,null,true,false},
+  sensitive=true,
+  morecomment=[l]{//},
+  morecomment=[l]{\#},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+  morestring=[b]'
+}
+
+% ---- Bibliografija -----------------------------------------
+\usepackage[backend=biber,style=ieee,sorting=none]{biblatex}
+\addbibresource{references.bib}
+
+% ---- Poveznice (učitati pri kraju) -------------------------
+\usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
+\crefname{chapter}{poglavlje}{poglavlja}
+\Crefname{chapter}{Poglavlje}{Poglavlja}
+\crefname{section}{odjeljak}{odjeljci}
+\Crefname{section}{Odjeljak}{Odjeljci}
+\crefname{figure}{slika}{slike}
+\Crefname{figure}{Slika}{Slike}
+\crefname{table}{tablica}{tablice}
+\Crefname{table}{Tablica}{Tablice}
+
+% ---- Pomoćne naredbe ---------------------------------------
+% Oznaka za nedovršeni dio teksta. Ispisuje se crveno i ulazi u popis
+% na kraju rada (\popistodo), da se nedovršeno ne izgubi iz vida.
+\newcounter{todocnt}
+\newcommand{\todo}[1]{%
+  \stepcounter{todocnt}%
+  \textcolor{red}{\textbf{[TODO \thetodocnt: #1]}}%
+  \addcontentsline{tdo}{section}{\protect\numberline{\thetodocnt}#1}%
+}
+\makeatletter
+\newcommand{\popistodo}{%
+  \clearpage
+  \chapter*{Popis nedovršenog}%
+  \markboth{Popis nedovršenog}{}%
+  \@starttoc{tdo}%
+}
+\makeatother
+
+% Strani termin pri prvom spominjanju: \strani{prekidač}{circuit breaker}
+\newcommand{\strani}[2]{#1 (\emph{#2})}

@@ -1,0 +1,34 @@
+# ---- LaTeX pomoćne datoteke --------------------------------
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.tdo
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.nav
+*.snm
+*.vrb
+*.idx
+*.ilg
+*.ind
+
+# Izlazni PDF se ne verzionira — gradi se iz izvora.
+rad/main.pdf
+
+# ---- Okoliš ------------------------------------------------
+.DS_Store
+.env
+.idea/
+.vscode/
+
+# ---- PHP / Laravel (svc, posrednik) ------------------------
+vendor/
+node_modules/

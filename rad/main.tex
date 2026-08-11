@@ -1,0 +1,66 @@
+% ============================================================
+%  Diplomski rad — Alan Bubalo
+%  Obrasci tolerancije na greške u distribuiranim sustavima:
+%  studija slučaja Fiskalizacije 2.0
+%
+%  Build:  latexmk -pdf main.tex
+%  Clean:  latexmk -c
+% ============================================================
+\documentclass[12pt,a4paper,oneside]{book}
+
+\input{tex/preamble}
+
+% ---- Metapodaci rada ---------------------------------------
+% Mentor i studij ostaju placeholderi dok se ne potvrde.
+\newcommand{\radNaslov}{Obrasci tolerancije na greške u distribuiranim sustavima: studija slučaja Fiskalizacije 2.0}
+\newcommand{\radNaslovEng}{Fault-Tolerance Patterns in Distributed Systems: A Case Study of Fiscalization 2.0}
+\newcommand{\radAutor}{Alan Bubalo}
+\newcommand{\radJmbag}{0303098591}
+\newcommand{\radMentor}{[ime mentora]}
+\newcommand{\radStudij}{[naziv studija]}
+\newcommand{\radGodina}{2026}
+\newcommand{\radMjesto}{Pula}
+% ------------------------------------------------------------
+
+\hypersetup{
+  pdftitle={\radNaslov},
+  pdfauthor={\radAutor},
+  pdfsubject={Diplomski rad},
+  pdfkeywords={distribuirani sustavi, tolerancija na greške, fiskalizacija, e-račun}
+}
+
+\begin{document}
+
+\input{tex/naslovnica}
+
+\frontmatter
+\pagenumbering{roman}
+
+\input{tex/sazetak}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\mainmatter
+\pagenumbering{arabic}
+
+\input{poglavlja/01-uvod}
+\input{poglavlja/02-pozadina}
+\input{poglavlja/03-distribuirani-sustavi}
+\input{poglavlja/04-pristupi-toleranciji}
+\input{poglavlja/05-distribuirani-tijekovi}
+\input{poglavlja/06-studija-slucaja}
+\input{poglavlja/07-implementacija}
+\input{poglavlja/08-evaluacija}
+\input{poglavlja/09-rasprava}
+\input{poglavlja/10-zakljucak}
+
+% ---- Literatura --------------------------------------------
+\backmatter
+\printbibliography[heading=bibintoc,title={Literatura}]
+
+% ---- Popis nedovršenog (ukloniti prije predaje) ------------
+\popistodo
+
+\end{document}
