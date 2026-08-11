@@ -1,8 +1,77 @@
 % ============================================================
-%  4. Pristupi toleranciji na greske
-%  Odjeljke definira: siroko, ali pregledno
+%  4. Pristupi toleranciji na greške
+%  ŠIROKO ALI PLITKO · budžet 7 str.
+%  Struktura je zaključana.
+%
+%  NAMJERNO BEZ ORIGINALNOG DOPRINOSA. Ovo poglavlje je RJEČNIK iz kojeg
+%  odjeljak 6.3 bira uzorke. Siva literatura je ovdje prihvatljiva jer je
+%  polje njome i pokriveno. NE KOPATI — 5 izvora u cijelosti je dovoljno.
 % ============================================================
 \chapter{Pristupi toleranciji na greške}
 \label{ch:pristupi}
 
-\todo{ŠIROKO ALI PREGLEDNO — katalog uzoraka kao rječnik iz kojeg poglavlje 6.3 bira. Sinkrono: timeout, retry s backoffom i jitterom, prekidač. Asinkrono: redovi, radnici, outbox, DLQ, dedupe.}
+\todo{Uvodni odlomak: ovo poglavlje daje rječnik, ne doprinos. Reći to
+otvoreno — čitatelj mora znati da 6.3 bira iz ovdje definiranog skupa.}
+
+% ------------------------------------------------------------
+\section{Sinkrona komunikacija}
+\label{sec:sinkrono}
+% Budžet: 3,5 str.
+% POKRIVA: timeout, ponovni pokušaj, eksponencijalni backoff, jitter,
+%          prekidač strujnog kruga.
+%
+% ★ IZVORI S BROJKAMA — pod ravnotežom (D) rad NEMA vlastita mjerenja,
+%   pa su tuđa mjerenja glavno empirijsko uporište.
+%   Ovo se u pogl. 9 mora PRIZNATI, ne prešutjeti.
+%
+%   Sedghpour, Klein, Tordsson 2022, ICPE — u cijelosti.
+%     Jedini rad koji SUSTAVNO mjeri učinak prekidača i retryja.
+%     Sažetak izrijekom: "there have been no systematic studies on the
+%     effects of these mechanisms".
+%   Sedghpour i dr. 2021, HAOC — u cijelosti (kratak).
+%     Brojke za loše podešen prekidač: 63% dostupnosti, 30% prekinutih
+%     zahtjeva, >5% timeouta naspram adaptivnog.
+%     → POTPORA za odluku da prekidač možda ISPADA.
+%   Brooker, AWS Builders' Library — u cijelosti (već u bibu).
+%     Retry amplifikacija: pet slojeva po tri pokušaja → 243× opterećenje.
+%     Preporuka: retry SAMO na jednoj razini.
+%   Bronson i dr. 2021, HotOS — u cijelosti (7 str.).
+%     Metastabilni otkaz: ostaje NAKON nestanka okidača, a najčešći
+%     samoodrživi učinak je upravo retry. Izravno hrani RQ3.
+%   Nygard, Release It! — ciljano (relevantna poglavlja).
+%   Hystrix — samo citirati, i OBAVEZNO uz napomenu da je u maintenance
+%     modu. Preporuka Hystrixa bez te napomene je meta na obrani.
+%
+% NIZVODNO: 6.3 (izbor uzoraka), 9.1 (kompromisi)
+
+\todo{Timeout, ponovni pokušaj, backoff, jitter, prekidač. Uz svaki:
+što rješava, po kojoj cijeni, i gdje odmaže.}
+
+% ------------------------------------------------------------
+\section{Asinkrona komunikacija}
+\label{sec:asinkrono}
+% Budžet: 3,5 str.
+% POKRIVA: red čekanja, radnik, outbox, mrtvo pismo (DLQ),
+%          idempotentni primatelj, eliminacija duplikata.
+%
+% IZVORI:
+%   Hohpe & Woolf 2003, Enterprise Integration Patterns — ciljano.
+%     Guaranteed Delivery, Dead Letter Channel, Idempotent Receiver,
+%     Transactional Client. To su imena uzoraka koje ovaj odjeljak koristi.
+%   Debezium, Outbox Event Router (dokumentacija) — ciljano.
+%     Prvostrana implementacija outboxa preko CDC-a.
+%   Richardson, microservices.io — samo citirati, kao @online s urldate.
+%
+% ★ POŠTENA RUPA KOJU TREBA NAPISATI, NE ZATAŠKATI:
+%   OUTBOX NEMA RECENZIRANI PRIMARNI IZVOR. Crossref po naslovu vraća
+%   tri članka, sva tri pay-to-publish — NE CITIRATI ih. Provjereno je i
+%   očito mjesto gdje bi trebao biti (Laigner i dr., PVLDB 2021): ne
+%   spominje ni "outbox" ni "dual write".
+%   Zaključak: outbox je uzorak nastao u praksi, ne u literaturi.
+%   Napisati to u jednoj rečenici — to je znak zrelosti, ne slabosti.
+%
+% NIZVODNO: 6.3, 7.x
+
+\todo{Red čekanja i radnik; outbox i problem dvostrukog zapisa; mrtvo
+pismo; idempotentni primatelj i eliminacija duplikata. Uključiti rečenicu
+o tome da outbox nema recenzirani izvor.}

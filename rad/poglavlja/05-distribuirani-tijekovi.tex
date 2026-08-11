@@ -1,8 +1,106 @@
 % ============================================================
 %  5. Upravljanje distribuiranim tijekovima
-%  Odjeljke definira: dubinsko poglavlje
+%  DUBINSKO poglavlje · budžet 10 str.
+%  Struktura je zaključana.
 % ============================================================
 \chapter{Upravljanje distribuiranim tijekovima}
 \label{ch:tijekovi}
 
-\todo{DUBINSKO poglavlje. Zašto klasične transakcije ne prelaze granicu servisa; SAGA (orkestracija vs koreografija), kompenzacije i njihove granice, eventualna konzistentnost, stroj stanja.}
+\todo{Uvodni odlomak: od pojedinačnog poziva prelazimo na tijek od više
+koraka, i pitanje se mijenja iz "kako preživjeti kvar" u "kako održati
+konzistentno stanje".}
+
+% ------------------------------------------------------------
+\section{Zašto klasične transakcije ne prelaze granicu servisa}
+\label{sec:granica-transakcije}
+% Budžet: 4 str.
+% TVRDI: dvofazni commit prema vanjskom posredniku nije opcija — i to
+%        nije stvar ukusa nego formalni rezultat.
+%
+% IZVORI:
+%   Härder & Reuter 1983, ACM CSUR 15(4) — CILJANO (definicija ACID-a).
+%     Rad koji je skovao akronim. Tvrdnja "nema klasičnih transakcija
+%     između servisa" mora imati definiciju "klasične transakcije" iza sebe.
+%   Mohan, Lindsay, Obermarck 1986, ACM TODS 11(4) — ciljano.
+%     Kanonski 2PC s presumed-abort/presumed-commit. Nosi argument da
+%     koordinator BLOKIRA.
+%   ★ Skeen & Stonebraker 1983, IEEE TSE SE-9(3) — u cijelosti.
+%     NE POSTOJI neblokirajući commit protokol otporan na particiju mreže.
+%     To je "zašto SAGA, a ne 2PC" u jednoj rečenici, s dokazom iza nje.
+%   Bailis & Ghodsi 2013, ACM Queue 11(3) — u cijelosti.
+%     Kvantificira "koliko je eventual" i nabraja jača jamstva koja ostaju
+%     dostupna. Sprječava da rad tretira eventualnu konzistentnost binarno.
+%   Vogels 2009, CACM 52(1) — ciljano (taksonomija klijentskih jamstava).
+%     Rad mora IMENOVATI koje jamstvo posrednički tijek zapravo daje.
+%   Pardon & Pautasso 2014, WWW Companion — samo citirati.
+%     Try-Cancel/Confirm: SAGA nije jedina opcija, nego IZABRANA.
+%
+% NIZVODNO: 6.3
+
+\todo{ACID i njegove granice; dvofazni commit i blokiranje koordinatora;
+formalni rezultat o neblokirajućem commitu; eventualna konzistentnost i
+koje jamstvo posrednički tijek stvarno daje.}
+
+% ------------------------------------------------------------
+\section{SAGA i kompenzacija}
+\label{sec:saga}
+% Budžet: 4 str.
+%
+% IZVORI:
+%   ★ Gray 1981, VLDB '81, str. 144--154 — u cijelosti.
+%     NAJJAČI POJEDINAČNI CITAT U RADU. Dvije stvari, obje provjerene
+%     čitanjem PDF-a:
+%     (1) definicija kompenzacije: "Once a transaction commits, its
+%         effects can only be altered by running further transactions.
+%         … Such post facto transactions are called compensating
+%         transactions."
+%     (2) PRIMJER PUTNIČKE AGENCIJE: "the agent cannot unilaterally abort
+%         an interaction after it completes, rather the agent must run a
+%         compensating transaction to reverse the previous transaction".
+%         → izravna paralela tijeku prema vanjskom posredniku.
+%   Garcia-Molina & Salem 1987, SIGMOD — u cijelosti (već u bibu).
+%   Colombo & Pace 2013, ACM CSUR 45(3) — CILJANO, kao KARTA.
+%     Survey koji daje strukturu ovog odjeljka i mapu prema primarnim
+%     radovima. Ne čitati svih 35 str. linearno.
+%   Garcia-Molina i dr. 1991, ugniježđene sage — samo citirati.
+%   Helland & Campbell 2009, Building on Quicksand — samo citirati.
+%     Veže kompenzaciju, idempotenciju i komutativnost.
+%   Megargel i dr. 2021, IEEE EDOC — samo citirati.
+%     Kriteriji odluke orkestracija vs koreografija; rad MORA obrazložiti
+%     zašto bira orkestraciju.
+%
+% ★ OTVORENO PITANJE KOJE OVAJ ODJELJAK POSTAVLJA, A TIKET 12 ODGOVARA:
+%   IMA LI FISKALIZACIJA UOPĆE ŠTO KOMPENZIRATI?
+%   Ako je jednosmjerna zakonska obveza bez rollbacka, SAGA je tema OVOG
+%   poglavlja (teorija), a NE uzorak u 6.3 (praksa). To je legitiman i
+%   zanimljiv nalaz — ali mora biti odlučen i obrazložen, ne prešućen.
+%
+% NIZVODNO: 6.3
+
+\todo{SAGA kao slijed lokalnih transakcija s kompenzacijama; orkestracija
+vs koreografija i obrazloženje izbora; granice kompenzacije. Postaviti
+pitanje ima li u fiskalizaciji što kompenzirati.}
+
+% ------------------------------------------------------------
+\section{Stanje kao automat}
+\label{sec:automat}
+% Budžet: 2 str.
+% TVRDI: životni ciklus računa modeliran kao deterministički automat je
+%        ono što čini ponovni pokušaj bezopasnim i stanje provjerljivim.
+%
+% IZVORI:
+%   Schneider 1990, ACM CSUR 22(4) — u cijelosti.
+%     Primarni izvor za pristup replikacije stanja; koristi se kao
+%     OPRAVDANJE modeliranja životnog ciklusa kao determinističkog automata.
+%   ★ Helland 2007, "Life Beyond Distributed Transactions", CIDR — u cijelosti.
+%     "Entiteti" s vlastitim transakcijskim opsegom + idempotentne
+%     at-least-once poruke među njima. TO JE DOSLOVNO ARHITEKTURA KOJU
+%     ODJELJAK 6.3 IZVODI. Najvažniji izvor za nizvodni dio rada.
+%   Lamport 1978, CACM 21(7) — samo citirati.
+%     Potreban jer ovaj odjeljak tvrdi da se stanja mogu urediti; bez
+%     pojma "happened-before" ta tvrdnja visi.
+%
+% NIZVODNO: 6.3 izravno
+
+\todo{Determinističi automat kao model životnog ciklusa dokumenta;
+terminalna i neterminalna stanja; entiteti i idempotentne poruke među njima.}

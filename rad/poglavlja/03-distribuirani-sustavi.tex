@@ -1,8 +1,105 @@
 % ============================================================
-%  3. Distribuirani sustavi i tolerancija na greske
-%  Odjeljke definira: dubinsko poglavlje
+%  3. Distribuirani sustavi i tolerancija na greške
+%  DUBINSKO poglavlje · budžet 11 str.
+%  Struktura je zaključana.
+%  CAP je namjerno UNUTAR 3.5, nema vlastiti odjeljak:
+%  ne služi ničemu nizvodno osim 9.1.
 % ============================================================
 \chapter{Distribuirani sustavi i tolerancija na greške}
 \label{ch:distribuirani}
 
-\todo{DUBINSKO poglavlje. Značajke distribuiranih sustava, zablude o distribuiranom računarstvu, CAP; vrste otkazivanja, djelomični kvar, idempotentnost, semantika dostave.}
+\todo{Uvodni odlomak poglavlja: što poglavlje tvrdi i čemu služi nizvodno.}
+
+% ------------------------------------------------------------
+\section{Distribuirani sustav i djelomični otkaz}
+\label{sec:djelomicni-otkaz}
+% Budžet: 3 str.
+% TVRDI: udaljeni poziv se ne smije modelirati kao lokalni, jer uvodi
+%        klasu otkaza koja lokalno ne postoji — djelomični otkaz.
+% NOSIVI IZVOR: Waldo i dr. 1994 (SMLI TR-94-29) — čitati u cijelosti.
+% UZ NJEGA: zablude o distribuiranom računarstvu.
+%   ⚠ PROVENIJENCIJA JE SPORNA: sam Deutsch (SE Radio ep. 470, 2021)
+%     osporava uvriježenu kronologiju "Deutsch 1994 + Gosling 1997".
+%     Napisati pošteno — od zamke na obrani postaje poen za temeljitost.
+% NIZVODNO: 6.1 (granica ERP↔posrednik je točno takva granica)
+
+\todo{Definicija distribuiranog sustava; djelomični otkaz kao klasa koja
+u lokalnom pozivu ne postoji; zablude o distribuiranom računarstvu uz
+poštenu provenijenciju.}
+
+% ------------------------------------------------------------
+\section{Pojmovi: uzrok, pogreška i otkaz}
+\label{sec:fault-error-failure}
+% Budžet: 1,5 str.
+% TVRDI: bez razlikovanja uzroka (fault), pogreške (error) i otkaza
+%        (failure) rad ne može dosljedno govoriti o "načinima otkazivanja".
+% NOSIVI IZVOR: Avizienis i dr. 2004, IEEE TDSC 1(1) — u cijelosti.
+% NIZVODNO: daje JEZIK cijelom poglavlju 6.2. Bez ovog odjeljka izvod
+%           u 6.2 nema dosljednu terminologiju.
+
+\todo{Taksonomija fault/error/failure; hrvatski termini i njihovo
+dosljedno korištenje kroz ostatak rada.}
+
+% ------------------------------------------------------------
+\section{Klasifikacija otkaza}
+\label{sec:klasifikacija-otkaza}
+% Budžet: 2 str.
+% TVRDI: otkazi se dijele na crash / omission / timing / Byzantine;
+%        fiskalizacijski tijek pogađaju prve tri. Većina softverskih
+%        kvarova je PROLAZNA — i to je ono što opravdava retry.
+% IZVORI: Cristian 1991, CACM 34(2) — u cijelosti.
+%         ⚠ ACM metapodaci bilježe "Flavin Cristian"; ispravno je FLAVIU.
+%         Gray 1985/1986, "Why Do Computers Stop" — ciljano (Heisenbugs).
+% NIZVODNO: 6.2 (koje klase uzimamo u razmatranje), 4.1 (opravdanje retryja)
+
+\todo{Klase otkaza; koje su relevantne za fiskalizacijski tijek i zašto
+bizantski otkaz nije; prolaznost kvarova kao opravdanje ponovnog pokušaja.}
+
+% ------------------------------------------------------------
+\section{Timeout ne razlikuje sporo od mrtvog}
+\label{sec:detekcija-otkaza}
+% Budžet: 1,5 str.
+% TVRDI: nepouzdana detekcija otkaza je TEMELJNO ograničenje, ne
+%        implementacijski nedostatak. Posljedica koju rad koristi svuda:
+%        "nema odgovora" nikad ne znači "nije zaprimljeno".
+% IZVOR: Chandra & Toueg 1996, JACM 43(2) — CILJANO.
+%        Samo definicije potpunosti i točnosti detektora, ne dokazi.
+% NIZVODNO: 6.2 (sinkroni SOAP prema CIS-u nema propisan timeout),
+%           4.1 (zašto timeout sam nije rješenje)
+
+\todo{Detektori otkazâ; potpunost i točnost; nemogućnost razlikovanja
+sporog od mrtvog procesa i što to znači za tumačenje izostalog odgovora.}
+
+% ------------------------------------------------------------
+\section{Semantika dostave i nemogućnost exactly-once}
+\label{sec:semantika-dostave}
+% Budžet: 3 str. (2 str. + 1 str. za CAP, koji je ovdje apsorbiran)
+%
+% ★ NAJVRJEDNIJI ODJELJAK POGLAVLJA.
+% TVRDI: exactly-once DOSTAVA ne postoji; ono što se u praksi zove
+%        exactly-once je at-least-once + idempotentnost, tj. exactly-once
+%        UČINAK. Sam lanac citiranja je doprinos ovog poglavlja.
+%
+% ⚠ NE POSTOJI rad koji dokazuje "exactly-once dostava je nemoguća".
+%   Tko takav citira, citira blog. Pošteni lanac:
+%     Gray 1978, §5.8.3.3.1 "THE GENERALS PARADOX"  (ciljano — provjereno u PDF-u)
+%       → Saltzer, Reed, Clark 1984, end-to-end argument (u cijelosti)
+%          → duplikati se MORAJU rješavati na krajevima, ne u transportu
+%       → Helland 2012, "Idempotence Is Not a Medical Condition" (u cijelosti)
+%          citirati ACM Queue verziju kao izvornu
+%       → Wang i dr. 2021, SIGMOD (ciljano) — kako se to zapravo radi
+%   FLP (Fischer, Lynch, Paterson 1985) — SAMO CITIRATI, ne čitati u cijelosti.
+%   Halpern & Moses 1990 — IZBAČENO: Gray 1978 daje isti
+%     argument čitljivije i njega smo stvarno pročitali.
+%
+% CAP, APSORBIRAN OVDJE KAO ODLOMAK (ne odjeljak):
+%   Gilbert & Lynch 2002 (u cijelosti) — formalni dokaz.
+%   Abadi 2012, PACELC — samo citirati: kompromis postoji i BEZ particije.
+%   ⚠ Često citirani MIT link .../Gilbert/Brewer2.pdf JE RAD IZ 2012.
+%     Rad iz 2002. je .../Gilbert/Brewer6.pdf.
+%
+% NIZVODNO: 6.3 (arhitektura), RQ2 ("što ostaje nesvodivo")
+
+\todo{Semantika dostave: at-most-once, at-least-once, exactly-once.
+Zašto exactly-once dostava ne postoji i kako se postiže exactly-once
+učinak. Idempotentnost. CAP i PACELC u tri rečenice.}
