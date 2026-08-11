@@ -9,9 +9,13 @@
 \usepackage{csquotes}             % biblatex ga traži uz babel
 
 % ---- Raspored stranice -------------------------------------
-\usepackage[a4paper,left=3cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+% Pravilnik o diplomskome radu, čl. 5: A4, margine 2,5 cm, tekst 12 pt,
+% prored 1,5; podrubne bilješke 10 pt, prored 1,0.
+\usepackage[a4paper,margin=2.5cm]{geometry}
 \usepackage{setspace}
 \onehalfspacing
+\usepackage[hang,flushmargin]{footmisc}
+\renewcommand{\footnotelayout}{\setstretch{1.0}}   % bilješke: prored 1,0
 \usepackage{indentfirst}          % uvuci i prvi odlomak nakon naslova
 \usepackage{microtype}
 
