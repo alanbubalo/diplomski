@@ -1,8 +1,122 @@
 % ============================================================
-%  6. Studija slucaja: Fiskalizacija 2.0
-%  Odjeljke definira: izvod i dizajn rjesenja
+%  6. Studija slučaja: Fiskalizacija 2.0
+%  DOPRINOS RADA · budžet 20 str.
+%  Struktura 6.2 je zaključana; 6.1 i 6.3 slijede iz nje.
+%
+%  ⚠ TVRDO OGRANIČENJE: studija slučaja je REFERENTNA ARHITEKTURA
+%    IZVEDENA IZ JAVNE SPECIFIKACIJE. Ni jedan stvarni sustav, poslodavac
+%    ni klijent ne spominje se nigdje. Ni ranije studentski projekt.
+%    Svaka tvrdnja mora imati citat propisa iza sebe.
+%
 % ============================================================
 \chapter{Studija slučaja: Fiskalizacija 2.0}
 \label{ch:studija}
 
-\todo{Referentna arhitektura izvedena IZ JAVNE SPECIFIKACIJE. 6.1 arhitektura i tijek dokumenta; 6.2 izvod načina otkazivanja (jezgra rada); 6.3 dizajn otpornog rješenja.}
+\todo{Uvodni odlomak: što ovo poglavlje izvodi i zašto je izvod iz
+specifikacije jači od opisa konkretnog sustava.}
+
+% ------------------------------------------------------------
+\section{Arhitektura i tijek dokumenta}
+\label{sec:arhitektura}
+% Budžet: 5 str.
+%
+% SADRŽI:
+%   - četverokutni model C1→C2→C3→C4 + CIS sa strane
+%   - sudionici i njihove zakonske definicije [ZoF čl. 2.]
+%   - DVA KANALA i DVA MODELA POUZDANOSTI:
+%       razmjena PT↔PT: asinkrona, AS4 One-way/Push, maxretries=10,
+%         potpisana potvrda primitka [PoeR čl. 6. st. 1. t. 8.]
+%       fiskalizacija PT↔CIS: sinkroni SOAP [TS pogl. 8.],
+%         bez timeouta, bez retryja, bez potvrde s pravnim učinkom
+%     → NIJEDNA ODREDBA IH NE PREMOŠĆUJE
+%   - granica povjerenja: C1↔C2, propis je ne uređuje uopće
+%   - granica transakcije: između koraka 7 i 8 (dvije neovisne
+%     fiskalizacije istog dokumenta, različiti rokovi)
+%
+% ⚠ PROVJERITI PRIJE PISANJA: verzija AS4 profila. Istraživanja se ne
+%   slažu (v1.15 + MPS/AMS vs hrvatski v1.4 + CEF 1.14). Primarni dokument.
+%
+% SLIKA: dijagram tijeka u TikZ-u → rad/slike/
+
+\todo{Model sudionika i tijek u jedanaest koraka; dva kanala i dva modela
+pouzdanosti; granica povjerenja i granica transakcije. Dijagram.}
+
+% ------------------------------------------------------------
+\section{Identifikacija načina otkazivanja}
+\label{sec:failure-modes}
+% Budžet: 10 str. — JEZGRA RADA.
+%
+% OBLIK ARGUMENTA, BEZ IZNIMKE:
+%   propis zahtijeva X [citat] → slijedi stanje S → S je neusklađen jer Z
+% Iskustvo bira KOJE uzimamo ozbiljno; propis dokazuje da su MOGUĆI.
+%
+% NOSIVI CITAT CIJELOG POGLAVLJA — [ZoF čl. 48. st. 3.]:
+%   "Fiskalizaciju eRačuna ... dužan je provoditi ODVOJENO OD POSTUPKA
+%    RAZMJENE eRačuna u trenutku izdavanja eRačuna"
+%   → zakon NALAŽE razdvajanje koje stvara problem konzistentnosti;
+%     nesklad nije nedostatak implementacije nego PROPISANO STANJE.
+%
+% 12 RAZRAĐENIH SLUČAJEVA, GRUPIRANO UZROČNO (ne kao popis):
+%   A  propisano razdvajanje kanala      A1, A2
+%   B  sinkroni kanal bez semantike kvara B1, B2★, B3, B4
+%   C  rokovi od nedefiniranih događaja   C1, C2, C3
+%   D  ispad infrastrukture bez ventila   D1, D2
+%   E  neregulirana granica C1↔C2         E1
+%
+% ★ B2 je najbolji pojedinačni izvod u radu: [ZoF čl. 43. st. 1.] +
+%   [HRCIUS HR-BT-1] NALAŽU ponovnu uporabu istog BT-1 → propis
+%   istovremeno zahtijeva deduplikaciju i uklanja ključ za nju.
+%
+% KLASIFIKACIJA PO POSLJEDICI — četiri klase, od kojih je
+%   "NEODREĐENO" metodološki najvažnija: nije da je ishod loš, nego da
+%   ga sustav NE MOŽE SAZNATI. To je ono što obrasci mogu (najviše) suziti.
+%   "Zakašnjelo bez fikcije urednosti" (C3) je VLASTITA KLASA — [čl. 21.
+%   st. 3.] daje fikciju za B2C, [čl. 49.] nema ekvivalent, a [čl. 73.
+%   st. 1. t. 21.] sankcionira.
+%
+% ★★ TEZA ODJELJKA — dvije vrste nesvodivosti:
+%   FIZIKALNA (poznata literaturi): B1, B4 — dva generala, detekcija otkaza
+%   REGULATORNO INDUCIRANA (klasa koju literatura ne opisuje):
+%     A1/A2 — nesvodivi jer ih propis NALAŽE (čl. 48. st. 3. zabranjuje
+%             zatvaranje jaza transakcijom)
+%     B2    — nesvodiv jer propis UKLANJA KLJUČ koji sam zahtijeva
+%     C3    — nesvodiv jer propis ne deklarira učinak sanacije
+%     D1    — nesvodiv za obveznika (kvar države bez produljenja roka)
+%
+% PRILOG: preostalih 9 šutnji (S12–S14, S17, S19–S21, S23) kao tablica
+%   s citatima, spomenuta jednom rečenicom. S22 ide u pogl. 9.
+
+\todo{Izvod dvanaest načina otkazivanja u pet uzročnih skupina;
+klasifikacija po posljedici; teza o dvjema vrstama nesvodivosti.}
+
+% ------------------------------------------------------------
+\section{Dizajn otpornog rješenja}
+\label{sec:dizajn}
+% Budžet: 5 str.
+% Bira iz rječnika poglavlja 4 prema načinima otkazivanja iz 6.2.
+%
+% NOSIVI IZVORI:
+%   Helland 2007 — "entiteti" s vlastitim transakcijskim opsegom +
+%     idempotentne at-least-once poruke među njima.
+%     TO JE ODGOVOR NA A1/A2: kad transakcija preko kanala nije dopuštena,
+%     entiteti + idempotentne poruke su ono što preostaje.
+%   Schneider 1990 — stroj stanja kao odgovor na klasu "NEODREĐENO":
+%     eksplicitno stanje "poslano-ali-nepotvrđeno" koje propis ne imenuje.
+%   Saltzer i dr. 1984 — deduplikacija MORA biti na krajevima, ne u
+%     transportu. Potkrijepljeno normativno: [OASISAS4 §3.4] kaže da se
+%     semantika dostave ne smije pretpostaviti i da dedup nije obvezan.
+%
+% MORA ODGOVORITI, jer 6.2 to postavlja:
+%   - koji ključ za deduplikaciju kad BT-1 nije upotrebljiv (B2)?
+%   - kako se modelira stanje koje propis ne imenuje (B1)?
+%   - što ERP smije zaključiti iz S008 nakon timeouta (B2, S6)?
+%   - što se uopće može učiniti za regulatorno nesvodive slučajeve —
+%     odgovor je vjerojatno DETEKCIJA I EVIDENCIJA, ne uklanjanje
+%
+% OTVORENO PITANJE IZ POGL. 5.2, ODGOVARA GA TIKET 12:
+%   ima li fiskalizacija uopće što kompenzirati? Ako je jednosmjerna
+%   zakonska obveza bez rollbacka, SAGA je tema pogl. 5 a ne uzorak ovdje.
+%   To je legitiman nalaz, ali mora biti odlučen i obrazložen.
+
+\todo{Izbor obrazaca prema izvedenim načinima otkazivanja; što se radi s
+regulatorno nesvodivima; odgovor na pitanje o kompenzaciji.}
