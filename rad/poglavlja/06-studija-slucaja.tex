@@ -33,8 +33,25 @@ specifikacije jači od opisa konkretnog sustava.}
 %   - granica transakcije: između koraka 7 i 8 (dvije neovisne
 %     fiskalizacije istog dokumenta, različiti rokovi)
 %
-% ⚠ PROVJERITI PRIJE PISANJA: verzija AS4 profila. Istraživanja se ne
-%   slažu (v1.15 + MPS/AMS vs hrvatski v1.4 + CEF 1.14). Primarni dokument.
+% ✔ RIJEŠENO 2026-08-12 provjerom na primarnim dokumentima. Točno je:
+%   - hrvatski profil: "Tehnički standardi i specifikacija povezivanja —
+%     Pristupna točka i standardni AS4 profil", v1.4, 7.10.2025. (dok. 140)
+%   - profil se zove eRačun-AS4 i sjedi na CEF eDelivery AS4 Profile
+%     v1.15 (NE 1.14, NE Peppol AS4)
+%   - "Peppol" se u dokumentu ne pojavljuje NIJEDNOM
+%   - otkrivanje: AMS (Adresar Metapodatkovnih Servisa) + MPS
+%     (Metapodatkovni servis), DNS/U-NAPTR → AMS, pa REST → MPS.
+%     Peppol SML/SMP se NE koriste.
+%   - Peppol legitimno ulazi samo kroz (a) kodne liste za prošireni
+%     ISO 6523 (9934 = OIB, 0088 = GLN) i (b) naslijeđena imena shema
+%     (busdox-docid-qns, cenbii-procid-ubl, iso6523-actorid-upis),
+%     koja nose HRVATSKE vrijednosti.
+%   - dva dodatna primarna dokumenta za sloj otkrivanja:
+%     AMS v1.4, 9.10.2025 (dok. 142) i MPS v1.3, 8.10.2025 (dok. 141)
+%
+% ⚠ NE PISATI "BDXL 1.61" — ta verzija NE POSTOJI. Broj je artefakt
+%   izvlačenja teksta iz PDF-a (oznaka fusnote "1" zalijepljena na "1.6").
+%   Ispravno je BDXL 1.6 (30.5.2018.).
 %
 % SLIKA: dijagram tijeka u TikZ-u → rad/slike/
 
