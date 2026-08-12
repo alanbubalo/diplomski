@@ -1,11 +1,18 @@
 % ============================================================
 %  Literatura — diplomski rad (Alan Bubalo)
-%  Organizirano po poglavljima.
+%  Organizirano po poglavljima. Datoteka je UTF-8; biber i biblatex
+%  rade s hrvatskim dijakriticima izravno, bez TeX escapea.
 %
 %  LEGENDA:
-%   (✓)  metapodaci provjereni iz izvora
+%   (✓)  metapodaci provjereni iz izvora ili registra (Crossref / DBLP)
 %   (!)  PROVJERITI RUČNO — izvor blokiran ili nepotpun
 %   (~)  upozorenje na kvalitetu izvora (preprint / grey literature / slides)
+%
+%  Higijena citiranja državnih dokumenata: URL oblika
+%  porezna.gov.hr/fiskalizacija/api/dokumenti/<id> je PROMJENJIV pokazivač —
+%  isti id kasnije servira noviju verziju. Zato su naslov, verzija i datum
+%  dio unosa (i ponovljeni u `note` da ih stil sigurno ispiše), a `urldate`
+%  je obavezan.
 % ============================================================
 
 
@@ -15,19 +22,19 @@
 
 @inproceedings{garciamolina1987sagas,
   author    = {Garcia-Molina, Hector and Salem, Kenneth},
-  title      = {Sagas},
+  title     = {Sagas},
   booktitle = {Proceedings of the 1987 ACM SIGMOD International Conference on Management of Data},
-  pages      = {249--259},
-  year       = {1987},
+  pages     = {249--259},
+  year      = {1987},
   publisher = {ACM},
-  doi        = {10.1145/38713.38742}
+  doi       = {10.1145/38713.38742}
 }
 
 @online{fowler2014circuitbreaker,
-  author = {Fowler, Martin},
-  title  = {CircuitBreaker},
-  year   = {2014},
-  url    = {https://martinfowler.com/bliki/CircuitBreaker.html},
+  author  = {Fowler, Martin},
+  title   = {CircuitBreaker},
+  year    = {2014},
+  url     = {https://martinfowler.com/bliki/CircuitBreaker.html},
   urldate = {2026-06-25}
 }
 
@@ -35,56 +42,61 @@
   author    = {Nygard, Michael T.},
   title     = {Release It! Design and Deploy Production-Ready Software},
   edition   = {2},
-  year       = {2018},
+  year      = {2018},
   publisher = {Pragmatic Bookshelf},
-  isbn       = {978-1680502398}
+  isbn      = {978-1680502398}
 }
 
 @book{richardson2018microservices,
   author    = {Richardson, Chris},
-  title      = {Microservices Patterns: With Examples in Java},
-  year       = {2018},
+  title     = {Microservices Patterns: With Examples in Java},
+  year      = {2018},
   publisher = {Manning Publications},
-  isbn       = {978-1617294549}
+  isbn      = {978-1617294549}
 }
 
 @online{brooker2015timeouts,
-  author  = {Brooker, Marc},
-  title   = {Timeouts, retries, and backoff with jitter},
-  year     = {2015},
+  author       = {Brooker, Marc},
+  title        = {Timeouts, retries, and backoff with jitter},
+  year         = {2015},
   organization = {Amazon Web Services Builders' Library},
-  url      = {https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/},
-  urldate = {2026-06-25}
+  url          = {https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/},
+  urldate      = {2026-06-25}
 }
 
 @article{brewer2012cap,
   author  = {Brewer, Eric},
-  title    = {CAP Twelve Years Later: How the ''Rules'' Have Changed},
+  title   = {CAP Twelve Years Later: How the ``Rules'' Have Changed},
   journal = {Computer},
-  volume   = {45},
-  number   = {2},
-  pages    = {23--29},
-  year     = {2012},
-  doi      = {10.1109/MC.2012.37}
+  volume  = {45},
+  number  = {2},
+  pages   = {23--29},
+  year    = {2012},
+  doi     = {10.1109/MC.2012.37}
 }
 
-@book{tanenbaum2017distributed,
-  author    = {Tanenbaum, Andrew S. and van Steen, Maarten},
-  title      = {Distributed Systems},
-  edition   = {3},
-  year       = {2017},
-  publisher = {Pearson},
-  isbn       = {978-1543057386}
+% (✓) 4. izdanje (2023) — van Steen je prvi autor i knjiga je besplatna na
+%     distributed-systems.net. Ranija 3. izdanja autori su objavili sami,
+%     pa je „publisher = Pearson" uz to izdanje bio netočan.
+@book{vansteen2023distributed,
+  author    = {van Steen, Maarten and Tanenbaum, Andrew S.},
+  title     = {Distributed Systems},
+  edition   = {4},
+  year      = {2023},
+  publisher = {distributed-systems.net},
+  url       = {https://www.distributed-systems.net/},
+  urldate   = {2026-08-12}
 }
 
 
 % ============================================================
 %  POGLAVLJE 2 — Pozadina i kontekst (fiskalizacija)
+%  Sekundarna literatura; primarni propisi i specifikacije su niže.
 % ============================================================
 
 % (✓) Evolucija hrvatske fiskalizacije 1.0 -> 2.0
 @article{gojkovic2025fiscalization,
-  author  = {Gojkovi{\'c}, Hrvojka and Mulovi{\'c} Trgovac, Ana},
+  author  = {Gojković, Hrvojka and Mulović Trgovac, Ana},
   title   = {Fiscalization in {Croatia}: Evolution from 1.0 to 2.0 -- Technical, Legal, and Business Changes},
   journal = {E4E -- Education for Entrepreneurship},
   year    = {2025},
@@ -92,39 +104,110 @@
   number  = {2},
   pages   = {22--35},
   doi     = {10.38190/ope.15.2.2},
-  url     = {https://hrcak.srce.hr/file/493316}
+  url     = {https://hrcak.srce.hr/file/493316},
+  urldate = {2026-08-12}
 }
 
 % (✓) Pravni okvir Fiskalizacije 2.0 i učinci na male poduzetnike
 @article{miklosevic2025fiskalizacija,
-  author  = {Miklo{\v{s}}evi{\'c}, Ivana},
-  title   = {Fiskalizacija 2.0: Pravni okvir, digitalna transformacija i u{\v{c}}inci na mikro i male poduzetnike u {Republici Hrvatskoj}},
-  journal = {Festung -- {\v{c}}asopis za interdisciplinarna istra{\v{z}}ivanja u poslovanju},
+  author  = {Miklošević, Ivana},
+  title   = {Fiskalizacija 2.0: Pravni okvir, digitalna transformacija i učinci na mikro i male poduzetnike u {Republici Hrvatskoj}},
+  journal = {Festung -- časopis za interdisciplinarna istraživanja u poslovanju},
   year    = {2025},
   number  = {1},
   pages   = {7--14},
-  url     = {https://hrcak.srce.hr/file/483513}
+  url     = {https://hrcak.srce.hr/file/483513},
+  urldate = {2026-08-12}
 }
 
-% (✓)(~) Usvajanje e-fakturiranja u velikim B2B poduzećima.
-%     Dohvaćeno preko preglednika. UPOZORENJE: časopis (TCSMMST) djeluje
-%     predatorski/grey-literature (cPGuard captcha, scope-creep) — koristi
-%     oprezno, kao ilustraciju, ne kao temelj.
-@article{perera2025einvoicing,
-  author  = {Perera, Nimal and Wickramanayake, Suresh},
-  title   = {Evaluating the Adoption of Electronic Invoicing Standards in Large B2B Enterprises: Determinants, Barriers, and Strategic Implications},
-  journal = {Transactions on Computational Science, Mathematical Modeling, and Simulation Techniques},
-  year    = {2025},
-  volume  = {15},
-  number  = {9},
-  url     = {https://bibherald.com/index.php/TCSMMST/article/view/2025-SEP-04},
-  note    = {grey literature -- provjeri vjerodostojnost časopisa}
-}
+% (✗) IZBAČENO: perera2025einvoicing (TCSMMST 15(9), 2025) — časopis djeluje
+%     predatorski (bibherald.com, cPGuard captcha, scope creep). Nijedna
+%     tvrdnja iz njega nije nosiva; pokriveno s gojkovic2025fiscalization
+%     i sogaard2023invoicing.
 
 
 % ============================================================
 %  POGLAVLJE 3 — Distribuirani sustavi i tolerancija na greške
 % ============================================================
+
+% ---- 3.1 Djelomični otkaz, zablude ----
+
+% (✓) Kanonski izvor za djelomični otkaz. Citiramo tehnički izvještaj (izvorni);
+%     objavljena inačica je LNCS 1222, str. 49--64, doi 10.1007/3-540-62852-5_6.
+@techreport{waldo1994note,
+  author      = {Waldo, Jim and Wyant, Geoff and Wollrath, Ann and Kendall, Sam},
+  title       = {A Note on Distributed Computing},
+  institution = {Sun Microsystems Laboratories},
+  year        = {1994},
+  month       = {11},
+  number      = {SMLI TR-94-29},
+  url         = {https://scholar.harvard.edu/files/waldo/files/waldo-94.pdf},
+  urldate     = {2026-08-11}
+}
+
+% (~) SEKUNDARNI izvor za zablude. Autorova kopija; RIT i rgoarchitects URL-ovi
+%     su mrtvi. Godina iz metapodataka PDF-a (2006).
+@misc{rotemgaloz2006fallacies,
+  author       = {Rotem-Gal-Oz, Arnon},
+  title        = {Fallacies of Distributed Computing Explained},
+  year         = {2006},
+  howpublished = {Whitepaper},
+  url          = {https://arnon.me/wp-content/uploads/Files/fallacies.pdf},
+  urldate      = {2026-08-11},
+  note         = {sekundarni izvor; temeljen na serijalu u Dr. Dobb's Portal}
+}
+
+% (~) Sam Deutsch osporava uvriježenu kronologiju zabluda (Sun 1991--1993, ne 1994.;
+%     prve četiri nisu njegove; Goslinga ne spominje). Podcast, ali PRIMARNI izvor.
+@misc{deutsch2021fallacies,
+  author       = {Deutsch, L. Peter},
+  title        = {L. Peter Deutsch on the Fallacies of Distributed Computing},
+  year         = {2021},
+  month        = {7},
+  howpublished = {Software Engineering Radio, epizoda 470; razgovor vodio Jeff Doolittle},
+  url          = {https://se-radio.net/2021/07/episode-470-l-peter-deutsch-on-the-fallacies-of-distributed-computing/},
+  urldate      = {2026-08-11}
+}
+
+% ---- 3.2 Pojmovi i klasifikacija otkaza ----
+
+% (✓) Razlika fault / error / failure. Besplatna inačica: UMD DRUM TR 2004-47.
+@article{avizienis2004taxonomy,
+  author  = {Avižienis, Algirdas and Laprie, Jean-Claude and Randell, Brian and Landwehr, Carl},
+  title   = {Basic Concepts and Taxonomy of Dependable and Secure Computing},
+  journal = {IEEE Transactions on Dependable and Secure Computing},
+  year    = {2004},
+  volume  = {1},
+  number  = {1},
+  pages   = {11--33},
+  doi     = {10.1109/TDSC.2004.2}
+}
+
+% (✓)(!) PAZI: ACM u Crossrefu ima tipfeler „Flavin". Ispravno je Flaviu (tako i DBLP).
+@article{cristian1991understanding,
+  author  = {Cristian, Flaviu},
+  title   = {Understanding Fault-Tolerant Distributed Systems},
+  journal = {Communications of the ACM},
+  year    = {1991},
+  volume  = {34},
+  number  = {2},
+  pages   = {56--78},
+  doi     = {10.1145/102792.102801}
+}
+
+% (✓) Heisenbugs — empirijsko opravdanje za retry. SRDS 1986 nema DOI.
+%     Besplatan PDF je skan izvornog Tandem TR 85.7.
+@inproceedings{gray1986whystop,
+  author    = {Gray, Jim},
+  title     = {Why Do Computers Stop and What Can Be Done About It?},
+  booktitle = {Fifth Symposium on Reliability in Distributed Software and Database Systems (SRDS)},
+  year      = {1986},
+  pages     = {3--12},
+  publisher = {IEEE Computer Society},
+  note      = {izvorno Tandem Computers, Technical Report 85.7, lipanj 1985},
+  url       = {https://www.bitsavers.org/pdf/tandem/technical_reports/TR85-07_Why_Do_Computers_Stop_and_What_Can_Be_Done_About_IT_Jun85.pdf},
+  urldate   = {2026-08-11}
+}
 
 % (✓) Partial failure bugs (fault injection, Legolas)
 @inproceedings{wu2024legolas,
@@ -136,18 +219,8 @@
   isbn      = {978-1-939133-39-7},
   address   = {Santa Clara, CA},
   publisher = {USENIX Association},
-  url       = {https://www.usenix.org/conference/nsdi24/presentation/wu-haoze}
-}
-
-% (✓)(~) Partial failures + security — PREPRINT (nije recenzirano)
-@misc{vinjam2025failureaware,
-  author = {Vinjam, Sandhya},
-  title  = {A Failure-Aware Security Framework for Distributed Systems Under Partial Failures},
-  year   = {2025},
-  howpublished = {SSRN working paper},
-  note   = {SSRN abstract no. 6122687; preprint, nije recenzirano},
-  doi    = {10.2139/ssrn.6122687},
-  url    = {https://ssrn.com/abstract=6122687}
+  url       = {https://www.usenix.org/conference/nsdi24/presentation/wu-haoze},
+  urldate   = {2026-08-12}
 }
 
 % (✓) Partial failure u reaktivnom programiranju
@@ -160,6 +233,18 @@
   publisher = {Association for Computing Machinery},
   doi       = {10.1145/3141858.3141859},
   isbn      = {978-1-4503-5515-5}
+}
+
+% (✓) Gray failure — otkaz koji sustav vidi drukčije nego njegov korisnik.
+@inproceedings{huang2017grayfailure,
+  author    = {Huang, Peng and Guo, Chuanxiong and Zhou, Lidong and Lorch, Jacob R. and
+               Dang, Yingnong and Chintalapati, Murali and Yao, Randolph},
+  title     = {Gray Failure: The {Achilles'} Heel of Cloud-Scale Systems},
+  booktitle = {Proceedings of the 16th Workshop on Hot Topics in Operating Systems (HotOS '17)},
+  year      = {2017},
+  pages     = {150--155},
+  publisher = {ACM},
+  doi       = {10.1145/3102980.3103005}
 }
 
 % (✓) Pregled modernih pristupa pouzdanim distribuiranim sustavima
@@ -184,13 +269,11 @@
   number  = {8},
   pages   = {1243--1255},
   doi     = {10.1016/j.jcss.2013.02.006},
-  issn    = {0022-0000},
-  publisher = {Elsevier}
+  issn    = {0022-0000}
 }
 
-% (✓) Birmanov udžbenik. Potvrđeno preko preglednika: academia.edu hosta
-%     kopiju (684 str., pokriva RPC/CORBA/web services -> izdanje 2005).
-%     Citiramo knjigu izravno (academia.edu citat pripisuje samo uploadera).
+% (✓) Birmanov udžbenik. Potvrđeno preko preglednika: academia.edu hosta kopiju
+%     (684 str., pokriva RPC/CORBA/web services -> izdanje 2005).
 @book{birman2005reliable,
   author    = {Birman, Kenneth P.},
   title     = {Reliable Distributed Systems: Technologies, Web Services, and Applications},
@@ -199,24 +282,221 @@
   isbn      = {978-0-387-21509-9}
 }
 
+% ---- 3.4 Timeout ne razlikuje sporo od mrtvog ----
+
+% (✓) Zašto timeout ne razlikuje sporo od mrtvog.
+@article{chandra1996failuredetectors,
+  author  = {Chandra, Tushar Deepak and Toueg, Sam},
+  title   = {Unreliable Failure Detectors for Reliable Distributed Systems},
+  journal = {Journal of the ACM},
+  year    = {1996},
+  volume  = {43},
+  number  = {2},
+  pages   = {225--267},
+  doi     = {10.1145/226643.226647},
+  url     = {https://courses.csail.mit.edu/6.852/08/papers/CT96-JACM.pdf},
+  urldate = {2026-08-11}
+}
+
+% (✓) Detekcija otkaza: udaljeni pokvareni proces nerazlučiv od sporog.
+@article{nikolic2021selfhealing,
+  author  = {Nikolic, Jovan and Jubatyrov, Nursultan and Pournaras, Evangelos},
+  title   = {Self-Healing Dilemmas in Distributed Systems: Fault Correction vs. Fault Tolerance},
+  journal = {IEEE Transactions on Network and Service Management},
+  year    = {2021},
+  volume  = {18},
+  number  = {3},
+  pages   = {2728--2741},
+  doi     = {10.1109/TNSM.2021.3092939}
+}
+
+% (✓) FLP.
+@article{fischer1985impossibility,
+  author  = {Fischer, Michael J. and Lynch, Nancy A. and Paterson, Michael S.},
+  title   = {Impossibility of Distributed Consensus with One Faulty Process},
+  journal = {Journal of the ACM},
+  year    = {1985},
+  volume  = {32},
+  number  = {2},
+  pages   = {374--382},
+  doi     = {10.1145/3149.214121},
+  url     = {https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf},
+  urldate = {2026-08-11}
+}
+
+% ---- 3.5 Semantika dostave i nemogućnost exactly-once ----
+
+% (✓) Problem dvaju generala — imenovanje i neformalni dokaz.
+%     Provjereno u tekstu: par. 5.8.3.3.1 „THE GENERALS PARADOX".
+@incollection{gray1978notes,
+  author    = {Gray, Jim},
+  title     = {Notes on Data Base Operating Systems},
+  booktitle = {Operating Systems: An Advanced Course},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {60},
+  year      = {1978},
+  pages     = {393--481},
+  publisher = {Springer},
+  doi       = {10.1007/3-540-08755-9_9},
+  url       = {https://jimgray.azurewebsites.net/papers/dbos.pdf},
+  urldate   = {2026-08-11}
+}
+
+% (✓)(!) Ishodište problema dvaju generala. Bibliografski zapis potvrđen,
+%        ali TEKST NIJE PROČITAN (ACM DL blokira dohvat).
+@inproceedings{akkoyunlu1975constraints,
+  author    = {Akkoyunlu, E. A. and Ekanadham, K. and Huber, R. V.},
+  title     = {Some Constraints and Tradeoffs in the Design of Network Communications},
+  booktitle = {Proceedings of the Fifth ACM Symposium on Operating Systems Principles (SOSP '75)},
+  year      = {1975},
+  pages     = {67--74},
+  publisher = {ACM},
+  doi       = {10.1145/800213.806523},
+  note      = {NEPROVJERENO: bibliografski zapis potvrđen, tekst nije pročitan}
+}
+
+% (✓) Formalna verzija nedostižnosti zajedničkog znanja. Opcionalno —
+%     struktura.md ga je izbacila iz čitanja u cijelosti (Gray 1978 je čitljiviji).
+@article{halpern1990knowledge,
+  author  = {Halpern, Joseph Y. and Moses, Yoram},
+  title   = {Knowledge and Common Knowledge in a Distributed Environment},
+  journal = {Journal of the ACM},
+  year    = {1990},
+  volume  = {37},
+  number  = {3},
+  pages   = {549--587},
+  doi     = {10.1145/79147.79161}
+}
+
+% (✓) Duplikati se suzbijaju na krajevima, ne u transportu.
+@article{saltzer1984endtoend,
+  author  = {Saltzer, J. H. and Reed, D. P. and Clark, D. D.},
+  title   = {End-to-End Arguments in System Design},
+  journal = {ACM Transactions on Computer Systems},
+  year    = {1984},
+  volume  = {2},
+  number  = {4},
+  pages   = {277--288},
+  doi     = {10.1145/357401.357402}
+}
+
+% (✓) Idempotentnost. Queue je izvorna inačica.
+@article{helland2012idempotence,
+  author  = {Helland, Pat},
+  title   = {Idempotence Is Not a Medical Condition},
+  journal = {ACM Queue},
+  year    = {2012},
+  volume  = {10},
+  number  = {4},
+  pages   = {30--46},
+  doi     = {10.1145/2181796.2187821},
+  url     = {https://queue.acm.org/detail.cfm?id=2187821},
+  urldate = {2026-08-11},
+  note    = {pretisak: Communications of the ACM 55(5):56--65, 2012, doi 10.1145/2160718.2160734}
+}
+
+% (✓) Prvostrani, recenzirani prikaz kako se „exactly-once" zapravo postiže:
+%     idempotentni i transakcijski zapis — dakle exactly-once UČINAK, ne dostava.
+@inproceedings{wang2021kafka,
+  author    = {Wang, Guozhang and Chen, Lei and Dikshit, Ayusman and Gustafson, Jason
+               and Chen, Boyang and Sax, Matthias J. and Roesler, John
+               and Blee-Goldman, Sophie and Cadonna, Bruno and Mehta, Apurva
+               and Madan, Varun and Rao, Jun},
+  title     = {Consistency and Completeness: Rethinking Distributed Stream Processing in {Apache Kafka}},
+  booktitle = {Proceedings of the 2021 International Conference on Management of Data (SIGMOD '21)},
+  year      = {2021},
+  pages     = {2602--2613},
+  publisher = {ACM},
+  doi       = {10.1145/3448016.3457556}
+}
+
+% (✓) Exactly-once semantika u repliciranom sustavu poruka.
+@inproceedings{huang2001exactlyonce,
+  author    = {Huang, Yongqiang and Garcia-Molina, Hector},
+  title     = {Exactly-Once Semantics in a Replicated Messaging System},
+  booktitle = {Proceedings of the 17th International Conference on Data Engineering (ICDE)},
+  year      = {2001},
+  pages     = {3--12},
+  publisher = {IEEE},
+  doi       = {10.1109/ICDE.2001.914808}
+}
+
+% ---- CAP (apsorbiran u 3.5 kao odlomak; nizvodni korisnik je 9.1) ----
+
+% (✓) Izvorni PODC keynote. SAMO str. 7 (sažetak) — ne izmišljati raspon.
+%     url vodi na slajdove keynotea, gdje je slajd „The CAP Theorem".
+@inproceedings{brewer2000towards,
+  author    = {Brewer, Eric A.},
+  title     = {Towards Robust Distributed Systems (Abstract)},
+  booktitle = {Proceedings of the Nineteenth Annual ACM Symposium on Principles of Distributed Computing (PODC '00)},
+  year      = {2000},
+  pages     = {7},
+  publisher = {ACM},
+  doi       = {10.1145/343477.343502},
+  url       = {https://people.eecs.berkeley.edu/~brewer/cs262b-2004/PODC-keynote.pdf},
+  urldate   = {2026-08-11}
+}
+
+% (✓) Formalni dokaz. PAZI: Brewer6.pdf je rad iz 2002.; Brewer2.pdf je onaj iz 2012.
+@article{gilbert2002brewer,
+  author  = {Gilbert, Seth and Lynch, Nancy},
+  title   = {Brewer's Conjecture and the Feasibility of Consistent, Available, Partition-Tolerant Web Services},
+  journal = {ACM SIGACT News},
+  year    = {2002},
+  volume  = {33},
+  number  = {2},
+  pages   = {51--59},
+  doi     = {10.1145/564585.564601},
+  url     = {https://groups.csail.mit.edu/tds/papers/Gilbert/Brewer6.pdf},
+  urldate = {2026-08-11}
+}
+
+% (✓) CAP kao safety vs. liveness.
+@article{gilbert2012perspectives,
+  author  = {Gilbert, Seth and Lynch, Nancy A.},
+  title   = {Perspectives on the {CAP} Theorem},
+  journal = {Computer},
+  year    = {2012},
+  volume  = {45},
+  number  = {2},
+  pages   = {30--36},
+  doi     = {10.1109/MC.2011.389},
+  url     = {https://groups.csail.mit.edu/tds/papers/Gilbert/Brewer2.pdf},
+  urldate = {2026-08-11}
+}
+
+% (✓) PACELC. Isti broj časopisa, odmah iza Gilberta i Lyncha.
+@article{abadi2012consistency,
+  author  = {Abadi, Daniel},
+  title   = {Consistency Tradeoffs in Modern Distributed Database System Design: {CAP} is Only Part of the Story},
+  journal = {Computer},
+  year    = {2012},
+  volume  = {45},
+  number  = {2},
+  pages   = {37--42},
+  doi     = {10.1109/MC.2012.33}
+}
+
+% (~) NERECENZIRAN PREPRINT — potvrđeno da nikad nije formalno objavljen.
+@misc{kleppmann2015critique,
+  author        = {Kleppmann, Martin},
+  title         = {A Critique of the {CAP} Theorem},
+  year          = {2015},
+  eprint        = {1509.05393},
+  eprinttype    = {arxiv},
+  eprintclass   = {cs.DC},
+  doi           = {10.48550/arXiv.1509.05393},
+  note          = {nerecenzirani preprint; nikad formalno objavljen}
+}
+
 
 % ============================================================
 %  POGLAVLJE 4 — Pristupi toleranciji na greške
 %  (retry / timeout / circuit breaker / resilience / outbox)
+%  Poglavlje je namjerno plitko: 5--8 dobrih izvora.
 % ============================================================
 
 % --- Circuit breaker ---
-% (✓)
-@article{molchanov2018circuitbreaker,
-  author  = {Molchanov, Heorhii and Zhmaiev, Anatolii},
-  title   = {Circuit Breaker in Systems Based on Microservices Architecture},
-  journal = {Advanced Information Systems},
-  year    = {2018},
-  volume  = {2},
-  number  = {4},
-  pages   = {74--77},
-  doi     = {10.20998/2522-9052.2018.4.13}
-}
 
 % (✓)
 @article{falahah2021circuitbreaker,
@@ -232,7 +512,7 @@
 
 % (✓) Model-based analiza resilience obrazaca (circuit breaker + retry) — ICSA 2020
 @inproceedings{mendonca2020resiliency,
-  author    = {Mendon\c{c}a, Nabor C. and Aderaldo, Carlos M. and C\^{a}mara, Javier and Garlan, David},
+  author    = {Mendonça, Nabor C. and Aderaldo, Carlos M. and Câmara, Javier and Garlan, David},
   title     = {Model-Based Analysis of Microservice Resiliency Patterns},
   booktitle = {2020 IEEE International Conference on Software Architecture (ICSA)},
   year      = {2020},
@@ -241,20 +521,65 @@
   doi       = {10.1109/ICSA47634.2020.00019}
 }
 
-% --- Retry / exponential backoff ---
-% (!)(~) PROVJERITI RUČNO — ResearchGate blokiran (403), low-tier časopis (IRJMETS).
-@article{vemasani2024expbackoff,
-  author  = {Vemasani, Preetham and Vuppalapati, Sai Mahesh and Modi, Suraj and Ponnusamy, Sivakumar},
-  title   = {Exponential Backoff: A Comprehensive Approach to Handling Failures in Distributed Architectures},
-  journal = {International Research Journal of Modernization in Engineering, Technology and Science (IRJMETS)},
-  year    = {2024},
-  volume  = {6},
-  number  = {4},
-  doi     = {10.56726/IRJMETS53376},
-  note    = {PROVJERITI autore/DOI -- izvor blokiran; low-tier časopis}
+% (✓) Jedino sustavno MJERENJE učinka circuit breakera i retryja (Istio/Kubernetes).
+@inproceedings{sedghpour2022empirical,
+  author    = {Saleh Sedghpour, Mohammad Reza and Klein, Cristian and Tordsson, Johan},
+  title     = {An Empirical Study of Service Mesh Traffic Management Policies for Microservices},
+  booktitle = {Proceedings of the 2022 ACM/SPEC International Conference on Performance Engineering (ICPE '22)},
+  year      = {2022},
+  pages     = {17--27},
+  publisher = {ACM},
+  doi       = {10.1145/3489525.3511686}
 }
 
-% (✓)(~) Temeljna analiza backoffa (kontekst je 802.11 MAC, ne mikroservisi)
+% (✓) Brojke za loše podešen prekidač (63 % dostupnosti, 30 % prekinutih zahtjeva).
+%     Otvoreni PDF na DiVA.
+@inproceedings{sedghpour2021circuitbreaker,
+  author    = {Saleh Sedghpour, Mohammad Reza and Klein, Cristian and Tordsson, Johan},
+  title     = {Service Mesh Circuit Breaker: From Panic Button to Performance Management Tool},
+  booktitle = {Proceedings of the 1st Workshop on High Availability and Observability of Cloud Systems (HAOC '21)},
+  year      = {2021},
+  pages     = {4--10},
+  publisher = {ACM},
+  doi       = {10.1145/3447851.3458740},
+  url       = {https://umu.diva-portal.org/smash/get/diva2:1547603/FULLTEXT01},
+  urldate   = {2026-08-11}
+}
+
+% (✓) Prekidač u produkciji na razini metode, ne servisa.
+@inproceedings{meiklejohn2022circuit,
+  author    = {Meiklejohn, Christopher S. and Stark, Lydia and Celozzi, Cesare and
+               Ranney, Matt and Miller, Heather},
+  title     = {Method Overloading the Circuit},
+  booktitle = {Proceedings of the 13th ACM Symposium on Cloud Computing (SoCC '22)},
+  year      = {2022},
+  pages     = {273--288},
+  publisher = {ACM},
+  doi       = {10.1145/3542929.3563466}
+}
+
+% (~) Povijesni izvor circuit breakera u praksi; README danas izrijekom kaže
+%     „Hystrix is no longer in active development… maintenance mode".
+@online{christensen2012hystrix,
+  author       = {Christensen, Ben},
+  title        = {Introducing {Hystrix} for Resilience Engineering},
+  organization = {Netflix Technology Blog},
+  year         = {2012},
+  month        = {11},
+  url          = {https://netflixtechblog.com/introducing-hystrix-for-resilience-engineering-13531c1ab362},
+  urldate      = {2026-08-11},
+  note         = {Hystrix je od tada u maintenance modu}
+}
+
+% (✗) IZBAČENO: molchanov2018circuitbreaker (Advanced Information Systems 2(4):74--77,
+%     2018) — četiri stranice, časopis niskog ranga. Prekidač je pokriven s
+%     fowler2014circuitbreaker, nygard2018releaseit, mendonca2020resiliency
+%     i sedghpour2021circuitbreaker (koji ga i mjeri).
+
+% --- Retry / exponential backoff ---
+
+% (✓)(~) Temeljna analiza backoffa (kontekst je 802.11 MAC, ne mikroservisi) —
+%        citirati kao izvor ANALIZE, uz eksplicitnu napomenu o kontekstu.
 @article{kwak2005expbackoff,
   author  = {Kwak, Byung-Jae and Song, Nah-Oak and Miller, Leonard E.},
   title   = {Performance Analysis of Exponential Backoff},
@@ -266,7 +591,42 @@
   doi     = {10.1109/TNET.2005.845533}
 }
 
+% (✓) Metastabilni kvarovi — retry kao samoodrživi učinak koji ostaje nakon
+%     nestanka okidača. Izravno hrani RQ3 (retry ima cijenu).
+@inproceedings{bronson2021metastable,
+  author    = {Bronson, Nathan and Aghayev, Abutalib and Charapko, Aleksey and Zhu, Timothy},
+  title     = {Metastable Failures in Distributed Systems},
+  booktitle = {Proceedings of the Workshop on Hot Topics in Operating Systems (HotOS '21)},
+  year      = {2021},
+  pages     = {221--227},
+  publisher = {ACM},
+  doi       = {10.1145/3458336.3465286},
+  url       = {https://sigops.org/s/conferences/hotos/2021/papers/hotos21-s11-bronson.pdf},
+  urldate   = {2026-08-11}
+}
+
+% (✓) Empirijski nastavak: 22 stvarna slučaja; najmanje 4 od 15 velikih AWS
+%     ispada bila su metastabilna. USENIX — nema DOI.
+@inproceedings{huang2022metastable,
+  author    = {Huang, Lexiang and Magnusson, Matthew and Muralikrishna, Abishek Bangalore
+               and Estyak, Salman and Isaacs, Rebecca and Aghayev, Abutalib
+               and Zhu, Timothy and Charapko, Aleksey},
+  title     = {Metastable Failures in the Wild},
+  booktitle = {16th USENIX Symposium on Operating Systems Design and Implementation (OSDI '22)},
+  year      = {2022},
+  pages     = {73--90},
+  publisher = {USENIX Association},
+  url       = {https://www.usenix.org/conference/osdi22/presentation/huang-lexiang},
+  urldate   = {2026-08-11}
+}
+
+% (✗) IZBAČENO: vemasani2024expbackoff (IRJMETS 6(4), 2024) — metapodaci
+%     neprovjereni (ResearchGate 403), časopis vrlo niskog ranga.
+%     Backoff je pokriven s brooker2015timeouts (jitter, amplifikacija 243x)
+%     i kwak2005expbackoff (matematička analiza).
+
 % --- Timeout ---
+
 % (✓)
 @article{gorbenko2020timeout,
   author  = {Gorbenko, Anatoliy and Tarasyuk, Olga},
@@ -290,79 +650,229 @@
   doi       = {10.1109/IC2E.2018.00022}
 }
 
-% --- Resilience patterns ---
-% (✓) Self-healing / resilience obrasci za event-driven mikroservise
-@article{beereddy2025selfhealing,
-  author  = {Beereddy, Karthik Reddy},
-  title   = {Self-Healing Streaming Architecture: Resilience Patterns for Event-Driven Microservices},
-  journal = {Journal of Computer Science and Technology Studies},
-  year    = {2025},
-  volume  = {7},
-  number  = {8},
-  pages   = {254--268},
-  doi     = {10.32996/jcsts.2025.7.8.30}
+% (✓) Empirijski dokaz da je RUKOVANJE timeoutima izvor bugova u zrelim sustavima;
+%     ujedno metodološka referenca za injekciju kašnjenja u mock posredniku.
+@inproceedings{chen2024chronos,
+  author    = {Chen, Yuanliang and Ma, Fuchen and Zhou, Yuanhang and Gu, Ming
+               and Liao, Qing and Jiang, Yu},
+  title     = {Chronos: Finding Timeout Bugs in Practical Distributed Systems
+               by Deep-Priority Fuzzing with Transient Delay},
+  booktitle = {2024 IEEE Symposium on Security and Privacy (SP)},
+  year      = {2024},
+  pages     = {1939--1955},
+  publisher = {IEEE},
+  doi       = {10.1109/SP54263.2024.00109}
 }
 
-% (~) Predavanja (slides) — slaba kao primarni izvor; razmotriti Newman/Fowler izravno
-@misc{padhye2023microservices,
-  author       = {Padhye, Rohan and Hilton, Michael},
-  title        = {Microservices},
-  howpublished = {Lecture slides, 17-313 Foundations of Software Engineering, Carnegie Mellon University},
-  year         = {2023},
-  note         = {Fall 2023}
+% --- Asinkrona komunikacija: red, radnik, outbox, DLQ, idempotentni primatelj ---
+
+% (✓)(!) Guaranteed Delivery / Dead Letter Channel / Idempotent Receiver /
+%        Transactional Client. ISBN tiskanog izdanja NIJE potvrđen iz registra
+%        (potvrđeni su samo e-ISBN-ovi) — zato je izostavljen.
+@book{hohpe2003eip,
+  author    = {Hohpe, Gregor and Woolf, Bobby},
+  title     = {Enterprise Integration Patterns: Designing, Building, and Deploying Messaging Solutions},
+  year      = {2003},
+  publisher = {Addison-Wesley},
+  address   = {Boston, MA},
+  url       = {https://www.enterpriseintegrationpatterns.com/},
+  urldate   = {2026-08-11},
+  note      = {NEPROVJERENO: ISBN tiskanog izdanja nije potvrđen iz registra}
 }
 
-% --- Outbox pattern (async — Pogl. 4 / implementacija Pogl. 7) ---
-% (✓)(~) Grey literature — low-tier časopis (IJIRMPS), Zenodo DOI
-@article{tanneru2024optimizing,
-  author  = {Tanneru, Bhargavi},
-  title   = {Optimizing Real-Time Data Synchronization in Microservices Using Reactive Design Patterns},
-  journal = {International Journal of Innovative Research in Engineering \& Multidisciplinary Physical Sciences (IJIRMPS)},
-  year    = {2024},
-  volume  = {12},
-  number  = {4},
-  doi     = {10.5281/zenodo.14850925},
-  issn    = {2349-7300},
-  note    = {grey literature}
+% (✓) Retrospektiva autorâ EIP-a nakon deset godina.
+@article{zimmermann2016decade,
+  author  = {Zimmermann, Olaf and Pautasso, Cesare and Hohpe, Gregor and Woolf, Bobby},
+  title   = {A Decade of Enterprise Integration Patterns: A Conversation with the Authors},
+  journal = {IEEE Software},
+  year    = {2016},
+  volume  = {33},
+  number  = {1},
+  pages   = {13--19},
+  doi     = {10.1109/MS.2016.11}
 }
 
-% (✓) Outbox + retry + error handling u event-driven arhitekturi
+% (✓) Kanonska analogija za asinkroni tijek bez distribuirane transakcije.
+@article{hohpe2005coffeeshop,
+  author  = {Hohpe, Gregor},
+  title   = {Your Coffee Shop Doesn't Use Two-Phase Commit},
+  journal = {IEEE Software},
+  year    = {2005},
+  volume  = {22},
+  number  = {2},
+  pages   = {64--66},
+  doi     = {10.1109/MS.2005.52}
+}
+
+% (✓) Katalog uzoraka istog autora kao richardson2018microservices.
+%     Stranica nema datum objave — urldate je obavezan.
+%     NAPOMENA: outbox NEMA recenzirani primarni izvor; to treba napisati u tekstu,
+%     a ne zataškati citatom iz pay-to-publish časopisa.
+@online{richardsonoutbox,
+  author  = {Richardson, Chris},
+  title   = {Pattern: Transactional Outbox},
+  url     = {https://microservices.io/patterns/data/transactional-outbox.html},
+  urldate = {2026-08-11}
+}
+
+% (✓) Prvostrana implementacija outboxa preko CDC-a. debezium.io blokira dohvat (403);
+%     sadržaj provjeren nad izvornom .adoc datotekom u repozitoriju.
+@online{debeziumoutbox,
+  author       = {{Debezium}},
+  title        = {Outbox Event Router},
+  organization = {Debezium Documentation},
+  url          = {https://debezium.io/documentation/reference/stable/transformations/outbox-event-router.html},
+  urldate      = {2026-08-11}
+}
+
+% (✓) Ograničenja redoslijeda i exactly-once u redovima poruka (kontekst je HPC).
+@inproceedings{patel2014queues,
+  author    = {Patel, Dharmit and Khasib, Faraj and Sadooghi, Iman and Raicu, Ioan},
+  title     = {Towards In-Order and Exactly-Once Delivery Using Hierarchical Distributed Message Queues},
+  booktitle = {2014 14th IEEE/ACM International Symposium on Cluster, Cloud and Grid Computing (CCGrid)},
+  year      = {2014},
+  pages     = {883--892},
+  publisher = {IEEE},
+  doi       = {10.1109/CCGrid.2014.109}
+}
+
+% (✓)(~) Siva literatura — zadržana kao JEDINA ilustracija industrijske prakse
+%        za outbox/retry u event-driven arhitekturi (v. literatura.md §5.4).
 @article{dhanaraj2025resilient,
-  author  = {Dhanaraj, Anandan},
-  title   = {Building Resilient Systems: Error Handling, Retry Mechanisms, and Predictive Analytics in Event-Driven Architecture},
-  journal = {Journal of Computer Science and Technology Studies (JCSTS)},
-  year    = {2025},
-  volume  = {7},
-  number  = {7},
-  pages   = {317--324},
-  doi     = {10.32996/jcsts.2025.7.7.34},
-  issn    = {2709-104X},
-  publisher = {Al-Kindi Center for Research and Development}
+  author    = {Dhanaraj, Anandan},
+  title     = {Building Resilient Systems: Error Handling, Retry Mechanisms, and Predictive Analytics in Event-Driven Architecture},
+  journal   = {Journal of Computer Science and Technology Studies (JCSTS)},
+  year      = {2025},
+  volume    = {7},
+  number    = {7},
+  pages     = {317--324},
+  doi       = {10.32996/jcsts.2025.7.7.34},
+  issn      = {2709-104X},
+  publisher = {Al-Kindi Center for Research and Development},
+  note      = {grey literature}
+}
+
+% (✗) IZBAČENO: tanneru2024optimizing (IJIRMPS 12(4), 2024) — pay-to-publish.
+%     Outbox je pokriven s richardson2018microservices, richardsonoutbox
+%     i debeziumoutbox.
+% (✗) IZBAČENO: beereddy2025selfhealing (JCSTS 7(8), 2025) — siva literatura;
+%     dhanaraj2025resilient ostaje kao jedini izvor te obitelji.
+% (✗) IZBAČENO: padhye2023microservices (slajdovi kolegija 17-313, CMU) —
+%     predavanja nisu izvor za teorijski rad. Zamjena: fowler2014circuitbreaker
+%     i nygard2018releaseit.
+
+% --- Opći okviri otpornosti ---
+
+% (✓) Strukturirani katalog obrazaca otpornosti (ORNL).
+@article{hukerikar2017patterns,
+  author  = {Hukerikar, Saurabh and Engelmann, Christian},
+  title   = {Resilience Design Patterns: A Structured Approach to Resilience at Extreme Scale},
+  journal = {Supercomputing Frontiers and Innovations},
+  year    = {2017},
+  volume  = {4},
+  number  = {3},
+  doi     = {10.14529/jsfi170301}
+}
+
+% (✓) Industrijska praksa; pogl. 21 („Handling Overload") je relevantan dio.
+@book{beyer2016sre,
+  editor    = {Beyer, Betsy and Jones, Chris and Petoff, Jennifer and Murphy, Niall Richard},
+  title     = {Site Reliability Engineering: How Google Runs Production Systems},
+  year      = {2016},
+  publisher = {O'Reilly Media},
+  isbn      = {978-1491929124}
 }
 
 
 % ============================================================
 %  POGLAVLJE 5 — Upravljanje distribuiranim tijekovima rada
-%  (distribuirane transakcije / SAGA / kompenzacija)
+%  (distribuirane transakcije / SAGA / kompenzacija / automat)
 % ============================================================
 
 % (✗) NEDOSTUPNO — emergingsociety.org je sada parkirana/mrtva domena
 %     (redirecta na prazan /lander). Časopis vjerojatno ugašen; izvor je
-%     nepovratan i upitne vjerodostojnosti. PREPORUKA: izbaci ga i osloni
-%     se na garciamolina1987sagas + daraghmi2022saga za SAGA obrazac.
+%     nepovratan i upitne vjerodostojnosti. Oslanjamo se na
+%     garciamolina1987sagas + daraghmi2022saga za SAGA obrazac.
 
-% (✓) Poboljšani SAGA obrazac za distribuirane transakcije
-@article{daraghmi2022saga,
-  author  = {Daraghmi, Eman and Zhang, Cheng-Pu and Yuan, Shyan-Ming},
-  title   = {Enhancing Saga Pattern for Distributed Transactions within a Microservices Architecture},
-  journal = {Applied Sciences},
-  year    = {2022},
-  volume  = {12},
-  number  = {12},
-  pages   = {6242},
-  doi     = {10.3390/app12126242},
-  issn    = {2076-3417},
-  publisher = {MDPI}
+% ---- 5.1 Zašto transakcije ne prelaze granicu servisa ----
+
+% (✓) Definicija kompenzacijske transakcije + primjer putničke agencije.
+%     Provjereno čitanjem PDF-a. VLDB 1981 nema DOI.
+@inproceedings{gray1981transaction,
+  author    = {Gray, Jim},
+  title     = {The Transaction Concept: Virtues and Limitations},
+  booktitle = {Proceedings of the Seventh International Conference on Very Large Data Bases (VLDB '81)},
+  year      = {1981},
+  pages     = {144--154},
+  url       = {https://jimgray.azurewebsites.net/papers/thetransactionconcept.pdf},
+  urldate   = {2026-08-11}
+}
+
+% (✓) Rad koji je skovao akronim ACID.
+@article{haerder1983principles,
+  author  = {Härder, Theo and Reuter, Andreas},
+  title   = {Principles of Transaction-Oriented Database Recovery},
+  journal = {ACM Computing Surveys},
+  year    = {1983},
+  volume  = {15},
+  number  = {4},
+  pages   = {287--317},
+  doi     = {10.1145/289.291}
+}
+
+% (✓) Referentna knjiga — koristi se točkasto, ne čita se cijela (1070 str.).
+@book{gray1993transaction,
+  author    = {Gray, Jim and Reuter, Andreas},
+  title     = {Transaction Processing: Concepts and Techniques},
+  year      = {1993},
+  publisher = {Morgan Kaufmann},
+  isbn      = {978-1-55860-190-1}
+}
+
+% (✓) Rezervna referenca za pojmove oporavka. Besplatno i legalno kod Bernsteina (MSR).
+@book{bernstein1987concurrency,
+  author    = {Bernstein, Philip A. and Hadzilacos, Vassos and Goodman, Nathan},
+  title     = {Concurrency Control and Recovery in Database Systems},
+  year      = {1987},
+  publisher = {Addison-Wesley},
+  isbn      = {978-0-201-10715-9},
+  url       = {https://www.microsoft.com/en-us/research/wp-content/uploads/2016/05/ccontrol.zip},
+  urldate   = {2026-08-11}
+}
+
+% (✓) Kanonski 2PC: presumed abort / presumed commit; „blokirajući koordinator".
+@article{mohan1986rstar,
+  author  = {Mohan, C. and Lindsay, B. and Obermarck, R.},
+  title   = {Transaction Management in the {R*} Distributed Database Management System},
+  journal = {ACM Transactions on Database Systems},
+  year    = {1986},
+  volume  = {11},
+  number  = {4},
+  pages   = {378--396},
+  doi     = {10.1145/7239.7266}
+}
+
+% (✓) Nema neblokirajućeg commita otpornog na particiju — „zašto SAGA, a ne 2PC".
+@article{skeen1983formal,
+  author  = {Skeen, Dale and Stonebraker, Michael},
+  title   = {A Formal Model of Crash Recovery in a Distributed System},
+  journal = {IEEE Transactions on Software Engineering},
+  year    = {1983},
+  volume  = {SE-9},
+  number  = {3},
+  pages   = {219--228},
+  doi     = {10.1109/TSE.1983.236608}
+}
+
+% (✓)
+@inproceedings{skeen1981nonblocking,
+  author    = {Skeen, Dale},
+  title     = {Nonblocking Commit Protocols},
+  booktitle = {Proceedings of the 1981 ACM SIGMOD International Conference on Management of Data},
+  year      = {1981},
+  pages     = {133--142},
+  publisher = {ACM},
+  doi       = {10.1145/582318.582339}
 }
 
 % (✓) Optimistički commit protokol za distribuirane transakcije
@@ -380,16 +890,150 @@
 
 % (✓) Upravljanje transakcijama u heterogenim distribuiranim bazama
 @article{gligor1986transaction,
-  author  = {Gligor, Virgil D. and Popescu-Zeletin, Radu},
-  title   = {Transaction Management in Distributed Heterogeneous Database Management Systems},
-  journal = {Information Systems},
-  year    = {1986},
-  volume  = {11},
-  number  = {4},
-  pages   = {287--297},
-  doi     = {10.1016/0306-4379(86)90009-8},
-  issn    = {0306-4379},
+  author    = {Gligor, Virgil D. and Popescu-Zeletin, Radu},
+  title     = {Transaction Management in Distributed Heterogeneous Database Management Systems},
+  journal   = {Information Systems},
+  year      = {1986},
+  volume    = {11},
+  number    = {4},
+  pages     = {287--297},
+  doi       = {10.1016/0306-4379(86)90009-8},
+  issn      = {0306-4379},
   publisher = {Elsevier}
+}
+
+% (✓) Entiteti s vlastitim transakcijskim opsegom + idempotentne at-least-once
+%     poruke među njima = arhitektura koju rad izvodi u 6.3.
+@inproceedings{helland2007lifebeyond,
+  author    = {Helland, Pat},
+  title     = {Life Beyond Distributed Transactions: An Apostate's Opinion},
+  booktitle = {Third Biennial Conference on Innovative Data Systems Research (CIDR)},
+  year      = {2007},
+  pages     = {132--141},
+  address   = {Asilomar, CA, USA},
+  url       = {http://cidrdb.org/cidr2007/papers/cidr07p15.pdf},
+  urldate   = {2026-08-11},
+  note      = {pretisci: ACM Queue 14(5):69--98, 2016, doi 10.1145/3012426.3025012;
+               Communications of the ACM 60(2):46--54, 2017, doi 10.1145/3009826}
+}
+
+% (✓) Most između idempotencije (pogl. 3) i kompenzacije (pogl. 5).
+@inproceedings{helland2009quicksand,
+  author      = {Helland, Pat and Campbell, Dave},
+  title       = {Building on Quicksand},
+  booktitle   = {Fourth Biennial Conference on Innovative Data Systems Research (CIDR)},
+  year        = {2009},
+  address     = {Asilomar, CA, USA},
+  eprint      = {0909.1788},
+  eprinttype  = {arxiv},
+  eprintclass = {cs.DB},
+  url         = {http://www-db.cs.wisc.edu/cidr/cidr2009/Paper_133.pdf},
+  urldate     = {2026-08-11}
+}
+
+% (✓) Kvantificira „koliko je eventual" i nabraja jača jamstva koja ostaju dostupna.
+%     Queue je izvorna inačica.
+@article{bailis2013eventual,
+  author  = {Bailis, Peter and Ghodsi, Ali},
+  title   = {Eventual Consistency Today: Limitations, Extensions, and Beyond},
+  journal = {ACM Queue},
+  year    = {2013},
+  volume  = {11},
+  number  = {3},
+  pages   = {20--32},
+  doi     = {10.1145/2460276.2462076},
+  note    = {pretisak: Communications of the ACM 56(5):55--63, 2013, doi 10.1145/2447976.2447992}
+}
+
+% (✓) Taksonomija klijentskih jamstava (read-your-writes, monotonic reads, session).
+@article{vogels2009eventually,
+  author  = {Vogels, Werner},
+  title   = {Eventually Consistent},
+  journal = {Communications of the ACM},
+  year    = {2009},
+  volume  = {52},
+  number  = {1},
+  pages   = {40--44},
+  doi     = {10.1145/1435417.1435432}
+}
+
+% (✓) Empirijski snimak kako se konzistentnost stvarno rješava u praksi.
+%     Citiramo OBJAVLJENI PVLDB zapis, ne arXiv preprint.
+@article{laigner2021data,
+  author  = {Laigner, Rodrigo and Zhou, Yongluan and Salles, Marcos Antonio Vaz and Liu, Yijian and Kalinowski, Marcos},
+  title   = {Data Management in Microservices: State of the Practice, Challenges, and Research Directions},
+  journal = {Proceedings of the VLDB Endowment},
+  year    = {2021},
+  volume  = {14},
+  number  = {13},
+  pages   = {3348--3361},
+  doi     = {10.14778/3484224.3484232},
+  note    = {preprint: arXiv:2103.00170}
+}
+
+% (✓) Recenzirana alternativa SAGA-i (Try-Cancel/Confirm nad REST-om).
+@inproceedings{pardon2014atomic,
+  author    = {Pardon, Guy and Pautasso, Cesare},
+  title     = {Atomic Distributed Transactions: A {RESTful} Design},
+  booktitle = {Proceedings of the 23rd International Conference on World Wide Web (WWW '14 Companion)},
+  year      = {2014},
+  pages     = {943--948},
+  publisher = {ACM},
+  doi       = {10.1145/2567948.2579221}
+}
+
+% ---- 5.2 SAGA i kompenzacija ----
+
+% (✓) Poboljšani SAGA obrazac za distribuirane transakcije
+@article{daraghmi2022saga,
+  author    = {Daraghmi, Eman and Zhang, Cheng-Pu and Yuan, Shyan-Ming},
+  title     = {Enhancing Saga Pattern for Distributed Transactions within a Microservices Architecture},
+  journal   = {Applied Sciences},
+  year      = {2022},
+  volume    = {12},
+  number    = {12},
+  pages     = {6242},
+  doi       = {10.3390/app12126242},
+  issn      = {2076-3417},
+  publisher = {MDPI}
+}
+
+% (✓) Nastavak rada iz 1987.; url je skan CIJELOG broja biltena (provjereno, HTTP 200).
+@article{garciamolina1991nestedsagas,
+  author  = {Garcia-Molina, Hector and Gawlick, Dieter and Klein, Johannes
+             and Kleissner, Karl and Salem, Kenneth},
+  title   = {Modeling Long-Running Activities as Nested Sagas},
+  journal = {IEEE Data Engineering Bulletin},
+  year    = {1991},
+  volume  = {14},
+  number  = {1},
+  pages   = {14--18},
+  url     = {http://sites.computer.org/debull/91MAR-CD.pdf},
+  urldate = {2026-08-11}
+}
+
+% (✓) Kičma odjeljka 5.2: survey u CSUR-u koji sistematizira sve pristupe
+%     oporavku dugotrajnih transakcija.
+@article{colombo2013recovery,
+  author  = {Colombo, Christian and Pace, Gordon J.},
+  title   = {Recovery Within Long-Running Transactions},
+  journal = {ACM Computing Surveys},
+  year    = {2013},
+  volume  = {45},
+  number  = {3},
+  pages   = {1--35},
+  doi     = {10.1145/2480741.2480745}
+}
+
+% (✓) Formalni pristup oporavku kompenzacijskim transakcijama
+@techreport{korth1990compensating,
+  author      = {Korth, Henry F. and Levy, Eliezer and Silberschatz, Abraham},
+  title       = {A Formal Approach to Recovery by Compensating Transactions},
+  institution = {Department of Computer Sciences, The University of Texas at Austin},
+  year        = {1990},
+  number      = {TR-90-14},
+  url         = {https://www.cs.utexas.edu/ftp/techreports/tr90-14.pdf},
+  urldate     = {2026-08-12}
 }
 
 % (✓) Koreografija vs. orkestracija u mikroservisima
@@ -403,23 +1047,995 @@
   doi     = {10.14569/IJACSA.2018.090804}
 }
 
-% (✓) Upravljanje podacima u mikroservisima (eventual consistency)
-@inproceedings{laigner2021data,
-  author    = {Laigner, Rodrigo and Zhou, Yongluan and Salles, Marcos Antonio Vaz and Liu, Yijian and Kalinowski, Marcos},
-  title     = {Data Management in Microservices: State of the Practice, Challenges, and Research Directions},
-  booktitle = {Proceedings of the VLDB Endowment (VLDB '21)},
+% (✓) Kriteriji ODLUKE orkestracija vs. koreografija — rad mora obrazložiti izbor.
+@inproceedings{megargel2021orchestration,
+  author    = {Megargel, Alan and Poskitt, Christopher M. and Shankararaman, Venky},
+  title     = {Microservices Orchestration vs. Choreography: A Decision Framework},
+  booktitle = {2021 IEEE 25th International Enterprise Distributed Object Computing Conference (EDOC)},
   year      = {2021},
-  eprint    = {2103.00170},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.DB},
-  doi       = {10.48550/arXiv.2103.00170}
+  pages     = {134--141},
+  publisher = {IEEE},
+  doi       = {10.1109/EDOC52215.2021.00024}
 }
 
-% (✓) Formalni pristup oporavku kompenzacijskim transakcijama
-@techreport{korth1990compensating,
-  author      = {Korth, Henry F. and Levy, Eliezer and Silberschatz, Abraham},
-  title       = {A Formal Approach to Recovery by Compensating Transactions},
-  institution = {Department of Computer Sciences, The University of Texas at Austin},
-  year        = {1990},
-  number      = {TR-90-14}
+% ---- 5.3 Stanje kao automat ----
+
+% (✓) Opravdanje za modeliranje životnog ciklusa računa kao determinističkog automata.
+@article{schneider1990statemachine,
+  author  = {Schneider, Fred B.},
+  title   = {Implementing Fault-Tolerant Services Using the State Machine Approach: A Tutorial},
+  journal = {ACM Computing Surveys},
+  year    = {1990},
+  volume  = {22},
+  number  = {4},
+  pages   = {299--319},
+  doi     = {10.1145/98163.98167}
+}
+
+% (✓) happened-before; temelj za uređaj stanja računa.
+@article{lamport1978time,
+  author  = {Lamport, Leslie},
+  title   = {Time, Clocks, and the Ordering of Events in a Distributed System},
+  journal = {Communications of the ACM},
+  year    = {1978},
+  volume  = {21},
+  number  = {7},
+  pages   = {558--565},
+  doi     = {10.1145/359545.359563}
+}
+
+
+% ============================================================
+%  POGLAVLJE 2 / 6.1 — PROPIS I TEHNIČKE SPECIFIKACIJE
+%  (primarni izvori; iz njih se izvodi referentna arhitektura)
+% ============================================================
+
+% ---- Hrvatsko zakonodavstvo ----
+
+% (✓) Temeljni propis Fiskalizacije 2.0. Nosive odredbe: čl. 2. st. 1. t. 14.
+%     (definicija informacijskog posrednika), čl. 58. (odgovornost IP-a),
+%     čl. 59. (potvrda o sukladnosti), čl. 61.--62. (ISO/IEC 27001, podaci u EU).
+@legislation{nn2025zakonfiskalizacija,
+  title        = {Zakon o fiskalizaciji},
+  journaltitle = {Narodne novine},
+  howpublished = {Narodne novine, br. 89/2025},
+  number       = {89/2025},
+  date         = {2025-06-13},
+  url          = {https://narodne-novine.nn.hr/clanci/sluzbeni/full/2025_06_89_1233.html},
+  urldate      = {2026-08-11},
+  note         = {Akt br. 1233; objavljeno 13. lipnja 2025. Na snazi od 1. rujna 2025.;
+                  odredbe o eRačunu od 1. siječnja 2026.; čl. 38. st. 1. t. 2. i 3.
+                  od 1. siječnja 2027.}
+}
+
+% (✓) Čl. 7. st. 1.: „Razmjena eRačuna obavlja se putem pristupnih točaka koje
+%     moraju koristiti AS4 protokol…" — AS4 je ZAKONSKA obveza, ne tehnički izbor.
+@legislation{nn2026pravilnikeracun,
+  title        = {Pravilnik o eRačunu},
+  journaltitle = {Narodne novine},
+  howpublished = {Narodne novine, br. 11/2026},
+  number       = {11/2026},
+  date         = {2026-01-30},
+  url          = {https://narodne-novine.nn.hr/clanci/sluzbeni/full/2026_01_11_88.html},
+  urldate      = {2026-08-11},
+  note         = {Akt br. 88; objavljeno 30. siječnja 2026. Donesen na temelju čl. 64.
+                  Zakona o fiskalizaciji (NN 89/2025). Na snazi od 31. siječnja 2026.}
+}
+
+% (✓) B2C pravilnik. Citira se isključivo kao KONTRAST — ima odredbe o ispadu
+%     i cilj obrade od 2 s kojih u B2B režimu nema.
+@legislation{nn2025pravilnikkrajnjapotrosnja,
+  title        = {Pravilnik o fiskalizaciji računa u krajnjoj potrošnji},
+  journaltitle = {Narodne novine},
+  howpublished = {Narodne novine, br. 153/2025},
+  number       = {153/2025},
+  date         = {2025-12-17},
+  urldate      = {2026-08-11},
+  note         = {Donesen na temelju čl. 32. Zakona o fiskalizaciji (NN 89/2025).
+                  ELI: /eli/sluzbeni/2025/153/2278}
+}
+
+% ---- Službene tehničke specifikacije Porezne uprave ----
+
+% (✓) IZVOR ZA RQ1. Definira SOAP 1.1 preko HTTPS-a, servis eFiskalizacijaService,
+%     operaciju EvidentirajERacun, UUID (RFC 4122) koji generira klijent i
+%     taksonomiju grešaka. Iz njega se izvode načini otkazivanja u 6.2.
+@techreport{pu2026tehspec,
+  author      = {{Ministarstvo financija, Porezna uprava}},
+  title       = {Tehnička specifikacija --- Fiskalizacija eRačuna i eIzvještavanje},
+  institution = {Ministarstvo financija Republike Hrvatske, Porezna uprava},
+  type        = {Tehnička specifikacija},
+  version     = {1.15},
+  date        = {2026-02-06},
+  url         = {https://porezna.gov.hr/fiskalizacija/api/dokumenti/186},
+  urldate     = {2026-08-11},
+  note        = {83 str.; objavljeno na portalu 12. veljače 2026.}
+}
+
+% (✓) Profil eRačun-AS4: One-Way/Push, SOAP 1.2, ebMS 3.0 ConversationId,
+%     Signed Receipt Signal Message, „AS4 reception awareness feature".
+%     JEDINO mjesto gdje hrvatski propis govori o pouzdanoj dostavi.
+@techreport{pu2025as4profil,
+  author      = {{Ministarstvo financija, Porezna uprava}},
+  title       = {Tehnički standardi i specifikacija povezivanja ---
+                 Pristupna točka i standardni {AS4} profil},
+  institution = {Ministarstvo financija Republike Hrvatske, Porezna uprava},
+  type        = {Tehnička specifikacija},
+  version     = {1.4},
+  date        = {2025-10-07},
+  url         = {https://porezna.gov.hr/fiskalizacija/api/dokumenti/140},
+  urldate     = {2026-08-11},
+  note        = {profil „eRačun-AS4" nad CEF eDelivery AS4 v1.15}
+}
+
+% (✓) HR-CIUS nad HRN EN 16931-1:2020; istovremeno CIUS i proširenje norme.
+@techreport{pu2026hrcius,
+  author      = {{Ministarstvo financija, Porezna uprava}},
+  title       = {Specifikacija osnovne uporabe eRačuna s proširenjima},
+  institution = {Ministarstvo financija Republike Hrvatske, Porezna uprava},
+  type        = {Nacionalna specifikacija ({HR-CIUS})},
+  version     = {1.8},
+  date        = {2026-03-12},
+  url         = {https://porezna.gov.hr/fiskalizacija/api/dokumenti/196},
+  urldate     = {2026-08-11},
+  note        = {142 str. Izrađena na osnovi
+                 HRN EN 16931-1:2020. Identifikator specifikacije:
+                 urn:cen.eu:en16931:2017\#compliant\#urn:mfin.gov.hr:cius-2025:1.0\#conformant\#urn:mfin.gov.hr:ext-2025:1.0}
+}
+
+% (✓) Hrvatski Schematron; ~60 pravila HR-BR-*.
+@software{pu2026hrschematron,
+  author  = {{Ministarstvo financija, Porezna uprava}},
+  title   = {Rules for {CIUS-HR} and {EXT-HR} 2025 --- hrvatski {Schematron} validator eRačuna},
+  version = {1.0.0},
+  date    = {2026-03-13},
+  url     = {https://porezna.gov.hr/fiskalizacija/api/dokumenti/197},
+  urldate = {2026-08-11},
+  note    = {datoteka HRUBLSchematron\_13032026-2.zip; u primjeni od 15. ožujka 2026.}
+}
+
+% (✓) UBL 2.1 XSD + hrvatska shema proširenja.
+@software{pu2026hrxsd,
+  author  = {{Ministarstvo financija, Porezna uprava}},
+  title   = {{UBL} 2.1 eRačun --- sheme {XSD} s hrvatskim proširenjem
+             ({HRExtensionAggregateComponents-1.xsd})},
+  date    = {2026-04-15},
+  url     = {https://porezna.gov.hr/fiskalizacija/api/dokumenti/198},
+  urldate = {2026-08-11}
+}
+
+% (✓) Jedini standardizirani poslovni odgovor u hrvatskom režimu.
+%     Obvezan samo za odbijanje; prihvat je opcionalan i bilateralan.
+@techreport{pu2026aplikacijskiodgovor,
+  author      = {{Ministarstvo financija, Porezna uprava}},
+  title       = {Aplikacijski odgovor za odbijanje računa},
+  institution = {Ministarstvo financija Republike Hrvatske, Porezna uprava},
+  type        = {Tehnička specifikacija},
+  version     = {1.1},
+  date        = {2026-07-27},
+  url         = {https://porezna.gov.hr/fiskalizacija/api/dokumenti/206},
+  urldate     = {2026-08-11},
+  note        = {8 str. Identifikator specifikacije:
+                 urn:mfin.gov.hr:AplikacijskiOdgovor-2025:1.0}
+}
+
+% (✓) Sheme poruka. eIzvjestavanjeSchema.xsd je jedini artefakt s cjelovitim
+%     šifrarnikom grešaka S001--S012.
+@software{pu2026sheme,
+  author  = {{Ministarstvo financija, Porezna uprava}},
+  title   = {eFiskalizacija i eIzvještavanje --- {XSD} sheme i {WSDL} opisi servisa},
+  date    = {2026-02-12},
+  url     = {https://porezna.gov.hr/fiskalizacija/api/dokumenti/187},
+  urldate = {2026-08-11},
+  note    = {dokumenti 175 (eFiskalizacijaSchema.xsd,
+             eFiskalizacijaService.wsdl) i 187 (eIzvjestavanjeSchema.xsd,
+             eIzvjestavanjeService.wsdl)}
+}
+
+% (✓)(~) NIJE PROPIS. Mjerodavno tumačenje regulatora; jedino mjesto u hrvatskom
+%        korpusu gdje je razrađena semantika duplikata (pitanje 15, 5.5.2026.).
+@online{pu2026pitanjaodgovori,
+  author       = {{Ministarstvo financija, Porezna uprava}},
+  title        = {Izdavanje i primanje eRačuna i fiskalizacija eRačuna --- pitanja i odgovori},
+  organization = {Porezna uprava Republike Hrvatske},
+  url          = {https://porezna-uprava.gov.hr/hr/izdavanje-i-primanje-eracuna-i-fiskalizacija-eracuna/8047},
+  urldate      = {2026-08-11},
+  note         = {korištena pitanja 15 (5. svibnja 2026.), 18 (12. studenoga 2025.),
+                  20 (15. svibnja 2026.) te odjeljak „Fiskalizacija eRačuna"
+                  (ažurirano 5. lipnja 2026.). Nije propis.}
+}
+
+% (✓) Dokaz da je informacijski posrednik stvarna, registrirana uloga.
+%     Zakonska osnova: ZoF čl. 59. st. 3.
+@online{pu2026popisip,
+  author       = {{Ministarstvo financija, Porezna uprava}},
+  title        = {Popis informacijskih posrednika},
+  organization = {Porezna uprava Republike Hrvatske},
+  url          = {https://porezna-uprava.gov.hr/hr/popis-informacijskih-posrednika/8019},
+  urldate      = {2026-08-11},
+  note         = {34 subjekta; stanje 12. ožujka 2026.}
+}
+
+% ---- Europska pravna stečevina ----
+
+% (✓) Doseg: samo javna nabava (B2G). Recital 8 razdvaja tri razine interoperabilnosti.
+@legislation{eu2014direktiva55,
+  title        = {Direktiva 2014/55/{EU} Europskog parlamenta i Vijeća od 16. travnja 2014.
+                  o elektroničkom izdavanju računa u javnoj nabavi},
+  journaltitle = {Službeni list Europske unije},
+  howpublished = {Službeni list Europske unije, L 133, str. 1},
+  series       = {L},
+  volume       = {133},
+  pages        = {1},
+  date         = {2014-05-06},
+  url          = {https://eur-lex.europa.eu/legal-content/HR/TXT/?uri=CELEX:32014L0055},
+  urldate      = {2026-08-11},
+  note         = {CELEX 32014L0055; ELI: http://data.europa.eu/eli/dir/2014/55/oj}
+}
+
+% (✓) Objavljuje upućivanje na EN 16931-1:2017; Prilog utvrđuje dvije dopuštene sintakse.
+@legislation{eu2017odluka1870,
+  title        = {Provedbena odluka Komisije ({EU}) 2017/1870 od 16. listopada 2017.
+                  o objavi upućivanja na europsku normu o elektroničkom izdavanju
+                  računa i popis njezinih sintaksi u skladu s Direktivom 2014/55/{EU}},
+  journaltitle = {Službeni list Europske unije},
+  howpublished = {Službeni list Europske unije, L 266, str. 19},
+  series       = {L},
+  volume       = {266},
+  pages        = {19},
+  date         = {2017-10-17},
+  url          = {https://eur-lex.europa.eu/legal-content/HR/TXT/?uri=CELEX:32017D1870},
+  urldate      = {2026-08-11},
+  note         = {CELEX 32017D1870; ELI: http://data.europa.eu/eli/dec\_impl/2017/1870/oj}
+}
+
+% (✓) ViDA. Novi čl. 218. st. 4. Direktive o PDV-u je pravna osnova za
+%     akreditacijske sheme poput hrvatskih informacijskih posrednika.
+@legislation{eu2025vida,
+  title        = {Direktiva Vijeća ({EU}) 2025/516 od 11. ožujka 2025.
+                  o izmjeni Direktive 2006/112/{EZ} u pogledu pravila o {PDV}-u
+                  za digitalno doba},
+  journaltitle = {Službeni list Europske unije},
+  howpublished = {Službeni list Europske unije, L, 2025/516},
+  series       = {L},
+  number       = {2025/516},
+  date         = {2025-03-25},
+  url          = {https://eur-lex.europa.eu/legal-content/HR/TXT/?uri=OJ:L_202500516},
+  urldate      = {2026-08-11},
+  note         = {na snazi od 14. travnja 2025.; primjena stupnjevito do 1. srpnja 2030.,
+                  s odgodom do 1. siječnja 2035. za države s postojećim sustavom
+                  izvještavanja u stvarnom vremenu. ELI: http://data.europa.eu/eli/dir/2025/516/oj}
+}
+
+% ---- Europske i međunarodne norme ----
+
+% (✓) Semantička norma. Tekst je plaćen i nema stabilan cen.eu URL, pa se bilježi
+%     kao normativna podloga HR-CIUS-a, bez izravnog linka.
+%     UPOZORENJE: „A2:2020" NE POSTOJI — postoji samo nacrt prA2.
+@standard{cen2019en16931,
+  author       = {{CEN/TC 434}},
+  title        = {{EN} 16931-1:2017+{A1}:2019 --- Electronic invoicing ---
+                  Part 1: Semantic data model of the core elements of an electronic invoice},
+  organization = {Europski odbor za normizaciju ({CEN})},
+  date         = {2019},
+  urldate      = {2026-08-11},
+  note         = {uz ispravak AC:2020. Izdana 28. lipnja 2017.; upućivanje objavljeno
+                  Provedbenom odlukom (EU) 2017/1870. Izdanje 2017. formalno je
+                  povučeno izlaskom EN 16931-1:2026 (svibanj 2026.).
+                  NEPROVJERENO: sadržaj izdanja iz 2026. nije potvrđen na razini klauzula}
+}
+
+% (✓) Hrvatska preuzeta norma; osnova na kojoj je izrađen HR-CIUS.
+%     Besplatan pristup sponzorirala Europska komisija.
+@standard{hzn2020en16931,
+  author       = {{Hrvatski zavod za norme}},
+  title        = {{HRN} {EN} 16931-1:2020 --- Elektronički račun ---
+                  1. dio: Semantički model podataka osnovnih elemenata
+                  elektroničkog računa ({EN} 16931-1:2017+{A1}:2019)},
+  organization = {Hrvatski zavod za norme ({HZN})},
+  date         = {2020-10-31},
+  url          = {https://repozitorij.hzn.hr/norm/HRN+EN+16931-1%3A2020},
+  urldate      = {2026-08-11},
+  note         = {dvojezično izdanje HR/EN. ICS 35.240.20}
+}
+
+% (✓) Službeni Schematron uz EN 16931. Licencija EUPL v1.2.
+%     Pretraga na „duplicat", „retry", „transmiss" daje nula pogodaka.
+@software{cen2026validationartefacts,
+  author  = {{CEN/TC 434} and {Connecting Europe}},
+  title   = {eInvoicing-{EN16931} --- službeni artefakti validacije norme {EN} 16931},
+  version = {validation-1.3.16},
+  date    = {2026-04-13},
+  url     = {https://github.com/ConnectingEurope/eInvoicing-EN16931},
+  urldate = {2026-08-11},
+  note    = {licencija EUPL v1.2; apstraktni model sadrži 201 pravilo, od toga 23 BR-CO-*}
+}
+
+% (✓) XML sintaksa; istovjetna ISO/IEC 19845:2015. Verzija koju Hrvatska propisuje.
+@standard{oasis2013ubl21,
+  author       = {Bosak, Jon and McGrath, Tim and Holman, G. Ken},
+  title        = {Universal Business Language Version 2.1},
+  organization = {{OASIS}},
+  type         = {{OASIS} Standard},
+  date         = {2013-11-04},
+  url          = {http://docs.oasis-open.org/ubl/os-UBL-2.1/UBL-2.1.html},
+  urldate      = {2026-08-11}
+}
+
+% ---- Transportni sloj (AS4 / eDelivery / Peppol) ----
+
+% (✓) KLJUČNO: §3.4 „No particular delivery semantics can be assumed";
+%     §3.2 eliminacija duplikata NIJE obvezna, prozor detekcije prepušten implementaciji.
+@standard{oasis2013as4,
+  title        = {{AS4} Profile of ebMS 3.0 Version 1.0},
+  organization = {{OASIS}},
+  type         = {{OASIS} Standard},
+  date         = {2013-01-23},
+  url          = {https://docs.oasis-open.org/ebxml-msg/ebms/v3.0/profiles/AS4-profile/v1.0/os/AS4-profile-v1.0-os.html},
+  urldate      = {2026-08-11},
+  note         = {urednici Jacques Durand i Pim van der Eijk}
+}
+
+% (✓) Normativni izvor za reception awareness i eliminaciju duplikata.
+@standard{oasis2007ebms3,
+  title        = {{OASIS} ebXML Messaging Services Version 3.0: Part 1, Core Features},
+  organization = {{OASIS}},
+  type         = {{OASIS} Standard},
+  date         = {2007-10-01},
+  url          = {https://docs.oasis-open.org/ebxml-msg/ebms/v3.0/core/os/ebms_core-3.0-spec-os.html},
+  urldate      = {2026-08-11}
+}
+
+% (✓) Kontrast: WS-ReliableMessaging propisuje ono što AS4 profil prepušta
+%     implementaciji. Bez javno dohvatljivog stabilnog URL-a.
+@standard{oasis2009wsrm,
+  author       = {Davis, Doug and Karmarkar, Anish and Pilz, Gilbert and
+                  Winkler, Steve and Yalçinalp, Ümit},
+  title        = {Web Services Reliable Messaging ({WS-ReliableMessaging}) Version 1.2},
+  organization = {{OASIS}},
+  type         = {{OASIS} Standard},
+  date         = {2009-02},
+  urldate      = {2026-08-11}
+}
+
+% (✓) KLJUČNO: §3.3.2 parametri ponovnih pokušaja i detekcije duplikata su
+%     „not fully specified in [AS4] and are implementation-dependent".
+%     Sam izdavatelj označava v1.14 kao „Obsoleted by eDelivery AS4 - 1.15".
+@techreport{cef2018as4,
+  author      = {{Europska komisija}},
+  title       = {eDelivery {AS4} --- 1.14},
+  institution = {Europska komisija, {CEF} Digital},
+  type        = {eDelivery Specification},
+  date        = {2018-10-31},
+  url         = {https://ec.europa.eu/digital-building-blocks/wikis/display/DIGITAL/eDelivery+AS4+-+1.14},
+  urldate     = {2026-08-11}
+}
+
+% (✓) Aktualna inačica CEF/eDelivery AS4 profila.
+@online{ec2026edelivery,
+  author       = {{European Commission, Digital Building Blocks}},
+  title        = {{eDelivery} {AS4} Profile},
+  organization = {Europska komisija},
+  version      = {1.16},
+  year         = {2026},
+  url          = {https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/943227070/eDelivery+AS4+-+1.16},
+  urldate      = {2026-08-11}
+}
+
+% (✓) §4.1 samo One-Way/Push; Two-Way zabranjen. Profil sam o pouzdanosti
+%     ne govori ništa — sve preuzima iz CEF profila.
+@techreport{peppol2024as4,
+  author      = {{OpenPeppol AISBL}},
+  title       = {Peppol {AS4} Profile},
+  institution = {{OpenPeppol AISBL}},
+  version     = {2.0.3},
+  date        = {2024-04-22},
+  url         = {https://docs.peppol.eu/edelivery/as4/specification/},
+  urldate     = {2026-08-11}
+}
+
+% (✓) Prve brojčane razine usluge u povijesti Peppola. Obvezujuće.
+%     SLR MLS-1: 99,5 % < 20 min; SLR MLS-2: 99,5 % < 25 min.
+@techreport{peppol2026networkpolicy,
+  author      = {{OpenPeppol AISBL}},
+  title       = {Peppol Network Policy},
+  institution = {{OpenPeppol AISBL}},
+  version     = {1.0.0},
+  date        = {2026-07-02},
+  url         = {https://docs.peppol.eu/edelivery/policies/Peppol%20Network%20Policy%201.0.0%202026-07-02.pdf},
+  urldate     = {2026-08-11}
+}
+
+% (✓) Prva obvezna statusna poruka u Peppolu. Kodovi RE / AP / AB. Jednokratna i konačna.
+@techreport{peppol2026mls,
+  author      = {{OpenPeppol AISBL}},
+  title       = {Peppol Message Level Status ({MLS})},
+  institution = {{OpenPeppol AISBL}, eDEC},
+  version     = {1.1.0},
+  date        = {2026-07-02},
+  url         = {https://docs.peppol.eu/edelivery/specs/mls/v1.1.0/mls/spec/},
+  urldate     = {2026-08-11}
+}
+
+% (✓)(~) NIJE NORMATIVAN — dokument se sam tako deklarira (§2).
+%        Jedini brojevi o ponovnim pokušajima u Peppolu su ovdje, i to kao SHOULD.
+@techreport{peppol2026spogmls,
+  author      = {{OpenPeppol AISBL}},
+  title       = {Service Provider Operational Guideline on {MLS}},
+  institution = {{OpenPeppol AISBL}},
+  type        = {Guideline (neobvezujuće)},
+  version     = {1.0.0},
+  date        = {2026-07-02},
+  url         = {https://docs.peppol.eu/edelivery/guidelines/mls/SPOG%20on%20MLS%201.0.0%202026-07-02.pdf},
+  urldate     = {2026-08-11}
+}
+
+% (✓) T1 = 1.7.2026.; T2 = 28.2.2027.; T3 = 31.3.2027. (SLR postaju provedivi).
+@techreport{peppol2026mlsphasein,
+  author      = {{OpenPeppol AISBL}},
+  title       = {Peppol {MLS} Phase-in},
+  institution = {{OpenPeppol AISBL}},
+  version     = {1.0.0},
+  date        = {2026-07-02},
+  url         = {https://docs.peppol.eu/edelivery/changelog/2026-07/Peppol%20MLS%20Phase-In%201.0.0%202026-07-02.pdf},
+  urldate     = {2026-08-11}
+}
+
+% (✓) §3.2: „This specification does not prescribe how a request for MLR is made
+%     or communicated." U postupku ukidanja; zamjenjuje ga MLS.
+@techreport{peppol2025mlr,
+  author      = {{OpenPeppol AISBL}},
+  title       = {Peppol {BIS} Message Level Response 3.0 (transakcija {T71})},
+  institution = {{OpenPeppol AISBL}, Post-Award Community},
+  date        = {2025-11},
+  url         = {https://docs.peppol.eu/poacc/upgrade-3/profiles/36-mlr/},
+  urldate     = {2026-08-11},
+  note        = {identifikator urn:fdc:peppol.eu:poacc:bis:mlr:3}
+}
+
+% (✓) OP-BR111-R006: prvi odgovor u 3 radna dana. OP-BR111-R008: „does not have
+%     any legal power". Opcija za kupca; prodavatelj ga ne može zatražiti.
+@techreport{peppol2025invoiceresponse,
+  author      = {{OpenPeppol AISBL}},
+  title       = {Peppol {BIS} Invoice Response 3.2 (transakcija {T111} v3.1)},
+  institution = {{OpenPeppol AISBL}, Post-Award Community},
+  date        = {2025-11},
+  url         = {https://docs.peppol.eu/poacc/upgrade-3/profiles/63-invoiceresponse/},
+  urldate     = {2026-08-11},
+  note        = {identifikator urn:fdc:peppol.eu:poacc:bis:invoice\_response:3}
+}
+
+% (✓) §5.1 definira 404 i 500, dopušta „other HTTP status codes".
+%     §2.1 predmemoriranje je samo non-normative napomena — TTL nije propisan.
+@techreport{peppol2025smp,
+  author      = {{OpenPeppol AISBL}},
+  title       = {Peppol Service Metadata Publishing ({SMP})},
+  institution = {{OpenPeppol AISBL}},
+  version     = {1.4.0},
+  date        = {2025-02-06},
+  url         = {https://docs.peppol.eu/edelivery/smp/Peppol-EDN-Service-Metadata-Publishing-1.4.0-2025-02-06.pdf},
+  urldate     = {2026-08-11},
+  note        = {vrijedi od 1. studenoga 2025.}
+}
+
+% (✓) §1.3 izrijekom isključuje operativne procedure iz dosega.
+%     O TTL-u, propagaciji i dostupnosti ne govori ništa.
+@techreport{peppol2025sml,
+  author      = {{OpenPeppol AISBL}},
+  title       = {Peppol Service Metadata Locator ({SML})},
+  institution = {{OpenPeppol AISBL}},
+  version     = {1.3.0},
+  date        = {2025-02-06},
+  url         = {https://docs.peppol.eu/edelivery/sml/Peppol-EDN-Service-Metadata-Locator-1.3.0-2025-02-06.pdf},
+  urldate     = {2026-08-11},
+  note        = {vrijedi od 1. studenoga 2025.}
+}
+
+% (✓) §9.4.9 upućuje na „minimum service level requirements" bez ijednog broja.
+@misc{peppol2025spa,
+  author  = {{OpenPeppol AISBL}},
+  title   = {Peppol Service Provider Agreement},
+  version = {4.0.2},
+  date    = {2025-05-28},
+  url     = {https://openpeppol.atlassian.net/wiki/spaces/AF/pages/2889089036/Peppol+Agreements},
+  urldate = {2026-08-11},
+  note    = {javno dostupno, 27 str.}
+}
+
+% ---- Međunarodni okvir fiskalizacije ----
+
+% (✓) Jedini međunarodno mjerodavan okvir „što je fiskalizacija i zašto".
+%     Broj u seriji i DOI potvrđeni preko Crossrefa.
+@techreport{pires2023fiscalization,
+  author      = {Pires, José Maria and Howlin, Stephen and van Brunschot, Frank},
+  title       = {How to Implement Electronic Fiscal Reporting (Fiscalization)},
+  institution = {International Monetary Fund},
+  type        = {IMF How To Notes},
+  number      = {2023/003},
+  year        = {2023},
+  doi         = {10.5089/9798400251641.061},
+  isbn        = {979-8-4002-5164-1},
+  note        = {27 str.}
+}
+
+
+% ============================================================
+%  SRODNI RADOVI — domena (e-fakturiranje, CTC, PEPPOL)
+% ============================================================
+
+% (✓) Najbliži srodni rad koji postoji: državni sustav fakturiranja + modeli otkaza.
+%     Citiramo OBJAVLJENU verziju, ne TechRxiv preprint (10.36227/techrxiv.21676748)
+%     ni kopiju na academia.edu. Imena autora prema Crossrefu.
+@article{sogaard2023invoicing,
+  author  = {Søgaard, Jonas S. and Eklund, Peter W. and Herskind, Lasse and Spasovski, Jason},
+  title   = {Improving Trust in a (Trans)National Invoicing System:
+             The Performance of Crash vs. {Byzantine} Fault Tolerance at Scale},
+  journal = {Applied Sciences},
+  year    = {2023},
+  volume  = {13},
+  number  = {12},
+  pages   = {6941},
+  doi     = {10.3390/app13126941}
+}
+
+% (✓) Formalna specifikacija i verifikacija čileanskog sustava e-računa.
+%     DOI prefiks (qest.2004.16) djeluje neobično, ali razrješava se na ovaj rad.
+@inproceedings{attali2004chilean,
+  author    = {Attali, Isabelle and Barros, Tomás and Madelaine, Eric},
+  title     = {Parameterized Specification and Verification of the {Chilean} Electronic Invoices System},
+  booktitle = {Proceedings of the XXIV International Conference of the Chilean Computer Science Society (SCCC '04)},
+  year      = {2004},
+  pages     = {14--25},
+  address   = {Arica, Chile},
+  publisher = {IEEE},
+  doi       = {10.1109/qest.2004.16},
+  note      = {preprint: INRIA RR-5217}
+}
+
+% (✓) Sustavni pregled literature o e-fakturiranju i predispunjenim prijavama.
+@article{hesami2024slr,
+  author  = {Hesami, Siamand and Jenkins, Hatice and Jenkins, Glenn P.},
+  title   = {Digital Transformation of Tax Administration and Compliance:
+             A Systematic Literature Review on E-Invoicing and Prefilled Returns},
+  journal = {Digital Government: Research and Practice},
+  year    = {2024},
+  volume  = {5},
+  number  = {3},
+  pages   = {1--20},
+  doi     = {10.1145/3643687},
+  note    = {članak br. 18}
+}
+
+% (✓) Okvir za dizajn interoperabilnih arhitektura javnih usluga uz PEPPOL.
+@inproceedings{schmitz2022peppol,
+  author    = {Schmitz, Andreas and Mondorf, Ansgar and Wimmer, Maria A.},
+  title     = {Framework for Designing Interoperable Public Service Architectures
+               with Exemplification along Small-Scale Procurement and {PEPPOL}},
+  booktitle = {Proceedings of the 23rd Annual International Conference on Digital Government Research (dg.o 2022)},
+  year      = {2022},
+  publisher = {ACM},
+  doi       = {10.1145/3543434.3543473}
+}
+
+% (✓) Otvorena implementacija čileanskog e-računa.
+@inproceedings{delafuente2021libredte,
+  author    = {De La Fuente Rubio, Esteban and Gutiérrez Gaitán, Miguel},
+  title     = {{LibreDTE}: Software Tools and Support for Electronic Invoicing in {Chile}},
+  booktitle = {Proceedings of the 40th International Conference of the Chilean Computer Science Society (SCCC)},
+  year      = {2021},
+  publisher = {IEEE},
+  doi       = {10.1109/sccc54552.2021.9650391}
+}
+
+% (✓) Iskustveni izvještaj iz regulirane domene (bankarstvo).
+@article{bucchiarone2018banking,
+  author  = {Bucchiarone, Antonio and Dragoni, Nicola and Dustdar, Schahram and
+             Larsen, Stephan T. and Mazzara, Manuel},
+  title   = {From Monolithic to Microservices: An Experience Report from the Banking Domain},
+  journal = {IEEE Software},
+  year    = {2018},
+  volume  = {35},
+  number  = {3},
+  pages   = {50--55},
+  doi     = {10.1109/MS.2018.2141026}
+}
+
+
+% ============================================================
+%  SRODNI RADOVI — usklađenost kao svojstvo ispravnosti
+% ============================================================
+
+% (✓) Modeliranje kontrolnih ciljeva usklađenosti nad poslovnim procesom.
+@inproceedings{sadiq2007compliance,
+  author    = {Sadiq, Shazia and Governatori, Guido and Namiri, Kioumars},
+  title     = {Modeling Control Objectives for Business Process Compliance},
+  booktitle = {Business Process Management (BPM 2007)},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {4714},
+  year      = {2007},
+  pages     = {149--164},
+  publisher = {Springer},
+  doi       = {10.1007/978-3-540-75183-0_12}
+}
+
+% (✓) Praćenje usklađenosti tijekom izvođenja procesa.
+@article{ly2015compliance,
+  author  = {Ly, Linh Thao and Maggi, Fabrizio Maria and Montali, Marco and
+             Rinderle-Ma, Stefanie and van der Aalst, Wil M. P.},
+  title   = {Compliance Monitoring in Business Processes: Functionalities, Application, and Tool-Support},
+  journal = {Information Systems},
+  year    = {2015},
+  volume  = {54},
+  pages   = {209--234},
+  doi     = {10.1016/j.is.2015.02.007}
+}
+
+% (✓) Izvođenje zahtjeva iz teksta propisa — metodološki uzor za derivaciju
+%     „propis zahtijeva X -> sustav mora imati Y".
+@article{breaux2008regulatory,
+  author  = {Breaux, Travis D. and Antón, Annie I.},
+  title   = {Analyzing Regulatory Rules for Privacy and Security Requirements},
+  journal = {IEEE Transactions on Software Engineering},
+  year    = {2008},
+  volume  = {34},
+  number  = {1},
+  pages   = {5--20},
+  doi     = {10.1109/TSE.2007.70746}
+}
+
+
+% ============================================================
+%  POGLAVLJA 7--8 — testbed, injekcija kvarova, evaluacija
+% ============================================================
+
+% (✓) Injekcija kvarova na GRANICI servisa preko proxyja = arhitektura
+%     mock posrednika i chaos enginea.
+@inproceedings{heorhiadi2016gremlin,
+  author    = {Heorhiadi, Victor and Rajagopalan, Shriram and Jamjoom, Hani
+               and Reiter, Michael K. and Sekar, Vyas},
+  title     = {Gremlin: Systematic Resilience Testing of Microservices},
+  booktitle = {2016 IEEE 36th International Conference on Distributed Computing Systems (ICDCS)},
+  year      = {2016},
+  pages     = {57--66},
+  publisher = {IEEE},
+  doi       = {10.1109/ICDCS.2016.11}
+}
+
+% (✓) Uzor za orákul i za iscrpnost pretrage prostora kvarova.
+@inproceedings{meiklejohn2021filibuster,
+  author    = {Meiklejohn, Christopher S. and Estrada, Andrea and Song, Yiwen and
+               Miller, Heather and Padhye, Rohan},
+  title     = {Service-Level Fault Injection Testing},
+  booktitle = {Proceedings of the ACM Symposium on Cloud Computing (SoCC '21)},
+  year      = {2021},
+  pages     = {388--402},
+  address   = {Seattle, WA, USA},
+  publisher = {ACM},
+  doi       = {10.1145/3472883.3487005}
+}
+
+% (✓) Determinizam iz MJESTA, ne iz vremena. Imena autora prema Crossrefu.
+@inproceedings{zhang20213milebeach,
+  author    = {Zhang, Jun and Ferydouni, Robert and Montana, Aldrin and
+               Bittman, Daniel and Alvaro, Peter},
+  title     = {{3MileBeach}: A Tracer with Teeth},
+  booktitle = {Proceedings of the ACM Symposium on Cloud Computing (SoCC '21)},
+  year      = {2021},
+  pages     = {458--472},
+  publisher = {ACM},
+  doi       = {10.1145/3472883.3486986}
+}
+
+% (✓) Obavezan citat za prijetnje valjanosti: injekcija vođena konzistentnošću.
+@inproceedings{chen2020cofi,
+  author    = {Chen, Haicheng and Dou, Wensheng and Wang, Dong and Qin, Feng},
+  title     = {{CoFI}: Consistency-Guided Fault Injection for Cloud Systems},
+  booktitle = {Proceedings of the 35th IEEE/ACM International Conference on Automated Software Engineering (ASE '20)},
+  year      = {2020},
+  pages     = {536--547},
+  publisher = {ACM},
+  doi       = {10.1145/3324884.3416548}
+}
+
+% (✓) Bugovi oporavka nakon pada, otkriveni analizom meta-informacija.
+@inproceedings{lu2019crashtuner,
+  author    = {Lu, Jie and Liu, Chen and Li, Lian and Feng, Xiaobing and
+               Tan, Feng and Yang, Jun and You, Liang},
+  title     = {{CrashTuner}: Detecting Crash-Recovery Bugs in Cloud Systems via Meta-Info Analysis},
+  booktitle = {Proceedings of the 27th ACM Symposium on Operating Systems Principles (SOSP '19)},
+  year      = {2019},
+  pages     = {114--130},
+  publisher = {ACM},
+  doi       = {10.1145/3341301.3359645}
+}
+
+% (✓) Uzor za statistiku kad determinizam nije moguć.
+@inproceedings{meng2023mallory,
+  author    = {Meng, Ruijie and Pîrlea, George and Roychoudhury, Abhik and Sergey, Ilya},
+  title     = {Greybox Fuzzing of Distributed Systems},
+  booktitle = {Proceedings of the 2023 ACM SIGSAC Conference on Computer and Communications Security (CCS '23)},
+  year      = {2023},
+  pages     = {1615--1629},
+  address   = {Copenhagen, Denmark},
+  publisher = {ACM},
+  doi       = {10.1145/3576915.3623097}
+}
+
+% (✓) Uzor za mjerenje CIJENE obrasca (retry i circuit breaker).
+@inproceedings{costa2022resilience,
+  author    = {Costa, Thiago M. and Vasconcelos, Davi M. and Aderaldo, Carlos M. and
+               Mendonça, Nabor C.},
+  title     = {Avaliação de Desempenho de Dois Padrões de Resiliência
+               para Microsserviços: {Retry} e {Circuit Breaker}},
+  booktitle = {Anais do XL Simpósio Brasileiro de Redes de Computadores e Sistemas Distribuídos (SBRC 2022)},
+  year      = {2022},
+  pages     = {517--530},
+  doi       = {10.5753/sbrc.2022.222363}
+}
+
+% (✓) ResilienceBench — deklarativni okvir za kontrolirano vrednovanje obrazaca.
+@article{aderaldo2025resiliencebench,
+  author  = {Aderaldo, Carlos M. and Costa, Thiago M. and Vasconcelos, Davi M. and
+             Mendonça, Nabor C. and Câmara, Javier and Garlan, David},
+  title   = {A Declarative Approach and Benchmark Tool for Controlled Evaluation
+             of Microservice Resiliency Patterns},
+  journal = {Software: Practice and Experience},
+  year    = {2025},
+  volume  = {55},
+  number  = {1},
+  pages   = {170--192},
+  doi     = {10.1002/spe.3368}
+}
+
+% (✓)
+@inproceedings{aderaldo2025operator,
+  author    = {Aderaldo, Carlos M. and Mendonça, Nabor C.},
+  title     = {{ResilienceBench-Operator}: A {Kubernetes} Extension for Orchestrating
+               Resilience Experiments on Microservice Applications},
+  booktitle = {Anais do XXXIX Simpósio Brasileiro de Engenharia de Software (SBES 2025)},
+  year      = {2025},
+  pages     = {983--989},
+  doi       = {10.5753/sbes.2025.11566}
+}
+
+% (✓) Injekcija kvarova na granici prema bazi + vizualizacija.
+@inproceedings{assad2024database,
+  author    = {Assad, Mohammed and Meiklejohn, Christopher S. and Miller, Heather and Krusche, Stephan},
+  title     = {Can My Microservice Tolerate an Unreliable Database?
+               Resilience Testing with Fault Injection and Visualization},
+  booktitle = {Proceedings of the 2024 IEEE/ACM 46th International Conference on Software Engineering: Companion Proceedings (ICSE-Companion '24)},
+  year      = {2024},
+  pages     = {54--58},
+  publisher = {ACM},
+  doi       = {10.1145/3639478.3640021}
+}
+
+% (✓) Pojmovni okvir za resilience benchmarking.
+@incollection{vieira2012resilience,
+  author    = {Vieira, Marco and Madeira, Henrique and Sachs, Kai and Kounev, Samuel},
+  title     = {Resilience Benchmarking},
+  booktitle = {Resilience Assessment and Evaluation of Computing Systems},
+  editor    = {Wolter, Katinka and Avritzer, Alberto and Vieira, Marco and van Moorsel, Aad},
+  year      = {2012},
+  pages     = {283--301},
+  address   = {Berlin, Heidelberg},
+  publisher = {Springer},
+  doi       = {10.1007/978-3-642-29032-9_14}
+}
+
+% (✓)(!) Survey injekcije softverskih kvarova. Plaćeni pristup — potvrđeni su
+%        samo metapodaci i sažetak, puni tekst NIJE pročitan.
+@article{natella2016faultinjection,
+  author  = {Natella, Roberto and Cotroneo, Domenico and Madeira, Henrique S.},
+  title   = {Assessing Dependability with Software Fault Injection: A Survey},
+  journal = {ACM Computing Surveys},
+  year    = {2016},
+  volume  = {48},
+  number  = {3},
+  doi     = {10.1145/2841425},
+  note    = {članak br. 44. NEPROVJERENO: puni tekst nije pročitan (plaćeni pristup)}
+}
+
+% (✓) Klasična taksonomija tehnika i alata za injekciju kvarova.
+@article{hsueh1997faultinjection,
+  author  = {Hsueh, Mei-Chen and Tsai, Timothy K. and Iyer, Ravishankar K.},
+  title   = {Fault Injection Techniques and Tools},
+  journal = {Computer},
+  year    = {1997},
+  volume  = {30},
+  number  = {4},
+  pages   = {75--82},
+  doi     = {10.1109/2.585157}
+}
+
+% (✓) Primarni izvor za chaos engineering kao metodu.
+@article{basiri2016chaos,
+  author  = {Basiri, Ali and Behnam, Niosha and de Rooij, Ruud and Hochstein, Lorin
+             and Kosewski, Luke and Reynolds, Justin and Rosenthal, Casey},
+  title   = {Chaos Engineering},
+  journal = {IEEE Software},
+  year    = {2016},
+  volume  = {33},
+  number  = {3},
+  pages   = {35--41},
+  doi     = {10.1109/MS.2016.60}
+}
+
+% (✓) „Kritičan infrastrukturni PROCES" — okvir se dobro preslikava na fiskalizaciju.
+@article{dedousis2023resilience,
+  author  = {Dedousis, Panagiotis and Stergiopoulos, George
+             and Arampatzis, George and Gritzalis, Dimitris},
+  title   = {Enhancing Operational Resilience of Critical Infrastructure Processes
+             Through Chaos Engineering},
+  journal = {IEEE Access},
+  year    = {2023},
+  volume  = {11},
+  pages   = {106172--106189},
+  doi     = {10.1109/ACCESS.2023.3316028}
+}
+
+% (✓)(!) Nema DOI-ja ni raspona stranica u dostupnim registrima — polja izostavljena.
+@inproceedings{vanhoorn2018orcas,
+  author    = {van Hoorn, André and Aleti, Aldeida and Düllmann, Thomas F. and Pitakrat, Teerat},
+  title     = {{ORCAS}: Efficient Resilience Benchmarking of Microservice Architectures},
+  booktitle = {2018 IEEE International Symposium on Software Reliability Engineering Workshops (ISSREW)},
+  year      = {2018},
+  publisher = {IEEE},
+  note      = {NEPROVJERENO: DOI i raspon stranica nisu potvrđeni}
+}
+
+% (✓) Orákul koji izvodi anomalije iz opažanja — uzor za orákul evaluacije.
+@article{kingsbury2021elle,
+  author  = {Kingsbury, Kyle and Alvaro, Peter},
+  title   = {Elle: Inferring Isolation Anomalies from Experimental Observations},
+  journal = {Proceedings of the VLDB Endowment},
+  year    = {2021},
+  volume  = {14},
+  number  = {3},
+  pages   = {268--280},
+  doi     = {10.14778/3430915.3430918}
+}
+
+% (✓)(!) Injekcija kvarova u posrednike poruka. Puni tekst NIJE pročitan —
+%        broj ponavljanja i metrike nisu potvrđeni.
+@inproceedings{duarte2022selfhealing,
+  author    = {Duarte, Miguel and Dias, João Pedro and Ferreira, Hugo Sereno and Restivo, André},
+  title     = {Evaluation of {IoT} Self-Healing Mechanisms Using Fault-Injection in Message Brokers},
+  booktitle = {Proceedings of the 4th International Workshop on Software Engineering Research and Practice for the IoT (SERP4IoT '22)},
+  year      = {2022},
+  pages     = {9--16},
+  publisher = {ACM},
+  doi       = {10.1145/3528227.3528567},
+  note      = {NEPROVJERENO: puni tekst nije pročitan}
+}
+
+
+% ============================================================
+%  HRVATSKI I REGIONALNI IZVORI
+% ============================================================
+
+% (✓)
+@thesis{sudec2023fiskalni,
+  author      = {Sudec, Karlo},
+  title       = {Aplikacija za upravljanje fiskalnim računima u mikroservisnoj arhitekturi
+                 izrađena korištenjem platforme {Kubernetes}},
+  type        = {Diplomski rad},
+  institution = {Sveučilište u Zagrebu, Fakultet elektrotehnike i računarstva},
+  year        = {2023},
+  url         = {https://urn.nsk.hr/urn:nbn:hr:168:320597},
+  urldate     = {2026-08-11}
+}
+
+% (✓)
+@thesis{dudakovic2022obrasci,
+  author      = {Dudaković, Timon},
+  title       = {Komunikacijski obrasci u mikroservisnoj arhitekturi},
+  type        = {Diplomski rad},
+  institution = {Sveučilište Jurja Dobrile u Puli, Fakultet informatike},
+  year        = {2022},
+  url         = {https://repozitorij.unipu.hr/object/unipu:7227},
+  urldate     = {2026-08-11}
+}
+
+% (✓)
+@thesis{vukmanovic2013soa,
+  author      = {Vukmanović, Duško},
+  title       = {Radni okvir za rukovanje pogreškama kao čimbenik smanjenja rizika
+                 u sustavima uslužno usmjerene arhitekture},
+  type        = {Doktorski rad},
+  institution = {Sveučilište u Zagrebu, Fakultet elektrotehnike i računarstva},
+  year        = {2013},
+  url         = {https://repozitorij.fer.unizg.hr/object/fer:5042},
+  urldate     = {2026-08-11}
+}
+
+% (✓)
+@thesis{djakovic2023servisnamreza,
+  author      = {Đaković, Robert},
+  title       = {Implementacija servisne mreže u modernim mikroservisnim arhitekturama},
+  type        = {Diplomski rad},
+  institution = {Sveučilište u Zagrebu, Fakultet elektrotehnike i računarstva},
+  year        = {2023},
+  url         = {https://urn.nsk.hr/urn:nbn:hr:168:550605},
+  urldate     = {2026-08-11}
+}
+
+% (✓) Fiskalizacija 1.0 iz inženjerske perspektive.
+@article{mikac2013android,
+  author  = {Mikac, Matija and Hižak, Dražen},
+  title   = {O izvedbi postupka fiskalizacije računa na {Android} platformi},
+  journal = {Tehnički glasnik},
+  year    = {2013},
+  volume  = {7},
+  number  = {3},
+  pages   = {296--301},
+  url     = {https://hrcak.srce.hr/clanak/161430},
+  urldate = {2026-08-11}
+}
+
+% ============================================================
+%  Dopuna nakon provjere verzije AS4 profila (2026-08-12).
+%  Ovi unosi su nastali nakon glavnog spajanja bibliografije, pa nisu
+%  bili u njemu. Izvor: bilješke o provjeri verzije AS4 profila.
+% ============================================================
+
+% (✓) Bazni profil hrvatskog eRačun-AS4 profila. NE miješati s CEF AS4 v1.14,
+%     koji je bazni profil Peppol AS4 v2.0.3 — hrvatski i Peppolov složaj granaju
+%     se na različite verzije istog CEF profila.
+%     Izdavatelj v1.15 označava kao "Obsoleted by eDelivery AS4 - 1.16".
+@techreport{cef2020as4v115,
+  author      = {{European Commission}},
+  title       = {eDelivery {AS4} --- 1.15},
+  institution = {European Commission, {DIGITAL} (ex-{CEF})},
+  type        = {eDelivery Specification},
+  version     = {1.15},
+  date        = {2020-11-11},
+  url         = {https://ec.europa.eu/digital-building-blocks/wikis/display/DIGITAL/eDelivery+AS4+-+1.15},
+  urldate     = {2026-08-12}
+}
+
+% (✓) Sloj otkrivanja adrese — DNS/U-NAPTR. Verzija i datum potvrđeni dvostruko
+%     (povijest promjena + CreationDate = 2025-10-09). Sadrži shemu 9934 za OIB.
+@techreport{pu2025ams,
+  author      = {{Ministarstvo financija, Porezna uprava}},
+  title       = {Tehnički standardi i specifikacija povezivanja ---
+                 Adresar metapodatkovnih servisa ({AMS})},
+  institution = {Ministarstvo financija Republike Hrvatske, Porezna uprava},
+  type        = {Tehnička specifikacija},
+  version     = {1.4},
+  date        = {2025-10-09},
+  note        = {10 str. Domena \texttt{ams.porezna-uprava.hr}; U-NAPTR po {RFC} 2915},
+  url         = {https://porezna.gov.hr/fiskalizacija/api/dokumenti/142},
+  urldate     = {2026-08-12}
+}
+
+% (✓) Sloj otkrivanja adrese — REST upit za krajnju točku. Verzija i datum
+%     potvrđeni dvostruko (povijest promjena + CreationDate = 2025-10-08).
+@techreport{pu2025mps,
+  author      = {{Ministarstvo financija, Porezna uprava}},
+  title       = {Tehnički standardi i specifikacija povezivanja ---
+                 Metapodatkovni servis ({MPS})},
+  institution = {Ministarstvo financija Republike Hrvatske, Porezna uprava},
+  type        = {Tehnička specifikacija},
+  version     = {1.3},
+  date        = {2025-10-08},
+  note        = {22 str. Pojednostavljeni model u odnosu na {BDXL}:
+                 jedan proces i jedan tip dokumenta},
+  url         = {https://porezna.gov.hr/fiskalizacija/api/dokumenti/141},
+  urldate     = {2026-08-12}
+}
+
+% (✓) Bazni standard na kojem počivaju AMS i MPS.
+%     ⚠ Verzija je 1.6, a NE "1.61" — "1" je oznaka fusnote spljoštena pri
+%     izvlačenju teksta iz PDF-a. Verzija 1.61 ne postoji.
+@techreport{cef2018bdxl,
+  author      = {{European Commission}},
+  title       = {eDelivery {BDXL} --- 1.6},
+  institution = {European Commission, {DIGITAL} (ex-{CEF})},
+  type        = {eDelivery Community Specification},
+  version     = {1.6},
+  date        = {2018-05-30},
+  note        = {Izdavatelj ga označava kao ,,Obsoleted by eDelivery {BDXL} - 2.0''},
+  url         = {https://ec.europa.eu/digital-building-blocks/wikis/display/DIGITAL/eDelivery+BDXL+1.6},
+  urldate     = {2026-08-12}
 }
