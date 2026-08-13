@@ -2,63 +2,63 @@
 
 declare(strict_types=1);
 
-namespace App\Domena;
+namespace App\Domain;
 
 /**
  * Tumacenje odgovora posrednika uz zapisanu namjeru.
  *
- * Ovo je jezgra slucaja B2 i, uz Automat, najvazniji razred prototipa.
+ * Ovo je jezgra slucaja B2 i, uz StateMachine, najvazniji razred prototipa.
  *
  * Sifra S008 znaci istovremeno "tvoj ponovni pokusaj je prosao" i "tvoj
  * propisani ispravak je odbijen". Poruka ne nosi polje koje bi to razlikovalo,
  * pa razlikovanje mora biti LOKALNO. Poslovni sustav zna nesto sto Sustav za
  * fiskalizaciju ne zna: zna je li poslao ponovni pokusaj ili ispravak.
  *
- * Metoda prima $namjera kao nullable upravo zato da se moze pokazati sto se
+ * Metoda prima $intent kao nullable upravo zato da se moze pokazati sto se
  * dogodi kada zapisa nema. Tada povratna vrijednost nije pogodena nego
  * dvoznacna, i to je nalaz, ne kvar prototipa.
  */
-final class TumacOdgovora
+final class ResponseInterpreter
 {
-    public function protumaci(Odgovor $odgovor, ?Namjera $namjera): Tumacenje
+    public function interpret(IntermediaryResponse $response, ?Intent $intent): Interpretation
     {
-        return match ($odgovor) {
-            Odgovor::USPJEH => Tumacenje::jednoznacno(
-                Poticaj::POTVRDA,
+        return match ($response) {
+            IntermediaryResponse::SUCCESS => Interpretation::unambiguous(
+                Trigger::CONFIRMATION,
                 'posrednik je potvrdio primitak',
             ),
 
-            // Izostanak odgovora ne pomice automat. Dokument ostaje predan i
+            // Izostanak odgovora ne pomice automat. Dokument ostaje poslan i
             // nepotvrden, sto je tocan opis onoga sto sustav zna.
-            Odgovor::ISTEK_VREMENA => Tumacenje::dvoznacno(
+            IntermediaryResponse::TIMEOUT => Interpretation::ambiguous(
                 'odgovor nije stigao; nije poznato je li poruka obradena',
             ),
 
-            Odgovor::S008 => $this->protumaciS008($namjera),
+            IntermediaryResponse::S008 => $this->interpretS008($intent),
         };
     }
 
-    private function protumaciS008(?Namjera $namjera): Tumacenje
+    private function interpretS008(?Intent $intent): Interpretation
     {
-        return match ($namjera) {
-            Namjera::PONOVNI_POKUSAJ => Tumacenje::jednoznacno(
-                Poticaj::POTVRDA_IZ_S008,
+        return match ($intent) {
+            Intent::RETRY => Interpretation::unambiguous(
+                Trigger::CONFIRMATION_FROM_S008,
                 'S008 uz zapisan ponovni pokusaj dokazuje da je raniji pokusaj prosao',
             ),
 
-            Namjera::ISPRAVAK => Tumacenje::jednoznacno(
-                Poticaj::ODBIJENICA_IZ_S008,
+            Intent::CORRECTION => Interpretation::unambiguous(
+                Trigger::REJECTION_FROM_S008,
                 'S008 uz zapisan ispravak znaci odbijenicu propisanog tijeka ispravka',
             ),
 
             // Prvo slanje koje odmah dobije S008 znaci da je isti slozeni
             // identifikator vec fiskaliziran, a ovaj ga posiljatelj nije
             // poslao. To je nalaz koji trazi ljudsko postupanje.
-            Namjera::PRVO_SLANJE => Tumacenje::dvoznacno(
+            Intent::FIRST_SEND => Interpretation::ambiguous(
                 'S008 na prvo slanje: slozeni identifikator vec postoji, izvor nije poznat',
             ),
 
-            null => Tumacenje::dvoznacno(
+            null => Interpretation::ambiguous(
                 'S008 bez zapisane namjere: ista sifra znaci i potvrdu i odbijenicu',
             ),
         };

@@ -21,24 +21,24 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('dogadjaji', function (Blueprint $tablica): void {
-            $tablica->id();
-            $tablica->foreignId('predaja_id')->constrained('predaje')->cascadeOnDelete();
+        Schema::create('audit_entries', function (Blueprint $table): void {
+            $table->id();
+            $table->foreignId('handover_id')->constrained()->cascadeOnDelete();
 
-            $tablica->unsignedInteger('redni_broj');
-            $tablica->string('naziv');
-            $tablica->string('stanje_prije')->nullable();
-            $tablica->string('stanje_poslije')->nullable();
-            $tablica->boolean('jednoznacno')->default(true);
-            $tablica->text('obrazlozenje')->nullable();
-            $tablica->timestamp('nastao_u');
+            $table->unsignedInteger('sequence');
+            $table->string('name');
+            $table->string('state_before')->nullable();
+            $table->string('state_after')->nullable();
+            $table->boolean('unambiguous')->default(true);
+            $table->text('reason')->nullable();
+            $table->timestamp('occurred_at');
 
-            $tablica->unique(['predaja_id', 'redni_broj']);
+            $table->unique(['handover_id', 'sequence']);
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('dogadjaji');
+        Schema::dropIfExists('audit_entries');
     }
 };

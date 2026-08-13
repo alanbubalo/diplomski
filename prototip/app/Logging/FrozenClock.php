@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Dnevnik;
+namespace App\Logging;
 
 use Carbon\CarbonImmutable;
 use Monolog\LogRecord;
@@ -15,13 +15,13 @@ use Monolog\LogRecord;
  * Nesklad nije kvar, ali je smetnja pri citanju, jer isti dogadaj u dva ispisa
  * nosi dva vremena.
  *
- * Kada sat nije zamrznut, CarbonImmutable::now() vraca stvarno vrijeme, pa se
- * u pogonu nista ne mijenja.
+ * Kada sat nije zamrznut, CarbonImmutable::now() vraca stvarno vrijeme, pa se u
+ * pogonu nista ne mijenja.
  */
-final class ZamrznutiSat
+final class FrozenClock
 {
-    public function __invoke(LogRecord $zapis): LogRecord
+    public function __invoke(LogRecord $record): LogRecord
     {
-        return $zapis->with(datetime: CarbonImmutable::now()->toDateTimeImmutable());
+        return $record->with(datetime: CarbonImmutable::now()->toDateTimeImmutable());
     }
 }

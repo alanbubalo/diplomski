@@ -18,7 +18,7 @@ obrazložiti.
 Bez UBL-a, Schematrona, AS4, XAdES-a i PKI-ja, otkrivanja adrese primatelja,
 chaos enginea, orkestratora i mjerenja latencije.
 
-Posrednik je **stub**: na naredbu vraća `uspjeh`, `istek-vremena` ili `S008`.
+Posrednik je **stub**: na naredbu vraća `success`, `timeout` ili `s008`.
 Vjerodostojna izvedba posrednika ne bi dodala nijedan nalaz, a udvostručila bi
 opseg. Predmet je rukovanje greškom, ne sukladnost.
 
@@ -34,30 +34,45 @@ Tri scenarija, svaki u dvije izvedbe. Razlika je u jednoj jedinoj stvari:
 piše li se zapis namjere **prije** predaje ili **poslije** odgovora.
 
 ```bash
-php artisan scenarij b1                 # istek vremena bez odgovora
-php artisan scenarij e1                 # predaja bez potvrde
-php artisan scenarij b2                 # ista šifra S008 za dva ishoda
+php artisan scenario b1                          # istek vremena bez odgovora
+php artisan scenario e1                          # predaja bez potvrde
+php artisan scenario b2                          # ista šifra S008 za dva ishoda
 
-php artisan scenarij b2 --bez-zapisa    # ista stvar bez odlaznog pretinca
+php artisan scenario b2 --without-intent-record  # ista stvar bez odlaznog pretinca
 
-php artisan stanje                      # ispis završnog stanja
-php artisan test                        # 23 tvrdnje
+php artisan state                                # ispis završnog stanja
+php artisan test                                 # 23 tvrdnje
 ```
 
 Sat je pri scenariju fiksiran na `2026-09-01 09:00:00` da ispis bude ponovljiv.
 Isti sat dobiva i dnevnik, pa se baza i `storage/logs/laravel.log` slažu.
 
+## Jezik
+
+**Kod je engleski, komentari i ispisi hrvatski.** Ispisi su dokazni materijal za
+rad na hrvatskom, pa ostaju u jeziku rada. Vrijednosti enuma su engleske jer
+završavaju u bazi, a stanja uz sebe nose i hrvatski opis, pa dokazna tablica
+pokazuje jedno i drugo.
+
+| Kod | U radu |
+|---|---|
+| `sent-unconfirmed` | poslano, nepotvrđeno |
+| `correction-rejected` | odbijen ispravak |
+| `deadline-expired` | rok istekao |
+| `Handover` | predaja |
+| `AuditEntry` | evidencija |
+
 ## Gdje je što
 
 | Putanja | Sadržaj |
 |---|---|
-| `app/Domena/Stanje.php` | automat, uključujući stanje `predano-nepotvrdeno` koje propis ne imenuje |
-| `app/Domena/Automat.php` | dopušteni prijelazi; **rok kao uvjet nad prijelazom** |
-| `app/Domena/TumacOdgovora.php` | jezgra slučaja B2: ista šifra, dva značenja |
-| `app/Domena/RasporedPonavljanja.php` | raspored vođen preostalim rokom, uz eksponencijalni odmak za usporedbu |
-| `app/Domena/Rok.php` | pet radnih dana od nastupa, čl. 49. st. 1. |
-| `app/Servisi/Predavatelj.php` | odlazni pretinac; obje izvedbe |
-| `database/migrations/` | tri tablice: dokument, predaja, evidencija |
+| `app/Domain/State.php` | stanja, uključujući `sent-unconfirmed` koje propis ne imenuje |
+| `app/Domain/StateMachine.php` | dopušteni prijelazi; **rok kao uvjet nad prijelazom** |
+| `app/Domain/ResponseInterpreter.php` | jezgra slučaja B2: ista šifra, dva značenja |
+| `app/Domain/RetrySchedule.php` | raspored vođen preostalim rokom, uz eksponencijalni odmak za usporedbu |
+| `app/Domain/Deadline.php` | pet radnih dana od nastupa, čl. 49. st. 1. |
+| `app/Services/HandoverService.php` | odlazni pretinac; obje izvedbe |
+| `database/migrations/` | tri tablice: `invoices`, `handovers`, `audit_entries` |
 
 ## Granica prema kolegijskom projektu
 
