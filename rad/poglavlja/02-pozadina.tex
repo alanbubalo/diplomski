@@ -26,52 +26,50 @@
 %   Zaključna rečenica odjeljka postavlja očekivanje koje 2.2 iznevjerava.
 
 Fiskalizacija je postupak kojim porezna uprava dobiva podatke o
-transakcijama u trenutku njihova nastanka, umjesto naknadno kroz porezne
-prijave. Hrvatski sustav izvorno se odnosio na promet u krajnjoj
-potrošnji --- na račune koje poslovni subjekt izdaje potrošaču
-(\strani{poslovanje prema potrošaču}{business-to-consumer}, B2C).
+transakcijama u trenutku njihova nastanka. Prije nje podaci su dolazili
+naknadno, kroz porezne prijave. Hrvatski sustav izvorno je pokrivao samo
+promet u krajnjoj potrošnji, to jest račune koje poslovni subjekt izdaje
+potrošaču (\strani{poslovanje prema potrošaču}{business-to-consumer}, B2C).
 
 \todo{Jedan odlomak o motivaciji: zašto države uvode fiskalizaciju
 (porezni jaz, siva ekonomija). Izvor: \cite{pires2023fiscalization},
-IMF How To Notes --- pročitati prije pisanja.}
+IMF How To Notes. Pročitati prije pisanja.}
 
 Mehanizam B2C fiskalizacije propisan je Zakonom o
 fiskalizaciji\cite{nn2025zakonfiskalizacija}. Obveznik pri izdavanju
-svakog računa elektronički potpisuje elemente računa i dostavlja ih
+svakog računa elektronički potpisuje elemente računa. Zatim ih dostavlja
 Sustavu za fiskalizaciju putem uspostavljene elektroničke veze
 (čl.~15.~st.~1.). Sustav provjerava jesu li dostavljeni svi propisani
-elementi i jesu li potpisani ispravnim certifikatom (st.~2.), a ako jesu,
-\emph{vraća} obvezniku Jedinstveni identifikator računa (JIR)
-(st.~3.). Ako ga ne može odrediti, vraća poruku o odbijanju (st.~4.).
+elementi i jesu li potpisani ispravnim certifikatom (st.~2.). Ako jesu,
+vraća obvezniku Jedinstveni identifikator računa, JIR (st.~3.). Ako JIR
+ne može odrediti, vraća poruku o odbijanju (st.~4.).
 
-Ta je razmjena važna za ovaj rad zbog jedne osobine: \textbf{obveznik na
-kraju postupka ima artefakt} --- JIR --- kojim dokazuje da je obvezu ispunio.
-Sustav mu je odgovorio, i odgovor ima pravni učinak.
+Za ovaj rad važna je jedna osobina te razmjene. Obveznik na kraju
+postupka ima artefakt kojim dokazuje da je obvezu ispunio. Sustav mu je
+odgovorio, a odgovor ima pravni učinak.
 
-Zakon predviđa i što se događa kada veza ne radi. U slučaju prekida veze
-obveznik izdaje račune bez JIR-a (čl.~21.~st.~1.), dužan je u roku od
-\emph{dva radna dana} uspostaviti vezu i dostaviti elemente svih tako
-izdanih računa (st.~2.), a zatim slijedi odredba koja je za ovaj rad
-ključna:
+Zakon uređuje i slučaj kada veza ne radi. Obveznik tada izdaje račune bez
+JIR-a (čl.~21.~st.~1.). U roku od dva radna dana dužan je uspostaviti
+vezu i dostaviti elemente svih tako izdanih računa (st.~2.). Slijedi
+odredba koja je za ovaj rad ključna:
 
 \begin{quote}
-„Za račune izdane prema stavku 1.\ ovoga članka \textbf{smatra se da je
-ispravno proveden postupak fiskalizacije računa} ako se postupi u roku
-propisanom stavkom 2.\ ovoga članka.“ \hfill (čl.~21.~st.~3.)
+„Za račune izdane prema stavku 1.\ ovoga članka smatra se da je ispravno
+proveden postupak fiskalizacije računa ako se postupi u roku propisanom
+stavkom 2.\ ovoga članka.“ \hfill (čl.~21.~st.~3.)
 \end{quote}
 
-Zakon dakle ne propisuje samo rok, nego i \emph{pravni učinak} njegova
-poštivanja: zakašnjela dostava unutar sanacijskog roka izjednačena je s
-pravovremenom. Naposljetku, za slučaj potpunog prestanka rada uređaja
-propisan je i izvanmrežni izlaz --- uvezana knjiga računa ovjerena putem
-sustava ePorezna (čl.~22.).
+Zakon dakle ne propisuje samo rok. Propisuje i pravni učinak njegova
+poštivanja. Zakašnjela dostava unutar sanacijskog roka izjednačena je s
+pravovremenom. Za slučaj potpunog prestanka rada uređaja propisan je i
+izvanmrežni izlaz, uvezana knjiga računa ovjerena putem sustava ePorezna
+(čl.~22.).
 
-B2C sustav time odgovara na tri pitanja koja se u svakom distribuiranom
-postupku prije ili kasnije postave: \emph{je li poruka stigla} (JIR),
-\emph{što ako veza padne} (fikcija urednosti), i \emph{što ako sve
-prestane raditi} (papir). \textbf{Poglavlje \ref{sec:fiskalizacija-2-0}
-pokazuje da fiskalizacija eRačuna, propisana istim zakonom, ne odgovara
-ni na jedno od njih.}
+B2C sustav time odgovara na tri pitanja. Je li poruka stigla? Odgovara
+JIR. Što ako veza padne? Odgovara fikcija urednosti. Što ako sve prestane
+raditi? Odgovara papir. Fiskalizacija eRačuna propisana je istim zakonom,
+ali ne odgovara ni na jedno od tih pitanja. To pokazuje
+odjeljak~\ref{sec:fiskalizacija-2-0}.
 
 % ------------------------------------------------------------
 \section{Fiskalizacija 2.0}
