@@ -1,8 +1,82 @@
 % ============================================================
-%  7. Pregled implementacije
-%  Odjeljke definira: magla
+%  7. Ilustrativni prototip
+%  Budžet: ~2 str. Pogl. 7 i 8 zajedno ≈ 12% opsega.
+%  Struktura zaključana 2026-08-13.
+%
+%  ⚠ KOSTUR PREPISAN 2026-08-13. Raniji je bio ZASTARJEO: govorio je o
+%    ljestvici brancheva, harnessu i tablicama generiranim iz mjerenja.
+%    Sve troje je izrezano prelaskom na ravnotežu (D). Ne vraćati.
+%
+%  ULOGA POGLAVLJA, JEDNA REČENICA: prototip postoji da bi ćelije matrice
+%  u pogl. 8 iz razine (c) prosudba prešle u razinu (b) pokazano.
+%  NE služi za mjerenje. NE dokazuje izvedivost proizvoda.
 % ============================================================
-\chapter{Pregled implementacije}
+\chapter{Ilustrativni prototip}
 \label{ch:implementacija}
 
-\todo{Testbed: svc, mock posrednik, harness. Ljestvica brancheva — delta po uzorku (git diff naive..resilient).}
+\todo{Uvodni odlomak: čemu prototip služi i čemu izrijekom ne služi.
+Napisati da je namjerno malen i da je to metodološki izbor, ne
+ograničenje resursa.}
+
+% ------------------------------------------------------------
+\section{Opseg i granice}
+\label{sec:opseg-prototipa}
+% ⚠ TVRDA GRANICA (2026-08-12).
+%   Ovo se piše PRVO, prije opisa, da čitatelj zna što ne traži dalje.
+%
+%   POKRIVA: isključivo granicu C1↔C2 iz odjeljka 6.1.
+%   NEMA: UBL, Schematron, AS4, XAdES/PKI, otkrivanje adrese,
+%         chaos engine, orkestrator, perzistentne metrike, mjerenje latencije.
+%   Posrednik je STUB: na naredbu vraća uspjeh, timeout ili S008.
+%
+%   Stack: Laravel, KONZOLNO (odluka Alana 2026-08-13). Artisan naredbe,
+%   nekoliko klasa, SQLite. Bez HTTP-a, Bladea, autentikacije, frontenda.
+%   Framework nije rizik; opseg jest.
+%
+%   ★ Obrazloženje koje MORA stajati u tekstu: manji artefakt s jasnom
+%     granicom brani se bolje od većeg. Prototip pokazuje rukovanje
+%     greškom, ne sukladnost — a sukladnost je ono što bi ga napuhalo.
+
+\todo{Što prototip pokriva i što izrijekom ne pokriva; zašto je posrednik
+stub; zašto je malen opseg metodološki ispravan.}
+
+% ------------------------------------------------------------
+\section{Model stanja i ključne komponente}
+\label{sec:komponente}
+% Izvodi se IZ 6.3, ne izmišlja ovdje:
+%   - automat sa stanjima, uključujući "poslano, nepotvrđeno" (Schneider)
+%   - odlazni pretinac: zapis namjere u istoj transakciji kao dokument
+%   - zapis namjere razlikuje ponovni pokušaj od ispravka → razrješava B2
+%   - ponavljanje čiji raspored vodi PREOSTALI ROK, ne fiksni odmak
+%
+% SLIKA: dijagram automata u TikZ-u. Stanja i prijelazi, rok kao UVJET
+%   nad prijelazom, ne kao stanje (v. napetost iz 5.3).
+%
+% LISTINGS: dvije, najviše tri. Kandidati: enum stanja, i mjesto gdje se
+%   tumači S008 uz zapisanu namjeru. Ne lijepiti cijele klase.
+
+\todo{Dijagram automata; enum stanja; odlazni pretinac; mjesto na kojem se
+S008 tumači uz zapisanu namjeru. Najviše tri listinga.}
+
+% ------------------------------------------------------------
+\section{Scenariji i ishodi}
+\label{sec:scenariji}
+% TRI SCENARIJA, sva na granici C1↔C2:
+%   1. B1 — posrednik ne odgovara → dokument završi u IMENOVANOM stanju
+%           "poslano, nepotvrđeno", ne u rupi
+%   2. E1 — predaja bez potvrde → bez zapisa namjere ERP ne zna je li
+%           račun ušao u tijek; sa zapisom zna
+%   3. B2 — odgovor S008 → bez zapisa dvoznačan, sa zapisom jednoznačan
+%           pri tumačenju
+%
+% DOKAZ: ispis završnog stanja + kratak isječak
+%   dnevnika, oboje kao lstlisting. Tablica scenarij → završno stanje.
+%   BEZ SNIMKI ZASLONA — nema sučelja, pokazivale bi terminal.
+%
+% ★ SVAKI scenarij mora završiti rečenicom koja imenuje ĆELIJU matrice
+%   koju popunjava, da veza s pogl. 8 bude eksplicitna. Bez toga pogl. 7
+%   visi kao demonstracija bez svrhe.
+
+\todo{Tri scenarija, svaki s ispisom završnog stanja i isječkom dnevnika.
+Tablica scenarij → završno stanje. Uz svaki imenovati ćeliju iz
+poglavlja~\ref{ch:evaluacija} koju popunjava.}

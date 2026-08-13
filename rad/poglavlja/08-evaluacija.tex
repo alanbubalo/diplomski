@@ -1,8 +1,118 @@
 % ============================================================
 %  8. Evaluacija
-%  Odjeljke definira: magla — graduira nakon mjerenja
+%  Budžet: ~4 str. ODGOVARA RQ2, doprinosi RQ3.
+%  Struktura zaključana 2026-08-13.
+%
+%  ⚠ KOSTUR PREPISAN 2026-08-13. Raniji je bio ZASTARJEO: govorio je o
+%    "presudi oraclea", "stepenicama ljestvice" i tablicama koje se
+%    GENERIRAJU iz harnessa. Nema harnessa, nema ljestvice, nema mjerenja.
+%    Izrezano prelaskom na (D). Ne vraćati.
 % ============================================================
 \chapter{Evaluacija}
 \label{ch:evaluacija}
 
-\todo{Scenariji kvarova, presuda oraclea, rezultati po stepenicama ljestvice. Tablice se GENERIRAJU iz harnessa, ne prepisuju rukom.}
+\todo{Uvodni odlomak: zašto je evaluacija analitička i po kojem se pravilu
+čita matrica. Ne ispričavati se ovdje; ograničenja idu u poglavlje 9.}
+
+% ------------------------------------------------------------
+\section{Metoda}
+\label{sec:metoda-evaluacije}
+% Budžet: ~1,5 str.
+%
+% MORA SADRŽAVATI, jer bez toga je matrica mišljenje:
+%
+% 1. RJEČNIK ĆELIJE — točno jedna od pet vrijednosti:
+%      uklanja · sužava · detektira · ne pomaže · POGORŠAVA
+%    ⚠ "pogoršava" mora biti popunjeno barem jednom, inače je matrica
+%      navijačka i tako će je pročitati povjerenstvo.
+%    "uklanja" je očekivano rijetko do nikad — to je POSLJEDICA TEZE,
+%    ne neuspjeh. Za regulatorno nesvodive najviše dostižno je "detektira".
+%
+% 2. OBLIK TVRDNJE — uvjetna, po uzoru na Filibuster [meiklejohn2021filibuster]:
+%      "Ako nastupi način otkazivanja F, uz obrazac O završno stanje mora biti S."
+%    NE: "retry pomaže kod B1."
+%    9 uvjetnih tvrdnji kod njih je pokrilo 1.606 testova.
+%
+% 3. RAZINA TVRDNJE — obavezna oznaka uz svaku ćeliju:
+%      (a) propis ili svojstvo dokazano u literaturi  → citat
+%      (b) konstrukcija prototipa                     → pokazati (pogl. 7)
+%      (c) PROSUDBA AUTORA                            → OZNAČITI KAO TAKVU
+%    Sve tri su dopuštene. Prešućena (c) je ono što pada na obrani.
+%
+% OPRAVDANJE METODE — dva citata koja je nose:
+%   [chen2020cofi] CoFI, ASE 2020: 67% prijavljenih kvarova bilo je lažno
+%     pozitivno, jer "checkers assert operation success while the operation
+%     has to fail"; automatsko generiranje oraclea je OTVOREN PROBLEM.
+%     → oracle izveden iz propisa odgovara na problem koji literatura
+%       sama postavlja; doprinos je ORACLE KAO POJAM, ne implementacija.
+%   [attali2004chilean] formalni model elektroničkog fakturiranja koji
+%     IZRIJEKOM pretpostavlja pouzdane kanale → opravdava zašto matrica postoji.
+%     ⚠ NEPROVJERENO. Tvrdnja dolazi iz ranijih bilježaka, nije potvrđena čitanjem.
+%       Uz to je rad o ČILEANSKOM sustavu, pa ga NE zvati "jedini formalni
+%       model četverokutnog tijeka" dok se to ne provjeri.
+%       I DOI u bibu (10.1109/qest.2004.16) je QEST, a venue je SCCC '04 —
+%       provjeriti prije predaje. Ako se ne provjeri, ovaj citat ISPADA.
+
+\todo{Rječnik ćelije; uvjetni oblik tvrdnje po uzoru na Filibuster; tri
+razine tvrdnje. Opravdanje metode preko CoFI-ja i Attalija.}
+
+% ------------------------------------------------------------
+\section{Matrica pokrivenosti}
+\label{sec:matrica}
+% Budžet: ~2,5 str. OVO ODGOVARA RQ2.
+%
+% RETCI: svih 12 načina otkazivanja iz 6.2 — A1, A2, B1--B4, C1--C3,
+%   D1, D2, E1. NE skupljati po skupinama A--E: B2 i B4 su u istoj
+%   skupini a ponašaju se posve različito, i to bi se izgubilo.
+%
+% STUPCI: šest obrazaca —
+%   istek vremena · ponavljanje svjesno roka · odlazni pretinac i zapis
+%   namjere · automat s imenovanim stanjem · ključ za deduplikaciju · prekidač
+%   Prekidač je unutra da bi se vidjelo "pogoršava".
+%   KOMPENZACIJA NEMA STUPAC — nema predmet ni u jednom retku (v. 5.2 i
+%   6.3). To se kaže jednom rečenicom, ne praznim stupcem.
+%
+% ★ PRAZNA ĆELIJA JE NALAZ. Redak u kojem je pola stupaca prazno pokazuje
+%   RUPU, a rupa je poanta rada. Zato punih 12 redaka.
+%
+% U PROZI se razrađuje ~10 ćelija, ne svih 72:
+%   - sve ćelije "pogoršava"
+%   - B2 x zapis namjere  → ovo je ćelija tipa (b), dokazuje je pogl. 7
+%   - B1 x automat        → imenovanje stanja koje propis ne imenuje
+%   - C1 i C3 retci       → gotovo prazni, i to je odgovor
+%
+% POZNATE ĆELIJE KOJE VEĆ IMAJU PRESUDU (iz 6.3):
+%   prekidač x D1  = POGORŠAVA, razina (c) — rok teče dok je otvoren
+%   prekidač x D2  = sužava, razina (c) — druga granica, ondje ima smisla
+%     ⚠ te dvije ćelije zajedno pokazuju da presuda ovisi o GRANICI,
+%       ne o obrascu. To je precizniji nalaz od ravnog odbacivanja.
+%   B3: ponavljanje cijele skupne poruke = pogoršava (rizik duplikata).
+%     Praktičan izlaz je ODUSTATI OD SKUPNOSTI, jer kardinalnost [1,100]
+%     dopušta i jedan zapis po poruci. Napisati to — mitigacija je
+%     odricanje od značajke sučelja.
+%
+% TABLICA: booktabs, landscape ako ne stane. Kratice u zaglavlju uz
+%   legendu ispod. Razina (a)/(b)/(c) kao indeks uz vrijednost ćelije.
+
+\todo{Matrica 12 x 6 s kratkim ćelijama i oznakom razine; ispod nje proza
+za ćelije koje nešto tvrde. Rečenica o tome zašto kompenzacija nema
+stupac.}
+
+% ------------------------------------------------------------
+\section{Što ostaje nepokriveno}
+\label{sec:nepokriveno}
+% Budžet: ~1 str. Ovo je druga polovica odgovora na RQ2.
+%
+% Čita se IZ matrice, ne dodaje se izvana: skup ćelija u kojima najviša
+% postignuta vrijednost je "detektira" ili "ne pomaže".
+%
+% Očekivano: A1, A2 (propis nalaže), C3 (nema fikcije urednosti),
+%   D1 (kvar države bez produljenja roka), ostatak B2 (izgubljen zapis
+%   namjere). To je skup regulatorno nesvodivih iz 6.2, i poklapanje
+%   NIJE slučajno — ono je provjera da su izvod i evaluacija dosljedni.
+%
+% ★ Ako se skup NE poklopi s onim iz 6.2, negdje je greška. Provjeriti,
+%   ne zagladiti.
+
+\todo{Popis nepokrivenog, izveden iz matrice; provjera da se poklapa sa
+skupom regulatorno nesvodivih iz odjeljka~\ref{sec:failure-modes}.}
