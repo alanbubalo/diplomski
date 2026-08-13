@@ -3,116 +3,223 @@
 %  Budžet: ~4 str. ODGOVARA RQ2, doprinosi RQ3.
 %  Struktura zaključana 2026-08-13.
 %
-%  ⚠ KOSTUR PREPISAN 2026-08-13. Raniji je bio ZASTARJEO: govorio je o
-%    "presudi oraclea", "stepenicama ljestvice" i tablicama koje se
-%    GENERIRAJU iz harnessa. Nema harnessa, nema ljestvice, nema mjerenja.
-%    Izrezano prelaskom na (D). Ne vraćati.
+%  ⚠ KOSTUR PREPISAN 2026-08-13, tekst napisan 2026-08-13.
+%    Raniji kostur je govorio o "presudi oraclea", "stepenicama ljestvice"
+%    i tablicama koje se GENERIRAJU iz harnessa. Nema harnessa, nema
+%    ljestvice, nema mjerenja. Ne vraćati.
+%
+%  ⚠ RAZINA (b) DANA JE SAMO ZA ONO ŠTO PROTOTIP DOISTA POKREĆE.
+%    Prototip vrti B1, B2 i E1 na granici C1↔C2. Slučajevi D1, D2 i C3
+%    imaju isti oblik, ali ih prototip NE izvodi, pa su ondje (c).
+%    Šest ćelija nosi (b). Ne dijeliti (b) po sličnosti mehanizma.
+%
+%  ⚠ attali2004chilean NIJE CITIRAN jer nije provjeren.
+%    Metodu nosi CoFI. Ako se provjeri,
+%    ulazi u 8.1 kao drugi razlog zašto matrica postoji.
 % ============================================================
 \chapter{Evaluacija}
 \label{ch:evaluacija}
 
-\todo{Uvodni odlomak: zašto je evaluacija analitička i po kojem se pravilu
-čita matrica. Ne ispričavati se ovdje; ograničenja idu u poglavlje 9.}
+Poglavlje~\ref{ch:studija} izvelo je dvanaest načina otkazivanja, a
+odjeljak~\ref{sec:dizajn} predložio šest obrazaca. Ostaje pitanje koliko ti
+obrasci doista pokrivaju, i po kojem se postupku takva tvrdnja može provjeriti
+bez mjerenja.
 
 % ------------------------------------------------------------
 \section{Metoda}
 \label{sec:metoda-evaluacije}
-% Budžet: ~1,5 str.
-%
-% MORA SADRŽAVATI, jer bez toga je matrica mišljenje:
-%
-% 1. RJEČNIK ĆELIJE — točno jedna od pet vrijednosti:
-%      uklanja · sužava · detektira · ne pomaže · POGORŠAVA
-%    ⚠ "pogoršava" mora biti popunjeno barem jednom, inače je matrica
-%      navijačka i tako će je pročitati povjerenstvo.
-%    "uklanja" je očekivano rijetko do nikad — to je POSLJEDICA TEZE,
-%    ne neuspjeh. Za regulatorno nesvodive najviše dostižno je "detektira".
-%
-% 2. OBLIK TVRDNJE — uvjetna, po uzoru na Filibuster [meiklejohn2021filibuster]:
-%      "Ako nastupi način otkazivanja F, uz obrazac O završno stanje mora biti S."
-%    NE: "retry pomaže kod B1."
-%    9 uvjetnih tvrdnji kod njih je pokrilo 1.606 testova.
-%
-% 3. RAZINA TVRDNJE — obavezna oznaka uz svaku ćeliju:
-%      (a) propis ili svojstvo dokazano u literaturi  → citat
-%      (b) konstrukcija prototipa                     → pokazati (pogl. 7)
-%      (c) PROSUDBA AUTORA                            → OZNAČITI KAO TAKVU
-%    Sve tri su dopuštene. Prešućena (c) je ono što pada na obrani.
-%
-% OPRAVDANJE METODE — dva citata koja je nose:
-%   [chen2020cofi] CoFI, ASE 2020: 67% prijavljenih kvarova bilo je lažno
-%     pozitivno, jer "checkers assert operation success while the operation
-%     has to fail"; automatsko generiranje oraclea je OTVOREN PROBLEM.
-%     → oracle izveden iz propisa odgovara na problem koji literatura
-%       sama postavlja; doprinos je ORACLE KAO POJAM, ne implementacija.
-%   [attali2004chilean] formalni model elektroničkog fakturiranja koji
-%     IZRIJEKOM pretpostavlja pouzdane kanale → opravdava zašto matrica postoji.
-%     ⚠ NEPROVJERENO. Tvrdnja dolazi iz ranijih bilježaka, nije potvrđena čitanjem.
-%       Uz to je rad o ČILEANSKOM sustavu, pa ga NE zvati "jedini formalni
-%       model četverokutnog tijeka" dok se to ne provjeri.
-%       I DOI u bibu (10.1109/qest.2004.16) je QEST, a venue je SCCC '04 —
-%       provjeriti prije predaje. Ako se ne provjeri, ovaj citat ISPADA.
 
-\todo{Rječnik ćelije; uvjetni oblik tvrdnje po uzoru na Filibuster; tri
-razine tvrdnje. Opravdanje metode preko CoFI-ja i Attalija.}
+Tvrdnja da neki obrazac pomaže nije provjerljiva dok se ne kaže što bi značilo
+da ne pomaže. Automatsko izvođenje takvog mjerila otvoren je problem. CoFI je
+u testovima s ubrizgavanjem kvarova našao da je 67\,\% prijavljenih kvarova
+bilo lažno pozitivno, i to zato što provjere tvrde da je operacija uspjela u
+situacijama u kojima operacija mora
+pasti\cite{chen2020cofi}. Mjerilo izvedeno iz propisa odgovara na taj problem,
+jer propis kaže što je ispravan ishod neovisno o tome što je sustav htio
+postići.
+
+Iz toga slijede tri pravila kojih se ostatak poglavlja drži.
+
+\paragraph{Ćelija nosi jednu od pet vrijednosti.}
+Vrijednosti su \emph{uklanja}, \emph{sužava}, \emph{detektira}, \emph{ne
+pomaže} i \emph{pogoršava}. Značenja su u legendi
+tablice~\ref{tab:matrica}. Kategorija \emph{pogoršava} postoji zato što bi
+matrica bez nje bila navijačka, a obrazac koji na nekoj granici šteti postoji
+i utvrđen je u odjeljku~\ref{sec:dizajn}.
+
+\paragraph{Tvrdnja se piše kao uvjetna.}
+Filibuster mjerilo zapisuje kao uvjetnu tvrdnju oblika „ako je kvar ubrizgan u
+servis A, tada mora vrijediti\ldots“, i devet takvih tvrdnji kod njih je
+pokrilo 1606 testova\cite{meiklejohn2021filibuster}. Ćelija se u prozi
+razrađuje u istom obliku. Ne „ponavljanje pomaže kod B1“, nego: ako
+fiskalizacijski poziv istekne bez odgovora, uz ponavljanje svjesno roka
+dokument završava ili potvrđen ili u imenovanom stanju s evidentiranim
+razlogom, a nikada u stanju bez zapisa nakon isteka roka iz članka 49.
+
+\paragraph{Svaka ćelija nosi razinu.}
+Razina \textsuperscript{a} znači da tvrdnja slijedi iz propisa ili iz svojstva
+obrasca dokazanog u literaturi, pa je brani citat. Razina \textsuperscript{b}
+znači da tvrdnju pokazuje prototip iz poglavlja~\ref{ch:implementacija}.
+Razina \textsuperscript{c} znači da je tvrdnja prosudba autora.
+
+Prosudba je dopuštena, prešućena prosudba nije. Razinu \textsuperscript{b}
+nose samo one ćelije koje prototip doista pokreće, dakle slučajevi B1, B2 i E1
+na granici C1 prema C2. Slučajevi D1, D2 i C3 imaju isti oblik, ali ih prototip
+ne izvodi, pa ondje stoji \textsuperscript{c} i kada bi mehanizam bio isti.
 
 % ------------------------------------------------------------
 \section{Matrica pokrivenosti}
 \label{sec:matrica}
-% Budžet: ~2,5 str. OVO ODGOVARA RQ2.
-%
-% RETCI: svih 12 načina otkazivanja iz 6.2 — A1, A2, B1--B4, C1--C3,
-%   D1, D2, E1. NE skupljati po skupinama A--E: B2 i B4 su u istoj
-%   skupini a ponašaju se posve različito, i to bi se izgubilo.
-%
-% STUPCI: šest obrazaca —
-%   istek vremena · ponavljanje svjesno roka · odlazni pretinac i zapis
-%   namjere · automat s imenovanim stanjem · ključ za deduplikaciju · prekidač
-%   Prekidač je unutra da bi se vidjelo "pogoršava".
-%   KOMPENZACIJA NEMA STUPAC — nema predmet ni u jednom retku (v. 5.2 i
-%   6.3). To se kaže jednom rečenicom, ne praznim stupcem.
-%
-% ★ PRAZNA ĆELIJA JE NALAZ. Redak u kojem je pola stupaca prazno pokazuje
-%   RUPU, a rupa je poanta rada. Zato punih 12 redaka.
-%
-% U PROZI se razrađuje ~10 ćelija, ne svih 72:
-%   - sve ćelije "pogoršava"
-%   - B2 x zapis namjere  → ovo je ćelija tipa (b), dokazuje je pogl. 7
-%   - B1 x automat        → imenovanje stanja koje propis ne imenuje
-%   - C1 i C3 retci       → gotovo prazni, i to je odgovor
-%
-% POZNATE ĆELIJE KOJE VEĆ IMAJU PRESUDU (iz 6.3):
-%   prekidač x D1  = POGORŠAVA, razina (c) — rok teče dok je otvoren
-%   prekidač x D2  = sužava, razina (c) — druga granica, ondje ima smisla
-%     ⚠ te dvije ćelije zajedno pokazuju da presuda ovisi o GRANICI,
-%       ne o obrascu. To je precizniji nalaz od ravnog odbacivanja.
-%   B3: ponavljanje cijele skupne poruke = pogoršava (rizik duplikata).
-%     Praktičan izlaz je ODUSTATI OD SKUPNOSTI, jer kardinalnost [1,100]
-%     dopušta i jedan zapis po poruci. Napisati to — mitigacija je
-%     odricanje od značajke sučelja.
-%
-% TABLICA: booktabs, landscape ako ne stane. Kratice u zaglavlju uz
-%   legendu ispod. Razina (a)/(b)/(c) kao indeks uz vrijednost ćelije.
 
-\todo{Matrica 12 x 6 s kratkim ćelijama i oznakom razine; ispod nje proza
-za ćelije koje nešto tvrde. Rečenica o tome zašto kompenzacija nema
-stupac.}
+\begin{table}[htbp]
+\centering
+\caption[Pokrivenost načina otkazivanja obrascima]{Pokrivenost dvanaest načina
+otkazivanja iz odjeljka~\ref{sec:failure-modes} sa šest obrazaca iz
+odjeljka~\ref{sec:dizajn}.}
+\label{tab:matrica}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}p{4.6cm}cccccc@{}}
+\toprule
+& \parbox{1.3cm}{\centering istek\\vremena}
+& \parbox{1.5cm}{\centering ponavljanje\\svjesno roka}
+& \parbox{1.4cm}{\centering odlazni\\pretinac}
+& \parbox{1.4cm}{\centering imenovano\\stanje}
+& \parbox{1.3cm}{\centering ključ za\\dedupl.}
+& \parbox{1.1cm}{\centering prekidač} \\
+\midrule
+A1 razmijenjen bez fiskalizacije & N\textsuperscript{a} & S\textsuperscript{c} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{c} & \textbf{P}\textsuperscript{c} \\
+A2 fiskaliziran bez razmjene     & N\textsuperscript{a} & S\textsuperscript{a} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{c} & N\textsuperscript{c} \\
+\addlinespace
+B1 istek vremena                 & D\textsuperscript{a} & S\textsuperscript{b} & D\textsuperscript{b} & D\textsuperscript{b} & S\textsuperscript{a} & \textbf{P}\textsuperscript{c} \\
+B2 ista šifra, dva ishoda        & N\textsuperscript{c} & N\textsuperscript{c} & S\textsuperscript{b} & D\textsuperscript{c} & \textbf{P}\textsuperscript{a} & N\textsuperscript{c} \\
+B3 djelomičan uspjeh skupa       & N\textsuperscript{a} & \textbf{P}\textsuperscript{a} & S\textsuperscript{c} & S\textsuperscript{c} & S\textsuperscript{a} & N\textsuperscript{c} \\
+B4 trajno i prolazno             & N\textsuperscript{a} & N\textsuperscript{c} & N\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{c} & N\textsuperscript{c} \\
+\addlinespace
+C1 rok od nedefiniranog primitka & N\textsuperscript{a} & N\textsuperscript{a} & N\textsuperscript{a} & D\textsuperscript{c} & N\textsuperscript{a} & N\textsuperscript{a} \\
+C2 trenutak izdavanja            & N\textsuperscript{a} & N\textsuperscript{a} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{a} & \textbf{P}\textsuperscript{c} \\
+C3 zakašnjelo bez fikcije        & N\textsuperscript{a} & S\textsuperscript{c} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{a} & \textbf{P}\textsuperscript{c} \\
+\addlinespace
+D1 sustav nedostupan             & D\textsuperscript{a} & S\textsuperscript{c} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{c} & \textbf{P}\textsuperscript{c} \\
+D2 posrednik nedostupan          & D\textsuperscript{a} & S\textsuperscript{c} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{c} & S\textsuperscript{c} \\
+\addlinespace
+E1 neuređena predaja             & D\textsuperscript{a} & S\textsuperscript{c} & D\textsuperscript{b} & D\textsuperscript{b} & S\textsuperscript{a} & N\textsuperscript{c} \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.4em}
+\begin{minipage}{\textwidth}
+\scriptsize
+\textbf{Vrijednosti.}
+U uklanja, način otkazivanja više ne može nastupiti \textbullet{}
+S sužava, nastupa u užem prozoru ili s manjom posljedicom \textbullet{}
+D detektira, nastupa jednako, ali sustav zna da je nastupio \textbullet{}
+N ne pomaže \textbullet{}
+\textbf{P} pogoršava, obrazac povećava izloženost.
+
+\textbf{Razine.}
+\textsuperscript{a} propis ili literatura \textbullet{}
+\textsuperscript{b} pokazano prototipom \textbullet{}
+\textsuperscript{c} prosudba autora.
+\end{minipage}
+\end{table}
+
+Prva stvar koju treba pročitati iz tablice~\ref{tab:matrica} je ono čega u njoj
+nema. Vrijednost \emph{uklanja} ne pojavljuje se nijednom. To nije neuspjeh
+obrazaca nego posljedica teze iz odjeljka~\ref{sec:failure-modes}. Za slučaj
+koji je nesvodiv jer ga propis nalaže, najviša dostižna vrijednost je
+\emph{detektira}, a ona znači da sustav zna da je otkaz nastupio i da to može
+dokazati.
+
+\paragraph{Stupac prekidača ponavlja jedan mehanizam pet puta.}
+Prekidač je označen kao \emph{pogoršava} u pet redaka, a razlog je u svih pet
+isti. Dok je otvoren, prekidač prestaje slati, a rok iz propisa i dalje teče.
+Kvar dostupnosti time prelazi u propuštanje zakonskog roka, a sankcioniran je
+samo drugi (čl.~73.~st.~1.~t.~21.). Ponavljanje iste ocjene nije nepažnja nego
+nalaz: obrazac koji je u literaturi opće preporučen ovdje šteti svugdje gdje
+uz kanal stoji rok.
+
+Redak D2 pokazuje da ocjena nije o obrascu nego o granici. Prema
+informacijskom posredniku prekidač zadržava smisao, jer ondje postoji ugovorni
+odnos i brz kvar dopušta lokalno zadržavanje poruke. Isti obrazac, dvije
+granice, dvije suprotne ocjene.
+
+\paragraph{Ključ za deduplikaciju u retku B2 pogoršava.}
+Ovo je jedina ocjena \emph{pogoršava} koja ne pripada prekidaču, i jedina na
+razini \textsuperscript{a}. Složeni identifikator postoji i stabilan je kroz
+ponovni pokušaj, pa provjera S008 ispravno odbija duplikat. Ista provjera
+odbija i propisani ispravak, jer hrvatsko suženje norme nalaže da ispravak ide
+pod istim brojem računa, a indikator kopije nije dio
+identifikatora\cite{pu2026hrcius}. Mehanizam koji štiti od duplikata time
+blokira tijek koji isti propis nalaže.
+
+\paragraph{Redak B2 uz odlazni pretinac je jedina ćelija koja se popravlja
+prototipom.}
+Uvjetna tvrdnja glasi: ako pristupna točka vrati šifru S008, uz zapis namjere
+nastao prije slanja dokument završava u stanju \texttt{confirmed} kada je
+poslan ponovni pokušaj, odnosno u stanju \texttt{correction-rejected} kada je
+poslan ispravak. Bez zapisa oba puta završava u stanju
+\texttt{sent-unconfirmed}. Odjeljak~\ref{sec:scenariji} pokazuje oba ishoda.
+
+Vrijednost je \emph{sužava}, ne \emph{uklanja}. Razlikovanje ovisi o lokalnom
+zapisu, a ako se zapis izgubi, rekonstruirati ga iz podataka Sustava za
+fiskalizaciju nije moguće.
+
+\paragraph{Ponavljanje cijele skupne poruke pogoršava.}
+Zahtjev nosi do sto zapisa, odgovor najviše jednu grešku, a sudbina preostalih
+zapisa nije definirana\cite{pu2026tehspec}. Ponavljanje cijelog skupa zato
+umnaža izloženost duplikatima umjesto da je smanji. Izlaz nije bolji obrazac
+nego odricanje od značajke sučelja: kardinalnost dopušta i jedan zapis po
+poruci, pa se skupnost može ne koristiti. Mitigacija koja se sastoji od
+neupotrebe dijela sučelja sama je nalaz o sučelju.
+
+\paragraph{Redci C1 i B4 gotovo su prazni.}
+U retku C1 pet od šest ćelija kaže \emph{ne pomaže}. Primatelj ne može
+izračunati vlastiti rok jer pojam primitka nije definiran, a nijedan obrazac
+ne definira pravni pojam. Jedino što preostaje je da sustav zabilježi trenutak
+u kojem je dokument stigao do njegove pristupne točke, čime dobiva obranjivo
+polazište koje propis ne daje.
+
+Redak B4 je prazan iz drugog razloga. Šifrarnik ne razlikuje prolazne od
+trajnih grešaka, pa klijent ne zna smije li ponoviti. Ponavljanje bez te
+razlike nije štetno, ali je slijepo. Ni ovdje obrazac ne može nadomjestiti
+podatak kojeg u sučelju nema.
 
 % ------------------------------------------------------------
 \section{Što ostaje nepokriveno}
 \label{sec:nepokriveno}
-% Budžet: ~1 str. Ovo je druga polovica odgovora na RQ2.
-%
-% Čita se IZ matrice, ne dodaje se izvana: skup ćelija u kojima najviša
-% postignuta vrijednost je "detektira" ili "ne pomaže".
-%
-% Očekivano: A1, A2 (propis nalaže), C3 (nema fikcije urednosti),
-%   D1 (kvar države bez produljenja roka), ostatak B2 (izgubljen zapis
-%   namjere). To je skup regulatorno nesvodivih iz 6.2, i poklapanje
-%   NIJE slučajno — ono je provjera da su izvod i evaluacija dosljedni.
-%
-% ★ Ako se skup NE poklopi s onim iz 6.2, negdje je greška. Provjeriti,
-%   ne zagladiti.
 
-\todo{Popis nepokrivenog, izveden iz matrice; provjera da se poklapa sa
-skupom regulatorno nesvodivih iz odjeljka~\ref{sec:failure-modes}.}
+Nepokriveno je skup redaka u kojima najviša postignuta vrijednost nije bolja
+od \emph{detektira}. Iz tablice~\ref{tab:matrica} to su A1, A2, B4, C1, C2, C3
+i D1.
+
+Taj skup gotovo se poklapa sa skupom regulatorno nesvodivih slučajeva iz
+odjeljka~\ref{sec:failure-modes}, koji obuhvaća A1, A2, B2, C3 i D1, uz B1 i
+B4 kao fizikalno nesvodive. Poklapanje nije slučajno i služi kao provjera da su
+izvod i evaluacija dosljedni. Dva odstupanja treba objasniti.
+
+Slučaj B2 u matrici doseže \emph{sužava}, iako je u odjeljku~\ref{sec:dizajn}
+označen kao regulatorno nesvodiv. Oboje stoji. Zapis namjere razrješava
+tumačenje dok postoji, a nesvodivost se odnosi na slučaj u kojem je izgubljen.
+Slučajevi C1 i C2 obrnuto su u matrici lošiji nego u izvodu, jer njihov uzrok
+nije kvar nego nedefiniran pojam, a na to nijedan obrazac ne djeluje.
+
+Iz toga slijedi odgovor na drugo istraživačko pitanje. Obrasci tolerancije na
+greške pokrivaju one načine otkazivanja koji nastaju iz svojstava distribuirane
+razmjene, a ne pokrivaju one koji nastaju iz propisa. Za prve postoji dokazan
+mehanizam u literaturi. Za druge bi mehanizam značio da izvedba sama odluči
+ono što propis nije odlučio, a takva odluka nije obranjiva pozivom na propis.
+
+Granica pokrivenosti stoga nije tehnička nego pravna, i pomiče se izmjenom
+propisa, ne boljim dizajnom. Poglavlje~\ref{ch:rasprava} razrađuje što to
+znači za obveznika koji do te izmjene mora raditi.
+
+% ------------------------------------------------------------
+% ⚠ Dvije stvari koje evaluacija NE tvrdi, i to je namjerno:
+%   1. da su obrasci najbolji mogući — usporedbe s alternativama nema
+%   2. da je pokrivenost izmjerena — nije, izvedena je
+%   Oba priznanja idu u pogl. 9, ne ovdje. Ovdje bi razvodnila nalaz.
+
+Šest od 72 ćelije nosi razinu \textsuperscript{b}, a nijedna ne počiva na
+mjerenju. Domet i cijena tog izbora razrađeni su u
+poglavlju~\ref{ch:rasprava}.
