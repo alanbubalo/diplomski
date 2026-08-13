@@ -69,36 +69,21 @@ odjeljak~\ref{sec:scenariji} pokazuje.
 \section{Model stanja i ključne komponente}
 \label{sec:komponente}
 % Izvodi se IZ 6.3, ne izmišlja ovdje.
-% Dva listinga: (1) tablica prijelaza + uvjet roka, (2) tumačenje S008.
-% Enum stanja ide kao TABLICA, da hrvatski opis stoji uz oznaku iz koda.
+%
+% ⚠ Tablica stanja (tab:stanja) UKLONJENA 2026-08-13, odluka Alana.
+%   Poglavlje je bilo na 6 str. uz proračun od 2. Značenja oznaka
+%   preseljena su u opis slike, koji ionako mora stajati uz dijagram.
+%   Ne vraćati kao zasebnu tablicu bez razloga.
+% Jedan listing nosi uvjet roka, drugi tumačenje S008.
 
 Podjela na entitete iz odjeljka~\ref{sec:dizajn} izvedena je doslovno. Dokument
 i njegova predaja su dva entiteta, svaki u svojoj tablici, a transakcija koja
 bi ih obuhvatila ne postoji\cite{helland2007lifebeyond}. Treća tablica čuva
-evidenciju. Tablica~\ref{tab:stanja} daje stanja automata predaje uz oznake
-koje nose u kodu.
+evidenciju.
 
-\begin{table}[htbp]
-\centering
-\caption[Stanja automata predaje]{Stanja automata predaje. Oznake su iz
-programskog koda, opisi iz jezika rada.}
-\label{tab:stanja}
-\small
-\begin{tabular}{@{}llc@{}}
-\toprule
-Oznaka u kodu & Značenje & Ishod poznat \\
-\midrule
-\texttt{prepared}            & namjera zapisana, predaja nije pokušana & da \\
-\texttt{sent-unconfirmed}    & poslano, potvrda nije stigla            & \textbf{ne} \\
-\texttt{confirmed}           & pristupna točka je potvrdila primitak   & da \\
-\texttt{correction-rejected} & propisani ispravak odbijen šifrom S008  & da \\
-\texttt{deadline-expired}    & rok istekao prije potvrde               & da \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-Drugi redak tablice je ono zbog čega automat postoji. Stanje koje propis ne
-imenuje ovdje je ravnopravno stanje, uz obrazloženje iz
+Životni ciklus predaje opisan je automatom sa slike~\ref{fig:automat}. Stanje
+\texttt{sent-unconfirmed} je jedino iz kojeg se ishod ne može pročitati, i
+jedino koje propis ne imenuje. Ovdje je ravnopravno stanje, uz obrazloženje iz
 odjeljka~\ref{sec:dizajn}\cite{schneider1990statemachine}.
 
 \begin{figure}[htbp]
@@ -123,9 +108,13 @@ odjeljka~\ref{sec:dizajn}\cite{schneider1990statemachine}.
   \draw[pr] (nep) -- node[ozn, below left, pos=0.35] {deadline\\elapsed} (rok);
   \draw[pr] (nep) to[loop above] node[ozn, above] {sent} (nep);
 \end{tikzpicture}
-\caption[Automat predaje dokumenta]{Automat predaje. Dvostruki obrub označava
-stanje iz kojeg nema prijelaza. Izostanak odgovora nije prijelaz nego petlja:
-dokument koji je poslan i nije potvrđen ostaje poslan i nepotvrđen.}
+\caption[Automat predaje dokumenta]{Automat predaje. Oznake su iz programskog
+koda: \texttt{prepared} je zapisana namjera prije pokušaja,
+\texttt{sent-unconfirmed} je poslano bez potvrde, \texttt{confirmed} je
+potvrđen primitak, \texttt{correction-rejected} je ispravak odbijen šifrom
+S008, a \texttt{deadline-expired} je rok istekao prije potvrde. Dvostruki obrub
+označava stanje iz kojeg nema prijelaza. Izostanak odgovora nije prijelaz nego
+petlja: dokument koji je poslan i nije potvrđen ostaje poslan i nepotvrđen.}
 \label{fig:automat}
 \end{figure}
 
@@ -133,26 +122,19 @@ Rok iz članka 49.\ stavka 1.\ u automat ne ulazi kao stanje nego kao uvjet nad
 prijelazom, iz razloga koji daje odjeljak~\ref{sec:automat}.
 Listing~\ref{lst:automat} pokazuje taj uvjet.
 
-\begin{lstlisting}[language=PHP, caption={[Tablica prijelaza i uvjet
-roka]Tablica prijelaza i uvjet roka. Prijelaz pokreće poticaj, a rok samo
-odlučuje je li poticaj dopušten.}, label={lst:automat}]
-private const TRANSITIONS = [
-    State::PREPARED->value => [
-        Trigger::SENT->value => State::SENT_UNCONFIRMED,
-    ],
-    State::SENT_UNCONFIRMED->value => [
-        Trigger::SENT->value                   => State::SENT_UNCONFIRMED,
-        Trigger::CONFIRMATION->value           => State::CONFIRMED,
-        Trigger::CONFIRMATION_FROM_S008->value => State::CONFIRMED,
-        Trigger::REJECTION_FROM_S008->value    => State::CORRECTION_REJECTED,
-        Trigger::DEADLINE_ELAPSED->value       => State::DEADLINE_EXPIRED,
-    ],
-];
-
-// Rok kao uvjet nad prijelazom, ne kao stanje.
+\begin{lstlisting}[language=PHP, caption={[Rok kao uvjet nad prijelazom]Rok
+kao uvjet nad prijelazom. Prijelaze pokreću poticaji iz
+slike~\ref{fig:automat}, a rok samo odlučuje je li poticaj dopušten.},
+label={lst:automat}]
 if ($trigger === Trigger::SENT && $expired) {
     throw new DomainException(
         'Ponovno slanje nije dopusteno: rok iz cl. 49. st. 1. je istrosen.'
+    );
+}
+
+if ($trigger === Trigger::DEADLINE_ELAPSED && ! $expired) {
+    throw new DomainException(
+        sprintf('Rok jos tece, preostalo %d s.', $deadline->remainingSeconds($now))
     );
 }
 \end{lstlisting}
