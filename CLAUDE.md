@@ -35,6 +35,47 @@ Dobro:
 Izbjegavati i trojke kao retoričku naviku (`A, B i C`). Ako se tri stvari nabrajaju, bolje su
 tri rečenice ili nabrojana lista.
 
+Kratke rečenice ne znače jednolične. Ako su sve rečenice iste duljine, ritam je strojni.
+Povremena dulja rečenica koja nosi jednu misao je u redu. Mijenjati ritam.
+
+### Riječi i fraze
+
+- **Prazne fraze se brišu:** „važno je napomenuti", „treba istaknuti", „u današnje vrijeme",
+  „sve više", „igra ključnu ulogu", „od velike važnosti", „u konačnici", „zaključno se može
+  reći", „kao što je već spomenuto", „u kontekstu". Test: ako rečenica bez fraze znači isto,
+  fraza ide van. Pojačivači („vrlo", „iznimno", „izuzetno") samo ako se tvrdnja može obraniti.
+- **Glagol, ne glagolska imenica.** „Vrši se provjera" → „provjerava se".
+  „Dolazi do prekida veze" → „veza se prekida".
+- **Bez „od strane".** „Račun je potpisan od strane obveznika" → „obveznik potpisuje račun".
+- **Izrična rečenica ide s „da", ne s „kako".** „Zakon navodi da…", ne „Zakon navodi kako…".
+- **Neodređeni kvantifikatori** („brojni", „razni", „mnogi", „određeni") ne prolaze bez broja,
+  primjera ili citata iza sebe. „U roku od dva radna dana", ne „u propisanom roku".
+- **Isti pojam, ista riječ.** Tehnički termin se ponavlja, ne rotira kroz sinonime.
+  Rotacija („obveznik" pa „porezni subjekt" pa „izdavatelj") unosi dvosmislenost i odaje model.
+  Ponavljanje termina u stručnom tekstu nije greška.
+
+### Odlomci i odjeljci
+
+- **Bez najava.** Odjeljak ne počinje s „U ovom odjeljku opisat će se…" nego prvom tvrdnjom.
+  Iznimka: uvodni odlomak poglavlja smije reći čemu poglavlje služi, ali kao tvrdnju
+  („Poglavlje uspostavlja propis iz kojeg poglavlje 6 izvodi"), ne kao popis sadržaja.
+- **Bez jeke na kraju.** Odjeljak ne završava sažetkom onoga što je upravo rečeno.
+  Smije završiti mostom prema sljedećem koraku argumenta
+  (kao 2.1: „To pokazuje odjeljak~2.2.").
+- **Veznici nisu ljepilo.** Uzastopne rečenice ili odlomci ne počinju s „Također", „Nadalje",
+  „Osim toga", „Međutim". Ako logika drži, veznik nije potreban. Ako ne drži, veznik je ne
+  spašava.
+- **Odlomci različitih oblika.** Ne svaki odlomak po shemi uvodna rečenica, potpore, mini
+  zaključak, i ne svi iste duljine. Odlomak od jedne rečenice dopušten je kad nosi argument.
+
+### Prolaz prije commita
+
+Pisati slobodno, stil se ne provjerava u prvom nacrtu. Prije commita jedan prolaz samo za stil:
+
+1. Obrisati prazne fraze, najave i jeke.
+2. Glagolske imenice zamijeniti glagolima; izbaciti „od strane".
+3. Odlomak koji škripi pročitati naglas. Gdje ponestane daha, rečenica se dijeli.
+
 ### Podebljavanje
 
 Štedljivo. **Najviše jedna podebljana rečenica po odjeljku**, i samo ako nosi argument.

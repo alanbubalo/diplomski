@@ -13,17 +13,20 @@
 \chapter{Pozadina i kontekst}
 \label{ch:pozadina}
 
-\todo{Uvodni odlomak poglavlja: što poglavlje uspostavlja i čemu služi nizvodno.}
+Poglavlje uspostavlja propis iz kojeg poglavlje~\ref{ch:studija} izvodi
+načine otkazivanja. Redoslijed je namjeran. Prvo se opisuje fiskalizacija
+u krajnjoj potrošnji, jer ona pokazuje koje zaštite hrvatski zakonodavac
+zna propisati. Zatim se opisuje fiskalizacija eRačuna, koja te zaštite ne
+sadrži.
 
 % ------------------------------------------------------------
 \section{Fiskalizacija u Hrvatskoj}
 \label{sec:fiskalizacija-hr}
 
-% ⚠ OVAJ ODJELJAK NIJE POVIJESNI UVOD — on je KONTROLNA SKUPINA.
+% ⚠ OVAJ ODJELJAK NIJE POVIJESNI UVOD, on je KONTROLNA SKUPINA.
 %   Sve što Fiskalizacija 2.0 nema, B2C ima, i to u ISTOM ZAKONU.
 %   Bez toga tvrdnje iz 6.2 zvuče kao "nisam našao odredbu";
 %   s tim zvuče kao "isti zakonodavac je to propisao ondje, a ovdje nije".
-%   Zaključna rečenica odjeljka postavlja očekivanje koje 2.2 iznevjerava.
 
 Fiskalizacija je postupak kojim porezna uprava dobiva podatke o
 transakcijama u trenutku njihova nastanka. Prije nje podaci su dolazili
@@ -37,21 +40,20 @@ IMF How To Notes. Pročitati prije pisanja.}
 
 Mehanizam B2C fiskalizacije propisan je Zakonom o
 fiskalizaciji\cite{nn2025zakonfiskalizacija}. Obveznik pri izdavanju
-svakog računa elektronički potpisuje elemente računa. Zatim ih dostavlja
+svakog računa elektronički potpisuje elemente računa i dostavlja ih
 Sustavu za fiskalizaciju putem uspostavljene elektroničke veze
 (čl.~15.~st.~1.). Sustav provjerava jesu li dostavljeni svi propisani
 elementi i jesu li potpisani ispravnim certifikatom (st.~2.). Ako jesu,
 vraća obvezniku Jedinstveni identifikator računa, JIR (st.~3.). Ako JIR
 ne može odrediti, vraća poruku o odbijanju (st.~4.).
 
-Za ovaj rad važna je jedna osobina te razmjene. Obveznik na kraju
-postupka ima artefakt kojim dokazuje da je obvezu ispunio. Sustav mu je
-odgovorio, a odgovor ima pravni učinak.
+Ta razmjena ostavlja obvezniku artefakt. JIR je dokaz da je obveza
+ispunjena, i taj dokaz stiže od Sustava za fiskalizaciju.
 
 Zakon uređuje i slučaj kada veza ne radi. Obveznik tada izdaje račune bez
-JIR-a (čl.~21.~st.~1.). U roku od dva radna dana dužan je uspostaviti
-vezu i dostaviti elemente svih tako izdanih računa (st.~2.). Slijedi
-odredba koja je za ovaj rad ključna:
+JIR-a (čl.~21.~st.~1.) i u roku od dva radna dana dužan je uspostaviti
+vezu te dostaviti elemente svih tako izdanih računa (st.~2.). Rok sam po
+sebi ne bi značio mnogo. Značenje mu daje stavak koji dolazi iza njega:
 
 \begin{quote}
 „Za račune izdane prema stavku 1.\ ovoga članka smatra se da je ispravno
@@ -59,53 +61,150 @@ proveden postupak fiskalizacije računa ako se postupi u roku propisanom
 stavkom 2.\ ovoga članka.“ \hfill (čl.~21.~st.~3.)
 \end{quote}
 
-Zakon dakle ne propisuje samo rok. Propisuje i pravni učinak njegova
-poštivanja. Zakašnjela dostava unutar sanacijskog roka izjednačena je s
-pravovremenom. Za slučaj potpunog prestanka rada uređaja propisan je i
-izvanmrežni izlaz, uvezana knjiga računa ovjerena putem sustava ePorezna
-(čl.~22.).
+Zakon propisuje rok i pravni učinak njegova poštivanja. Zakašnjela
+dostava unutar sanacijskog roka izjednačena je s pravovremenom. Za
+potpuni prestanak rada uređaja propisan je i izvanmrežni izlaz, uvezana
+knjiga računa ovjerena putem sustava ePorezna (čl.~22.).
 
-B2C sustav time odgovara na tri pitanja. Je li poruka stigla? Odgovara
-JIR. Što ako veza padne? Odgovara fikcija urednosti. Što ako sve prestane
-raditi? Odgovara papir. Fiskalizacija eRačuna propisana je istim zakonom,
-ali ne odgovara ni na jedno od tih pitanja. To pokazuje
+Obveznik u B2C sustavu na kraju postupka zna na čemu je. Ima potvrdu da
+je poruka stigla, propisano postupanje kada veza padne, i papirnati izlaz
+kada uređaj stane. Fiskalizacija eRačuna propisana je istim zakonom, ali
+ni jedno od toga ne daje. To pokazuje
 odjeljak~\ref{sec:fiskalizacija-2-0}.
 
 % ------------------------------------------------------------
 \section{Fiskalizacija 2.0}
 \label{sec:fiskalizacija-2-0}
-% Budžet ~2 str.
-% SADRŽI: obvezni eRačun u B2B; dvostrana obveza (izdavatelj I primatelj,
-%   čl. 47.); DVA ODVOJENA KANALA — ovdje ide nosivi citat čl. 48. st. 3.;
-%   fazna primjena; ponovno slanje (čl. 43.) i njegov uvjet
-%   "u istom razdoblju oporezivanja" + OBVEZNI indikator kopije računa.
-% ⚠ Tijek u koracima i arhitektura NE ovdje nego u 6.1.
 
-\todo{Što Fiskalizacija 2.0 mijenja; dvostrana obveza fiskalizacije;
-razdvajanje razmjene i fiskalizacije (čl. 48. st. 3.); fazna primjena.}
+% ⚠ Tijek u koracima i arhitektura NE ovdje nego u 6.1.
+%   Ovdje samo propis. Nosivi citat rada je čl. 48. st. 3.
+
+Zakon o fiskalizaciji stupio je na snagu 1.~rujna 2025. Odredbe o
+fiskalizaciji eRačuna primjenjuju se od 1.~siječnja 2026., a dio odredbi
+o izdavanju putem aplikacije MIKROeRAČUN od 1.~siječnja 2027.
+(čl.~80.).
+
+eRačun je račun izdan, poslan i zaprimljen u strukturiranom
+elektroničkom obliku koji omogućuje automatsku obradu (čl.~2.~st.~1.~t.~8.).
+Obvezu izdavanja imaju porezni obveznici sa sjedištem u tuzemstvu upisani
+u registar obveznika PDV-a, obveznici poreza na dohodak od samostalne
+djelatnosti i poreza na dobit koji u taj registar nisu upisani, te tijela
+državne uprave i jedinice lokalne i područne samouprave
+(čl.~38.~st.~1.). Razmjena se obavlja putem pristupnih točaka
+(čl.~37.~st.~1.), a pristupna točka je porezni obveznik ili informacijski
+posrednik koji ispunjava propisane tehničke uvjete (čl.~2.~st.~1.~t.~25.).
+
+Obveza fiskalizacije pokriva svaki dokument dvaput:
+
+\begin{quote}
+„Obvezu fiskalizacije eRačuna izdavatelj eRačuna i primatelj eRačuna
+dužni su provoditi za svaki izdani i zaprimljeni eRačun.“
+\hfill (čl.~47.)
+\end{quote}
+
+Izdavatelj fiskalizira eRačun koji je izdao. Primatelj fiskalizira isti
+eRačun koji je zaprimio. To su dva odvojena postupka nad istim
+dokumentom, i rokovi im nisu jednaki. Izdavatelj fiskalizira u trenutku
+izdavanja, a kod samoizdavanja najkasnije pet radnih dana nakon izdavanja
+(čl.~48.~st.~3.). Primatelj fiskalizira najkasnije pet radnih dana od
+primitka eRačuna (st.~4.).
+
+Iz istog stavka dolazi odredba koja određuje arhitekturu svakog sustava
+usklađenog s ovim zakonom:
+
+\begin{quote}
+„Fiskalizaciju eRačuna za izdani eRačun izdavatelj eRačuna dužan je
+provoditi \emph{odvojeno od postupka razmjene eRačuna} u trenutku
+izdavanja eRačuna, a u slučaju samoizdavanja računa najkasnije pet radnih
+dana nakon što je eRačun izdan.“ \hfill (čl.~48.~st.~3.)
+\end{quote}
+
+Razmjena i fiskalizacija zakonom su razdvojene. Dokument putuje jednim
+kanalom, a podaci o njemu drugim. Zakon to razdvajanje ne dopušta nego
+nalaže, pa ga implementacija ne može ukinuti. Poglavlje~\ref{ch:studija}
+pokazuje koje posljedice iz toga slijede.
+
+Zakon uređuje i ponovno slanje. Kada se ispravlja podatak koji ne utječe
+na obračun poreza, eRačun se \emph{može} u istom razdoblju oporezivanja
+izdati pod istim brojem, uz obvezno navođenje podatka
+»indikator kopije računa« (čl.~43.~st.~1.). Ispravljeni eRačun
+fiskalizira se odmah nakon slanja i zaprimanja (st.~2.).
+
+Za slučaj kada fiskalizacija nije moguća zbog tehničkih razloga ili
+prekida internetske veze, obveznik ju je dužan provesti najkasnije u roku
+od pet radnih dana. Rok se računa od dana kada je nastupila tehnička
+nemogućnost, ne od dana kada je uklonjena (čl.~49.~st.~1.). Odredba
+ekvivalentna članku 21.~stavku~3.\ ne postoji. Zakon propisuje sanacijski
+rok, ali ne izjednačava zakašnjelu fiskalizaciju s pravovremenom.
+
+Čuvanje eRačuna vezano je na provedenu fiskalizaciju. Porezni obveznik
+čuva izdane i zaprimljene eRačune u izvornom obliku šest godina od isteka
+godine izdavanja, „pod uvjetom da je za njih proveo postupak
+fiskalizacije eRačuna“ (čl.~35.~st.~1.).
 
 % ------------------------------------------------------------
 \section{Informacijski posrednik}
 \label{sec:posrednik}
-% Budžet ~1,5 str.
-% SADRŽI: zakonska definicija (čl. 2.); Popis; ISO/IEC 27001 (čl. 62.);
-%   i ASIMETRIJA ODGOVORNOSTI — čl. 58.:
-%     st. 1. posrednik odgovara SAMO za ispravnost programskog rješenja
-%     st. 2. za ispravno izdavanje, zaprimanje i fiskalizaciju
-%            odgovara POREZNI OBVEZNIK
-%     st. 4. međusobna prava i obveze — PRIVATNI UGOVOR
-%   → obveznik snosi procesne posljedice kvara koji ne kontrolira.
-%   To je izravna priprema za D2 u poglavlju 6.2.
 
-\todo{Uloga i zakonska definicija posrednika; uvjeti za upis na Popis;
-asimetrija odgovornosti iz čl. 58.}
+% Payload odjeljka je ASIMETRIJA ODGOVORNOSTI iz čl. 58.
+% Ona je izravna priprema za D2 u poglavlju 6.2.
+
+Informacijski posrednik je pravna ili fizička osoba kojoj je dodijeljen
+OIB i koja uslužno pruža usluge izdavanja i primanja eRačuna te
+fiskalizacije eRačuna drugima (čl.~2.~st.~1.~t.~14.). Posrednik je time
+vanjski sustav u tijeku koji obveznik ne kontrolira, a bez kojega obvezu
+ne može ispuniti.
+
+Ulaz u tu ulogu je uređen. Posrednik dostavlja Poreznoj upravi propisanu
+dokumentaciju i uspješno provodi testiranje sukladnosti, nakon čega mu
+Porezna uprava izdaje potvrdu o sukladnosti (čl.~59.~st.~1.\ i~2.).
+Popis posrednika s izdanom potvrdom objavljuje se na Javnom portalu
+(st.~3.). Dokumentacija uključuje i dokaz o zaštiti osobnih podataka
+prema članku 32.\ Opće uredbe o zaštiti podataka (čl.~61.).
+
+Izlaz iz te uloge je uređen jednim jedinim osnovom. Posrednik je dužan
+najkasnije u roku od 60 dana od isteka valjanosti dostaviti Poreznoj
+upravi najnoviju verziju certifikata ISO/IEC 27001. Ako to ne učini,
+Porezna uprava briše ga s Popisa (čl.~62.~st.~1.\ i~2.). Drugih osnova
+za brisanje zakon ne propisuje.
+
+Podjela odgovornosti između posrednika i obveznika nije simetrična.
+Posrednik odgovara za ispravnost programskog rješenja koje nudi
+(čl.~58.~st.~1.). Za ispravno izdavanje, zaprimanje i fiskalizaciju
+eRačuna odgovara porezni obveznik (st.~2.). Međusobna prava i obveze
+Zakon prepušta ugovoru (st.~4.).
+
+Obveznik dakle odgovara za ishod postupka koji se odvija u tuđem sustavu.
+Zakon mu pritom ne daje nijedno sredstvo prema tom sustavu. Posrednik
+nema zakonsku obvezu raspoloživosti, ni obvezu obavještavanja klijenta o
+neuspjehu, ni obvezu zadržavanja poruke do uspješne dostave. Sve to
+ostaje na ugovoru, a ugovor nije predmet ovoga rada.
 
 % ------------------------------------------------------------
 \section{Europski okvir}
 \label{sec:eu-okvir}
-% Budžet ~1 str. Kratko — samo da se vidi da hrvatski sloj nije izmišljen
-% iz ničega i da je HR-CIUS suženje europske norme, ne zaseban standard.
-% Direktiva 2014/55/EU → EN 16931 → HR-CIUS. ViDA kao objašnjenje "zašto sada".
 
-\todo{Direktiva 2014/55/EU i EN 16931; HR-CIUS kao nacionalno suženje
-norme; ViDA kao širi kontekst.}
+Hrvatski propis ne stoji sam. Direktiva 2014/55/EU uspostavila je okvir
+elektroničkog fakturiranja u javnoj nabavi\cite{eu2014direktiva55}, iz
+kojega je nastala europska norma EN 16931. Norma definira semantički
+podatkovni model računa, ali ne propisuje kako se račun prenosi.
+
+Zakon o fiskalizaciji na tu normu se poziva definicijom, i definicija je
+šira nego što se očekuje:
+
+\begin{quote}
+„EU norma je EU norma 16931-1:2017, kao i Tehnička specifikacija osnovne
+uporabe eRačuna s proširenjima koju izdaje Porezna uprava, a koja opisuje
+način primjene i proširenja EU norme 16931-1:2017 i njezinih ispravaka,
+izmjena i dopuna.“ \hfill (čl.~2.~st.~1.~t.~9.)
+\end{quote}
+
+Zakon pod „EU normu“ podvodi i dokument koji izdaje Porezna uprava.
+Hrvatsko suženje norme, poznato kao HR-CIUS\cite{pu2026hrcius}, time
+dobiva istu obvezujuću snagu kao i sama norma, a mijenja se izvan
+Narodnih novina. Poglavlje~\ref{ch:rasprava} vraća se na tu razliku.
+
+Širi kontekst daje paket ViDA\cite{eu2025vida}, koji elektroničko
+fakturiranje i izvještavanje o transakcijama uvodi na razini Unije. On
+objašnjava zašto se hrvatski sustav mijenja sada, ali na obveze iz ovoga
+poglavlja ne utječe.
