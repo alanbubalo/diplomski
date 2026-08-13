@@ -1,106 +1,236 @@
 % ============================================================
 %  5. Upravljanje distribuiranim tijekovima
-%  DUBINSKO poglavlje · budžet 10 str.
+%  DUBINSKO poglavlje · budžet ~6 str. (plan-pisanja, preračunato s 10)
 %  Struktura je zaključana.
+%
+%  IZVORI PROČITANI I PROVJERENI 2026-08-13:
+%    Gray 1981 (VLDB)            — u cijelosti; svojstva, kompenzacija,
+%                                   putnička agencija, ČETIRI KATEGORIJE
+%    Gray 1978 (LNCS 60)         — §5.8.3.3.2, str. 467--469, 2PC doslovno
+%    Garcia-Molina & Salem 1987  — sažetak i §1; ⚠ sken, loš OCR
+%    Schneider 1990 (CSUR)       — §"Semantic Characterization" doslovno
+%    Bailis & Ghodsi 2013        — u cijelosti
+%    Helland & Campbell 2009     — §5.1--5.2 (isprike, probabilistička pravila)
+%    Helland 2007 (CIDR)         — čitan uz pogl. 3
+%    Colombo & Pace 2013         — kao karta, ne linearno
+%
+%  ⚠ NIJE PROČITANO — sve troje iza ACM DL Cloudflare provjere:
+%    Skeen & Stonebraker 1983 — formalni rezultat o neblokirajućem commitu.
+%      NIJE nosivo: argument je prestrukturiran tako da stoji na Grayu 1978
+%      (koji pokazuje da sudionik čeka presudu) i na Bailisu (blokiranje pod
+%      particijom). Ako se PDF dobavi, teorem se dodaje kao oštrica.
+%    Härder & Reuter 1983 — citiran SAMO kao podrijetlo akronima ACID,
+%      što je bibliografska činjenica. Ništa se ne pripisuje njihovu tekstu.
+%    Vogels 2009 — ispao. Bailis pokriva isto i pročitan je.
 % ============================================================
 \chapter{Upravljanje distribuiranim tijekovima}
 \label{ch:tijekovi}
 
-\todo{Uvodni odlomak: od pojedinačnog poziva prelazimo na tijek od više
-koraka, i pitanje se mijenja iz "kako preživjeti kvar" u "kako održati
-konzistentno stanje".}
+Poglavlje~\ref{ch:distribuirani} govorilo je o jednom pozivu. Ovo poglavlje
+govori o nizu koraka koji zajedno čine jedan posao. Pitanje se time mijenja.
+Više nije kako preživjeti kvar pojedinog poziva, nego kako držati stanje
+razumljivim kada je posao djelomično gotov, a nastavak neizvjestan.
 
 % ------------------------------------------------------------
 \section{Zašto klasične transakcije ne prelaze granicu servisa}
 \label{sec:granica-transakcije}
-% Budžet: 4 str.
-% TVRDI: dvofazni commit prema vanjskom posredniku nije opcija — i to
-%        nije stvar ukusa nego formalni rezultat.
-%
-% IZVORI:
-%   Härder & Reuter 1983, ACM CSUR 15(4) — CILJANO (definicija ACID-a).
-%     Rad koji je skovao akronim. Tvrdnja "nema klasičnih transakcija
-%     između servisa" mora imati definiciju "klasične transakcije" iza sebe.
-%   Mohan, Lindsay, Obermarck 1986, ACM TODS 11(4) — ciljano.
-%     Kanonski 2PC s presumed-abort/presumed-commit. Nosi argument da
-%     koordinator BLOKIRA.
-%   ★ Skeen & Stonebraker 1983, IEEE TSE SE-9(3) — u cijelosti.
-%     NE POSTOJI neblokirajući commit protokol otporan na particiju mreže.
-%     To je "zašto SAGA, a ne 2PC" u jednoj rečenici, s dokazom iza nje.
-%   Bailis & Ghodsi 2013, ACM Queue 11(3) — u cijelosti.
-%     Kvantificira "koliko je eventual" i nabraja jača jamstva koja ostaju
-%     dostupna. Sprječava da rad tretira eventualnu konzistentnost binarno.
-%   Vogels 2009, CACM 52(1) — ciljano (taksonomija klijentskih jamstava).
-%     Rad mora IMENOVATI koje jamstvo posrednički tijek zapravo daje.
-%   Pardon & Pautasso 2014, WWW Companion — samo citirati.
-%     Try-Cancel/Confirm: SAGA nije jedina opcija, nego IZABRANA.
-%
 % NIZVODNO: 6.3
+% ⚠ Skeen & Stonebraker 1983 NIJE pročitan (Cloudflare). Argument namjerno
+%   ne visi o njemu. Vidi komentar na vrhu datoteke.
 
-\todo{ACID i njegove granice; dvofazni commit i blokiranje koordinatora;
-formalni rezultat o neblokirajućem commitu; eventualna konzistentnost i
-koje jamstvo posrednički tijek stvarno daje.}
+Transakcija je pojam stariji od računarstva, i Gray ga tako i uvodi. Njegov
+primjer je ugovor: pregovori traju, a onda ih jedan čin
+zaključi\cite{gray1981transaction}. Iz te analogije izvodi tri svojstva.
+Konzistentnost znači da transakcija poštuje dopuštena pravila. Atomarnost
+znači da se dogodi ili se ne dogodi. Trajnost znači da se jednom počinjena
+transakcija ne može poništiti.
+
+Vrijedi zabilježiti što u tom popisu nema. Izolacije nema. Četveroslovni
+akronim ACID, koji se danas navodi kao da je oduvijek postojao, uveli su
+dvije godine kasnije Härder i Reuter\cite{haerder1983principles}.
+
+Gray odmah dodaje ogradu koja je za ovaj rad važnija od samih svojstava.
+Ugovor se može poništiti samo ako je od početka bio nezakonit. Inače se
+loša transakcija ispravlja daljnjim transakcijama.
+
+Prijelaz s jednog sudionika na više njih rješava dvofazno počinjanje, koje
+Gray izlaže u istoj bilježnici u kojoj i paradoks dvaju
+generala\cite{gray1978notes}. Koordinator u prvoj fazi pita sve sudionike
+jesu li spremni. Sudionik koji pristane mora prije odgovora trajno zapisati
+dovoljno podataka da poslije može i poništiti i ponoviti. U drugoj fazi
+koordinator zapisuje odluku i šalje je svima.
+
+Uspjeh tog protokola Gray pripisuje jednoj stvari: odluka o počinjanju
+središnja je i nije vremenski ograničena. Ta rečenica sadrži i cijenu.
+Sudionik koji je glasao za počinjanje čeka presudu i sam je ne smije
+donijeti. Ako koordinator u tom trenutku otkaže, sudionik po Grayevu
+opisu pri oporavku pita koordinatora je li transakcija počinjena ili
+prekinuta. Dok koordinatora nema, sudionik ne zna, a resursi koje drži
+ostaju zaključani.
+
+Bailis i Ghodsi to izriču izravno za razdvojenu mrežu. Kada dva procesa ne
+mogu komunicirati, izmjene se ne mogu sinkrono proširiti na sve, a da se
+pritom ne
+blokira\cite{bailis2013eventual}.
+
+Za studiju slučaja iz poglavlja~\ref{ch:studija} rasprava završava ranije
+nego što bi trebala. Dvofazno počinjanje preko dva kanala nije isključeno
+zato što je skupo ili zato što bi koordinator blokirao. Isključeno je zato
+što članak 48.\ stavak 3.\ nalaže da se fiskalizacija provodi odvojeno od
+razmjene. Zajednička transakcija koja bi oba kanala zatvorila u jedan
+atomaran čin bila bi protivna propisu. Teorijsko ograničenje i pravno
+ograničenje ovdje pokazuju u istom smjeru, a pravno je jače, jer ga
+implementacija ne može zaobići ni po cijenu složenosti.
+
+Ono što preostaje kada atomarnost otpadne obično se zove eventualnom
+konzistentnošću. Bailis i Ghodsi je definiraju kao jamstvo da će, ako nema
+novih izmjena nekog podatka, sva čitanja tog podatka na kraju vratiti istu
+vrijednost. Isti autori ne skrivaju koliko je to slabo. Ni u jednom
+trenutku korisnik ne može isključiti nekonzistentno ponašanje, a jedino
+jamstvo je da će se u nekom trenutku u budućnosti dogoditi nešto dobro.
+
+Slabo jamstvo ipak nije jedino dostupno. Autori pokazuju da se uz visoku
+raspoloživost mogu zadržati i jača svojstva, među njima uzročna
+konzistentnost, i navode rezultat po kojem je uzročna konzistentnost gornja
+granica onoga što se pod razdvajanjem mreže može postići. Za ovaj rad iz
+toga slijedi metodološko pravilo. Reći da sustav nije konzistentan ne znači
+mnogo. Treba imenovati koje jamstvo daje.
+
+\todo{Ako se dobavi Skeen \& Stonebraker 1983, dodati formalni rezultat da
+neblokirajući protokol počinjanja otporan na razdvajanje mreže ne postoji.
+Trenutni argument stoji i bez njega, ali s njim je oštriji.}
 
 % ------------------------------------------------------------
 \section{SAGA i kompenzacija}
 \label{sec:saga}
-% Budžet: 4 str.
-%
-% IZVORI:
-%   ★ Gray 1981, VLDB '81, str. 144--154 — u cijelosti.
-%     NAJJAČI POJEDINAČNI CITAT U RADU. Dvije stvari, obje provjerene
-%     čitanjem PDF-a:
-%     (1) definicija kompenzacije: "Once a transaction commits, its
-%         effects can only be altered by running further transactions.
-%         … Such post facto transactions are called compensating
-%         transactions."
-%     (2) PRIMJER PUTNIČKE AGENCIJE: "the agent cannot unilaterally abort
-%         an interaction after it completes, rather the agent must run a
-%         compensating transaction to reverse the previous transaction".
-%         → izravna paralela tijeku prema vanjskom posredniku.
-%   Garcia-Molina & Salem 1987, SIGMOD — u cijelosti (već u bibu).
-%   Colombo & Pace 2013, ACM CSUR 45(3) — CILJANO, kao KARTA.
-%     Survey koji daje strukturu ovog odjeljka i mapu prema primarnim
-%     radovima. Ne čitati svih 35 str. linearno.
-%   Garcia-Molina i dr. 1991, ugniježđene sage — samo citirati.
-%   Helland & Campbell 2009, Building on Quicksand — samo citirati.
-%     Veže kompenzaciju, idempotenciju i komutativnost.
-%   Megargel i dr. 2021, IEEE EDOC — samo citirati.
-%     Kriteriji odluke orkestracija vs koreografija; rad MORA obrazložiti
-%     zašto bira orkestraciju.
-%
-% ★ OTVORENO PITANJE KOJE OVAJ ODJELJAK POSTAVLJA, A TIKET 12 ODGOVARA:
-%   IMA LI FISKALIZACIJA UOPĆE ŠTO KOMPENZIRATI?
-%   Ako je jednosmjerna zakonska obveza bez rollbacka, SAGA je tema OVOG
-%   poglavlja (teorija), a NE uzorak u 6.3 (praksa). To je legitiman i
-%   zanimljiv nalaz — ali mora biti odlučen i obrazložen, ne prešućen.
-%
-% NIZVODNO: 6.3
+% ★ OVDJE JE ODGOVOR NA OTVORENO PITANJE TIKETA 12.
+%   Gray 1981, str. 17, dijeli transakciju na četiri vrste sastavnica:
+%     - radnje nad nezaštićenim objektima
+%     - zaštićene radnje (undo/redo)
+%     - STVARNE RADNJE koje se mogu ODGODITI ali NE PONIŠTITI
+%     - ugniježđene transakcije (poništive kompenzacijom)
+%   Fiskalizacija je STVARNA RADNJA po toj podjeli. Odatle slijedi da
+%   polovica SAGA-e koja se tiče kompenzacije na nju NE PRIMJENJUJE, a
+%   polovica koja se tiče evidentiranog napretka primjenjuje.
+%   To je nalaz, ne izbjegavanje. Konačna odluka još nije donesena.
 
-\todo{SAGA kao slijed lokalnih transakcija s kompenzacijama; orkestracija
-vs koreografija i obrazloženje izbora; granice kompenzacije. Postaviti
-pitanje ima li u fiskalizaciji što kompenzirati.}
+Kada atomarnost preko granice otpadne, popravljanje se seli iz protokola u
+poslovnu logiku. Gray tu selidbu imenuje\cite{gray1981transaction}:
+
+\begin{quote}
+„Nakon što se transakcija počini, njezini se učinci mogu izmijeniti samo
+izvođenjem daljnjih transakcija. Na primjer, ako je netko premalo plaćen,
+ispravak je izvesti drugu transakciju koja isplaćuje dodatni iznos. Takve
+naknadne transakcije zovu se kompenzacijskim
+transakcijama.“\footnote{„\emph{Once a transaction commits, its effects can
+only be altered by running further transactions. For example, if someone is
+underpaid, the corrective action is to run another transaction which pays an
+additional sum. Such post facto transactions are called compensating
+transactions.}“ \cite{gray1981transaction}} \end{quote}
+
+Primjer kojim Gray pokazuje granice klasične transakcije je putnička
+agencija. Agent dogovara let, pa automobil, pa hotel, pa naplaćuje karticu.
+Kupac zatim otkaže putovanje. Svaka pojedina interakcija bila je transakcija
+s tuđom organizacijom, i tu Gray izvodi rečenicu koja opisuje svaki tijek
+preko vanjskog sudionika: agent ne može jednostrano prekinuti interakciju
+nakon što je dovršena, nego mora izvesti kompenzacijsku transakciju koja
+prethodnu poništava.
+
+Garcia-Molina i Salem taj obrazac su formalizirali pod imenom
+saga\cite{garciamolina1987sagas}. Dugotrajna transakcija je saga ako se može
+napisati kao niz transakcija koje se smiju izmjenjivati s drugima. Sustav
+jamči da će ili sve transakcije u sagi uspjeti, ili će se izvesti
+kompenzacijske transakcije koje djelomično izvođenje isprave. Cijena je
+poznata. Međustanja sage vide se izvana, pa saga nije izolirana.
+
+Izvedba sage traži i odluku o tome tko vodi niz. Orkestracija stavlja jednog
+voditelja koji poziva korake redom. Koreografija razdjeljuje odluku na
+sudionike koji reagiraju na
+događaje\cite{megargel2021orchestration}. Za tijek koji ovaj rad opisuje
+izbor slijedi iz propisa, ne iz ukusa. Za ispravno izdavanje, zaprimanje i
+fiskalizaciju odgovara porezni obveznik (čl.~58.~st.~2.). Kada odgovornost
+za ishod nosi jedan sudionik, niz vodi taj sudionik.
+
+Ostaje pitanje koje ovaj odjeljak mora postaviti, jer o njemu ovisi
+poglavlje~\ref{ch:studija}. Ima li u fiskalizaciji uopće što kompenzirati?
+
+Odgovor daje Grayeva podjela sastavnica transakcije. On razlikuje radnje nad
+nezaštićenim objektima, zaštićene radnje koje se mogu poništiti i ponoviti,
+ugniježđene transakcije koje se poništavaju kompenzacijom, i stvarne radnje,
+za koje kaže da se mogu odgoditi ali ne i poništiti.
+
+Fiskalizacija pripada posljednjoj vrsti. Dostava podataka Poreznoj upravi
+zakonska je obveza, ne rezervacija. Ne postoji poruka kojom bi obveznik
+povukao provedenu fiskalizaciju, i propis takvu poruku ne predviđa. Ono što
+propis predviđa je odgoda, i to omeđena: pet radnih dana kod tehničke
+nemogućnosti (čl.~49.~st.~1.).
+
+Iz toga slijedi da se saga na fiskalizaciju primjenjuje samo napola.
+Polovica koja govori o nizu lokalnih koraka s evidentiranim napretkom
+primjenjuje se. Polovica koja govori o kompenzaciji nema na što se primijeniti,
+jer koraci nisu poništivi. Obrazac koji ostaje nije poništavanje nego
+odgoda uz zapis, i upravo to poglavlje~\ref{ch:studija} treba od
+poglavlja~\ref{ch:pristupi}.
+
+Helland i Campbell isti zaključak izvode iz druge strane. Kada se poslovno
+pravilo provodi asinkrono, ono postaje vjerojatnosno, jer sustav koji ga
+provodi ne zna hoće li biti dostupan da ga
+provede\cite{helland2009quicksand}. Njihov zaključak je da sustav ili plaća
+sinkronu potvrdu, ili se povremeno mora ispričati. Fiskalizacija tu
+mogućnost nema. Isprika prema Poreznoj upravi nije predviđena kategorija,
+a propuštanje roka je prekršaj (čl.~73.~st.~1.~t.~21.).
+
+\todo{Tiket 12 zaključuje ovaj nalaz. Ako se potvrdi, poglavlje 6.3 ne nudi
+kompenzaciju kao obrazac nego odgodu uz evidenciju, i to mora biti izrijekom
+obrazloženo, a ne prešućeno.}
 
 % ------------------------------------------------------------
 \section{Stanje kao automat}
 \label{sec:automat}
-% Budžet: 2 str.
-% TVRDI: životni ciklus računa modeliran kao deterministički automat je
-%        ono što čini ponovni pokušaj bezopasnim i stanje provjerljivim.
-%
-% IZVORI:
-%   Schneider 1990, ACM CSUR 22(4) — u cijelosti.
-%     Primarni izvor za pristup replikacije stanja; koristi se kao
-%     OPRAVDANJE modeliranja životnog ciklusa kao determinističkog automata.
-%   ★ Helland 2007, "Life Beyond Distributed Transactions", CIDR — u cijelosti.
-%     "Entiteti" s vlastitim transakcijskim opsegom + idempotentne
-%     at-least-once poruke među njima. TO JE DOSLOVNO ARHITEKTURA KOJU
-%     ODJELJAK 6.3 IZVODI. Najvažniji izvor za nizvodni dio rada.
-%   Lamport 1978, CACM 21(7) — samo citirati.
-%     Potreban jer ovaj odjeljak tvrdi da se stanja mogu urediti; bez
-%     pojma "happened-before" ta tvrdnja visi.
-%
+% IZVOR: Schneider 1990, "Semantic Characterization of a State Machine" —
+%   PROVJERENO DOSLOVNO. Uz to O1/O2 i napomena da kašnjenja mreže znače
+%   da redoslijed obrade nije redoslijed slanja ni primanja.
 % NIZVODNO: 6.3 izravno
 
-\todo{Determinističi automat kao model životnog ciklusa dokumenta;
-terminalna i neterminalna stanja; entiteti i idempotentne poruke među njima.}
+Ako se posao ne može zatvoriti u jednu transakciju, mora se moći opisati
+kao stanje. Schneider daje karakterizaciju koja je za to
+dovoljna\cite{schneider1990statemachine}:
+
+\begin{quote}
+„Izlazi automata stanja potpuno su određeni nizom zahtjeva koje obrađuje,
+neovisno o vremenu i o svakoj drugoj aktivnosti u
+sustavu.“\footnote{„\emph{Outputs of a state machine are completely
+determined by the sequence of requests it processes, independent of time and
+any other activity in a system.}“ \cite{schneider1990statemachine}}
+\end{quote}
+
+Dvije riječi u toj rečenici nose posljedice. Prva je niz. Stanje ovisi o
+redoslijedu obrađenih zahtjeva, pa se dva sustava koja su obradila isti niz
+nalaze u istom stanju. Time ponovljena poruka prestaje biti opasna, jer
+automat koji je poruku već obradio prepoznaje da mu ona ne mijenja stanje.
+
+Druga je vrijeme. Izlazi ne ovise o vremenu. Schneider uz uvjete redoslijeda
+dodaje napomenu da zbog kašnjenja u mreži automat neće nužno obraditi
+zahtjeve redom kojim su poslani ni redom kojim su primljeni.
+
+Tu nastaje napetost koju poglavlje~\ref{ch:studija} nasljeđuje. Model koji
+je otporan na ponavljanje i preslagivanje određen je nizom poruka, a rokovi
+u propisu mjere se satom. „U trenutku izdavanja“ i „pet radnih dana“ su
+vremenske veličine, i one se u automat ne uklapaju kao stanja nego kao
+vanjski uvjeti nad prijelazima.
+
+Helland ta dva svijeta spaja u
+praksi\cite{helland2007lifebeyond}. Sustav se dijeli na entitete, svaki sa
+svojim opsegom serijalizacije, a među njima putuju poruke koje se šalju
+barem jednom i obrađuju idempotentno. Transakcija postoji, ali samo unutar
+entiteta. Preko granice entiteta postoje poruke i zapamćeno stanje o tome
+što je već obrađeno.
+
+Da bi se o stanjima uopće govorilo kao o uređenima, potreban je pojam
+uzročnog prethođenja, koji je uveo Lamport\cite{lamport1978time}.
+
+Model koji poglavlje~\ref{ch:studija} treba slijedi iz svega navedenog.
+Životni ciklus dokumenta opisuje se kao automat čija su stanja izrijekom
+imenovana, uključujući ona koja propis ne imenuje. Stanje
+„poslano, nepotvrđeno“ nije rupa u izvedbi. To je stanje u kojem se sustav
+zaista nalazi dok čeka odgovor koji možda nikada ne stigne.
