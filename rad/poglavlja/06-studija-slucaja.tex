@@ -317,10 +317,23 @@ obuhvaća oba kanala. Dostava od pristupne točke izdavatelja do pristupne
 točke primatelja može uspjeti i biti potvrđena
 (čl.~6.~st.~1.~t.~8.\ Pravilnika\cite{nn2026pravilnikeracun}), a
 fiskalizacijski poziv neovisno o tome pasti. Dokument je tada pravno
-dostavljen, a obveza iz članka 47.\ nije ispunjena. Pogoršava ga izostanak
-potvrde s pravnim učinkom: obveznik nema artefakt kojim bi utvrdio je li
-obvezu ispunio. Za usporedbu, u sustavu iz odjeljka~\ref{sec:fiskalizacija-hr}
-takav artefakt postoji i zove se JIR.
+dostavljen, a obveza iz članka 47.\ nije ispunjena.
+
+Pogoršava ga izostanak potvrde s pravnim učinkom. Odgovor Sustava za
+fiskalizaciju nosi zastavicu o prihvaćanju zahtjeva i identifikator
+zahtjeva u obliku UUID-a, a tehnička specifikacija sama kaže čemu taj
+identifikator služi: „za jednostavniji pronalazak poruka u sustavu u
+slučaju grešaka“\cite{pu2026tehspec}. To je pomagalo za dijagnostiku, ne
+dokaz o ispunjenoj obvezi. Identifikator se uz to generira po zahtjevu, pa
+je nov pri svakom pokušaju i ne identificira račun nego poziv.
+
+Razlika prema fiskalizaciji u krajnjoj potrošnji nije u tome što je jedan
+sustav stariji. Oba su uređena istim zakonom. Za promet u krajnjoj
+potrošnji Sustav za fiskalizaciju određuje Jedinstveni identifikator računa
+i vraća ga obvezniku (čl.~15.~st.~3.), a taj se identifikator ispisuje na
+računu (st.~5.). Za fiskalizaciju eRačuna ekvivalenta nema. Jedinstveni
+identifikator računa u dijelu Zakona o eRačunu ne postoji, a u 83 stranice
+tehničke specifikacije ne pojavljuje se nijednom.
 
 \paragraph{A2: fiskaliziran, nije razmijenjen.}
 Redoslijed dvaju kanala propis ne uređuje. Izdavatelj fiskalizira „u
@@ -771,6 +784,6 @@ sustav koji zna da nije, i koji to može pokazati.
 
 Ta razlika nije mala. Obveznik odgovara za ishod postupka koji se odvija u
 tuđem sustavu (čl.~58.~st.~2.), a jedini artefakt kojim raspolaže je onaj
-koji sam napravi. U sustavu iz odjeljka~\ref{sec:fiskalizacija-hr} taj
-artefakt daje država i zove se JIR. Ovdje ga nema, pa ga sustav mora
-proizvesti sam.
+koji sam napravi. U fiskalizaciji u krajnjoj potrošnji dokaz daje država i
+zove se Jedinstveni identifikator računa. Ovdje ga nema, pa dokaznu ulogu
+mora preuzeti vlastita evidencija obveznika.
