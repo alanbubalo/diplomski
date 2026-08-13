@@ -12,8 +12,17 @@
 \chapter{Studija slučaja: Fiskalizacija 2.0}
 \label{ch:studija}
 
-\todo{Uvodni odlomak: što ovo poglavlje izvodi i zašto je izvod iz
-specifikacije jači od opisa konkretnog sustava.}
+Poglavlje izvodi načine na koje se fiskalizacija eRačuna može pokvariti,
+i to iz objavljenih dokumenata. Predmet nije nijedan postojeći sustav nego
+referentna arhitektura: skup sudionika, kanala i obveza koji svako
+usklađeno rješenje mora sadržavati, jer ga propis nalaže.
+
+Izvod iz propisa nosi više od opisa jednog sustava. Opis konkretnog
+rješenja pokazuje što je jedan tim odlučio, a čitatelj ne može razlučiti
+što je zahtjev propisa od onoga što je izbor tog tima. Izvod iz
+specifikacije pokazuje ono što nijedan tim ne može izbjeći. Svaka tvrdnja
+u poglavlju stoji na citatu Zakona, Pravilnika ili tehničke specifikacije,
+pa se svaka može provjeriti bez pristupa ijednom sustavu.
 
 % ------------------------------------------------------------
 \section{Arhitektura i tijek dokumenta}
@@ -29,9 +38,13 @@ specifikacije jači od opisa konkretnog sustava.}
 %       fiskalizacija PT↔CIS: sinkroni SOAP [TS pogl. 8.],
 %         bez timeouta, bez retryja, bez potvrde s pravnim učinkom
 %     → NIJEDNA ODREDBA IH NE PREMOŠĆUJE
-%   - granica povjerenja: C1↔C2, propis je ne uređuje uopće
-%   - granica transakcije: između koraka 7 i 8 (dvije neovisne
-%     fiskalizacije istog dokumenta, različiti rokovi)
+%
+% ⚠ NE OVDJE, PREBAČENO U 6.2 (2026-08-13):
+%   granica povjerenja (C1↔C2) i granica transakcije (između koraka 7 i 8).
+%   Oba su teorijski pojmovi iz pogl. 3 i 5 i njihova analiza je posao 6.2.
+%   6.1 se piše u fazi 1, prije teorije, pa mora ostati STROGO OPISAN:
+%   tko su sudionici, kojim putem ide dokument, kojim putem podaci, rokovi.
+%   Bez tumačenja i bez forward-referencija na pojmove koje čitatelj nema.
 %
 % ✔ RIJEŠENO 2026-08-12 provjerom na primarnim dokumentima. Točno je:
 %   - hrvatski profil: "Tehnički standardi i specifikacija povezivanja —
@@ -55,8 +68,149 @@ specifikacije jači od opisa konkretnog sustava.}
 %
 % SLIKA: dijagram tijeka u TikZ-u → rad/slike/
 
-\todo{Model sudionika i tijek u jedanaest koraka; dva kanala i dva modela
-pouzdanosti; granica povjerenja i granica transakcije. Dijagram.}
+Razmjena eRačuna obavlja se putem pristupnih točaka
+(čl.~37.~st.~1.). Iz toga slijedi \strani{četverokutni
+model}{four-corner model}: izdavatelj predaje dokument svojoj pristupnoj
+točki, ta ga točka predaje pristupnoj točki primatelja, a primatelj ga
+dobiva od svoje. Četiri uloge u literaturi o elektroničkom fakturiranju
+nose oznake C1 do C4. Zakon dopušta i razmjenu drugim tehnologijama uz
+očuvanje vjerodostojnosti, cjelovitosti i čitljivosti (čl.~37.~st.~3.),
+ali taj put ne opisuje.
+
+Sudionici imaju zakonske definicije. Pristupna točka je porezni obveznik
+ili informacijski posrednik koji ispunjava propisane tehničke uvjete
+(čl.~2.~st.~1.~t.~25.). Sustav za fiskalizaciju je sustav Porezne uprave
+koji zaprima, kontrolira i obrađuje podatke (t.~5.). Kratica CIS, koja je
+u praksi uobičajena, u Zakonu se ne pojavljuje. Adresar metapodatkovnih
+servisa, AMS, adresar je kojim upravlja Porezna uprava (t.~1.).
+Metapodatkovni servis, MPS, mrežna je komponenta informacijskog
+posrednika koja identifikatore objavljuje u AMS (t.~19.).
+
+Slika~\ref{fig:tijek} prikazuje sudionike i putove kojima dokument i
+podaci o njemu putuju.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  node distance=1.0cm and 1.1cm,
+  kut/.style={draw, rounded corners=2pt, align=center, font=\small,
+              minimum width=2.3cm, minimum height=1.2cm},
+  servis/.style={draw, dashed, rounded corners=2pt, align=center,
+                 font=\small, minimum width=2.3cm, minimum height=1.2cm},
+  tok/.style={-{Latex[length=2mm]}, thick},
+  ozn/.style={font=\scriptsize, align=center, inner sep=2pt}
+]
+  \node[kut] (c1) {C1\\izdavatelj};
+  \node[kut, right=of c1] (c2) {C2\\pristupna\\točka};
+  \node[kut, right=2.4cm of c2] (c3) {C3\\pristupna\\točka};
+  \node[kut, right=of c3] (c4) {C4\\primatelj};
+
+  \node[servis, above=1.1cm of c2] (ams) {AMS i MPS};
+  \coordinate (sredina) at ($(c2)!0.5!(c3)$);
+  \node[kut, below=1.5cm of sredina] (cis) {Sustav za\\fiskalizaciju};
+
+  \draw[tok] (c1) -- (c2);
+  \draw[tok] (c2) -- node[ozn, above] {AS4\\One-way/Push} (c3);
+  \draw[tok] (c3) -- (c4);
+  \draw[tok, dashed] (c2) -- node[ozn, left] {DNS\\REST} (ams);
+  \draw[tok] (c2) -- node[ozn, left, pos=0.55] {SOAP} (cis);
+  \draw[tok] (c3) -- node[ozn, right, pos=0.55] {SOAP} (cis);
+\end{tikzpicture}
+\caption[Sudionici i kanali u fiskalizaciji eRačuna]{Sudionici i kanali.
+Dokument putuje vodoravno kroz pristupne točke, a podaci o njemu okomito
+prema Sustavu za fiskalizaciju. Iscrtkane linije označavaju otkrivanje
+adrese, koje dokument ne prenosi.}
+\label{fig:tijek}
+\end{figure}
+
+Prije bilo koje razmjene primatelj mora biti pronalaziv. Identifikator u
+AMS dostavlja prije početka zaprimanja eRačuna, a svaku promjenu odmah po
+nastaloj promjeni (čl.~44.~st.~1.\ i~st.~4.). Pristupna točka izdavatelja
+adresu razrješava u dva koraka. DNS upitom prema AMS-u dobiva U-NAPTR
+zapis s URL-om metapodatkovnog servisa kod kojeg je primatelj registriran,
+a zatim REST upitom prema tom servisu dobiva krajnju adresu pristupne
+točke primatelja\cite{pu2025ams, pu2025mps}. Oba servisa počivaju na
+standardu eDelivery BDXL 1.6, u pojednostavljenom obliku. Peppol SML i SMP
+u hrvatskom profilu se ne koriste.
+
+Tijek jednog eRačuna od sastavljanja do čuvanja ima jedanaest koraka:
+
+\begin{enumerate}[itemsep=2pt, topsep=4pt]
+  \item Izdavatelj sastavlja eRačun u skladu s EU normom (čl.~36.), to
+    jest s hrvatskim suženjem norme\cite{pu2026hrcius}.
+  \item Izdavatelj predaje eRačun svojoj pristupnoj točki, C1 prema C2.
+  \item Pristupna točka izdavatelja razrješava adresu primatelja preko
+    AMS-a i MPS-a (čl.~44.).
+  \item Pristupna točka izdavatelja šalje eRačun pristupnoj točki
+    primatelja preko protokola AS4, C2 prema C3\cite{pu2025as4profil}.
+  \item Pristupna točka primatelja potvrđuje primitak pristupnoj točki
+    izdavatelja. Ako sadržaj nije sukladan EU normi ili obrada nije
+    uspjela, šalje poruku o grešci
+    (čl.~6.~st.~1.~t.~8.\ i~t.~9.\ Pravilnika o
+    eRačunu\cite{nn2026pravilnikeracun}).
+  \item Pristupna točka primatelja čini eRačun dostupnim primatelju, C3
+    prema C4.
+  \item Izdavatelj fiskalizira izdani eRačun zasebnom porukom prema
+    Sustavu za fiskalizaciju, u trenutku izdavanja
+    (čl.~47.\ i~čl.~48.~st.~3.).
+  \item Primatelj fiskalizira zaprimljeni eRačun istom metodom, najkasnije
+    pet radnih dana od primitka (čl.~48.~st.~4.).
+  \item Sustav za fiskalizaciju uparuje podatke koje su dostavili
+    izdavatelj i primatelj. Obveznik u statuse i greške ima uvid kroz
+    aplikaciju Porezne uprave (čl.~68.~st.~2.~t.~2.\ i~t.~3.).
+  \item Odbijanje i naplata dostavljaju se do 20.~dana u mjesecu za
+    prethodni mjesec (čl.~52.~st.~1.\ i~čl.~53.~st.~1.). Odbijanje
+    primatelj prvo šalje dobavljaču kao poslovni odgovor, pa tek onda
+    Poreznoj upravi\cite{pu2026aplikacijskiodgovor}.
+  \item Obveznik čuva eRačun u izvornom obliku šest godina od isteka
+    godine izdavanja (čl.~35.~st.~1.).
+\end{enumerate}
+
+Postoji i put za slučaj kada primatelj nije pronalaziv. Ako identifikator
+nije dostupan u AMS-u, izdavatelj ne odgovara za neizdavanje eRačuna,
+račun se može izdati u papirnatom obliku, a podaci se dostavljaju putem
+eIzvještavanja (čl.~40.~st.~1.\ i~st.~2.).
+
+Dva koraka u tom popisu nemaju izvor. Predaju od izdavatelja njegovoj
+pristupnoj točki i dostavu od pristupne točke primatelju ne opisuje ni
+Zakon, ni Pravilnik, ni tehnička specifikacija. Ostali koraci imaju
+odredbu iza sebe.
+
+% Bez podnaslova: nijedno drugo poglavlje ne koristi \subsection.
+Razmjena između pristupnih točaka je asinkrona. Pravilnik o eRačunu govori
+o prijenosu asinkronih AS4 poruka (čl.~7.~st.~6.) i definira uzorak
+razmjene One-way/Push kao onaj u kojem „pošiljatelj šalje poruku primatelju
+bez očekivanja poslovnog odgovora, osim tehničke potvrde o primitku“
+(čl.~2.~st.~1.~t.~11.). Hrvatski profil zove se eRačun-AS4 i počiva na
+profilu AS4 iz infrastrukture eDelivery, inačici
+1.15\cite{pu2025as4profil, cef2020as4v115}. Profil propisuje i ponašanje
+pri neuspjehu. Pošiljatelj poruku ponavlja najviše deset puta, u razmacima
+od tri sekunde, a primatelj potpisanom potvrdom dokazuje primitak.
+
+Fiskalizacija prema Sustavu za fiskalizaciju je sinkrona. Tehnička
+specifikacija kaže da sustav odmah odgovara na
+zahtjev\cite{pu2026tehspec}. Poruke idu preko protokola SOAP 1.1 u obliku
+document/literal, preko jednosmjernog TLS-a, a zahtjev se potpisuje
+formatom XAdES-B. Poslovnih poruka koje je obveznik dužan dostavljati ima
+četiri:
+
+\begin{itemize}[itemsep=1pt, topsep=4pt]
+  \item \texttt{EvidentirajERacun}, za fiskalizaciju eRačuna,
+  \item \texttt{EvidentirajNaplatu},
+  \item \texttt{EvidentirajOdbijanje},
+  \item \texttt{EvidentirajIsporukuZaKojuNijeIzdanERacun}.
+\end{itemize}
+
+Prva ide servisu eFiskalizacija, ostale tri servisu eIzvještavanje.
+
+Jedan zahtjev nosi do sto zapisa. Odgovor sadrži najviše jednu grešku, s
+rednim brojem zapisa na koji se odnosi. Isti raspored, do sto zapisa i
+jedna greška, imaju i poruke o naplati i odbijanju.
+
+Za isti dokument dakle vrijede dva različita modela pouzdanosti. Jedan ima
+propisan broj ponavljanja i potpisanu potvrdu, drugi ima sinkroni odgovor.
+Iz razlike među njima slijede načini otkazivanja koje izvodi
+odjeljak~\ref{sec:failure-modes}.
 
 % ------------------------------------------------------------
 \section{Identifikacija načina otkazivanja}
@@ -102,6 +256,15 @@ pouzdanosti; granica povjerenja i granica transakcije. Dijagram.}
 %                    referenciralo (S17) → S012 nema na što
 %   → S008 ISTOVREMENO znači "tvoj ponovni pokušaj je prošao" i "tvoj
 %     propisani ispravak je odbijen", a ništa u poruci to ne razlikuje.
+%
+%   ➕ POJAČANJE, nađeno 2026-08-13 čitanjem Zakona za pogl. 2:
+%      [ZoF čl. 43. st. 1.] uređuje isti tijek i NE POKLAPA SE s HR-CIUS-om:
+%        modalnost  — Zakon DOPUŠTA ("može"), HR-CIUS NALAŽE
+%        uvjet      — Zakon traži ISTO RAZDOBLJE OPOREZIVANJA, HR-CIUS šuti
+%        indikator  — Zakon ga čini OBVEZNIM, HR-CIUS ga drži na 0..1
+%      Sukob ide u OBA smjera. Polje o kojem cijeli B2 visi (CopyIndicator)
+%      po Zakonu MORA postojati, a po specifikaciji SMIJE izostati.
+%      Implementacija vjerna kardinalnosti iz HR-CIUS-a krši čl. 43. st. 1.
 %
 % KLASIFIKACIJA PO POSLJEDICI — četiri klase, od kojih je
 %   "NEODREĐENO" metodološki najvažnija: nije da je ishod loš, nego da
