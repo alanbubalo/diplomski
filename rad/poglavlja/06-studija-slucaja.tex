@@ -614,5 +614,163 @@ planu pisanja.}
 %   zakonska obveza bez rollbacka, SAGA je tema pogl. 5 a ne uzorak ovdje.
 %   To je legitiman nalaz, ali mora biti odlučen i obrazložen.
 
-\todo{Izbor obrazaca prema izvedenim načinima otkazivanja; što se radi s
-regulatorno nesvodivima; odgovor na pitanje o kompenzaciji.}
+Dizajn koji slijedi ne bira iz kataloga nego iz izvoda. Svaki obrazac ulazi
+kao odgovor na imenovanu skupinu iz odjeljka~\ref{sec:failure-modes}, a dva
+poznata obrasca ne ulaze, i za oba je razlog naveden.
+
+Podjela iz prethodnog odjeljka postavlja i gornju granicu onoga što se može
+postići. Za fizikalno nesvodive slučajeve obrasci sužavaju prozor u kojem
+sustav ne zna na čemu je. Za regulatorno nesvodive ne mogu ni to, jer uzrok
+nije u prijenosu nego u dokumentu. Ondje preostaje jedino da se stanje
+uoči i zabilježi. To nije skromnost nego točan opseg.
+
+% ------------------------------------------------------------
+\paragraph{Entiteti umjesto transakcije.}
+Skupina A traži odgovor na pitanje što staviti na mjesto transakcije koju
+članak 48.\ stavak 3.\ zabranjuje. Helland daje oblik koji ostaje kada
+transakcija preko granice otpadne\cite{helland2007lifebeyond}. Sustav se
+dijeli na entitete, svaki sa svojim opsegom serijalizacije, a među njima
+putuju poruke koje se šalju barem jednom i obrađuju idempotentno.
+
+Primijenjeno na propisani tijek, granica entiteta poklapa se s granicom
+koju propis već povlači. Stanje razmjene jednog dokumenta je jedan entitet.
+Stanje njegove fiskalizacije je drugi. Unutar svakog vrijedi obična
+transakcija, među njima ne postoji nijedna.
+
+Granica transakcije pritom prolazi i kroz sam dokument, na mjestu koje se
+lako previdi. Izdavatelj i primatelj fiskaliziraju isti eRačun kao dva
+odvojena postupka, s različitim rokovima (čl.~47.\ i čl.~48.~st.~3.\ i~4.).
+Dizajn koji ta dva postupka veže u jedan zapis tvrdi nešto što propis ne
+tvrdi.
+
+% ------------------------------------------------------------
+\paragraph{Imenovati stanje koje propis ne imenuje.}
+Slučaj B1 i cijela klasa „neodređeno“ traže da sustav razlikuje tri
+situacije koje propisani tijek ne razlikuje: poruka nije poslana, poruka je
+poslana i potvrđena, poruka je poslana a potvrda nije stigla. Treća nema
+ime ni u Zakonu, ni u Pravilniku, ni u tehničkoj specifikaciji.
+
+Schneiderova karakterizacija daje temelj da se ona ipak
+modelira\cite{schneider1990statemachine}. Ako su izlazi određeni nizom
+obrađenih zahtjeva, životni ciklus dokumenta može se opisati automatom u
+kojem je „poslano, nepotvrđeno“ ravnopravno stanje, a ne rupa između dva
+stanja. Prijelaz iz njega vodi ili potvrda, ili odgovor s greškom, ili
+istek roka.
+
+Rokovi u taj automat ne ulaze kao stanja. Odjeljak~\ref{sec:automat}
+pokazao je zašto: automat je određen nizom poruka, a rokovi se mjere satom.
+Rok zato ulazi kao uvjet nad prijelazom. Time se izbjegava dizajn u kojem
+protek vremena sam po sebi mijenja stanje dokumenta, iako ga nijedna poruka
+nije dotaknula.
+
+% ------------------------------------------------------------
+\paragraph{Zapis namjere prije predaje.}
+Slučaj E1 je granica na kojoj propis ne daje ništa, pa je svaka odluka
+ovdje odluka izvedbe. Poslovni sustav predaje dokument pristupnoj točki i
+ne dobiva potvrdu koja bi imala propisano značenje.
+
+Obrazac koji tu granicu čini provjerljivom je odlazni pretinac iz
+odjeljka~\ref{sec:asinkrono}. Namjera da se dokument preda zapisuje se u
+istoj transakciji u kojoj i sam dokument, pa poslovni sustav nakon svakog
+prekida može utvrditi što je namjeravao poslati. Bez toga se dvostruki
+zapis pojavljuje na najgorem mjestu: sustav koji je dokument izdao ne bi
+znao je li ga i predao.
+
+Ključ za razlikovanje duplikata mora doći od pošiljatelja, i to je zahtjev
+koji izvire iz nalaza u odjeljku~\ref{sec:failure-modes}. Profil AS4
+duplikate prepoznaje po identifikatoru poruke, koji se pri ponavljanju na
+ovoj granici mijenja, pa transportni sloj ovdje ne pomaže. Potiskivanje se
+mora dogoditi na krajevima, kako to traži argument s kraja na
+kraj\cite{saltzer1984endtoend}.
+
+% ------------------------------------------------------------
+\paragraph{Što poslovni sustav smije zaključiti iz šifre S008.}
+Ovo je najteže pitanje koje odjeljak~\ref{sec:failure-modes} ostavlja, i
+odgovor počinje priznanjem. Iz same poruke se ne može zaključiti ništa.
+Ista šifra znači i da je raniji pokušaj prošao i da je propisani ispravak
+odbijen, a poruka ne nosi polje koje bi to razlikovalo.
+
+Razlikovanje zato mora biti lokalno. Poslovni sustav zna nešto što Sustav
+za fiskalizaciju ne zna: zna je li upravo poslao ponovni pokušaj iste
+poruke ili ispravak pod istim brojem računa. Ako tu namjeru zapiše prije
+slanja, odgovor S008 postaje jednoznačan pri tumačenju, iako je dvoznačan
+pri primitku. Uz ponovni pokušaj znači potvrdu. Uz ispravak znači odbijanje
+koje traži postupanje.
+
+Helland isti mehanizam opisuje kao stanje koje entitet vodi o svom odnosu s
+partnerom\cite{helland2007lifebeyond}. Ovdje to stanje ima i drugu funkciju,
+jer nadomješta razlikovanje koje sučelje ne nudi.
+
+Ostatak koji se time ne uklanja treba imenovati. Ako se lokalni zapis
+namjere izgubi, razlikovanja više nema, a rekonstruirati ga iz podataka
+Sustava za fiskalizaciju nije moguće. Slučaj B2 ostaje regulatorno
+nesvodiv. Dizajn ga pomiče iz klase „neodređeno“ u klasu koja se može
+evidentirati, i dalje od toga ne ide.
+
+% ------------------------------------------------------------
+\paragraph{Ponavljanje koje zna koliko mu je roka ostalo.}
+Ponavljanje prema Sustavu za fiskalizaciju nije propisano, pa ga izvedba
+bira. Skupina C postavlja uvjet koji obični eksponencijalni odmak ne
+zadovoljava. Rok od pet radnih dana teče od dana kada je nastupila
+nemogućnost, ne od oporavka (čl.~49.~st.~1.), pa raspored pokušaja mora
+ovisiti o preostalom roku, a ne samo o broju dotadašnjih pokušaja.
+
+Uz to vrijedi ograničenje iz odjeljka~\ref{sec:sinkrono}. Ponavlja se na
+jednoj razini u lancu, jer se inače pokušaji množe. Tempo se ograničava
+lokalno, spremnikom žetona, čime se dobiva zaštita od preopterećenja bez
+modalnog ponašanja prekidača.
+
+Ovdje se pojavljuje trošak koji poglavlje~\ref{ch:rasprava} razrađuje.
+Ponovni pokušaj koji uspije iz četvrtog pokušaja tehnički je uspio, a
+pravno može biti zakašnjeo.
+
+% ------------------------------------------------------------
+\paragraph{Dva obrasca koja namjerno ne ulaze.}
+Prekidač ne ulazi na granici prema Sustavu za fiskalizaciju. Razlog nije
+sporna literatura iz odjeljka~\ref{sec:sinkrono} nego izvod iz same domene.
+Prekidač štedi kašnjenje time što prestaje slati, a ovdje kašnjenje nije
+ono što se troši. Dok je otvoren, rok iz članka 49.\ teče dalje. Odredište
+je uz to Sustav za fiskalizaciju, prema kojem obveznik nema ni ugovor ni
+jamstvo razine usluge, pa otpada i drugi uobičajeni razlog, štednja tuđeg
+kapaciteta.
+
+Time prekidač na toj granici pretvara kvar dostupnosti u propuštanje
+zakonskog roka, a samo je drugo sankcionirano
+(čl.~73.~st.~1.~t.~21.). Ta je ocjena prosudba autora izvedena iz propisa,
+ne nalaz preuzet iz literature, i tako je označena i u
+poglavlju~\ref{ch:evaluacija}.
+
+Ocjena vrijedi za tu granicu, ne za obrazac općenito. Na granici prema
+informacijskom posredniku prekidač zadržava smisao, jer ondje postoji
+ugovorni odnos, a brz kvar poslovnom sustavu dopušta da dokument zadrži u
+vlastitom redu čekanja.
+
+Kompenzacija ne ulazi jer u ovom tijeku nema što kompenzirati. Skup
+poslovnih poruka prema Sustavu za fiskalizaciju ima četiri člana i nijedan
+od njih ne poništava provedenu fiskalizaciju\cite{pu2026tehspec}. Fiskalizacija
+je po Grayevoj podjeli stvarna radnja, dakle ona koja se može odgoditi ali
+ne poništiti\cite{gray1981transaction}.
+
+Ispravak i odbijanje koji u propisu postoje nisu protuprimjer. Njih pokreće
+poslovni događaj, a ne tehnički kvar, i oni dodaju nov zapis umjesto da
+poništavaju raniji. Saga se time primjenjuje samo polovično. Niz koraka s
+evidentiranim napretkom ostaje koristan, kompenzacijski dio nema predmet.
+Obrazac koji preostaje nije poništavanje nego odgoda uz zapis.
+
+% ------------------------------------------------------------
+\paragraph{Ono što preostaje jest evidencija.}
+Za regulatorno nesvodive slučajeve nijedan obrazac ne uklanja uzrok.
+Slučajevi A1 i A2 postoje jer ih propis nalaže. Slučaj C3 postoji jer propis
+ne izjednačava zakašnjelu fiskalizaciju s pravovremenom. Slučaj D1 postoji
+jer rok teče i kada je otkazala strana koju obveznik ne kontrolira.
+
+Ono što dizajn u tim slučajevima može jest učiniti stanje vidljivim i
+dokazivim. Sustav koji za svaki dokument bilježi u kojem je stanju stao,
+kada je pokušao i što je dobio kao odgovor ne postaje usklađen. Postaje
+sustav koji zna da nije, i koji to može pokazati.
+
+Ta razlika nije mala. Obveznik odgovara za ishod postupka koji se odvija u
+tuđem sustavu (čl.~58.~st.~2.), a jedini artefakt kojim raspolaže je onaj
+koji sam napravi. U sustavu iz odjeljka~\ref{sec:fiskalizacija-hr} taj
+artefakt daje država i zove se JIR. Ovdje ga nema, pa ga sustav mora
+proizvesti sam.
