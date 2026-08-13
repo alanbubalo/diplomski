@@ -1,8 +1,113 @@
 % ============================================================
 %  2. Pozadina i kontekst
-%  Odjeljke definira: primarni izvori specifikacije
+%  ~48% opsega dijeli s pogl. 3--5; ovo poglavlje ~6 str.
+%
+%  ULOGA: uspostavlja propis iz kojeg poglavlje 6 izvodi. Ne odgovara
+%  izravno ni na jedan RQ, ali bez njega RQ1 nema iz čega izvoditi.
+%
+%  ⚠ Arhitektura i tijek dokumenta NE IDU ovdje — to je 6.1.
+%  Ovdje ide domena i propis, i staje prije arhitekture.
+%
+%  Svi citati provjereni u primarnom izvoru (NN, 2026-08-13).
 % ============================================================
 \chapter{Pozadina i kontekst}
 \label{ch:pozadina}
 
-\todo{Fiskalizacija u Hrvatskoj, Fiskalizacija 2.0, uloga informacijskog posrednika.}
+\todo{Uvodni odlomak poglavlja: što poglavlje uspostavlja i čemu služi nizvodno.}
+
+% ------------------------------------------------------------
+\section{Fiskalizacija u Hrvatskoj}
+\label{sec:fiskalizacija-hr}
+
+% ⚠ OVAJ ODJELJAK NIJE POVIJESNI UVOD — on je KONTROLNA SKUPINA.
+%   Sve što Fiskalizacija 2.0 nema, B2C ima, i to u ISTOM ZAKONU.
+%   Bez toga tvrdnje iz 6.2 zvuče kao "nisam našao odredbu";
+%   s tim zvuče kao "isti zakonodavac je to propisao ondje, a ovdje nije".
+%   Zaključna rečenica odjeljka postavlja očekivanje koje 2.2 iznevjerava.
+
+Fiskalizacija je postupak kojim porezna uprava dobiva podatke o
+transakcijama u trenutku njihova nastanka, umjesto naknadno kroz porezne
+prijave. Hrvatski sustav izvorno se odnosio na promet u krajnjoj
+potrošnji --- na račune koje poslovni subjekt izdaje potrošaču
+(\strani{poslovanje prema potrošaču}{business-to-consumer}, B2C).
+
+\todo{Jedan odlomak o motivaciji: zašto države uvode fiskalizaciju
+(porezni jaz, siva ekonomija). Izvor: \cite{pires2023fiscalization},
+IMF How To Notes --- pročitati prije pisanja.}
+
+Mehanizam B2C fiskalizacije propisan je Zakonom o
+fiskalizaciji\cite{nn2025zakonfiskalizacija}. Obveznik pri izdavanju
+svakog računa elektronički potpisuje elemente računa i dostavlja ih
+Sustavu za fiskalizaciju putem uspostavljene elektroničke veze
+(čl.~15.~st.~1.). Sustav provjerava jesu li dostavljeni svi propisani
+elementi i jesu li potpisani ispravnim certifikatom (st.~2.), a ako jesu,
+\emph{vraća} obvezniku Jedinstveni identifikator računa (JIR)
+(st.~3.). Ako ga ne može odrediti, vraća poruku o odbijanju (st.~4.).
+
+Ta je razmjena važna za ovaj rad zbog jedne osobine: \textbf{obveznik na
+kraju postupka ima artefakt} --- JIR --- kojim dokazuje da je obvezu ispunio.
+Sustav mu je odgovorio, i odgovor ima pravni učinak.
+
+Zakon predviđa i što se događa kada veza ne radi. U slučaju prekida veze
+obveznik izdaje račune bez JIR-a (čl.~21.~st.~1.), dužan je u roku od
+\emph{dva radna dana} uspostaviti vezu i dostaviti elemente svih tako
+izdanih računa (st.~2.), a zatim slijedi odredba koja je za ovaj rad
+ključna:
+
+\begin{quote}
+„Za račune izdane prema stavku 1.\ ovoga članka \textbf{smatra se da je
+ispravno proveden postupak fiskalizacije računa} ako se postupi u roku
+propisanom stavkom 2.\ ovoga članka.“ \hfill (čl.~21.~st.~3.)
+\end{quote}
+
+Zakon dakle ne propisuje samo rok, nego i \emph{pravni učinak} njegova
+poštivanja: zakašnjela dostava unutar sanacijskog roka izjednačena je s
+pravovremenom. Naposljetku, za slučaj potpunog prestanka rada uređaja
+propisan je i izvanmrežni izlaz --- uvezana knjiga računa ovjerena putem
+sustava ePorezna (čl.~22.).
+
+B2C sustav time odgovara na tri pitanja koja se u svakom distribuiranom
+postupku prije ili kasnije postave: \emph{je li poruka stigla} (JIR),
+\emph{što ako veza padne} (fikcija urednosti), i \emph{što ako sve
+prestane raditi} (papir). \textbf{Poglavlje \ref{sec:fiskalizacija-2-0}
+pokazuje da fiskalizacija eRačuna, propisana istim zakonom, ne odgovara
+ni na jedno od njih.}
+
+% ------------------------------------------------------------
+\section{Fiskalizacija 2.0}
+\label{sec:fiskalizacija-2-0}
+% Budžet ~2 str.
+% SADRŽI: obvezni eRačun u B2B; dvostrana obveza (izdavatelj I primatelj,
+%   čl. 47.); DVA ODVOJENA KANALA — ovdje ide nosivi citat čl. 48. st. 3.;
+%   fazna primjena; ponovno slanje (čl. 43.) i njegov uvjet
+%   "u istom razdoblju oporezivanja" + OBVEZNI indikator kopije računa.
+% ⚠ Tijek u koracima i arhitektura NE ovdje nego u 6.1.
+
+\todo{Što Fiskalizacija 2.0 mijenja; dvostrana obveza fiskalizacije;
+razdvajanje razmjene i fiskalizacije (čl. 48. st. 3.); fazna primjena.}
+
+% ------------------------------------------------------------
+\section{Informacijski posrednik}
+\label{sec:posrednik}
+% Budžet ~1,5 str.
+% SADRŽI: zakonska definicija (čl. 2.); Popis; ISO/IEC 27001 (čl. 62.);
+%   i ASIMETRIJA ODGOVORNOSTI — čl. 58.:
+%     st. 1. posrednik odgovara SAMO za ispravnost programskog rješenja
+%     st. 2. za ispravno izdavanje, zaprimanje i fiskalizaciju
+%            odgovara POREZNI OBVEZNIK
+%     st. 4. međusobna prava i obveze — PRIVATNI UGOVOR
+%   → obveznik snosi procesne posljedice kvara koji ne kontrolira.
+%   To je izravna priprema za D2 u poglavlju 6.2.
+
+\todo{Uloga i zakonska definicija posrednika; uvjeti za upis na Popis;
+asimetrija odgovornosti iz čl. 58.}
+
+% ------------------------------------------------------------
+\section{Europski okvir}
+\label{sec:eu-okvir}
+% Budžet ~1 str. Kratko — samo da se vidi da hrvatski sloj nije izmišljen
+% iz ničega i da je HR-CIUS suženje europske norme, ne zaseban standard.
+% Direktiva 2014/55/EU → EN 16931 → HR-CIUS. ViDA kao objašnjenje "zašto sada".
+
+\todo{Direktiva 2014/55/EU i EN 16931; HR-CIUS kao nacionalno suženje
+norme; ViDA kao širi kontekst.}
