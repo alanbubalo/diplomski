@@ -1,58 +1,72 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Ilustrativni prototip
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Prilog diplomskom radu *Obrasci tolerancije na greške u distribuiranim
+sustavima: studija slučaja Fiskalizacije 2.0*. Razrađen u poglavlju 7.
 
-## About Laravel
+## Čemu služi
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Prototip postoji **da bi tvrdnje u matrici poglavlja 8 prešle iz razine (c)
+prosudba autora u razinu (b) pokazano.** Ne služi za mjerenje, ne dokazuje
+izvedivost proizvoda i ne pokazuje sukladnost s propisom.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Pokriva **isključivo granicu C1↔C2** iz odjeljka 6.1: poslovni sustav predaje
+dokument informacijskom posredniku i mora završiti u stanju koje može
+obrazložiti.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Što nema, i zašto
 
-## Learning Laravel
+Bez UBL-a, Schematrona, AS4, XAdES-a i PKI-ja, otkrivanja adrese primatelja,
+chaos enginea, orkestratora i mjerenja latencije.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Posrednik je **stub**: na naredbu vraća `uspjeh`, `istek-vremena` ili `S008`.
+Vjerodostojna izvedba posrednika ne bi dodala nijedan nalaz, a udvostručila bi
+opseg. Predmet je rukovanje greškom, ne sukladnost.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Pokretanje
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+Traži **PHP 8.5** (razvijano na 8.5.8) i Composer. Laravel 13.25, SQLite.
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer setup
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Tri scenarija, svaki u dvije izvedbe. Razlika je u jednoj jedinoj stvari:
+piše li se zapis namjere **prije** predaje ili **poslije** odgovora.
 
-## Contributing
+```bash
+php artisan scenarij b1                 # istek vremena bez odgovora
+php artisan scenarij e1                 # predaja bez potvrde
+php artisan scenarij b2                 # ista šifra S008 za dva ishoda
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+php artisan scenarij b2 --bez-zapisa    # ista stvar bez odlaznog pretinca
 
-## Code of Conduct
+php artisan stanje                      # ispis završnog stanja
+php artisan test                        # 23 tvrdnje
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Sat je pri scenariju fiksiran na `2026-09-01 09:00:00` da ispis bude ponovljiv.
+Isti sat dobiva i dnevnik, pa se baza i `storage/logs/laravel.log` slažu.
 
-## Security Vulnerabilities
+## Gdje je što
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+| Putanja | Sadržaj |
+|---|---|
+| `app/Domena/Stanje.php` | automat, uključujući stanje `predano-nepotvrdeno` koje propis ne imenuje |
+| `app/Domena/Automat.php` | dopušteni prijelazi; **rok kao uvjet nad prijelazom** |
+| `app/Domena/TumacOdgovora.php` | jezgra slučaja B2: ista šifra, dva značenja |
+| `app/Domena/RasporedPonavljanja.php` | raspored vođen preostalim rokom, uz eksponencijalni odmak za usporedbu |
+| `app/Domena/Rok.php` | pet radnih dana od nastupa, čl. 49. st. 1. |
+| `app/Servisi/Predavatelj.php` | odlazni pretinac; obje izvedbe |
+| `database/migrations/` | tri tablice: dokument, predaja, evidencija |
 
-## License
+## Granica prema kolegijskom projektu
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Ne stoji na frameworku nego na opsegu:
+
+| | kolegijski projekt | ovaj prototip |
+|---|---|---|
+| radi ono što propis **kaže** | da | ne |
+| radi ono što propis **ne kaže** | ne | da, i samo to |
+
+Nijedna datoteka, nijedan redak i nijedna ideja nisu preuzeti iz ranijeg
+kolegijskog projekta, i on se u radu ne citira.

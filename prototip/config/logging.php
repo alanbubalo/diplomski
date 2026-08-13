@@ -1,5 +1,6 @@
 <?php
 
+use App\Dnevnik\PrijaviZamrznutiSat;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -58,11 +59,15 @@ return [
             'ignore_exceptions' => false,
         ],
 
+        // "tap" dodaje obradivac koji zapisu daje isti sat kojim se sluzi
+        // ostatak sustava, da dnevnik i baza nakon scenarija nose isto
+        // vrijeme. Vidi app/Dnevnik/PrijaviZamrznutiSat.php.
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'replace_placeholders' => true,
+            'tap' => [PrijaviZamrznutiSat::class],
         ],
 
         'daily' => [
