@@ -76,13 +76,32 @@ pouzdanosti; granica povjerenja i granica transakcije. Dijagram.}
 % 12 RAZRAĐENIH SLUČAJEVA, GRUPIRANO UZROČNO (ne kao popis):
 %   A  propisano razdvajanje kanala      A1, A2
 %   B  sinkroni kanal bez semantike kvara B1, B2★, B3, B4
+%      (B3: kardinalnost [1,100] s jednom greškom vrijedi za SVE ČETIRI
+%       poslovne poruke, ne samo eRačun — sustavno svojstvo API-ja)
 %   C  rokovi od nedefiniranih događaja   C1, C2, C3
 %   D  ispad infrastrukture bez ventila   D1, D2
 %   E  neregulirana granica C1↔C2         E1
 %
-% ★ B2 je najbolji pojedinačni izvod u radu: [ZoF čl. 43. st. 1.] +
-%   [HRCIUS HR-BT-1] NALAŽU ponovnu uporabu istog BT-1 → propis
-%   istovremeno zahtijeva deduplikaciju i uklanja ključ za nju.
+% ★ B2 je najbolji pojedinačni izvod u radu. FORMULACIJA ISPRAVLJENA
+%   2026-08-13 nakon čitanja primarnog dokumenta:
+%   Identifikator eRačuna je SLOŽEN iz četiri polja, svako izrijekom
+%   označeno u [TS pogl. 3.] kao "dio identifikatora eRačuna":
+%     brojDokumenta (BT-1) + datumIzdavanja (BT-2)
+%     + vrstaDokumenta (BT-3) + oibIzdavatelja (BT-31)
+%   S008 provjerava jedinstvenost po tome + vrstaERacuna.
+%   → KLJUČ ZA DEDUPLIKACIJU POSTOJI. Ne pisati da ga propis "uklanja".
+%
+%   Rupa je drugdje: [HRCIUS v1.8] nalaže da se ispravak bez poreznog
+%   učinka šalje POD ISTIM BT-1 uz CopyIndicator="true", a CopyIndicator
+%   NIJE dio identifikatora i k tome je 0..1. Specifikacija ne kaže
+%   zadržava li ispravak isti BT-2:
+%     - zadrži ga  → isti složeni identifikator → S008 (sudar s
+%                    propisanim tijekom ispravka)
+%     - dobije nov → nema sudara, ali ispravak ima drugi identifikator
+%                    od originala, a u poruci NEMA polja koje bi original
+%                    referenciralo (S17) → S012 nema na što
+%   → S008 ISTOVREMENO znači "tvoj ponovni pokušaj je prošao" i "tvoj
+%     propisani ispravak je odbijen", a ništa u poruci to ne razlikuje.
 %
 % KLASIFIKACIJA PO POSLJEDICI — četiri klase, od kojih je
 %   "NEODREĐENO" metodološki najvažnija: nije da je ishod loš, nego da
