@@ -286,8 +286,304 @@ odjeljak~\ref{sec:failure-modes}.
 % PRILOG: preostalih 9 šutnji (S12–S14, S17, S19–S21, S23) kao tablica
 %   s citatima, spomenuta jednom rečenicom. S22 ide u pogl. 9.
 
-\todo{Izvod dvanaest načina otkazivanja u pet uzročnih skupina;
-klasifikacija po posljedici; teza o dvjema vrstama nesvodivosti.}
+Svaki izvod koji slijedi ima isti oblik. Propis zahtijeva nešto, iz toga
+slijedi stanje sustava, i to stanje nije usklađeno s obvezom koju isti
+propis postavlja. Iskustvo bira koje slučajeve vrijedi uzeti ozbiljno.
+Propis dokazuje da su mogući. Nijedna tvrdnja u odjeljku ne počiva na
+opažanju nekog postojećeg sustava.
+
+Odjeljak~\ref{sec:fault-error-failure} dao je pojam koji ovakav izvod
+uopće čini legitimnim. Avizienis i suradnici otkaz definiraju u odnosu na
+funkciju sustava, a ne u odnosu na njezin opis, pa usluga koja je u skladu
+sa specifikacijom svejedno može otkriti uzrok u samoj
+specifikaciji\cite{avizienis2004taxonomy}. Ono što slijedi su takvi uzroci.
+Nisu programerske greške. Nalaze se u dokumentu prije nego što itko napiše
+prvu liniju koda.
+
+Jedna odredba proizvodi veći dio popisa. Zakon nalaže da se fiskalizacija
+provodi „odvojeno od postupka razmjene eRačuna“ (čl.~48.~st.~3., citirano u
+odjeljku~\ref{sec:fiskalizacija-2-0}). Razdvajanje kanala nije dopušteno
+nego propisano. Iz toga slijedi da transakcija koja bi oba kanala zatvorila
+u jedan atomaran čin ne smije postojati. Nesklad između stanja
+„dostavljeno“ i stanja „fiskalizirano“ zato nije nedostatak izvedbe. To je
+stanje koje propis zahtijeva.
+
+% ------------------------------------------------------------
+\subsection*{A. Propisano razdvajanje kanala}
+
+\paragraph{A1: razmijenjen, nije fiskaliziran.}
+Razdvajanje iz članka 48.\ stavka 3.\ znači da nijedna transakcija ne
+obuhvaća oba kanala. Dostava od pristupne točke izdavatelja do pristupne
+točke primatelja može uspjeti i biti potvrđena
+(čl.~6.~st.~1.~t.~8.\ Pravilnika\cite{nn2026pravilnikeracun}), a
+fiskalizacijski poziv neovisno o tome pasti. Dokument je tada pravno
+dostavljen, a obveza iz članka 47.\ nije ispunjena. Pogoršava ga izostanak
+potvrde s pravnim učinkom: obveznik nema artefakt kojim bi utvrdio je li
+obvezu ispunio. Za usporedbu, u sustavu iz odjeljka~\ref{sec:fiskalizacija-hr}
+takav artefakt postoji i zove se JIR.
+
+\paragraph{A2: fiskaliziran, nije razmijenjen.}
+Redoslijed dvaju kanala propis ne uređuje. Izdavatelj fiskalizira „u
+trenutku izdavanja“, a dostava je asinkrona i može pasti poslije. Sustav za
+fiskalizaciju tada drži zapis o računu koji primatelj nikada nije primio.
+Uparivanje iz članka 68.\ stavka 2.\ takav će zapis označiti kao neuparen,
+ali propis ne kaže što je obveza nakon toga.
+
+% ------------------------------------------------------------
+\subsection*{B. Sinkroni kanal bez definirane semantike kvara}
+
+\paragraph{B1: istek vremena s nepoznatim ishodom.}
+Tehnička specifikacija razmjenu sa Sustavom za fiskalizaciju proglašava
+sinkronom\cite{pu2026tehspec}. Nijedna vrijednost čekanja pritom nije
+propisana, ni kao obveza ni kao preporuka, i nijedan izvor ne kaže što
+učiniti kada odgovor ne stigne. Nastaje stanje koje
+odjeljak~\ref{sec:detekcija-otkaza} opisuje kao neizbježno, a propis ga ne
+imenuje. Poruka je poslana, potvrda nije stigla, i obveznik ne zna je li
+obveza ispunjena.
+
+Posljedica nije samo tehnička. Ponovni pokušaj prema Sustavu za
+fiskalizaciju također nije propisan, pa nema ni najvećeg broja pokušaja ni
+razmaka među njima. Svaki izbor izvedbe nosi drukčiju pravnu izloženost, a
+nijedan se ne može pročitati iz teksta. Dva sukladna posrednika smiju
+odustati nakon dvije sekunde odnosno nakon dvije minute i oba su sukladna.
+
+Kontrast s istim zakonom je oštar. Za fiskalizaciju u krajnjoj potrošnji
+pravilnik propisuje cilj obrade od dvije sekunde. Za fiskalizaciju eRačuna
+takve odredbe nema.
+
+\paragraph{B2: ista šifra znači i uspjeh i neuspjeh.}
+Identifikator eRačuna složen je iz četiri polja, i specifikacija svako od
+njih izrijekom označava kao dio identifikatora: broj dokumenta, datum
+izdavanja, vrsta dokumenta i OIB izdavatelja\cite{pu2026tehspec}. Provjera
+S008 odbija zapis za koji već postoji fiskaliziran eRačun s istim složenim
+identifikatorom i istom vrstom eRačuna.
+
+Ključ za razlikovanje duplikata dakle postoji i stabilan je kroz ponovni
+pokušaj. Šifra S008 nakon isteka vremena doista dokazuje da je prvi pokušaj
+prošao. Rupa je drugdje, i jača je nego izostanak ključa.
+
+Hrvatsko suženje norme nalaže da se ispravak podatka koji ne utječe na
+obračun poreza šalje pod istim brojem računa, uz indikator kopije postavljen
+na „true“\cite{pu2026hrcius}. Indikator kopije nije dio identifikatora.
+Specifikacija pritom ne kaže zadržava li ispravak isti datum izdavanja, pa
+su moguća oba ishoda i nijedan nije dobar. Ako ispravak zadrži datum, složeni
+identifikator je istovjetan i provjera S008 ga odbija, čime se propisani
+tijek ispravka sudara s vlastitom provjerom duplikata iste specifikacije.
+Ako ispravak dobije novi datum, sudara nema, ali ispravak time nosi drugi
+identifikator od izvornika, a u fiskalizacijskoj poruci nema polja koje bi
+izvornik referenciralo.
+
+Iz toga slijedi tvrdnja koja je najjači pojedinačni nalaz ovog poglavlja.
+Šifra S008 istovremeno znači „tvoj ponovni pokušaj je prošao“ i „tvoj
+propisani ispravak je odbijen“, a ništa u poruci to ne razlikuje. Sustav
+prima isti signal za dva suprotna ishoda.
+
+Zakon isti tijek uređuje još jednom, i ne poklapa se sa specifikacijom.
+Članak 43.\ stavak 1.\ ponovno izdavanje pod istim brojem \emph{dopušta},
+dok ga hrvatsko suženje norme nalaže. Zakon uz to traži da se to dogodi u
+istom razdoblju oporezivanja, o čemu specifikacija šuti. Zakon indikator
+kopije čini obveznim, a specifikacija ga ostavlja neobveznim. Polje o kojem
+cijeli ovaj slučaj visi po zakonu mora biti prisutno, a po specifikaciji
+smije izostati.
+
+\paragraph{B3: djelomičan uspjeh skupne poruke.}
+Jedan zahtjev nosi do sto zapisa, a odgovor sadrži najviše jednu grešku, s
+rednim brojem zapisa na koji se odnosi\cite{pu2026tehspec}. Sudbina
+preostalih zapisa nije definirana. Ponoviti cijeli skup znači riskirati
+duplikate, ponoviti samo sporni zapis znači riskirati propuste, a
+specifikacija ne kaže koje je od toga ispravno.
+
+Isti raspored imaju i poruke o naplati i o odbijanju. To nije rubni slučaj
+jednog sučelja nego svojstvo cijelog skupa poslovnih poruka.
+
+\paragraph{B4: trajno i prolazno se ne razlikuju.}
+Šifrarnik grešaka je ravan popis i nijedna šifra nije označena kao
+ponovljiva. WSDL uz to ne definira nijednu grešku na razini protokola, pa
+greške stižu kao uspješan SOAP odgovor\cite{pu2026tehspec}. Klijent iz
+protokola ne može odlučiti smije li ponoviti.
+
+Odjeljak~\ref{sec:klasifikacija-otkaza} pokazao je da ponovni pokušaj ima
+smisla samo za prolazne kvarove. Upravo tu razliku specifikacija ne daje.
+
+% ------------------------------------------------------------
+\subsection*{C. Rokovi koji teku od nedefiniranih događaja}
+
+\paragraph{C1: rok teče od nedefiniranog primitka.}
+Primatelj fiskalizira najkasnije pet radnih dana od primitka eRačuna
+(čl.~48.~st.~4.). Pojam primitka nije među definicijama u članku 2. Nema
+predmnjeve dostave i nema pravila koje bi reklo je li dostava do pristupne
+točke primatelja jednaka dostavi primatelju. Primatelj zato ne može
+deterministički izračunati vlastiti rok.
+
+\paragraph{C2: trenutak izdavanja nije kvantificiran.}
+Izdavatelj fiskalizira „u trenutku izdavanja“ (čl.~48.~st.~3.). Tolerancija
+nije izražena ni u sekundama ni u satima, nigdje se ne kaže kada je taj
+trenutak istekao, i nijedna odredba ne isključuje kašnjenje zbog reda
+čekanja u posredniku iz prekršaja. Svaka asinkrona obrada u posredniku
+time je potencijalno već zakašnjela.
+
+Vrijedi zabilježiti gdje rokovi u ovom sustavu žive. U 83 stranice tehničke
+specifikacije nema nijednog roka. Svi dolaze iz Zakona, nijedan iz
+dokumenta koji opisuje sučelje.
+
+\paragraph{C3: ispravno, ali zakašnjelo.}
+Za fiskalizaciju u krajnjoj potrošnji zakon daje fikciju urednosti. Ako se
+postupi u roku od dva radna dana, smatra se da je postupak proveden
+ispravno (čl.~21.~st.~3.). Za fiskalizaciju eRačuna ekvivalentne odredbe
+nema. Članak 49.\ propisuje rok od pet radnih dana, ali ne kaže da je
+fiskalizacija unutar tog roka pravno jednaka pravovremenoj. Istovremeno
+članak 73.\ stavak 1.\ točka 21.\ propuštanje sankcionira.
+
+Iz toga slijedi da „ispravno, ali nakon roka“ nije isto što i „ispravno,
+samo sporije“. Rok je sankcioniran, a sanacijski učinak nije deklariran.
+
+% ------------------------------------------------------------
+\subsection*{D. Ispad infrastrukture bez pravnog ventila}
+
+\paragraph{D1: Sustav za fiskalizaciju nedostupan.}
+Članak 49.\ stavak 1.\ pokriva tehničke razloge i prekid internetske veze,
+ali ne razlikuje čija je strana pala. Rok od pet radnih dana teče od dana
+kada je nastupila nemogućnost, ne od dana kada je uklonjena. Odredbe o
+nedostupnosti Sustava za fiskalizaciju nema, kao ni jamstva razine usluge
+ni produljenja roka za slučaj kada je država ta koja ne odgovara.
+
+Za fiskalizaciju u krajnjoj potrošnji cijeli taj postupak postoji, sve do
+uvezane knjige računa (čl.~22.). Za fiskalizaciju eRačuna izlaza nema.
+
+\paragraph{D2: informacijski posrednik nedostupan.}
+Posrednik nema zakonsku obvezu raspoloživosti. Nema obvezu zadržavanja
+poruke do uspješne dostave, ni obvezu ponovnog pokušaja, ni obvezu
+obavještavanja klijenta o neuspjehu. Brisanje s Popisa ima jedan jedini
+osnov, istek certifikata ISO/IEC 27001 dulje od 60 dana (čl.~62.), i nijedan
+za lošu dostupnost.
+
+Odgovornost pritom ide u suprotnom smjeru od kontrole. Posrednik odgovara za
+ispravnost programskog rješenja (čl.~58.~st.~1.), a za ispravno izdavanje,
+zaprimanje i fiskalizaciju odgovara porezni obveznik (st.~2.). Obveznik
+snosi posljedice kvara koji ne kontrolira i koji ne mora ni vidjeti.
+
+% ------------------------------------------------------------
+\subsection*{E. Neregulirana granica}
+
+\paragraph{E1: predaja od izdavatelja pristupnoj točki nije uređena.}
+Jedina potvrda u cijelom propisu je ona između pristupnih točaka
+(čl.~6.~st.~1.~t.~8.\ Pravilnika). Sloj između poslovnog sustava izdavatelja
+i njegove pristupne točke nije uređen ni u jednom pogledu. Ni oblik predaje,
+ni potvrda, ni rok, ni obavijest o neuspjehu. To je korak 2 tijeka iz
+odjeljka~\ref{sec:arhitektura}, jedan od dva koja nemaju izvor.
+
+Poslovni sustav izdavatelja zato ne može znati je li račun ušao u tijek.
+Svaka odluka na toj granici je odluka izvedbe, i nijedna se ne može
+obraniti pozivom na propis.
+
+% ------------------------------------------------------------
+\subsection*{Klasifikacija po posljedici}
+
+Dvanaest slučajeva ne ostavlja sustav u dvanaest različitih stanja.
+Tablica~\ref{tab:posljedice} svodi ih na četiri klase.
+
+\begin{table}[htbp]
+\centering
+\caption[Završna stanja izvedenih načina otkazivanja]{Završna stanja s
+obzirom na zakonsku obvezu.}
+\label{tab:posljedice}
+\small
+\begin{tabular}{@{}p{4.1cm}p{3.2cm}p{7.2cm}@{}}
+\toprule
+\textsc{Klasa} & \textsc{Slučajevi} & \textsc{Zašto} \\
+\midrule
+Neusklađeno & A1, A2, B2, C1, C2, D1, D2 &
+obveza iz čl.~47.\ i čl.~48.\ nije ispunjena; sankcija je propisana
+čl.~72.\ i 73. \\
+\addlinespace
+Zakašnjelo bez fikcije urednosti & C3 &
+ni ispravno ni jasno neusklađeno; propis šuti o učinku sanacije \\
+\addlinespace
+Neodređeno & B1, B3, B4, E1 &
+ishod se ne može utvrditi iz podataka kojima sustav raspolaže \\
+\addlinespace
+Usklađeno, samo sporije & sve unutar roka &
+nije predmet ovoga rada \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Treća klasa je metodološki najvažnija. Kod nje ishod nije loš nego nepoznat.
+Sustav ne zna je li obvezu ispunio, i to neznanje nije privremeno stanje
+prije nego što stigne odgovor, nego trajno svojstvo situacije u kojoj
+odgovora nema.
+
+Odjeljak~\ref{sec:klasifikacija-otkaza} dao je ime toj razlici. Avizienis
+razlikuje signalizirane i nesignalizirane otkaze, a nesignaliziran otkaz je
+onaj za koji sudionik ne zna da se dogodio. Klasa „neodređeno“ skup je
+nesignaliziranih otkaza propisanog tijeka. To je i granica onoga što
+obrasci iz poglavlja~\ref{ch:pristupi} mogu postići. Oni je mogu suziti.
+Ukloniti je ne mogu.
+
+% ------------------------------------------------------------
+\subsection*{Dvije vrste nesvodivosti}
+
+Nesvodiv je onaj način otkazivanja koji nijedna izvedba ne može ukloniti.
+Izvedeni slučajevi pokazuju da nesvodivost ovdje dolazi iz dva različita
+izvora, i ta je razlika teza ovoga rada.
+
+Prva vrsta poznata je literaturi. Nazvat ćemo je fizikalnom, jer slijedi iz
+svojstava distribuiranih sustava. Slučaj B1 je paradoks dvaju generala iz
+odjeljka~\ref{sec:semantika-dostave}: protokol fiksne duljine koji bi ga
+riješio ne postoji\cite{gray1978notes}. Dio slučaja B4 pripada istoj vrsti,
+jer istek vremena ne razlikuje spor proces od
+mrtvog\cite{chandra1996failuredetectors}. Za tu vrstu propis nije kriv i
+nijedan propis je ne bi uklonio.
+
+Druga vrsta nema ime u literaturi, i za nju ovaj rad predlaže naziv
+regulatorno inducirana nesvodivost. Kod nje uzrok nije u fizici prijenosa
+nego u tome što propis ili sam nalaže stanje koje stvara problem, ili
+uklanja mehanizam kojim bi se problem riješio.
+
+Slučajevi A1 i A2 nesvodivi su jer ih propis nalaže. Članak 48.\ stavak 3.\
+zabranjuje zatvaranje jaza između kanala jednom transakcijom, pa izvedba
+uzrok ne smije ukloniti ni kada bi znala kako.
+
+Slučaj B2 nesvodiv je jer propis nalaže tijek koji se sudara s vlastitom
+provjerom duplikata, a ne daje način da se sudar razriješi. Ključ postoji,
+razlikovanje namjere ne postoji.
+
+Slučaj C3 nesvodiv je jer propis ne deklarira učinak sanacije. Nijedno
+tehničko sredstvo ne može proizvesti fikciju urednosti koju zakon nije dao.
+
+Slučaj D1 nesvodiv je za obveznika. Kvar je na strani države, rok teče
+dalje, a obveznik nema polugu ni prema jednom od toga.
+
+Ovdje se zatvara luk koji je otvorio odjeljak~\ref{sec:djelomicni-otkaz}.
+Waldo i suradnici tvrde da se otpornost izražava na razini sučelja i da
+bolja izvedba ne pomaže kada je sučelje to koje ne dopušta rješenje. Njihov
+primjer je red čekanja sa standardiziranim sučeljem u koje se ne mogu dodati
+identifikatori zahtjeva\cite{waldo1994note}. Fiskalizacija je isti slučaj,
+stupanj teži. Ondje je sučelje fiksirao dobavljač. Ovdje ga je fiksirao
+zakon.
+
+Ni transportni sloj tu ne pomaže, i za to postoji normativna potvrda.
+Profil AS4 na kojem hrvatska razmjena počiva traži podršku za otkrivanje
+duplikata, ali dopušta da se duplikati samo otkriju bez uklanjanja, uz
+obvezu da primatelj o njima obavijesti svoju
+aplikaciju\cite{oasis2013as4}. Vremenski prozor otkrivanja i najveću
+veličinu dnevnika profil prepušta izvedbi, pa jamstvo nije omeđeno.
+Otkrivanje se uz to oslanja isključivo na identifikator poruke, koji je
+identifikator prijenosa, a ne identifikator računa.
+
+Odatle slijedi zaključak koji je odjeljak~\ref{sec:semantika-dostave} već
+najavio, ovdje s odredbom iza sebe. Duplikat koji nastane ponavljanjem na
+sloju između poslovnog sustava i pristupne točke dobiva nov identifikator
+poruke. Za AS4 to nije duplikat. Potiskivanje se mora dogoditi na krajevima,
+a kraj koji bi ga trebao izvesti je upravo onaj sloj koji propis ne uređuje.
+
+Uz dvanaest razrađenih slučajeva ostaje devet mjesta na kojima propis šuti,
+a šutnja se nije mogla razviti u potpun izvod. Navedena su s citatima u
+prilogu.
+
+\todo{Prilog s preostalih devet šutnji (S12--S14, S17, S19--S21, S23) kao
+tablica s citatima. Piše se u fazi 4 ako ostane vremena; rez 3 s popisa u
+planu pisanja.}
 
 % ------------------------------------------------------------
 \section{Dizajn otpornog rješenja}
