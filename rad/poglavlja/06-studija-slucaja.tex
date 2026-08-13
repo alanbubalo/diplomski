@@ -1,6 +1,6 @@
 % ============================================================
 %  6. Studija slučaja: Fiskalizacija 2.0
-%  DOPRINOS RADA · budžet 20 str.
+%  DOPRINOS RADA · ~27% opsega (cca 14 str. pri 52 str.; smije rasti)
 %  Struktura 6.2 je zaključana; 6.1 i 6.3 slijede iz nje.
 %
 %  ⚠ TVRDO OGRANIČENJE: studija slučaja je REFERENTNA ARHITEKTURA
@@ -18,7 +18,7 @@ specifikacije jači od opisa konkretnog sustava.}
 % ------------------------------------------------------------
 \section{Arhitektura i tijek dokumenta}
 \label{sec:arhitektura}
-% Budžet: 5 str.
+% Budžet: ~5 str. (omjer, ne meta)
 %
 % SADRŽI:
 %   - četverokutni model C1→C2→C3→C4 + CIS sa strane
@@ -61,7 +61,7 @@ pouzdanosti; granica povjerenja i granica transakcije. Dijagram.}
 % ------------------------------------------------------------
 \section{Identifikacija načina otkazivanja}
 \label{sec:failure-modes}
-% Budžet: 10 str. — JEZGRA RADA.
+% Budžet: ~7 str. — JEZGRA RADA. Smije rasti ako materijal nosi.
 %
 % OBLIK ARGUMENTA, BEZ IZNIMKE:
 %   propis zahtijeva X [citat] → slijedi stanje S → S je neusklađen jer Z
@@ -115,7 +115,8 @@ pouzdanosti; granica povjerenja i granica transakcije. Dijagram.}
 %   REGULATORNO INDUCIRANA (klasa koju literatura ne opisuje):
 %     A1/A2 — nesvodivi jer ih propis NALAŽE (čl. 48. st. 3. zabranjuje
 %             zatvaranje jaza transakcijom)
-%     B2    — nesvodiv jer propis UKLANJA KLJUČ koji sam zahtijeva
+%     B2    — nesvodiv jer propis nalaže tijek koji se sudara s vlastitom
+%             provjerom duplikata, a ne daje način da se sudar razriješi
 %     C3    — nesvodiv jer propis ne deklarira učinak sanacije
 %     D1    — nesvodiv za obveznika (kvar države bez produljenja roka)
 %
@@ -128,7 +129,7 @@ klasifikacija po posljedici; teza o dvjema vrstama nesvodivosti.}
 % ------------------------------------------------------------
 \section{Dizajn otpornog rješenja}
 \label{sec:dizajn}
-% Budžet: 5 str.
+% Budžet: ~4 str.
 % Bira iz rječnika poglavlja 4 prema načinima otkazivanja iz 6.2.
 %
 % NOSIVI IZVORI:
@@ -143,7 +144,7 @@ klasifikacija po posljedici; teza o dvjema vrstama nesvodivosti.}
 %     semantika dostave ne smije pretpostaviti i da dedup nije obvezan.
 %
 % MORA ODGOVORITI, jer 6.2 to postavlja:
-%   - koji ključ za deduplikaciju kad BT-1 nije upotrebljiv (B2)?
+%   - kako razlikovati S008-kao-uspjeh od S008-kao-odbijeni-ispravak (B2)?
 %   - kako se modelira stanje koje propis ne imenuje (B1)?
 %   - što ERP smije zaključiti iz S008 nakon timeouta (B2, S6)?
 %   - što se uopće može učiniti za regulatorno nesvodive slučajeve —
