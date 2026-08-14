@@ -1,5 +1,5 @@
 % ============================================================
-%  5. Upravljanje distribuiranim tijekovima
+%  5. Upravljanje raspodijeljenim tijekovima
 %  DUBINSKO poglavlje · budžet ~6 str. (plan-pisanja, preračunato s 10)
 %  Struktura je zaključana.
 %
@@ -23,10 +23,10 @@
 %      što je bibliografska činjenica. Ništa se ne pripisuje njihovu tekstu.
 %    Vogels 2009 — ispao. Bailis pokriva isto i pročitan je.
 % ============================================================
-\chapter{Upravljanje distribuiranim tijekovima}
+\chapter{Upravljanje raspodijeljenim tijekovima}
 \label{ch:tijekovi}
 
-Poglavlje~\ref{ch:distribuirani} govorilo je o jednom pozivu. Ovo poglavlje
+Poglavlje~\ref{ch:raspodijeljeni} govorilo je o jednom pozivu. Ovo poglavlje
 govori o nizu koraka koji zajedno čine jedan posao. Pitanje se time mijenja.
 Više nije kako preživjeti kvar pojedinog poziva, nego kako držati stanje
 razumljivim kada je posao djelomično gotov, a nastavak neizvjestan.
@@ -158,10 +158,14 @@ za ishod nosi jedan sudionik, niz vodi taj sudionik.
 Ostaje pitanje koje ovaj odjeljak mora postaviti, jer o njemu ovisi
 poglavlje~\ref{ch:studija}. Ima li u fiskalizaciji uopće što kompenzirati?
 
-Odgovor daje Grayeva podjela sastavnica transakcije. On razlikuje radnje nad
-nezaštićenim objektima, zaštićene radnje koje se mogu poništiti i ponoviti,
-ugniježđene transakcije koje se poništavaju kompenzacijom, i stvarne radnje,
-za koje kaže da se mogu odgoditi ali ne i poništiti.
+Odgovor daje Grayeva podjela sastavnica transakcije na četiri vrste:
+
+\begin{itemize}[nosep, leftmargin=1.4cm]
+  \item radnje nad nezaštićenim objektima,
+  \item zaštićene radnje, koje se mogu poništiti i ponoviti,
+  \item ugniježđene transakcije, koje se poništavaju kompenzacijom,
+  \item stvarne radnje, za koje kaže da se mogu odgoditi ali ne i poništiti.
+\end{itemize}
 
 Fiskalizacija pripada posljednjoj vrsti. Dostava podataka Poreznoj upravi
 zakonska je obveza, ne rezervacija. Ne postoji poruka kojom bi obveznik

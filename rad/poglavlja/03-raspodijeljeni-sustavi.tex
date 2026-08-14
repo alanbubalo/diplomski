@@ -1,5 +1,5 @@
 % ============================================================
-%  3. Distribuirani sustavi i tolerancija na greške
+%  3. Raspodijeljeni sustavi i tolerancija na greške
 %  DUBINSKO poglavlje · budžet ~8 str. (plan-pisanja, preračunato)
 %  Struktura je zaključana.
 %  CAP je namjerno UNUTAR 3.5, nema vlastiti odjeljak:
@@ -22,8 +22,8 @@
 %    Helland 2012 "Idempotence Is Not a Medical Condition" — queue.acm.org
 %      vraća 403. Zamijenjen Hellandom 2007, koji nosi isti argument.
 % ============================================================
-\chapter{Distribuirani sustavi i tolerancija na greške}
-\label{ch:distribuirani}
+\chapter{Raspodijeljeni sustavi i tolerancija na greške}
+\label{ch:raspodijeljeni}
 
 Poglavlje uspostavlja pojmove kojima poglavlje~\ref{ch:studija} izvodi
 načine otkazivanja. Tvrdnja koja ga drži na okupu je jednostavna. Poziv
@@ -32,7 +32,7 @@ može ukloniti boljom izvedbom pozivatelja ili pozvanog. Može se samo
 priznati i opisati na sučelju.
 
 % ------------------------------------------------------------
-\section{Distribuirani sustav i djelomični otkaz}
+\section{Raspodijeljeni sustav i djelomični otkaz}
 \label{sec:djelomicni-otkaz}
 % NOSIVI IZVOR: Waldo i dr. 1994 — pročitan u cijelosti 2026-08-13.
 % NIZVODNO: 6.1 i 6.2 (granica ERP↔posrednik je točno takva granica)
@@ -45,9 +45,9 @@ priznati i opisati na sučelju.
 %   tezu o regulatorno induciranoj nesvodivosti: kod fiskalizacije sučelje
 %   fiksira propis, pa implementator nema ni tu mogućnost. Vidi 6.2.
 
-Waldo i suradnici razlikuju lokalno i distribuirano
+Waldo i suradnici razlikuju lokalno i raspodijeljeno
 računanje\cite{waldo1994note}. Lokalno je ono ograničeno na jedan adresni
-prostor. Distribuirano je ono koje poziva u drugi adresni prostor, možda
+prostor. Raspodijeljeno je ono koje poziva u drugi adresni prostor, možda
 na drugom računalu, o kojem se ne zna ništa osim da podržava određeno
 sučelje.
 
@@ -58,7 +58,7 @@ kojem jedna komponenta stane dok ostale rade dalje.
 
 U lokalnom pozivu takvo stanje ne postoji. Funkcija se možda ne dovrši
 uredno, ali se uvijek dovrši. Ako otkaže, otkaz je ili potpun, pa pogađa
-sve sudionike, ili ga uočava središnji upravitelj resursa. Distribuirani
+sve sudionike, ili ga uočava središnji upravitelj resursa. Raspodijeljeni
 poziv nema ni jedno ni drugo. Nema zajedničkog posrednika koji bi utvrdio
 koja je komponenta otkazala i o tome obavijestio ostale. Nema globalnog
 stanja u koje se može pogledati.
@@ -66,7 +66,7 @@ stanja u koje se može pogledati.
 Iz toga slijedi tvrdnja koju ovaj rad koristi na svakom koraku:
 
 \begin{quote}
-„U distribuiranom sustavu otkaz mrežne veze ne razlikuje se od otkaza
+„U raspodijeljenom sustavu otkaz mrežne veze ne razlikuje se od otkaza
 procesora s druge strane te veze.“\footnote{„\emph{In a distributed
 system, the failure of a network link is indistinguishable from the
 failure of a processor on the other side of that link.}“
@@ -102,7 +102,7 @@ To pitanje poglavlje~\ref{ch:studija} postavlja fiskalizacijskom sučelju.
 Odgovor je ondje teži nego kod Walda, jer sučelje ne propisuje dobavljač
 nego zakon.
 
-Uz ovaj rad obično se navodi i popis zabluda o distribuiranom računarstvu,
+Uz ovaj rad obično se navodi i popis zabluda o raspodijeljenom računarstvu,
 a prva zabluda glasi da je mreža pouzdana. Popis nije nastao kao znanstveni
 rad. Deutsch prve četiri zablude ne pripisuje sebi, sljedeće četiri jest, a
 svih osam izložio je na internom izlaganju u Sun Microsystemsu između kraja
