@@ -364,6 +364,16 @@ Kontrast s istim zakonom je oštar. Za fiskalizaciju u krajnjoj potrošnji
 pravilnik propisuje cilj obrade od dvije sekunde. Za fiskalizaciju eRačuna
 takve odredbe nema.
 
+Jedno naknadno tumačenje regulatora slučaj zaoštrava umjesto da ga razriješi.
+Uputa u rubrici pitanja i odgovora ponovno slanje pod istim brojem bez oznake
+kopije naziva neregularnim ponavljanjem koje nije dopušteno, uz iznimku za
+slučaj u kojem prethodni pokušaj nije rezultirao uspješnim zaprimanjem,
+fiskalizacijom ni prosljeđivanjem\cite{pu2026pitanjaodgovori}. Iznimka je
+razumna, ali njezin uvjet je upravo ona činjenica koju obveznik nakon isteka
+vremena ne zna. Dopuštenost radnje time ovisi o ishodu koji se ne može
+utvrditi, pa neznanje iz ovog slučaja prelazi s tumačenja odgovora na
+dopuštenost samog pokušaja.
+
 \paragraph{B2: ista šifra znači i uspjeh i neuspjeh.}
 Identifikator eRačuna složen je iz četiri polja, i specifikacija svako od
 njih izrijekom označava kao dio identifikatora: broj dokumenta, datum
@@ -398,6 +408,22 @@ istom razdoblju oporezivanja, o čemu specifikacija šuti. Zakon indikator
 kopije čini obveznim, a specifikacija ga ostavlja neobveznim. Polje o kojem
 cijeli ovaj slučaj visi po zakonu mora biti prisutno, a po specifikaciji
 smije izostati.
+
+Regulator je pitanje dotaknuo, i to je vrijedno zabilježiti jer pokazuje da
+ono nije prešućeno nego ostavljeno. Uputa u rubrici pitanja i odgovora
+dopušta ponovno slanje pod istim brojem, ali samo u slučaju u kojem je
+dokument zaustavljen prije fiskalizacije, jer tada nije riječ o duplikatu
+nego o dovršetku nedovršenog postupka\cite{pu2026pitanjaodgovori}. Uputa se
+uz to izrijekom izuzima iz slučaja koji ovaj odjeljak razmatra, riječima da
+eRačun s oznakom kopije nije njezin predmet i da se šalje po posebnim
+pravilima. Ta posebna pravila su upravo dva izvora koji se ne poklapaju.
+
+Ista uputa uvodi i treći put, koji ne vodi u istom smjeru kao prva dva. Nakon
+uspješne dostave sve naknadne poslovne ispravke provode se, kako uputa kaže,
+isključivo putem storna i izdavanja novog eRačuna. Granica između poslovne
+ispravke i ispravka podatka koji ne utječe na obračun poreza nije nigdje
+određena, pa obveznik ima tri izvora i tri različita postupka za jedan
+životni događaj.
 
 \paragraph{B3: djelomičan uspjeh skupne poruke.}
 Jedan zahtjev nosi do sto zapisa, a odgovor sadrži najviše jednu grešku, s
@@ -480,14 +506,22 @@ snosi posljedice kvara koji ne kontrolira i koji ne mora ni vidjeti.
 
 \paragraph{E1: predaja od izdavatelja pristupnoj točki nije uređena.}
 Jedina potvrda u cijelom propisu je ona između pristupnih točaka
-(čl.~6.~st.~1.~t.~8.\ Pravilnika). Sloj između poslovnog sustava izdavatelja
-i njegove pristupne točke nije uređen ni u jednom pogledu. Ni oblik predaje,
-ni potvrda, ni rok, ni obavijest o neuspjehu. To je korak 2 tijeka iz
+(čl.~6.~st.~1.~t.~8.\ Pravilnika). Propis o sloju između poslovnog sustava
+izdavatelja i njegove pristupne točke ne kaže ništa. Ni o obliku predaje, ni
+o potvrdi, ni o roku, ni o obavijesti o neuspjehu. To je korak 2 tijeka iz
 odjeljka~\ref{sec:arhitektura}, jedan od dva koja nemaju izvor.
 
-Poslovni sustav izdavatelja zato ne može znati je li račun ušao u tijek.
-Svaka odluka na toj granici je odluka izvedbe, i nijedna se ne može
-obraniti pozivom na propis.
+Tu granicu ipak uređuje jedan dokument, i upravo je to ono što slučaj čini
+zanimljivim. Uputa u rubrici pitanja i odgovora pristupnoj točki izdavatelja
+nalaže da onemogući ponovno slanje pod istim brojem nakon primljene potvrde o
+uspješnoj dostavi\cite{pu2026pitanjaodgovori}. Obveza dakle postoji, ali izvan
+Narodnih novina, u dokumentu koji se sam opisuje kao operativno pojašnjenje.
+Poglavlje~\ref{ch:rasprava} tu okolnost razrađuje kao rizik za pouzdanost.
+
+Poslovni sustav izdavatelja svejedno ne može znati je li račun ušao u tijek,
+jer nijedan izvor ne propisuje potvrdu prema njemu. Svaka odluka na toj
+granici je odluka izvedbe, a jedina koja se može poduprijeti dokumentom
+oslanja se na dokument koji nije propis.
 
 % ------------------------------------------------------------
 \subsection*{Klasifikacija po posljedici}
