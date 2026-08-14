@@ -21,6 +21,26 @@
 \usepackage{indentfirst}          % uvuci i prvi odlomak nakon naslova
 \usepackage{microtype}
 
+% ---- Zaglavlje i podnožje ----------------------------------
+% Zadani stil klase book stavlja naslov poglavlja u zaglavlje verzalom
+% („POGLAVLJE 2. POZADINA I KONTEKST") i broj stranice uz vanjski rub
+% zaglavlja. Oboje je uklonjeno: zaglavlje je prazno, bez crte, a broj
+% stranice ide u donji desni kut.
+%
+% Stil plain se redefinira zato što book na prvoj stranici svakog
+% poglavlja sam poziva \thispagestyle{plain}. Bez toga bi broj stranice
+% na tim stranicama ostao centriran.
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyfoot[R]{\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+}
+
 % ---- Grafika i tablice -------------------------------------
 \usepackage{graphicx}
 \graphicspath{{slike/}}
