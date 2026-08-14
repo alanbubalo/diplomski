@@ -1,0 +1,94 @@
+% ============================================================
+%  Prilog: preostale šutnje propisa
+%  Napisan 2026-08-14. Odluka: 12 slučajeva razrađeno
+%  u 6.2, preostalih osam ide u prilog kao tablica s citatima.
+%
+%  ⚠ NIJE devet nego OSAM. Deveta je S22 (soft law) i ona je otišla
+%    u pogl. 9 kao odlomak, po odluci Q27. Ne vraćati je ovamo.
+%
+%  ⚠ S12 je do 2026-08-14 bio označen NEPROVJERENO. Provjereno tog
+%    dana: Pravilnik o eRačunu (NN 11/2026, 21 članak) ne sadrži
+%    nijednu pojavu riječi "nedostupnost". Dvoznačnost čl. 40. dakle
+%    ostaje. Oznaka zatvorena.
+%
+%  ⚠ S23 je provjeren doslovno na izvoru 2026-08-14 i stranica je
+%    arhivirana u rad/izvori/ uz SHA-256, jer nema pročišćen tekst.
+% ============================================================
+\chapter{Preostale šutnje propisa}
+\label{ch:prilog-sutnje}
+
+Odjeljak~\ref{sec:failure-modes} razradio je dvanaest načina otkazivanja koji
+imaju posljedicu na zakonsku obvezu. Tijekom izvoda utvrđeno je još osam mjesta
+na kojima propis ne kaže ono što bi izvedba trebala znati. Ona nemaju vlastiti
+način otkazivanja, ili ga imaju posredno, pa su ostavljena ovdje uz citate.
+
+Tablica~\ref{tab:sutnje} nije popis primjedbi. Svaka stavka je mjesto na kojem
+izvedba mora odlučiti nešto što propis nije odlučio, a takva odluka se ne može
+obraniti pozivom na izvor.
+
+\begin{table}[htbp]
+\centering
+\caption[Preostale šutnje propisa]{Mjesta na kojima propis ne daje podatak koji
+izvedba treba. Oznake slijede numeraciju iz izvoda.}
+\label{tab:sutnje}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}p{0.7cm}p{5.4cm}p{8.4cm}@{}}
+\toprule
+& \textsc{Šutnja} & \textsc{Što izvedba mora odlučiti sama} \\
+\midrule
+
+S12 & Nedostupnost AMS-a kao servisa nije uređena &
+Članak 40.\ pokriva nedostupnost \emph{identifikatora} u AMS-u, dakle slučaj u
+kojem se primatelj nije registrirao. Ispad samog servisa gramatički nije
+pokriven. Pravilnik tu dvoznačnost ne razrješava. \\
+
+S13 & Nema izlaza za rad bez veze &
+Za promet u krajnjoj potrošnji postoje uvezana knjiga računa (čl.~22.) i potvrda
+regulatora (čl.~23.). U dijelu o eRačunu ekvivalenta nema. Jedini papirnati
+izlaz vezan je isključivo na AMS (čl.~40.~st.~2.). \\
+
+S14 & „Zadovoljavajuća podrška“ nije kvantificirana &
+Članak 49.\ stavak 2.\ traži zadovoljavajuću programsku i sklopovsku podršku, a
+mjeru ne daje. Izostanak podrške je teži prekršaj
+(čl.~72.~st.~1.~t.~10.), pa se sankcionira uvjet koji nije mjerljiv. \\
+
+S17 & Označavanje ispravljenog eRačuna nije određeno &
+Šifra S012 provjerava postoji li evidentiran izvornik, a u fiskalizacijskoj
+poruci nema polja koje bi izvornik referenciralo\cite{pu2026tehspec}. Provjera
+postoji, a podatak na koji se oslanja ne postoji. \\
+
+S19 & Referencijalni integritet reference na prethodni račun &
+Nijedno pravilo ne traži da referencirani prethodni račun postoji, da je poslan
+ni da je zaprimljen. Schematron traži samo da polje ne bude prazno kada je
+skupina prisutna\cite{cen2026validationartefacts}. \\
+
+S20 & Storno nema opisan životni ciklus &
+Norma ne poznaje tip dokumenta za poništenje\cite{cen2019en16931}. Hrvatsko
+suženje dodaje procesni kod, ali ne određuje semantiku
+obrade\cite{pu2026hrcius}. Članak 52.\ stavak 4.\ storniranje ostavlja
+mogućnošću, a rok u kojem primatelj smije odbiti nije propisan. \\
+
+S21 & Čuvanje i ponovno izvođenje fiskalizacijskih poruka &
+Članak 35.\ propisuje čuvanje eRačuna u izvornom obliku šest godina. O čuvanju
+fiskalizacijskih poruka, odgovora i zapisa ne kaže ništa, kao ni o pravu ili
+obvezi ponovnog izvođenja tijeka. Europski profil rok čuvanja dokaza
+neporecivosti prepušta politici koju nijedan dokument ne
+donosi\cite{cef2020as4v115}. \\
+
+S23 & Semantika duplikata živi izvan propisa &
+Pravilo da se eRačun pod istim brojem smije poslati samo jednom, obveza
+pristupne točke primatelja da vrati potvrdu neovisno o tome je li dokument već
+zaprimila, i postupanje s tehničkim duplikatom razrađeni su isključivo u rubrici
+pitanja i odgovora\cite{pu2026pitanjaodgovori}. Ni Zakon, ni Pravilnik, ni
+tehnička specifikacija taj obrazac ne sadrže. \\
+
+\bottomrule
+\end{tabular}
+\end{table}
+
+Posljednja stavka ima drukčiju narav od ostalih sedam i zato je razrađena u
+odjeljku~\ref{sec:ogranicenja}. Kod nje propis ne šuti zato što pitanje nije
+uočeno. Odgovor postoji i mjerodavan je, ali stoji u dokumentu koji nije propis
+i koji se mijenja bez pročišćenog teksta.

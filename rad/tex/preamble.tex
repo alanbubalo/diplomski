@@ -7,6 +7,8 @@
 \usepackage{lmodern}
 \usepackage[croatian]{babel}
 \usepackage{csquotes}             % biblatex ga traži uz babel
+% Babel prevodi \appendix kao „Dodatak"; u hrvatskim radovima je uvriježeno „Prilog".
+\addto\captionscroatian{\renewcommand{\appendixname}{Prilog}}
 
 % ---- Raspored stranice -------------------------------------
 % Pravilnik o diplomskome radu, čl. 5: A4, margine 2,5 cm, tekst 12 pt,
