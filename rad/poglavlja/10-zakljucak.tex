@@ -1,8 +1,93 @@
 % ============================================================
-%  10. Zakljucak
-%  Odjeljke definira: magla — pise se zadnji
+%  10. Zaključak
+%  Budžet: ~2 str. Piše se ZADNJI, zajedno s poglavljem 1.
+%  Napisan 2026-08-14.
+%
+%  ⚠ ODLUKA: vodi s nalazom B2, kao i uvod i sažetak.
+%
+%  ⚠ NE UVODITI NIJEDNU NOVU TVRDNJU. Zaključak samo skuplja ono što
+%    je već dokazano u poglavljima 6, 8 i 9. Ako nešto nije ondje,
+%    ne smije biti ni ovdje.
+%
+%  ⚠ Buduće nadogradnje moraju biti KONKRETNE i izvedive, ne popis
+%    želja. Tri su: mjerenje u demo okolini uz vlastitu vjerodajnicu,
+%    proširenje prototipa na kanal prema CIS-u, i provjera stoji li
+%    izvedeni sudar u izvedbi Porezne uprave.
 % ============================================================
 \chapter{Zaključak}
 \label{ch:zakljucak}
 
-\todo{Sažetak doprinosa, odgovori na RQ1-RQ3, buduće nadogradnje.}
+Šifra S008 u fiskalizaciji eRačuna znači dvije suprotne stvari. Znači da je
+ponovljena prijava prošla i znači da je propisani ispravak odbijen. Oba tijeka
+nalaže isti skup pravila, provjera koja ih sudara dio je iste specifikacije, a
+poruka ne nosi polje koje bi ih razlikovalo. Rad je taj sudar izveo iz
+objavljenih dokumenata i pokazao da se ne može zatvoriti izborom dizajna.
+
+Iz tog jednog slučaja izvedena je šira klasa. Dio načina otkazivanja u ovom
+tijeku nesvodiv je, ali ne zbog fizike distribuirane razmjene. Nesvodiv je jer
+ga propis nalaže ili jer propis uklanja mehanizam koji bi ga zatvorio.
+Literatura o toleranciji na greške tu klasu ne opisuje, a za obveznika je ona
+odlučujuća, jer određuje što uopće ima smisla graditi.
+
+% ------------------------------------------------------------
+\section*{Odgovori na istraživačka pitanja}
+
+\paragraph{RQ1.}
+Iz propisanog tijeka izvedeno je dvanaest načina otkazivanja, grupiranih po
+uzroku: propisano razdvajanje kanala, sinkroni kanal bez definirane semantike
+kvara, rokovi koji teku od nedefiniranih događaja, ispad infrastrukture bez
+pravnog ventila, i neuređena granica između poslovnog sustava i pristupne točke.
+S obzirom na zakonsku obvezu ostavljaju sustav u četiri stanja. Treće od njih,
+u kojem ishod nije loš nego nepoznat, ono je koje obrasci mogu najviše suziti.
+
+\paragraph{RQ2.}
+Matrica od dvanaest načina otkazivanja i šest obrazaca pokazuje da vrijednost
+\emph{uklanja} ne nastupa nijednom. Obrasci pokrivaju ono što nastaje iz
+svojstava distribuirane razmjene. Ne pokrivaju ono što nastaje iz propisa, jer
+bi pokrivanje značilo da izvedba odluči ono što propis nije odlučio. Za takve
+slučajeve najviša dostižna vrijednost je \emph{detektira}, dakle da sustav zna
+da je otkaz nastupio i da to može dokazati.
+
+Nesvodivost je time razdvojena na dvije vrste, a to razdvajanje je teza rada.
+Granica pokrivenosti nije tehnička nego pravna i pomiče se izmjenom propisa, ne
+boljim dizajnom. Da mehanizam nije nedostupan pokazuje isti zakon, jer za promet
+u krajnjoj potrošnji daje i identifikator računa i fikciju urednosti, a za
+fiskalizaciju eRačuna ni jedno ni drugo.
+
+\paragraph{RQ3.}
+Cijena je izražena u tri stvari. Kompleksnost raste jer sustav mora imenovati
+stanje koje propis ne imenuje. Kašnjenje raste po definiciji obrasca, ali se
+ovdje ne troši na račun korisnika nego na račun roka, jer na fiskalizacijskom
+kanalu nitko ne čeka. Rizik prekoračenja roka izveden je iz odredbe koja
+trenutak izdavanja ne kvantificira i ne izuzima kašnjenje zbog reda čekanja.
+
+Sedam ćelija matrice pokazuje obrazac koji usklađenost pogoršava. Pet ih pripada
+prekidaču, koji kvar dostupnosti pretvara u propuštanje zakonskog roka, a
+sankcioniran je samo drugi. Ponovni pokušaj koji uspije iz četvrtog pokušaja
+tehnički je uspio, a pravno može biti zakašnjeo.
+
+% ------------------------------------------------------------
+\section*{Granice i nadogradnje}
+
+Evaluacija je analitička. Šest od 72 ćelije matrice pokazano je prototipom, i to
+za tri načina otkazivanja na jednoj granici. Rad ne tvrdi da su odabrani obrasci
+najbolji mogući, jer usporedbe s alternativama nema. Studija slučaja je
+referentna arhitektura, pa rad ne može reći koliko se izvedenih slučajeva u
+praksi pojavljuje.
+
+Iz tih granica slijede tri konkretne nadogradnje.
+
+Prva je mjerenje u demo okolini Sustava za fiskalizaciju, koju pravilnik
+propisuje, uz vjerodajnicu izdanu za tu svrhu. Time bi ćelije razine
+\emph{prosudba} prešle u razinu \emph{izmjereno}, uz uvjet da okolina i sudionik
+budu imenovani, jer bi rezultat inače ostao neponovljiv.
+
+Druga je proširenje prototipa na kanal prema Sustavu za fiskalizaciju. Slučajevi
+C3, D1 i D2 dijele mehanizam s onima koji su izvedeni, ali prototip ih ne
+pokreće, pa su u matrici ostali na razini prosudbe.
+
+Treća je provjera stoji li izvedeni sudar oko šifre S008 i u izvedbi Porezne
+uprave. Rad tvrdi da specifikacija ne daje odgovor, a ne da izvedba ne radi.
+Ako izvedba indikator kopije uključuje u provjeru jedinstvenosti, jedna polovica
+sudara nestaje, a druga ostaje, jer ispravak s novim datumom izdavanja nema
+polja kojim bi referencirao izvornik.

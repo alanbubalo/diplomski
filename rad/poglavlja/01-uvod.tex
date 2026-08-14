@@ -1,8 +1,97 @@
 % ============================================================
 %  1. Uvod
-%  Odjeljke definira: magla — piše se zadnji, kad se zna što rad tvrdi
+%  Budžet: ~2 str. Piše se ZADNJI, kad se zna što rad tvrdi.
+%  Napisan 2026-08-14.
+%
+%  ⚠ ODLUKA: uvod VODI S NALAZOM B2, ne s matricom.
+%    Razlog: B2 je najjači pojedinačni izvod u radu, a u poglavlju 6
+%    stoji na 25. stranici. Čitatelj mora znati što rad nudi prije
+%    nego dođe do metode. Isto vrijedi za sažetak i poglavlje 10.
+%
+%  ⚠ Formulacije RQ1–RQ3 su zaključane. Hrvatska je
+%    mjerodavna. OVDJE SU BEZ CRTICA jer proza rada ne trpi crtice;
+%    značenje je nedirnuto.
 % ============================================================
 \chapter{Uvod}
 \label{ch:uvod}
 
-\todo{Uvod, ciljevi, istraživačka pitanja, opseg i struktura rada. Piše se pri kraju.}
+% ------------------------------------------------------------
+\section{Problem}
+\label{sec:problem}
+
+Obveznik koji od 2026.\ izdaje eRačun dužan je učiniti dvije stvari. Dokument
+mora dostaviti primatelju i podatke o njemu mora prijaviti Poreznoj upravi.
+Pretpostavimo da prijava ne dobije odgovor u očekivanom vremenu i da obveznik
+poruku pošalje ponovno. Sustav za fiskalizaciju odgovara šifrom S008.
+
+Ista šifra odgovara i na propisani ispravak podatka koji ne utječe na obračun
+poreza, jer se takav ispravak izdaje pod istim brojem računa. U jednom slučaju
+šifra znači da je ranija prijava prošla. U drugom znači da je propisani postupak
+odbijen. U poruci nema polja koje bi ta dva razlikovalo.
+
+Ovo nije greška izvedbe. Oba tijeka nalaže isti skup pravila, a provjera koja
+ih sudara dio je iste tehničke specifikacije koja ih propisuje. Nijedan izbor
+dizajna taj sudar ne razrješava, jer bi razrješenje značilo da izvedba odluči
+ono što propis nije odlučio.
+
+Takav slučaj nije jedini. Rad ih izvodi dvanaest i pokazuje da se dijele na dvije
+vrste. Prvu literatura poznaje: nesvodiva je jer proizlazi iz svojstava
+distribuirane razmjene, poput nemogućnosti da pošiljatelj sazna ishod poruke bez
+odgovora. Druga vrsta je nesvodiva **jer je propis takvom čini**, i njome se
+literatura o toleranciji na greške ne bavi.
+
+Razlika nije akademska. Obrasci koji rješavaju prvu vrstu opisani su i dokazani.
+Za drugu vrstu obrasci mogu najviše učiniti da otkaz bude uočen i zabilježen.
+Jedan od njih pritom aktivno šteti, o čemu govori poglavlje~\ref{ch:rasprava}.
+
+% ------------------------------------------------------------
+\section{Ciljevi i istraživačka pitanja}
+\label{sec:ciljevi}
+
+Cilj rada je izvesti načine na koje se propisani tijek fiskalizacije eRačuna
+može pokvariti, utvrditi što od toga obrasci tolerancije na greške pokrivaju, i
+imenovati cijenu koju ta pokrivenost nosi. Izvod se provodi iz objavljenih
+dokumenata, pa je svaka tvrdnja provjerljiva bez pristupa ijednom sustavu.
+
+Rad odgovara na tri pitanja.
+
+\begin{description}[leftmargin=1.6cm, style=nextline]
+  \item[RQ1] Koji se načini otkazivanja mogu izvesti iz propisanog tijeka
+  fiskalizacije eRačuna, i u koja završna stanja ostavljaju sustav s obzirom na
+  zakonsku obvezu?
+
+  \item[RQ2] Koji obrasci tolerancije na greške pokrivaju koja od izvedenih
+  završnih stanja, a koja ostaju nesvodiva, i proizlazi li njihova nesvodivost
+  iz svojstava distribuiranih sustava ili iz samog propisa?
+
+  \item[RQ3] Koju cijenu u kompleksnosti, kašnjenju i riziku prekoračenja
+  propisanog roka nose ti obrasci, i u kojim slučajevima pogoršavaju usklađenost
+  umjesto da je poboljšaju?
+\end{description}
+
+Drugi dio drugog pitanja nosi tezu rada. Formulacija je pritom takva da negativan
+nalaz prima kao rezultat. Odgovor da ništa nije nesvodivo i odgovor da je gotovo
+sve nesvodivo oba su odgovori, pa pitanje ne može ostati neodgovoreno.
+
+% ------------------------------------------------------------
+\section{Opseg i struktura}
+\label{sec:opseg-rada}
+
+Predmet rada nije nijedan postojeći sustav. Predmet je referentna arhitektura
+izvedena iz Zakona, Pravilnika i tehničke specifikacije, dakle skup sudionika,
+kanala i obveza koji svako usklađeno rješenje mora sadržavati. Opis konkretnog
+rješenja pokazao bi što je jedan tim odlučio, a čitatelj ne bi mogao razlučiti
+zahtjev propisa od izbora tog tima.
+
+Iz toga slijedi i granica evaluacije. Rad ne mjeri. Tvrdnje o pokrivenosti
+izvedene su iz propisa i iz svojstava obrazaca dokazanih u literaturi, a
+poglavlje~\ref{ch:rasprava} obrazlaže zašto je taj izbor metodološki, a ne
+posljedica nedostupne opreme.
+
+Poglavlje~\ref{ch:pozadina} postavlja pravni i tehnički kontekst.
+Poglavlja~\ref{ch:distribuirani} do~\ref{ch:tijekovi} daju pojmovni aparat:
+djelomični otkaz i klasifikaciju otkaza, rječnik obrazaca, i granice
+transakcije u distribuiranim tijekovima. Poglavlje~\ref{ch:studija} je doprinos
+rada i odgovara na RQ1. Poglavlje~\ref{ch:implementacija} opisuje ilustrativni
+prototip, a poglavlje~\ref{ch:evaluacija} matricu pokrivenosti kojom se
+odgovara na RQ2. Poglavlje~\ref{ch:rasprava} odgovara na RQ3.
