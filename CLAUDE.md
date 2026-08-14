@@ -50,6 +50,10 @@ Povremena dulja rečenica koja nosi jednu misao je u redu. Mijenjati ritam.
 - **Izrična rečenica ide s „da", ne s „kako".** „Zakon navodi da…", ne „Zakon navodi kako…".
 - **Neodređeni kvantifikatori** („brojni", „razni", „mnogi", „određeni") ne prolaze bez broja,
   primjera ili citata iza sebe. „U roku od dva radna dana", ne „u propisanom roku".
+- **Hrvatska riječ prije internacionalizma.** Gdje postoji uvriježena hrvatska riječ,
+  ona ima prednost: „distribuirati" → „raspodijeliti", „verificirati" → „provjeriti",
+  „kompleksan" → „složen". Iznimka su ustaljeni stručni termini bez dobre zamjene;
+  oni se uvode kroz `\strani{}` (vidi *Termini*) i dosljedno ponavljaju.
 - **Isti pojam, ista riječ.** Tehnički termin se ponavlja, ne rotira kroz sinonime.
   Rotacija („obveznik" pa „porezni subjekt" pa „izdavatelj") unosi dvosmislenost i odaje model.
   Ponavljanje termina u stručnom tekstu nije greška.
