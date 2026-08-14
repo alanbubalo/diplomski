@@ -11,13 +11,26 @@
 \input{tex/preamble}
 
 % ---- Metapodaci rada ---------------------------------------
-% Mentor i studij ostaju placeholderi dok se ne potvrde.
+% Polja naslovnice slijede službeni obrazac UNIPU
+% „Naslovna i prva stranica — diplomski rad", preuzet 2026-08-14.
+%
+% ⚠ SVE ŠTO JE U UGLATIM ZAGRADAMA POPUNJAVA SE PRIJE PREDAJE.
+%   Ta polja ne ovise o sadržaju rada; popunjavaju se na kraju,
+%   u jednom prolazu, i to je jedino mjesto na kojem se mijenjaju.
 \newcommand{\radNaslov}{Obrasci tolerancije na greške u distribuiranim sustavima: studija slučaja Fiskalizacije 2.0}
 \newcommand{\radNaslovEng}{Fault-Tolerance Patterns in Distributed Systems: A Case Study of Fiscalization 2.0}
 \newcommand{\radAutor}{Alan Bubalo}
 \newcommand{\radJmbag}{0303098591}
 \newcommand{\radMentor}{[ime mentora]}
-\newcommand{\radStudij}{[naziv studija]}
+% FIPU nudi dva diplomska smjera: „Diplomski sveučilišni studij Informatika"
+% i isti studij uz dodatak „nastavni smjer". Upisati onaj s upisnice.
+\newcommand{\radSmjer}{[Diplomski sveučilišni studij Informatika?]}
+\newcommand{\radPredmet}{[predmet pod kojim je tema prijavljena]}
+\newcommand{\radPodrucje}{[znanstveno područje]}
+\newcommand{\radPolje}{[znanstveno polje]}
+\newcommand{\radGrana}{[znanstvena grana]}
+% Genitiv koji ide u izjavu o čestitosti: „kandidat za magistra ...".
+\newcommand{\radTitulaOd}{informatike}
 \newcommand{\radGodina}{2026}
 \newcommand{\radMjesto}{Pula}
 % ------------------------------------------------------------
@@ -66,7 +79,11 @@
 \backmatter
 \printbibliography[heading=bibintoc,title={Literatura}]
 
-% ---- Popis nedovršenog (ukloniti prije predaje) ------------
-\popistodo
+% ---- Popis nedovršenog -------------------------------------
+% Uklonjen 2026-08-14, jer nijedna \todo oznaka više ne postoji.
+% Naredbe \todo i \popistodo ostaju u preambuli. Ako se u doradi
+% pojavi nova oznaka, vratiti \popistodo ovamo da se ne izgubi
+% iz vida, i ukloniti ga opet prije predaje.
+% \popistodo
 
 \end{document}
