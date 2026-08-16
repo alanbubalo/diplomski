@@ -569,6 +569,8 @@ Ukloniti je ne mogu.
 
 % ------------------------------------------------------------
 \subsection*{Dvije vrste nesvodivosti}
+\phantomsection
+\label{sec:dvije-vrste}
 
 Nesvodiv je onaj način otkazivanja koji nijedna izvedba ne može ukloniti.
 Izvedeni slučajevi pokazuju da nesvodivost ovdje dolazi iz dva različita
@@ -582,10 +584,17 @@ jer istek vremena ne razlikuje spor proces od
 mrtvog\cite{chandra1996failuredetectors}. Za tu vrstu propis nije kriv i
 nijedan propis je ne bi uklonio.
 
-Druga vrsta nema ime u literaturi, i za nju ovaj rad predlaže naziv
-regulatorno inducirana nesvodivost. Kod nje uzrok nije u fizici prijenosa
-nego u tome što propis ili sam nalaže stanje koje stvara problem, ili
-uklanja mehanizam kojim bi se problem riješio.
+Za drugu vrstu ovaj rad predlaže naziv regulatorno inducirana nesvodivost.
+Kod nje uzrok nije u fizici prijenosa nego u tome što propis ili sam nalaže
+stanje koje stvara problem, ili uklanja mehanizam kojim bi se problem riješio.
+
+Naziv je uveden zato što izvori na kojima ovaj rad stoji tu vrstu ne
+razlučuju. Literatura o usklađenosti radi s procesom koji se smije
+ispraviti\cite{sadiq2007compliance,ly2015compliance}, a formalni model domene
+pouzdanost kanala uzima kao pretpostavku\cite{attali2004chilean}. Prvi izvor
+time pretpostavlja da je uzrok uklonjiv, drugi da otkaza nema. Doprinos nije
+sam naziv nego razlika koju imenuje. Prigovor da je pritom riječ samo o sukobu
+zahtjeva razrađen je u odjeljku~\ref{sec:pogorsanje}.
 
 Slučajevi A1 i A2 nesvodivi su jer ih propis nalaže. Članak 48.\ stavak 3.\
 zabranjuje zatvaranje jaza između kanala jednom transakcijom, pa izvedba
