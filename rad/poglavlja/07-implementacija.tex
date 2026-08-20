@@ -21,10 +21,9 @@
 
 Obrasci iz odjeljka~\ref{sec:dizajn} opisani su riječima. Dio tvrdnji o njima
 provjerljiv je jedino tako da se obrazac izvede i da se vidi u kojem stanju
-sustav završi. Prototip služi tome, i ničemu drugom. Ne mjeri, ne dokazuje da
-je proizvod izvediv i ne pokazuje sukladnost s propisom. Njegov jedini posao je
-da tvrdnja koja bi inače ostala prosudba autora postane tvrdnja koju čitatelj
-može pokrenuti. Poglavlje~\ref{ch:evaluacija} tu razliku vodi izrijekom.
+sustav završi. Prototip pruža izvršnu provjeru takvih tvrdnji. U dvije izvedbe
+pokreće isti kvar i uspoređuje završna stanja. Ne provjerava sukladnost formata
+ni transportnog protokola, jer su predmet stanja nakon greške.
 
 % ------------------------------------------------------------
 \section{Opseg i granice}
@@ -33,12 +32,13 @@ može pokrenuti. Poglavlje~\ref{ch:evaluacija} tu razliku vodi izrijekom.
 %   Ovo se piše PRVO, prije opisa, da čitatelj zna što ne traži dalje.
 %   Stack: PHP 8.5.8, Laravel 13.25.0, SQLite. Provjereno 2026-08-13.
 
-Prototip pokriva jednu granicu, onu između poslovnog sustava i njegove
-pristupne točke. To je granica C1 prema C2 iz odjeljka~\ref{sec:arhitektura},
-ista koja u odjeljku~\ref{sec:failure-modes} nosi slučaj E1. Nijedan drugi dio
-tijeka nije izveden.
+Prototip izvršava dvije granice iz referentne arhitekture. Prva je predaja od
+poslovnog sustava njegovoj pristupnoj točki, C1 prema C2, koja nosi slučaj E1.
+Druga je sinkroni kanal prema Sustavu za fiskalizaciju, na kojem pokreće
+slučajeve B1, B2 i D1. Time konkretni primjer obuhvaća predaju računa, slanje
+fiskalizacijske poruke, izostanak odgovora, odgovor S008 i oporavak odredišta.
 
-Popis onoga što prototip nema je dulji od popisa onoga što ima, i tako je
+Popis onoga što prototip nema dulji je od popisa onoga što ima, i to
 namjerno:
 
 \begin{itemize}[nosep]
@@ -50,11 +50,12 @@ namjerno:
   \item bez mjerenja kašnjenja i bez ubrizgavanja kvarova u više servisa.
 \end{itemize}
 
-Pristupna točka nije izvedena nego zamijenjena \strani{krnjim
-dvojnikom}{stub}. On na poziv vraća jedan od tri ishoda: potvrdu, izostanak
-odgovora ili šifru S008. Prototip koji bi provjeravao UBL i govorio AS4
-pokazivao bi sukladnost, a predmet je rukovanje greškom. Za njega je dovoljna
-jedna granica i tri ishoda.
+Vanjska odredišta zamijenjena su \strani{krnjim dvojnicima}{stubs}. Dvojnik
+pristupne točke vraća potvrdu ili izostanak odgovora. Dvojnik Sustava za
+fiskalizaciju uz ta dva ishoda vraća i šifru S008. Unaprijed zadani niz odgovora
+omogućuje da se nedostupnost i oporavak ponove bez stvarne vanjske okoline.
+Prototip koji bi provjeravao UBL i govorio AS4 pokazivao bi sukladnost, a
+predmet je rukovanje greškom.
 
 Izvedeno je u jeziku PHP 8.5 i okviru Laravel 13.25, kao skup konzolnih naredbi
 nad bazom SQLite, bez mrežnog sloja i bez korisničkog sučelja.
@@ -62,7 +63,7 @@ nad bazom SQLite, bez mrežnog sloja i bez korisničkog sučelja.
 Cijeli dokazni sadržaj visi o jednoj razlici u izvedbi. Zapis namjere piše se
 ili prije predaje, u istoj transakciji kao i sam dokument, ili tek nakon što
 odgovor stigne. Obje izvedbe stoje u istom kodu i biraju se prekidačem u
-naredbi. Iz te jedne razlike slijede sva tri kontrasta koja
+naredbi. Iz te jedne razlike slijede četiri kontrasta koja
 odjeljak~\ref{sec:scenariji} pokazuje.
 
 % ------------------------------------------------------------
@@ -82,7 +83,7 @@ bi ih obuhvatila ne postoji\cite{helland2007lifebeyond}. Treća tablica čuva
 evidenciju.
 
 Životni ciklus predaje opisan je automatom sa slike~\ref{fig:automat}. Stanje
-\texttt{sent-unconfirmed} je jedino iz kojeg se ishod ne može pročitati, i
+\texttt{sent-unconfirmed} je jedino iz kojeg se ishod ne može pročitati i
 jedino koje propis ne imenuje. Ovdje je ravnopravno stanje, uz obrazloženje iz
 odjeljka~\ref{sec:dizajn}\cite{schneider1990statemachine}.
 
@@ -179,13 +180,13 @@ bilo jednoznačno. To drugo je ono zbog čega tablica postoji.
 % ------------------------------------------------------------
 \section{Scenariji i ishodi}
 \label{sec:scenariji}
-% ⚠ SVI ISPISI SU STVARNI, uzeti 2026-08-13. Sat prototipa je fiksiran
+% ⚠ SVI ISPISI SU STVARNI, zadnji put provjereni 2026-08-20. Sat prototipa je fiksiran
 %   na 2026-09-01 09:00:00, pa su ponovljivi. Ako se kod mijenja,
 %   ISPISE UZETI PONOVO.
 %
 % ★ SVAKI scenarij završava rečenicom koja imenuje ĆELIJU matrice.
 
-Tri scenarija pokrivaju po jedan način otkazivanja iz
+Četiri scenarija pokrivaju po jedan način otkazivanja iz
 odjeljka~\ref{sec:failure-modes}. Svaki se pokreće u obje izvedbe, sa zapisom
 namjere i bez njega. Sat je pritom zamrznut na jedan trenutak, pa su ispisi
 ponovljivi.
@@ -201,8 +202,9 @@ stupcima nastaje samo iz trenutka u kojem se zapisuje namjera.}
 & Odgovor & Sa zapisom namjere & Bez zapisa namjere \\
 \midrule
 B1 & izostaje       & \texttt{sent-unconfirmed}    & nema zapisa \\
-E1 & izostaje       & predaja bez potvrde: 1       & predaja bez potvrde: 0 \\
 B2 & S008 uz ispravak & \texttt{correction-rejected} & \texttt{sent-unconfirmed} \\
+D1 & izostaje, zatim potvrda & \texttt{confirmed} & nema zapisa \\
+E1 & izostaje       & predaja bez potvrde: 1       & predaja bez potvrde: 0 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -263,7 +265,8 @@ dobiva S008. U drugom se šalje ispravak pod istim brojem računa i dobiva istu
 
 \begin{lstlisting}[caption={[Završno stanje baze nakon scenarija
 B2]Završno stanje nakon scenarija B2, izlaz naredbe \texttt{php artisan
-state}. Ista šifra, dva različita završna stanja.}, label={lst:ispis}]
+state}. Ista šifra, dva različita završna stanja.}, label={lst:ispis},
+basicstyle=\ttfamily\scriptsize]
 PREDAJE
 +----+------------+------------+---------------------+------+---------+
 | id | racun      | namjera    | stanje              | pok. | odgovor |
@@ -285,7 +288,7 @@ EVIDENCIJA
 \end{lstlisting}
 
 Treći redak evidencije je onaj koji nosi tezu poglavlja. Sustav je u tom
-trenutku znao da ne zna, i to je zapisao. Kasniji odgovor S008 taj trenutak
+trenutku znao da ne zna i to je zapisao. Kasniji odgovor S008 taj trenutak
 razrješava, ali ga ne briše.
 
 Bez zapisa namjere oba dijela scenarija završavaju u istom stanju,
@@ -293,6 +296,20 @@ Bez zapisa namjere oba dijela scenarija završavaju u istom stanju,
 To je slučaj B2 u izvedbi.
 
 Scenarij popunjava ćeliju B2 uz odlazni pretinac i zapis namjere.
+
+\paragraph{D1: Sustav za fiskalizaciju privremeno je nedostupan.}
+Prvi poziv ostaje bez odgovora. Uz zapis namjere dokument završava u stanju
+\texttt{sent-unconfirmed}, a sljedeći se pokušaj računa iz preostalog roka.
+Dvojnik se zatim oporavlja sljedećeg dana. Drugi poziv vraća potvrdu i dokument
+prelazi u stanje \texttt{confirmed}. Oba su poziva evidentirana, a završetak
+nastupa prije isteka roka.
+
+Bez zapisa namjere prvi izostanak odgovora ne ostavlja predaju na kojoj bi se
+ponavljanje moglo nastaviti. Usporedba zato ne pokazuje samo da ponavljanje
+može uspjeti, nego uvjet pod kojim je oporavak uopće moguć.
+
+Scenarij popunjava ćelije D1 uz ponavljanje svjesno roka, odlazni pretinac i
+automat s imenovanim stanjem.
 
 % ------------------------------------------------------------
 % TVRDNJE KAO TESTOVI — veza s metodom iz pogl. 8.
@@ -302,7 +319,6 @@ Scenarij popunjava ćeliju B2 uz odlazni pretinac i zapis namjere.
 Svaka tvrdnja iz ovog odjeljka zapisana je i kao izvršni test, u obliku koji
 Filibuster koristi za uvjetne tvrdnje\cite{meiklejohn2021filibuster}. Test ne
 provjerava da je poziv uspio nego da je završno stanje ono koje propis i
-obrazac zajedno nalažu. Prototip nosi dvadeset i tri takve tvrdnje, a
+obrazac zajedno nalažu. Prototip nosi dvadeset i pet takvih tvrdnji, a
 poglavlje~\ref{ch:evaluacija} poziva se na njih kada ćeliju označava kao
 pokazanu.
-

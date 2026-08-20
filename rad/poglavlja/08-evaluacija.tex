@@ -9,9 +9,9 @@
 %    ljestvice, nema mjerenja. Ne vraćati.
 %
 %  ⚠ RAZINA (b) DANA JE SAMO ZA ONO ŠTO PROTOTIP DOISTA POKREĆE.
-%    Prototip vrti B1, B2 i E1 na granici C1↔C2. Slučajevi D1, D2 i C3
-%    imaju isti oblik, ali ih prototip NE izvodi, pa su ondje (c).
-%    Šest ćelija nosi (b). Ne dijeliti (b) po sličnosti mehanizma.
+%    Prototip vrti B1, B2 i D1 na fiskalizacijskom kanalu te E1 na
+%    granici C1↔C2. D2 i C3 ne izvodi, pa ondje ostaje (c).
+%    Devet ćelija nosi (b). Ne dijeliti (b) po sličnosti mehanizma.
 %
 %  ✔ attali2004chilean PROVJEREN 2026-08-14 čitanjem rada (HAL inria-00087210,
 %    PDF u rad/izvori/teorija/ uz SHA-256). Citiran u 8.1 kao drugi razlog
@@ -24,8 +24,8 @@
 
 Poglavlje~\ref{ch:studija} izvelo je dvanaest načina otkazivanja, a
 odjeljak~\ref{sec:dizajn} predložio šest obrazaca. Ostaje pitanje koliko ti
-obrasci doista pokrivaju, i po kojem se postupku takva tvrdnja može provjeriti
-bez mjerenja.
+obrasci doista pokrivaju i po kojem se postupku takva tvrdnja može provjeriti
+spojem analitičkog izvoda i izvršnih scenarija.
 
 % ------------------------------------------------------------
 \section{Metoda}
@@ -59,7 +59,7 @@ i utvrđen je u odjeljku~\ref{sec:dizajn}.
 
 \paragraph{Tvrdnja se piše kao uvjetna.}
 Filibuster mjerilo zapisuje kao uvjetnu tvrdnju oblika „ako je kvar ubrizgan u
-servis A, tada mora vrijediti\ldots“, i devet takvih tvrdnji kod njih je
+servis A, tada mora vrijediti\ldots“. Devet takvih tvrdnji kod njih je
 pokrilo 1606 testova\cite{meiklejohn2021filibuster}. Ćelija se u prozi
 razrađuje u istom obliku. Ne „ponavljanje pomaže kod B1“, nego: ako
 fiskalizacijski poziv istekne bez odgovora, uz ponavljanje svjesno roka
@@ -73,9 +73,10 @@ znači da tvrdnju pokazuje prototip iz poglavlja~\ref{ch:implementacija}.
 Razina \textsuperscript{c} znači da je tvrdnja prosudba autora.
 
 Prosudba je dopuštena, prešućena prosudba nije. Razinu \textsuperscript{b}
-nose samo one ćelije koje prototip doista pokreće, dakle slučajevi B1, B2 i E1
-na granici C1 prema C2. Slučajevi D1, D2 i C3 imaju isti oblik, ali ih prototip
-ne izvodi, pa ondje stoji \textsuperscript{c} i kada bi mehanizam bio isti.
+nose samo one ćelije koje prototip doista pokreće. To su slučajevi B1, B2 i D1
+na sinkronom fiskalizacijskom kanalu te E1 na granici C1 prema C2. Slučajevi D2
+i C3 imaju sličan oblik, ali ih prototip ne izvodi, pa ondje stoji
+\textsuperscript{c} i kada bi mehanizam bio isti.
 
 % ------------------------------------------------------------
 \section{Matrica pokrivenosti}
@@ -110,7 +111,7 @@ C1 rok od nedefiniranog primitka & N\textsuperscript{a} & N\textsuperscript{a} &
 C2 trenutak izdavanja            & N\textsuperscript{a} & N\textsuperscript{a} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{a} & \textbf{P}\textsuperscript{c} \\
 C3 zakašnjelo bez fikcije        & N\textsuperscript{a} & S\textsuperscript{c} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{a} & \textbf{P}\textsuperscript{c} \\
 \addlinespace
-D1 sustav nedostupan             & D\textsuperscript{a} & S\textsuperscript{c} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{c} & \textbf{P}\textsuperscript{c} \\
+D1 sustav nedostupan             & D\textsuperscript{a} & S\textsuperscript{b} & D\textsuperscript{b} & D\textsuperscript{b} & N\textsuperscript{c} & \textbf{P}\textsuperscript{c} \\
 D2 posrednik nedostupan          & D\textsuperscript{a} & S\textsuperscript{c} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{c} & S\textsuperscript{c} \\
 \addlinespace
 E1 neuređena predaja             & D\textsuperscript{a} & S\textsuperscript{c} & D\textsuperscript{b} & D\textsuperscript{b} & S\textsuperscript{a} & N\textsuperscript{c} \\
@@ -134,8 +135,8 @@ N ne pomaže \textbullet{}
 \end{minipage}
 \end{table}
 
-Prva stvar koju treba pročitati iz tablice~\ref{tab:matrica} je ono čega u njoj
-nema. Vrijednost \emph{uklanja} ne pojavljuje se nijednom. To nije neuspjeh
+Iz tablice~\ref{tab:matrica} prvo se čita ono čega u njoj nema. Vrijednost
+\emph{uklanja} ne pojavljuje se nijednom. To nije neuspjeh
 obrazaca nego posljedica teze iz odjeljka~\ref{sec:failure-modes}. Za slučaj
 koji je nesvodiv jer ga propis nalaže, najviša dostižna vrijednost je
 \emph{detektira}, a ona znači da sustav zna da je otkaz nastupio i da to može
@@ -155,19 +156,17 @@ odnos i brz kvar dopušta lokalno zadržavanje poruke. Isti obrazac, dvije
 granice, dvije suprotne ocjene.
 
 \paragraph{Ključ za deduplikaciju u retku B2 pogoršava.}
-Dvije ocjene \emph{pogoršava} ne pripadaju prekidaču, ova i ponavljanje u
-retku B3, i upravo te dvije stoje na razini \textsuperscript{a}. Svih pet
-prekidačevih ocjena je prosudba autora. Složeni identifikator postoji i
-stabilan je kroz
-ponovni pokušaj, pa provjera S008 ispravno odbija duplikat. Ista provjera
+Dvije ocjene \emph{pogoršava} ne pripadaju prekidaču: ova i ponavljanje u
+retku B3. Upravo te dvije stoje na razini \textsuperscript{a}, dok je svih pet
+prekidačevih ocjena prosudba autora. Složeni identifikator postoji i stabilan
+je kroz ponovni pokušaj, pa provjera S008 ispravno odbija duplikat. Ista provjera
 odbija i propisani ispravak, jer hrvatsko suženje norme nalaže da ispravak ide
 pod istim brojem računa, a indikator kopije nije dio
 identifikatora\cite{pu2026hrcius}. Mehanizam koji štiti od duplikata time
 blokira tijek koji isti propis nalaže.
 
-\paragraph{Redak B2 uz odlazni pretinac je jedina ćelija koja se popravlja
-prototipom.}
-Uvjetna tvrdnja glasi: ako pristupna točka vrati šifru S008, uz zapis namjere
+\paragraph{Redak B2 uz odlazni pretinac sužava dvoznačnost.}
+Uvjetna tvrdnja glasi: ako Sustav za fiskalizaciju vrati šifru S008, uz zapis namjere
 nastao prije slanja dokument završava u stanju \texttt{confirmed} kada je
 poslan ponovni pokušaj, odnosno u stanju \texttt{correction-rejected} kada je
 poslan ispravak. Bez zapisa oba puta završava u stanju
@@ -177,11 +176,20 @@ Vrijednost je \emph{sužava}, ne \emph{uklanja}. Razlikovanje ovisi o lokalnom
 zapisu, a ako se zapis izgubi, rekonstruirati ga iz podataka Sustava za
 fiskalizaciju nije moguće.
 
+\paragraph{Redak D1 pokazuje oporavak unutar roka.}
+Ako Sustav za fiskalizaciju ne odgovori na prvi poziv, zapis namjere ostavlja
+dokument u stanju \texttt{sent-unconfirmed} i čuva početak roka. Nakon oporavka
+odredišta ponavljanje prije isteka roka vodi u stanje \texttt{confirmed}.
+Izvedba bez zapisa namjere nema predaju na kojoj bi nastavila. Prototip time
+pokazuje vrijednost \emph{sužava} uz ponavljanje i vrijednost \emph{detektira}
+uz odlazni pretinac i imenovano stanje. Ne pokazuje da obrazac uklanja
+nedostupnost niti da produljuje rok.
+
 \paragraph{Ponavljanje cijele skupne poruke pogoršava.}
 Zahtjev nosi do sto zapisa, odgovor najviše jednu grešku, a sudbina preostalih
 zapisa nije definirana\cite{pu2026tehspec}. Ponavljanje cijelog skupa zato
 umnaža izloženost duplikatima umjesto da je smanji. Izlaz nije bolji obrazac
-nego odricanje od značajke sučelja: kardinalnost dopušta i jedan zapis po
+nego odricanje od značajke sučelja. Kardinalnost dopušta i jedan zapis po
 poruci, pa se skupnost može ne koristiti. Mitigacija koja se sastoji od
 neupotrebe dijela sučelja sama je nalaz o sučelju.
 
@@ -202,13 +210,12 @@ podatak kojeg u sučelju nema.
 \label{sec:nepokriveno}
 
 Nepokriveno je skup redaka u kojima najviša postignuta vrijednost nije bolja
-od \emph{detektira}. Iz tablice~\ref{tab:matrica} to su A1, A2, B4, C1, C2, C3
-i D1.
+od \emph{detektira}. Iz tablice~\ref{tab:matrica} to su A1, A2, B4, C1, C2 i C3.
 
 Taj skup gotovo se poklapa sa skupom regulatorno nesvodivih slučajeva iz
 odjeljka~\ref{sec:failure-modes}, koji obuhvaća A1, A2, B2, C3 i D1, uz B1 i
 B4 kao fizikalno nesvodive. Poklapanje nije slučajno i služi kao provjera da su
-izvod i evaluacija dosljedni. Dva odstupanja treba objasniti.
+izvod i evaluacija dosljedni. Tri odstupanja treba objasniti.
 
 Slučaj B2 u matrici doseže \emph{sužava}, iako je u odjeljku~\ref{sec:dizajn}
 označen kao regulatorno nesvodiv. Oboje stoji. Zapis namjere razrješava
@@ -216,13 +223,18 @@ tumačenje dok postoji, a nesvodivost se odnosi na slučaj u kojem je izgubljen.
 Slučajevi C1 i C2 obrnuto su u matrici lošiji nego u izvodu, jer njihov uzrok
 nije kvar nego nedefiniran pojam, a na to nijedan obrazac ne djeluje.
 
+Slučaj D1 u matrici doseže \emph{sužava} jer ponavljanje nakon oporavka može
+dovršiti fiskalizaciju unutar roka. Regulatorna nesvodivost ipak ostaje. Ako
+nedostupnost traje dulje od roka, obrazac nema mehanizam kojim bi rok produljio
+ili zakašnjelom postupku dao učinak pravovremenog.
+
 Iz toga slijedi odgovor na drugo istraživačko pitanje. Obrasci tolerancije na
 greške pokrivaju one načine otkazivanja koji nastaju iz svojstava raspodijeljene
 razmjene, a ne pokrivaju one koji nastaju iz propisa. Za prve postoji dokazan
 mehanizam u literaturi. Za druge bi mehanizam značio da izvedba sama odluči
 ono što propis nije odlučio, a takva odluka nije obranjiva pozivom na propis.
 
-Granica pokrivenosti stoga nije tehnička nego pravna, i pomiče se izmjenom
+Granica pokrivenosti stoga nije tehnička nego pravna. Pomiče se izmjenom
 propisa, ne boljim dizajnom. Poglavlje~\ref{ch:rasprava} razrađuje što to
 znači za obveznika koji do te izmjene mora raditi.
 
@@ -232,6 +244,6 @@ znači za obveznika koji do te izmjene mora raditi.
 %   2. da je pokrivenost izmjerena — nije, izvedena je
 %   Oba priznanja idu u pogl. 9, ne ovdje. Ovdje bi razvodnila nalaz.
 
-Šest od 72 ćelije nosi razinu \textsuperscript{b}, a nijedna ne počiva na
-mjerenju. Domet i cijena tog izbora razrađeni su u
+Devet od 72 ćelije nosi razinu \textsuperscript{b}. One počivaju na završnim
+stanjima iz izvršnih scenarija, ne na mjerenju performansi. Domet i cijena tog izbora razrađeni su u
 poglavlju~\ref{ch:rasprava}.

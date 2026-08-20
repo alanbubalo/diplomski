@@ -13,14 +13,16 @@ use App\Domain\State;
 use App\Domain\StateMachine;
 use App\Models\Handover;
 use App\Models\Invoice;
+use App\Services\FiscalizationSystem;
 use App\Services\HandoverService;
 use App\Services\Intermediary;
+use App\Services\SubmissionEndpoint;
 use Carbon\CarbonImmutable;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 
 /**
- * Pokretac tri scenarija iz poglavlja 7.
+ * Pokretac cetiri scenarija iz poglavlja 7.
  *
  * Sat je fiksiran na jedan trenutak da bi ispis bio ponovljiv. Bez toga dokazni
  * listing u radu ne bi bio provjerljiv, jer bi se mijenjao pri svakom
@@ -32,10 +34,10 @@ use Illuminate\Support\Facades\Artisan;
  */
 final class RunScenario extends Command
 {
-    protected $signature = 'scenario {code : b1, e1 ili b2}
+    protected $signature = 'scenario {code : b1, b2, d1 ili e1}
                             {--without-intent-record : izvedba koja namjeru zapisuje tek nakon odgovora}';
 
-    protected $description = 'Pokrece jedan scenarij rukovanja greskom na granici C1-C2';
+    protected $description = 'Pokrece scenarij predaje ili fiskalizacije eRacuna';
 
     private const CLOCK_START = '2026-09-01 09:00:00';
 
@@ -44,8 +46,8 @@ final class RunScenario extends Command
         $code = strtolower((string) $this->argument('code'));
         $withRecord = ! $this->option('without-intent-record');
 
-        if (! in_array($code, ['b1', 'e1', 'b2'], true)) {
-            $this->error("Nepoznat scenarij: {$code}. Dostupni su b1, e1 i b2.");
+        if (! in_array($code, ['b1', 'b2', 'd1', 'e1'], true)) {
+            $this->error("Nepoznat scenarij: {$code}. Dostupni su b1, b2, d1 i e1.");
 
             return self::FAILURE;
         }
@@ -57,8 +59,9 @@ final class RunScenario extends Command
 
         $status = match ($code) {
             'b1' => $this->scenarioB1($withRecord),
-            'e1' => $this->scenarioE1($withRecord),
             'b2' => $this->scenarioB2($withRecord),
+            'd1' => $this->scenarioD1($withRecord),
+            'e1' => $this->scenarioE1($withRecord),
         };
 
         CarbonImmutable::setTestNow();
@@ -75,7 +78,7 @@ final class RunScenario extends Command
      */
     private function scenarioB1(bool $withRecord): int
     {
-        $service = $this->service([IntermediaryResponse::TIMEOUT], $withRecord);
+        $service = $this->fiscalizationService([IntermediaryResponse::TIMEOUT], $withRecord);
         $handover = $service->issueAndHandOver($this->invoiceData('R-2026-001'), Intent::FIRST_SEND);
 
         if ($handover === null) {
@@ -107,7 +110,7 @@ final class RunScenario extends Command
      */
     private function scenarioE1(bool $withRecord): int
     {
-        $service = $this->service([IntermediaryResponse::TIMEOUT], $withRecord);
+        $service = $this->intermediaryService([IntermediaryResponse::TIMEOUT], $withRecord);
         $service->issueAndHandOver($this->invoiceData('R-2026-002'), Intent::FIRST_SEND);
 
         $this->step('Sustav se pita: koje sam dokumente predao, a nemam potvrdu?');
@@ -141,13 +144,14 @@ final class RunScenario extends Command
      * B2: ista sifra S008 za dva suprotna ishoda.
      *
      * Prvi dio je ponovni pokusaj nakon isteka vremena, drugi je propisani
-     * ispravak pod istim brojem racuna. Posrednik oba puta vraca S008.
+     * ispravak pod istim brojem racuna. Sustav za fiskalizaciju oba puta vraca
+     * S008.
      */
     private function scenarioB2(bool $withRecord): int
     {
         $this->step('Dio 1: ponovni pokusaj nakon isteka vremena dobiva S008.');
 
-        $first = $this->service(
+        $first = $this->fiscalizationService(
             [IntermediaryResponse::TIMEOUT, IntermediaryResponse::S008],
             $withRecord,
         );
@@ -166,7 +170,7 @@ final class RunScenario extends Command
 
         $this->step('Dio 2: propisani ispravak pod istim brojem racuna dobiva istu sifru.');
 
-        $second = $this->service([IntermediaryResponse::S008], $withRecord);
+        $second = $this->fiscalizationService([IntermediaryResponse::S008], $withRecord);
         $correction = $second->issueAndHandOver(
             $this->invoiceData('R-2026-003', copyIndicator: true),
             Intent::CORRECTION,
@@ -201,14 +205,64 @@ final class RunScenario extends Command
         return $this->summary($correction->state, 'B2 x odlazni pretinac i zapis namjere');
     }
 
+    /** D1: Sustav za fiskalizaciju ne odgovori, pa se oporavi unutar roka. */
+    private function scenarioD1(bool $withRecord): int
+    {
+        $system = new FiscalizationSystem([
+            IntermediaryResponse::TIMEOUT,
+            IntermediaryResponse::SUCCESS,
+        ]);
+        $service = $this->serviceFor($system, $withRecord);
+
+        $this->step('Sustav za fiskalizaciju ne odgovara na prvi poziv.');
+        $handover = $service->issueAndHandOver(
+            $this->invoiceData('R-2026-004'),
+            Intent::FIRST_SEND,
+        );
+
+        if ($handover === null) {
+            $this->noTrace();
+
+            return $this->summary(null, 'D1 bez zapisa namjere ostaje bez oporavka');
+        }
+
+        $this->dumpHandover($handover);
+
+        $this->step('Odrediste se oporavlja sljedeci dan, prije isteka roka.');
+        CarbonImmutable::setTestNow(CarbonImmutable::parse(self::CLOCK_START)->addDay());
+        $handover = $service->retry($handover->refresh());
+        $this->dumpHandover($handover);
+
+        $this->table(
+            ['poziva prema Sustavu', 'zavrsno stanje', 'unutar roka'],
+            [['2', $handover->state->value, 'da']],
+        );
+
+        return $this->summary(
+            $handover->state,
+            'D1 x ponavljanje svjesno roka, odlazni pretinac i imenovano stanje',
+        );
+    }
+
     // ----------------------------------------------------------------
     // pomocno
 
     /** @param list<IntermediaryResponse> $script */
-    private function service(array $script, bool $withRecord): HandoverService
+    private function fiscalizationService(array $script, bool $withRecord): HandoverService
+    {
+        return $this->serviceFor(new FiscalizationSystem($script), $withRecord);
+    }
+
+    /** @param list<IntermediaryResponse> $script */
+    private function intermediaryService(array $script, bool $withRecord): HandoverService
+    {
+        return $this->serviceFor(new Intermediary($script), $withRecord);
+    }
+
+    private function serviceFor(SubmissionEndpoint $endpoint, bool $withRecord): HandoverService
     {
         return new HandoverService(
-            new Intermediary($script),
+            $endpoint,
             new StateMachine,
             new ResponseInterpreter,
             new RetrySchedule,

@@ -50,7 +50,7 @@ enum State: string
         return match ($this) {
             self::PREPARED => 'namjera zapisana, predaja jos nije pokusana',
             self::SENT_UNCONFIRMED => 'poslano, potvrda nije stigla -- ishod nepoznat',
-            self::CONFIRMED => 'posrednik je potvrdio primitak',
+            self::CONFIRMED => 'odrediste je potvrdilo primitak',
             self::CORRECTION_REJECTED => 'propisani ispravak odbijen sifrom S008',
             self::DEADLINE_EXPIRED => 'rok iz cl. 49. st. 1. istrosen prije potvrde',
         };

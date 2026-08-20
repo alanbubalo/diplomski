@@ -18,7 +18,7 @@ use RuntimeException;
  * je li posrednik sukladan. Vjerodostojna izvedba posrednika ne bi dodala
  * nijedan nalaz, a udvostrucila bi opseg.
  */
-final class Intermediary
+final class Intermediary implements SubmissionEndpoint
 {
     private int $calls = 0;
 
@@ -35,7 +35,7 @@ final class Intermediary
      * Zadnji ishod u skripti ponavlja se za sve daljnje pozive, pa scenarij koji
      * ponavlja do isteka roka ne mora nabrajati svaki pokusaj.
      */
-    public function handOver(string $senderKey, string $compositeIdentifier): IntermediaryResponse
+    public function send(string $senderKey, string $compositeIdentifier): IntermediaryResponse
     {
         $index = min($this->calls, count($this->script) - 1);
         $this->calls++;

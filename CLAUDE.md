@@ -6,14 +6,29 @@ Rad je na **hrvatskom**. Plan, odluke i otvorena pitanja drže se izvan repozito
 
 Ova pravila su obvezujuća. Prekršena, tekst zvuči kao da ga je pisao model.
 
+Gdje se ova pravila i skill `unslop` razilaze, `unslop` ima prednost. Iznimke su tri stvari
+potvrđene 2026-08-19: hrvatski navodnici, `--` u brojčanim rasponima i doslovni citati na
+engleskom. Njih `unslop` ne dira.
+
 ### Ne koristiti
 
 - **Nikakve crtice u prozi.** Ni `---` (em-dash), ni `--` (en-dash), ni `—` unicode.
   Umjesto njih: zarez, dvotočka, točka ili zagrade.
-  `--` je dopušten **samo** u brojčanim rasponima (`str.~144--154`), gdje je tipografski ispravan.
+  `--` je dopušten **samo** u brojčanim rasponima (`str.~144--154`, `§5.1--5.2`), gdje je
+  tipografski ispravan. To vrijedi i za oznake stranica u komentarima uz izvore.
+- Doslovni citat se ne redigira. Bilješka koja prepisuje engleski izvornik zadržava
+  interpunkciju izvornika, uključujući Grayevu crticu u
+  „software -- most production software faults are soft".
+  Stilski prolaz preskače sadržaj `\footnote{}` s citatom.
 - Rjeđe ili ukrasne znakove koji odaju strojno pisanje: `–`, `•`, `→` u prozi,
   zagrade u zagradama, tri točke kao stilski efekt.
 - Podebljavanje kao naglašavanje u tekstu. Vidi niže.
+
+### Navodnici
+
+U radu (`.tex`) vrijede hrvatski navodnici `„…“`. Ne pretvarati ih u ravne `"`, jer u
+pdfLaTeXu daju pogrešan glif, a rad ima pedesetak citata propisa. Potvrđeno 2026-08-19.
+U markdown dokumentaciji (README) vrijede ravni `"`.
 
 ### Rečenice
 

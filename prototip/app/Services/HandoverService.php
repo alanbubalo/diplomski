@@ -39,7 +39,7 @@ use Illuminate\Support\Str;
 final class HandoverService
 {
     public function __construct(
-        private readonly Intermediary $intermediary,
+        private readonly SubmissionEndpoint $endpoint,
         private readonly StateMachine $stateMachine,
         private readonly ResponseInterpreter $interpreter,
         private readonly RetrySchedule $retrySchedule,
@@ -107,7 +107,7 @@ final class HandoverService
         $handover = $this->transition($handover, Trigger::SENT, $now,
             sprintf('pokusaj br. %d', $handover->attempt));
 
-        $response = $this->intermediary->handOver(
+        $response = $this->endpoint->send(
             $handover->sender_key,
             $handover->invoice->compositeIdentifier(),
         );
@@ -203,7 +203,7 @@ final class HandoverService
         $invoice = Invoice::create($invoiceData);
         $senderKey = (string) Str::uuid();
 
-        $response = $this->intermediary->handOver($senderKey, $invoice->compositeIdentifier());
+        $response = $this->endpoint->send($senderKey, $invoice->compositeIdentifier());
 
         if ($response === IntermediaryResponse::TIMEOUT) {
             Log::warning('[predaja] odgovor nije stigao, a namjera nije bila zapisana', [

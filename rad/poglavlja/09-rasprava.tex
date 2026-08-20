@@ -31,7 +31,7 @@
 \label{ch:rasprava}
 
 Poglavlje~\ref{ch:evaluacija} pokazalo je što obrasci pokrivaju. Ostaje pitanje
-što koštaju, i gdje ta cijena prelazi u štetu.
+što koštaju i gdje ta cijena prelazi u štetu.
 
 % ------------------------------------------------------------
 \section{Cijena obrazaca}
@@ -49,7 +49,7 @@ stanja, automat s uvjetom nad prijelazom i evidenciju koja pamti i trenutke u
 kojima ishod nije bio poznat. To nije nusprodukt, nego cijena imenovanja stanja
 koje propis ne imenuje.
 
-Ta cijena raste tamo gdje je organizacija najmanje spremna platiti je. Obveznik
+Ta cijena raste tamo gdje ju je organizacija najmanje spremna platiti. Obveznik
 koji je fiskalizaciju izveo kao poziv unutar postojeće transakcije mora
 razdvojiti ono što mu je dosad bilo jedno, a razdvajanje mu ne donosi nijednu
 poslovnu značajku. Donosi mu samo sposobnost da odgovori na pitanje što se
@@ -77,7 +77,7 @@ posredniku. Svaki obrazac koji dokument stavlja u red čekanja time povećava
 izloženost prekršaju, a upravo je red čekanja ono što odlazni pretinac i
 ponavljanje traže.
 
-Iz toga slijedi tvrdnja koju treba iznijeti otvoreno. Ponovni pokušaj koji
+Ponovni pokušaj koji
 uspije iz četvrtog pokušaja tehnički je uspio, a pravno je mogao propustiti rok.
 Obrazac je u tom slučaju obavio točno ono za što je napravljen i time pogoršao
 položaj obveznika.
@@ -91,7 +91,7 @@ otpornosti usklađenost pogoršava. Matrica ih je označila sedam, a dva su
 zanimljiva jer u njima obrazac ne griješi nego radi ispravno.
 
 \paragraph{Prekidač pretvara kvar dostupnosti u kvar obveze.}
-Prekidač je napravljen da prestane slati kada odredište ne odgovara, i time
+Prekidač je napravljen da prestane slati kada odredište ne odgovara. Time
 štedi kašnjenje i tuđi kapacitet. Prema Sustavu za fiskalizaciju ne štedi ni
 jedno ni drugo. Kašnjenje nikoga ne pogađa, kapacitet nije obveznikov, a rok iz
 članka 49.\ stavka 1.\ teče od dana kada je nastupila nemogućnost, ne od dana
@@ -101,7 +101,7 @@ ono što mu ništa ne vrijedi.
 Sankcija stoji samo na jednoj strani te zamjene. Nedostupnost Sustava za
 fiskalizaciju nije prekršaj obveznika, a propuštanje roka jest
 (čl.~73.~st.~1.~t.~21.). Obrazac dakle pretvara stanje koje nije sankcionirano
-u stanje koje jest. Ta je ocjena prosudba autora izvedena iz propisa, i tako je
+u stanje koje jest. Ta je ocjena prosudba autora izvedena iz propisa. Tako je
 označena i u tablici~\ref{tab:matrica}.
 
 \paragraph{Provjera duplikata blokira propisani ispravak.}
@@ -159,7 +159,7 @@ specifikaciji propustom i uzrok nedosljednošću. Svođenje cijele klase na suko
 zahtjeva spaja ono što taksonomija razdvaja.
 
 Izvođenje zahtjeva iz teksta propisa ima uzor u
-literaturi\cite{breaux2008regulatory}, i ovaj rad taj postupak koristi.
+literaturi\cite{breaux2008regulatory}, a ovaj rad taj postupak koristi.
 Razlika je u onome što se izvodi. Ondje se izvode zahtjevi koje sustav mora
 ispuniti, a ovdje načini na koje sustav može otkazati iako je sve zahtjeve
 ispunio.
@@ -187,30 +187,48 @@ izmjereno kod jednog sudionika kojeg rad ne imenuje, a takva tvrdnja je slabija
 od izvoda iz propisa, jer se ne može ponoviti. Mjerenje bi dalo jače tvrdnje
 samo ako bi okolina i sudionik bili imenovani i dostupni onome tko provjerava.
 
-Tri posljedice tog izbora treba imenovati.
+Prijavljeni opseg operacionaliziran je tablicom~\ref{tab:sljedivost}. Ona
+razdvaja analitičku pokrivenost cijelog tijeka od opsega izvršnog prototipa.
 
-Prvo, prijava teme obećava evaluaciju kroz scenarije grešaka. Matrica taj
-zahtjev zadovoljava slabije od mjerenja, jer scenarij ovdje znači izveden
-slučaj, a ne izmjeren.
+\begin{table}[htbp]
+\centering
+\caption[Sljedivost prijavljene teme]{Veza elemenata prijavljene teme s
+ostvarenjem u radu.}
+\label{tab:sljedivost}
+\small
+\begin{tabular}{@{}p{4.1cm}p{9.1cm}@{}}
+\toprule
+Element teme & Ostvarenje u radu \\
+\midrule
+Tipične greške & Dvanaest načina otkazivanja izvedenih iz cijelog propisanog tijeka. \\
+Istek vremena i ponavljanje & Primijenjeni u dizajnu i izvršeni u scenarijima B1 i D1, uz raspored svjestan roka. \\
+Prekidač i saga & Istraženi kao kandidati. Prekidač je odbačen na fiskalizacijskom kanalu, a saga zadržava evidentirani niz bez kompenzacije. \\
+Cijeli tijek računa & Pokriven referentnom arhitekturom. Prototip izvršava granicu C1 prema C2 i sinkroni kanal prema Sustavu za fiskalizaciju. \\
+Scenariji grešaka & Četiri načina otkazivanja pokrenuta su u osnovnoj i predloženoj izvedbi. \\
+Učinkovitiji pristup & Usporedba završnih stanja pokazuje smanjuje li zapis namjere nepoznat ishod i omogućuje li oporavak. \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-Drugo, šest od 72 ćelije nosi razinu pokazanog, i to samo za tri načina
-otkazivanja na jednoj granici. Ostale ćelije stoje na citatu ili na prosudbi.
-Prototip pokriva granicu C1 prema C2, pa slučajevi na kanalu prema Sustavu za
-fiskalizaciju nisu izvedeni ni u jednom obliku.
+Evaluacija kroz scenarije provedena je u dvije razine. Matrica izvodi očekivani
+ishod za svih 72 spojeva načina otkazivanja i obrasca. Prototip izvršava četiri
+načina otkazivanja na dvije granice. Devet ćelija zato nosi razinu pokazanog,
+dok ostale stoje na citatu ili na označenoj prosudbi autora.
 
-Treće, rad ne tvrdi da su odabrani obrasci najbolji mogući. Usporedbe s
-alternativnim rješenjima nema, pa tvrdnja glasi da odabrani obrasci pokrivaju
-ono što je u matrici označeno, a ne da to pokrivaju bolje od nečega drugog.
+Učinkovitost ovdje znači da predložena izvedba pod istim kvarom završava u
+poznatijem i dokazivijem stanju od osnovne. Ne znači da je brža niti da je
+najbolja među svim mogućim rješenjima. Usporedbe performansi i cjelovitog skupa
+alternativnih obrazaca nema.
 
-Studija slučaja je uz to referentna arhitektura izvedena iz objavljenih
-dokumenata, a ne opažanje nekog postojećeg sustava. To je ujedno njezina
-prednost i njezina granica. Prednost je da svaka tvrdnja stoji na citatu i
-provjerljiva je bez pristupa ijednom sustavu. Granica je da rad ne može reći
+Studija slučaja je referentna arhitektura izvedena iz objavljenih dokumenata, a
+ne opažanje nekog postojećeg sustava. To je ujedno njezina prednost i njezina
+granica. Svaka tvrdnja stoji na citatu i provjerljiva je bez pristupa ijednom
+sustavu. Rad zato ne može reći
 koliko se od izvedenih slučajeva u praksi doista pojavljuje, ni koliko su česti.
 
 \paragraph{Rizik koji ne nastaje iz tijeka nego iz načina objave.}
-Dio operativnog detalja o koji se izvedba mora osloniti ne nalazi se u Narodnim
-novinama nego u dokumentaciji koju izdaje Porezna uprava. Ta se dokumentacija
+Dio operativnog detalja na koji se izvedba mora osloniti ne nalazi se u
+Narodnim novinama nego u dokumentaciji koju izdaje Porezna uprava. Ta se dokumentacija
 mijenja izdavanjem nove verzije, bez pročišćenog teksta i bez zapisa o
 razlikama. Izvedba koja je jučer bila usklađena sa specifikacijom danas to može
 prestati biti, a razliku nije moguće pročitati iz izvora.
@@ -219,7 +237,7 @@ Najjasniji primjer nosi pravilo koje je za pouzdanost najvažnije u cijelom
 režimu. Semantika duplikata razrađena je isključivo u rubrici pitanja i
 odgovora\cite{pu2026pitanjaodgovori}. Ondje stoji da se eRačun pod istim
 brojem smije poslati samo jednom, da se ponovno slanje bez oznake kopije
-smatra neregularnim, i da pristupna točka primatelja mora vratiti potvrdu
+smatra neregularnim i da pristupna točka primatelja mora vratiti potvrdu
 neovisno o tome je li dokument već zaprimila. Zadnje pravilo je dostava
 najmanje jednom uz potiskivanje duplikata na strani primatelja, dakle upravo
 obrazac iz odjeljka~\ref{sec:semantika-dostave}. U Zakonu, Pravilniku i

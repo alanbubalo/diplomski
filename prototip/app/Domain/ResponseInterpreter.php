@@ -25,7 +25,7 @@ final class ResponseInterpreter
         return match ($response) {
             IntermediaryResponse::SUCCESS => Interpretation::unambiguous(
                 Trigger::CONFIRMATION,
-                'posrednik je potvrdio primitak',
+                'odrediste je potvrdilo primitak',
             ),
 
             // Izostanak odgovora ne pomice automat. Dokument ostaje poslan i

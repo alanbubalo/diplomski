@@ -38,14 +38,14 @@ razumljivim kada je posao djelomično gotov, a nastavak neizvjestan.
 % ⚠ Skeen & Stonebraker 1983 NIJE pročitan (Cloudflare). Argument namjerno
 %   ne visi o njemu. Vidi komentar na vrhu datoteke.
 
-Transakcija je pojam stariji od računarstva, i Gray ga tako i uvodi. Njegov
+Transakcija je pojam stariji od računarstva i Gray ga tako i uvodi. Njegov
 primjer je ugovor: pregovori traju, a onda ih jedan čin
 zaključi\cite{gray1981transaction}. Iz te analogije izvodi tri svojstva.
 Konzistentnost znači da transakcija poštuje dopuštena pravila. Atomarnost
 znači da se dogodi ili se ne dogodi. Trajnost znači da se jednom počinjena
 transakcija ne može poništiti.
 
-Vrijedi zabilježiti što u tom popisu nema. Izolacije nema. Četveroslovni
+U tom popisu izolacije nema. Četveroslovni
 akronim ACID, koji se danas navodi kao da je oduvijek postojao, uveli su
 dvije godine kasnije Härder i Reuter\cite{haerder1983principles}.
 
@@ -91,8 +91,8 @@ jamstvo je da će se u nekom trenutku u budućnosti dogoditi nešto dobro.
 
 Slabo jamstvo ipak nije jedino dostupno. Autori pokazuju da se uz visoku
 raspoloživost mogu zadržati i jača svojstva, među njima uzročna
-konzistentnost, i navode rezultat po kojem je uzročna konzistentnost gornja
-granica onoga što se pod razdvajanjem mreže može postići. Za ovaj rad iz
+konzistentnost. Navode i rezultat po kojem je ona gornja granica onoga što se
+pod razdvajanjem mreže može postići. Za ovaj rad iz
 toga slijedi metodološko pravilo. Reći da sustav nije konzistentan ne znači
 mnogo. Treba imenovati koje jamstvo daje.
 
@@ -135,10 +135,10 @@ transactions.}“ \cite{gray1981transaction}} \end{quote}
 Primjer kojim Gray pokazuje granice klasične transakcije je putnička
 agencija. Agent dogovara let, pa automobil, pa hotel, pa naplaćuje karticu.
 Kupac zatim otkaže putovanje. Svaka pojedina interakcija bila je transakcija
-s tuđom organizacijom, i tu Gray izvodi rečenicu koja opisuje svaki tijek
-preko vanjskog sudionika: agent ne može jednostrano prekinuti interakciju
-nakon što je dovršena, nego mora izvesti kompenzacijsku transakciju koja
-prethodnu poništava.
+s tuđom organizacijom. Tu Gray izvodi rečenicu koja opisuje svaki tijek preko
+vanjskog sudionika. Agent ne može jednostrano prekinuti interakciju nakon što
+je dovršena, nego mora izvesti kompenzacijsku transakciju koja prethodnu
+poništava.
 
 Garcia-Molina i Salem taj obrazac su formalizirali pod imenom
 saga\cite{garciamolina1987sagas}. Dugotrajna transakcija je saga ako se može
@@ -168,16 +168,15 @@ Odgovor daje Grayeva podjela sastavnica transakcije na četiri vrste:
 \end{itemize}
 
 Fiskalizacija pripada posljednjoj vrsti. Dostava podataka Poreznoj upravi
-zakonska je obveza, ne rezervacija. Ne postoji poruka kojom bi obveznik
-povukao provedenu fiskalizaciju, i propis takvu poruku ne predviđa. Ono što
-propis predviđa je odgoda, i to omeđena: pet radnih dana kod tehničke
-nemogućnosti (čl.~49.~st.~1.).
+zakonska je obveza, ne rezervacija. Propis ne predviđa poruku kojom bi obveznik
+povukao provedenu fiskalizaciju. Predviđa odgodu, i to omeđenu: pet radnih
+dana kod tehničke nemogućnosti (čl.~49.~st.~1.).
 
 Iz toga slijedi da se saga na fiskalizaciju primjenjuje samo napola.
 Polovica koja govori o nizu lokalnih koraka s evidentiranim napretkom
 primjenjuje se. Polovica koja govori o kompenzaciji nema na što se primijeniti,
 jer koraci nisu poništivi. Obrazac koji ostaje nije poništavanje nego
-odgoda uz zapis, i upravo to poglavlje~\ref{ch:studija} treba od
+odgoda uz zapis. Upravo to poglavlje~\ref{ch:studija} treba od
 poglavlja~\ref{ch:pristupi}.
 
 Helland i Campbell isti zaključak izvode iz druge strane. Kada se poslovno
@@ -188,10 +187,9 @@ sinkronu potvrdu, ili se povremeno mora ispričati. Fiskalizacija tu
 mogućnost nema. Isprika prema Poreznoj upravi nije predviđena kategorija,
 a propuštanje roka je prekršaj (čl.~73.~st.~1.~t.~21.).
 
-Iz toga slijedi granica koju odjeljak~\ref{sec:dizajn} razrađuje. Obrazac koji
-ovdje preostaje nije kompenzacija nego odgoda uz zapis. Razlog je u tome što
-skup poslovnih poruka ne sadrži nijednu koja bi provedenu fiskalizaciju
-poništila.
+Iz toga slijedi granica koju odjeljak~\ref{sec:dizajn} razrađuje. Skup
+poslovnih poruka ne sadrži nijednu koja bi provedenu fiskalizaciju poništila,
+pa kompenzacija nema predmet.
 
 % ------------------------------------------------------------
 \section{Stanje kao automat}
@@ -225,8 +223,8 @@ zahtjeve redom kojim su poslani ni redom kojim su primljeni.
 Tu nastaje napetost koju poglavlje~\ref{ch:studija} nasljeđuje. Model koji
 je otporan na ponavljanje i preslagivanje određen je nizom poruka, a rokovi
 u propisu mjere se satom. „U trenutku izdavanja“ i „pet radnih dana“ su
-vremenske veličine, i one se u automat ne uklapaju kao stanja nego kao
-vanjski uvjeti nad prijelazima.
+vremenske veličine. U automat se ne uklapaju kao stanja nego kao vanjski
+uvjeti nad prijelazima.
 
 Helland ta dva svijeta spaja u
 praksi\cite{helland2007lifebeyond}. Sustav se dijeli na entitete, svaki sa
@@ -238,7 +236,7 @@ entiteta. Preko granice entiteta postoje poruke i zapamćeno stanje o tome
 Da bi se o stanjima uopće govorilo kao o uređenima, potreban je pojam
 uzročnog prethođenja, koji je uveo Lamport\cite{lamport1978time}.
 
-Model koji poglavlje~\ref{ch:studija} treba slijedi iz svega navedenog.
+Odatle slijedi model koji poglavlje~\ref{ch:studija} treba.
 Životni ciklus dokumenta opisuje se kao automat čija su stanja izrijekom
 imenovana, uključujući ona koja propis ne imenuje. Stanje
 „poslano, nepotvrđeno“ nije rupa u izvedbi. To je stanje u kojem se sustav

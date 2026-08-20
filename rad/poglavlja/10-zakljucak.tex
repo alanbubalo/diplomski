@@ -11,7 +11,7 @@
 %
 %  ⚠ Buduće nadogradnje moraju biti KONKRETNE i izvedive, ne popis
 %    želja. Tri su: mjerenje u demo okolini uz vlastitu vjerodajnicu,
-%    proširenje prototipa na kanal prema CIS-u, i provjera stoji li
+%    proširenje prototipa na razmjenu pristupnih točaka, i provjera stoji li
 %    izvedeni sudar u izvedbi Porezne uprave.
 % ============================================================
 \chapter{Zaključak}
@@ -36,7 +36,7 @@ odlučujuća, jer određuje što uopće ima smisla graditi.
 Iz propisanog tijeka izvedeno je dvanaest načina otkazivanja, grupiranih po
 uzroku: propisano razdvajanje kanala, sinkroni kanal bez definirane semantike
 kvara, rokovi koji teku od nedefiniranih događaja, ispad infrastrukture bez
-pravnog ventila, i neuređena granica između poslovnog sustava i pristupne točke.
+pravnog ventila i neuređena granica između poslovnog sustava i pristupne točke.
 S obzirom na zakonsku obvezu ostavljaju sustav u četiri stanja. Treće od njih,
 u kojem ishod nije loš nego nepoznat, ono je koje obrasci mogu najviše suziti.
 
@@ -70,11 +70,12 @@ tehnički je uspjelo, a pravno je moglo propustiti rok.
 % ------------------------------------------------------------
 \section*{Granice i nadogradnje}
 
-Evaluacija je analitička. Šest od 72 ćelije matrice pokazano je prototipom, i to
-za tri načina otkazivanja na jednoj granici. Rad ne tvrdi da su odabrani obrasci
-najbolji mogući, jer usporedbe s alternativama nema. Studija slučaja je
-referentna arhitektura, pa rad ne može reći koliko se izvedenih slučajeva u
-praksi pojavljuje.
+Evaluacija je analitička, uz izvršne scenarije za četiri načina otkazivanja na
+dvije granice. Devet od 72 ćelije matrice pokazano je prototipom. Usporedba
+osnovne i predložene izvedbe utvrđuje koja ostavlja poznatije i dokazivije
+stanje. Ne mjeri performanse i ne tvrdi da su odabrani obrasci najbolji među
+svim alternativama. Studija slučaja je referentna arhitektura, pa rad ne može
+reći koliko se izvedenih slučajeva u praksi pojavljuje.
 
 Iz tih granica slijede tri konkretne nadogradnje.
 
@@ -83,9 +84,9 @@ propisuje, uz vjerodajnicu izdanu za tu svrhu. Ćelije koje sada stoje na
 prosudbi autora dobile bi mjerenje kao podlogu, uz uvjet da okolina i sudionik
 budu imenovani, jer bi rezultat inače ostao neponovljiv.
 
-Druga je proširenje prototipa na kanal prema Sustavu za fiskalizaciju. Slučajevi
-C3, D1 i D2 dijele mehanizam s onima koji su izvedeni, ali prototip ih ne
-pokreće, pa su u matrici ostali na razini prosudbe.
+Druga je proširenje prototipa na razmjenu između pristupnih točaka i predaju
+primatelju. Time bi se uz sadašnje dvije granice izvršili slučajevi D2 i C3 te
+zatvorio cijeli put dokumenta iz referentne arhitekture.
 
 Treća je provjera stoji li izvedeni sudar oko šifre S008 i u izvedbi Porezne
 uprave. Rad tvrdi da specifikacija ne daje odgovor, a ne da izvedba ne radi.

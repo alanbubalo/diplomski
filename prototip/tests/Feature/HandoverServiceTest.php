@@ -12,6 +12,7 @@ use App\Domain\State;
 use App\Domain\StateMachine;
 use App\Models\Handover;
 use App\Models\Invoice;
+use App\Services\FiscalizationSystem;
 use App\Services\HandoverService;
 use App\Services\Intermediary;
 use Carbon\CarbonImmutable;
@@ -73,7 +74,7 @@ final class HandoverServiceTest extends TestCase
     #[Test]
     public function e1_without_an_intent_record_no_trace_of_the_handover_remains(): void
     {
-        $handover = $this->service([IntermediaryResponse::TIMEOUT], withRecord: false)
+        $handover = $this->intermediaryService([IntermediaryResponse::TIMEOUT], withRecord: false)
             ->issueAndHandOver($this->invoiceData(), Intent::FIRST_SEND);
 
         $this->assertNull($handover);
@@ -84,7 +85,7 @@ final class HandoverServiceTest extends TestCase
     #[Test]
     public function e1_with_an_intent_record_the_system_knows_what_it_meant_to_send(): void
     {
-        $this->service([IntermediaryResponse::TIMEOUT])
+        $this->intermediaryService([IntermediaryResponse::TIMEOUT])
             ->issueAndHandOver($this->invoiceData(), Intent::FIRST_SEND);
 
         $unresolved = Handover::query()
@@ -141,11 +142,57 @@ final class HandoverServiceTest extends TestCase
         $this->assertGreaterThan(0, $ambiguous);
     }
 
+    #[Test]
+    public function d1_a_retry_after_recovery_confirms_within_the_deadline(): void
+    {
+        $system = new FiscalizationSystem([
+            IntermediaryResponse::TIMEOUT,
+            IntermediaryResponse::SUCCESS,
+        ]);
+        $service = $this->serviceWithEndpoint($system);
+        $handover = $service->issueAndHandOver($this->invoiceData(), Intent::FIRST_SEND);
+
+        CarbonImmutable::setTestNow(CarbonImmutable::now()->addDay());
+        $handover = $service->retry($handover->refresh());
+
+        $this->assertSame(2, $system->callCount());
+        $this->assertSame(State::CONFIRMED, $handover->state);
+        $this->assertTrue($handover->deadline()->expiresAt->isFuture());
+    }
+
+    #[Test]
+    public function d1_without_an_intent_record_cannot_continue_after_the_outage(): void
+    {
+        $system = new FiscalizationSystem([
+            IntermediaryResponse::TIMEOUT,
+            IntermediaryResponse::SUCCESS,
+        ]);
+        $handover = $this->serviceWithEndpoint($system, withRecord: false)
+            ->issueAndHandOver($this->invoiceData(), Intent::FIRST_SEND);
+
+        $this->assertNull($handover);
+        $this->assertSame(1, $system->callCount());
+        $this->assertSame(0, Handover::query()->count());
+    }
+
     /** @param list<IntermediaryResponse> $script */
     private function service(array $script, bool $withRecord = true): HandoverService
     {
+        return $this->serviceWithEndpoint(new FiscalizationSystem($script), $withRecord);
+    }
+
+    /** @param list<IntermediaryResponse> $script */
+    private function intermediaryService(array $script, bool $withRecord = true): HandoverService
+    {
+        return $this->serviceWithEndpoint(new Intermediary($script), $withRecord);
+    }
+
+    private function serviceWithEndpoint(
+        FiscalizationSystem|Intermediary $endpoint,
+        bool $withRecord = true,
+    ): HandoverService {
         return new HandoverService(
-            new Intermediary($script),
+            $endpoint,
             new StateMachine,
             new ResponseInterpreter,
             new RetrySchedule,

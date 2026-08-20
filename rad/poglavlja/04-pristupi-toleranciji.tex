@@ -27,7 +27,7 @@
 Ovo poglavlje ne donosi nov rezultat. Ono skuplja rječnik, jer
 odjeljak~\ref{sec:dizajn} bira iz skupa obrazaca, a izbor bez imenovanog
 skupa nije izbor nego navika. Svaki obrazac dobiva tri stvari: što rješava,
-po kojoj cijeni, i gdje odmaže.
+po kojoj cijeni i gdje odmaže.
 
 Treća stavka je ovdje najvažnija. Obrasci otpornosti opisuju se obično kao
 dodaci koji sustav čine boljim. Mjerenja koja slijede pokazuju da svaki od
@@ -57,8 +57,8 @@ opažanje otkaza. Ovdje se dodaje da nije ni besplatan.
 
 Ponovni pokušaj je drugi obrazac. Opravdava ga Grayeva pretpostavka iz
 odjeljka~\ref{sec:klasifikacija-otkaza}: ako je većina kvarova prolazna,
-drugi pokušaj najčešće uspije. Brooker isti mehanizam opisuje oštrije, i
-ta je slika korisnija od uobičajenog opisa:
+drugi pokušaj najčešće uspije. Brooker isti mehanizam opisuje oštrije. Ta
+je slika korisnija od uobičajenog opisa:
 
 \begin{quote}
 „Ponovni pokušaji su sebični. Drugim riječima, kada klijent ponovno
@@ -96,14 +96,14 @@ slučajnu komponentu. Razlog je korelacija. Ako se svi neuspjeli pozivi
 odgode za jednako dugo, pri ponovnom pokušaju opet nastaje isti zastoj.
 
 \strani{Prekidač}{circuit breaker} je četvrti obrazac. On zaustavlja pozive prema odredištu kada udio
-grešaka prijeđe prag, i time štiti kašnjenje na račun dostupnosti. Za razliku
+grešaka prijeđe prag. Time štiti kašnjenje na račun dostupnosti. Za razliku
 od prethodnih, oko njega literatura nije jednoglasna.
 
-Sedghpour, Klein i Tordsson izmjerili su ga sustavno, i sami napominju da
+Sedghpour, Klein i Tordsson izmjerili su ga sustavno i sami napominju da
 takvih mjerenja prije nije bilo\cite{sedghpour2022empirical}. Njihovi
 zaključci su uvjetni. Prekidač koristi kod prolaznog kvara ili preopterećenja.
 Ako je dobro podešen, količina dolaznog prometa ne utječe na otpornost usluge.
-Ali pronalaženje dobre vrijednosti, njihovim riječima, nije jednostavno i
+Ali dobru vrijednost, njihovim riječima, nije jednostavno pronaći, jer
 ovisi o više čimbenika. Prekratak red čekanja povećava broj odbačenih zahtjeva, a
 predug onemogućuje jamstvo prihvatljivog vremena odziva.
 
@@ -119,7 +119,7 @@ ako ne uđe, mora se reći zašto.
 Posljednji obrazac ove skupine nije mehanizam nego svojstvo sučelja. Brooker
 ga imenuje kao uvjet: sučelja s popratnim učincima nisu sigurna za ponavljanje
 osim ako ne jamče idempotentnost. Time se ponovni pokušaj vraća na pitanje iz
-odjeljka~\ref{sec:djelomicni-otkaz}, koje postavlja sučelje, a ne izvedba.
+odjeljka~\ref{sec:djelomicni-otkaz}, koje se postavlja sučelju, a ne izvedbi.
 
 Hystrix, knjižnica koja je prekidač popularizirala, spominje se ovdje samo
 kao podrijetlo pojma\cite{christensen2012hystrix}. Netflix ju je prebacio u
@@ -149,7 +149,7 @@ je onaj koji ponovljenu poruku prepoznaje i ne obrađuje je dvaput.
 
 Cijena tog para je pomak u vremenu. Pošiljatelj zna da je poruka predana, ne
 da je posao obavljen. To je razlika koju su Saltzer i suradnici opisali u
-odjeljku~\ref{sec:semantika-dostave}, i koju predaja u red ne uklanja nego
+odjeljku~\ref{sec:semantika-dostave}. Predaja u red je ne uklanja nego
 premješta.
 
 Nezgodan dio je spoj s bazom podataka. Sustav koji u istom koraku mijenja
@@ -159,14 +159,13 @@ zapisivanje padne, poruka govori o promjeni koje nema. Problem se zove
 \strani{dvostruki zapis}{dual write}, a rješenje je \strani{odlazni
 pretinac}{outbox}\cite{richardsonoutbox}. Poruka se u istoj transakciji zapisuje u
 tablicu u istoj bazi, pa je zapis stanja i zapis namjere jedan atomaran čin.
-Zaseban proces zatim čita tu tablicu i šalje poruke, i tu se primjenjuje
+Zaseban proces zatim čita tu tablicu i šalje poruke. Tu se primjenjuje
 semantika barem jednom. Debezium takav prijenos izvodi čitanjem dnevnika
 transakcija\cite{debeziumoutbox}.
 
-Ovdje treba reći jednu stvar o statusu tog obrasca. Odlazni pretinac nema
-recenzirani primarni izvor. Pretraga po naslovu vraća samo članke iz časopisa
-koji naplaćuju objavu, a pregledni rad o upravljanju podacima u
-mikroservisima, koji bi mu bio prirodno mjesto, ne spominje ni odlazni
+Odlazni pretinac nema recenzirani primarni izvor. Pretraga po naslovu vraća
+samo članke iz časopisa koji naplaćuju objavu, a pregledni rad o upravljanju
+podacima u mikroservisima, koji bi mu bio prirodno mjesto, ne spominje ni odlazni
 pretinac ni dvostruki zapis\cite{laigner2021data}. Obrazac je nastao u
 praksi i u praksi se opisuje. To ne znači da je loš, nego da se navodi kao
 industrijska praksa, a ne kao rezultat istraživanja.
@@ -174,8 +173,8 @@ industrijska praksa, a ne kao rezultat istraživanja.
 Eliminacija duplikata zatvara skupinu. Odjeljak~\ref{sec:semantika-dostave}
 pokazao je gdje mora stajati: na krajevima, jer duplikate koje aplikacija
 sama proizvede prijenosni sloj ne vidi kao duplikate. Izvedba traži ključ po
-kojem se dvije poruke prepoznaju kao ista poruka, i taj ključ mora dolaziti
-od pošiljatelja, ne od primatelja. Ključ koji generira primatelj pri svakom
+kojem se dvije poruke prepoznaju kao ista poruka. Taj ključ mora dolaziti od
+pošiljatelja, ne od primatelja. Ključ koji generira primatelj pri svakom
 zahtjevu je nov, pa ne razlikuje ponovljeni zahtjev od novog.
 
 Zadnja rečenica nije općenita napomena. Poglavlje~\ref{ch:studija} pokazuje

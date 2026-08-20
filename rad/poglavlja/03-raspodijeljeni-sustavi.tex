@@ -52,8 +52,8 @@ na drugom računalu, o kojem se ne zna ništa osim da podržava određeno
 sučelje.
 
 Razlika nije samo u brzini. Autori nabrajaju kašnjenje, pristup memoriji,
-djelomični otkaz i istodobnost, i tvrde da prva dva možda i jesu premostiva,
-a druga dva nisu. \strani{Djelomični otkaz}{partial failure} je onaj u
+djelomični otkaz i istodobnost. Tvrde da su prva dva možda premostiva, a
+druga dva nisu. \strani{Djelomični otkaz}{partial failure} je onaj u
 kojem jedna komponenta stane dok ostale rade dalje.
 
 U lokalnom pozivu takvo stanje ne postoji. Funkcija se možda ne dovrši
@@ -135,16 +135,16 @@ jedno vanjsko stanje odstupa od ispravnog. To odstupanje zove se pogreška
 razlog pogreške. Uzrok je aktivan kada proizvodi pogrešku, inače je
 uspavan.
 
-Lanac ide u jednom smjeru. Uzrok proizvodi pogrešku, pogreška se širi, i
-tek ako dođe do vanjskog stanja nastaje otkaz. Pogreška pritom ne mora doći
-do vanjskog stanja, i tada otkaza nema. Razlika je važna jer rad
+Lanac ide u jednom smjeru. Uzrok proizvodi pogrešku, pogreška se širi, a
+otkaz nastaje tek ako pogreška dođe do vanjskog stanja. Pogreška do njega ne
+mora doći. Tada otkaza nema. Razlika je važna jer rad
 govori o načinima otkazivanja, dakle o onome što se vidi izvana, a ne o
 svakoj pogrešci koja se iznutra dogodi.
 
 Jedna odredba te taksonomije nosi više nego što se na prvi pogled čini.
 Autori otkaz definiraju u odnosu na funkciju sustava, ne u odnosu na opis
 te funkcije u specifikaciji. Usluga koja je u skladu sa specifikacijom
-može biti neprihvatljiva korisniku, i time otkriva uzrok u samoj
+može biti neprihvatljiva korisniku. Time otkriva uzrok u samoj
 specifikaciji. Takvi uzroci dijele se na propuste i na pogrešne navode,
 među koje autori ubrajaju neopravdane pretpostavke i nedosljednosti.
 
@@ -154,7 +154,7 @@ programerske greške nego uzroci u specifikaciji, a specifikacija je propis.
 
 Avizienis razlikuje uzroke i po postojanosti. Trajni uzrok prisutan je
 neprekidno, prolazni je vremenski omeđen. Uz to razlikuje uzroke po tome
-da li se njihovo aktiviranje može ponoviti. Oni čije je aktiviranje
+može li se njihovo aktiviranje ponoviti. Oni čije je aktiviranje
 ponovljivo zovu se čvrsti, a oni čije nije, neuhvatljivi.
 
 % ------------------------------------------------------------
@@ -174,8 +174,8 @@ posljedicama\cite{avizienis2004taxonomy}. Za ovaj rad su nosiva prva dva.
 Po području otkaz je sadržajni ili vremenski. Sadržajni znači da isporučeni
 podatak odstupa od ispravnog. Vremenski znači da odstupa trenutak isporuke
 ili njezino trajanje, pa je usluga prerana ili prekasna. Kada su i sadržaj
-i vrijeme neispravni, sustav se ili zaustavlja, i tada je poseban slučaj
-tiha isporuka u kojoj se ne šalje nijedna poruka, ili isporučuje neuredno.
+i vrijeme neispravni, sustav se zaustavlja ili isporučuje neuredno. Poseban
+slučaj zaustavljanja je tiha isporuka, u kojoj se ne šalje nijedna poruka.
 
 Po uočljivosti otkaz je signaliziran ili nesignaliziran. Signaliziran je
 onaj koji sustav javlja korisniku upozorenjem. Nesignaliziran je onaj koji
@@ -208,8 +208,8 @@ Bohrbug je poput Bohrova atoma, čvrst i lako uhvatljiv. Heisenbug izmiče
 lovcu na kvarove godinama, a i sam lovac može poremetiti stanje toliko da
 kvar nestane.
 
-Vrijedi zabilježiti da Gray svoju tvrdnju naziva pretpostavkom i priznaje
-da je nije uspio kvantificirati. To nije sitnica. Ponavljanje je najčešći
+Gray svoju tvrdnju naziva pretpostavkom i priznaje da je nije uspio
+kvantificirati. To nije sitnica. Ponavljanje je najčešći
 obrazac otpornosti u praksi, a opravdanje mu počiva na pretpostavci koju
 je njezin autor mogao potkrijepiti samo jednim pokusom na dnevnicima
 grešaka.
@@ -237,7 +237,7 @@ pitanje kako se otkaz uopće otkriva. Odgovor je da se ne otkriva pouzdano.
 Chandra i Toueg uvode detektor otkaza kao zaseban dio sustava. Svaki proces
 ima svoj modul koji održava popis procesa za koje sumnja da su
 pali\cite{chandra1996failuredetectors}. Modul smije griješiti. Smije na
-popis dodati proces koji radi, i smije ga poslije s popisa maknuti. U
+popis dodati proces koji radi i smije ga poslije s popisa maknuti. U
 istom trenutku popisi kod dva procesa mogu biti različiti.
 
 Kvaliteta detektora opisuje se dvama svojstvima. Potpunost traži da svaki
@@ -247,8 +247,7 @@ proces ne bude osumnjičen prije nego što padne. Sami autori kažu da je
 jaku točnost teško, ako ne i nemoguće, postići u mnogim stvarnim sustavima.
 
 Razlog navode uz definiciju slabe točnosti. Ispravni procesi mogu biti
-pogrešno osumnjičeni, i to odražava temeljnu teškoću utvrđivanja je li
-proces samo spor ili je pao.
+pogrešno osumnjičeni, jer je teško utvrditi je li proces samo spor ili je pao.
 
 Praktična posljedica je jedna rečenica koju rad koristi dalje. Istek
 vremena nije opažanje otkaza nego odluka pozivatelja da prestane čekati.
@@ -286,8 +285,8 @@ biti izgubljena. Barem jednom znači da poruka neće biti izgubljena, ali
 može biti obrađena više puta. Točno jednom znači oboje.
 
 Prve dvije se izvode lako. Najviše jednom dobiva se tako da se ne ponavlja,
-barem jednom tako da se ponavlja dok ne stigne potvrda. Treća se ne izvodi,
-i vrijedi biti precizan oko toga zašto.
+barem jednom tako da se ponavlja dok ne stigne potvrda. Treća se ne izvodi.
+Vrijedi biti precizan oko toga zašto.
 
 Ne postoji rad koji dokazuje teorem oblika „dostava točno jednom je
 nemoguća“. Ono što postoji je stariji i uži rezultat. Gray ga izlaže kao
@@ -299,9 +298,9 @@ glasnik ili bio suvišan, pa protokol nije bio najkraći, ili jedan general
 ne dobiva poruku koja mu treba, pa ne kreće.
 
 Ograda je bitna i često se ispušta. Gray dokazuje da ne postoji protokol
-\emph{fiksne duljine}. Odmah zatim kaže da se popuštanjem te restrikcije
-rješenje dobiva, i opisuje protokol u dvije faze koji ponekad traži
-proizvoljno mnogo poruka. Problem dvaju generala dakle nije zid, nego cijena.
+\emph{fiksne duljine}. Odmah zatim kaže da se popuštanjem tog ograničenja
+rješenje dobiva. Opisuje protokol u dvije faze koji ponekad traži proizvoljno
+mnogo poruka. Problem dvaju generala dakle nije zid, nego cijena.
 Cijena je da se najgori slučaj ne može omeđiti. Uz to, nemogućnost
 konsenzusa u asinkronom sustavu s jednim mogućim otkazom procesa poznata je
 i formalno\cite{fischer1985impossibility}.
@@ -337,12 +336,12 @@ Isti rad postavlja i pitanje što potvrda uopće dokazuje. Autori uzimaju
 mrežnu potvrdu o dostavi i pokazuju da aplikaciji ne koristi mnogo, jer
 ona ne želi znati da je poruka stigla na odredišno računalo nego je li
 odredište po njoj postupilo. Potvrda koja se zapravo želi je ona s kraja
-na kraj, a nju može poslati samo odredišna aplikacija, i glasi „učinio sam“
-ili „nisam“.
+na kraj. Ona glasi „učinio sam“ ili „nisam“, a poslati ju može samo
+odredišna aplikacija.
 
 Poglavlje~\ref{ch:studija} pokazuje sustav u kojem takva potvrda ne postoji.
 
-Preostaje uvrstiti ograničenje koje se u ovom kontekstu najčešće navodi.
+Preostaje ograničenje koje se uz ovo pitanje najčešće navodi.
 Gilbert i Lynch formalno su dokazali Brewerovu slutnju: u asinkronom
 mrežnom modelu nije moguće izvesti dijeljeni objekt koji istodobno jamči
 raspoloživost i atomarnu konzistentnost u svim izvođenjima u kojima se

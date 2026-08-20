@@ -51,7 +51,7 @@ govori poglavlje~\ref{ch:rasprava}.
 \label{sec:ciljevi}
 
 Cilj rada je izvesti načine na koje se propisani tijek fiskalizacije eRačuna
-može pokvariti, utvrditi što od toga obrasci tolerancije na greške pokrivaju, i
+može pokvariti, utvrditi što od toga obrasci tolerancije na greške pokrivaju i
 imenovati cijenu koju ta pokrivenost nosi. Izvod se provodi iz objavljenih
 dokumenata, pa je svaka tvrdnja provjerljiva bez pristupa ijednom sustavu.
 
@@ -82,24 +82,28 @@ inducirane nesvodivosti imenuje klasu i daje joj izvod na koji se može uputiti.
 Matrica pokrivenosti daje podlogu za izbor obrazaca, uključujući slučajeve u
 kojima obrazac usklađenost pogoršava.
 
+Istek vremena, ponavljanje, prekidač i saga tretiraju se kao kandidati. Obrazac
+koji izvod odbaci ostaje istražen, uz naveden razlog zbog kojeg ne ulazi u
+rješenje.
+
 % ------------------------------------------------------------
 \section{Opseg i struktura}
 \label{sec:opseg-rada}
 
-Predmet rada nije nijedan postojeći sustav. Predmet je referentna arhitektura
-izvedena iz Zakona, Pravilnika i tehničke specifikacije, dakle skup sudionika,
-kanala i obveza koji svako usklađeno rješenje mora sadržavati. Opis konkretnog
-rješenja pokazao bi što je jedan tim odlučio, a čitatelj ne bi mogao razlučiti
-zahtjev propisa od izbora tog tima.
+Studija slučaja pokriva cijeli propisani tijek na razini arhitekture, stanja i
+odgovornosti sudionika. Predmet je referentna arhitektura izvedena iz propisa,
+a ne postojeći sustav. Izvršni prototip ostvaruje dvije granice na kojima se
+pojavljuju slučajevi B1, B2, D1 i E1. Uspoređuje izvedbu koja namjeru zapisuje
+tek nakon odgovora s izvedbom koja je zapisuje prije slanja.
 
-Iz toga slijedi i granica evaluacije. Rad ne mjeri. Tvrdnje o pokrivenosti
-izvedene su iz propisa i iz svojstava obrazaca dokazanih u literaturi, a
-poglavlje~\ref{ch:rasprava} obrazlaže zašto je taj izbor metodološki, a ne
-posljedica nedostupne opreme.
+Evaluacija spaja analitičku matricu s četiri izvršna scenarija. Učinkovitost
+znači da sustav pod istim kvarom završava u poznatom i dokazivom stanju, a ne
+propusnost ili najmanje vrijeme odziva. Poglavlje~\ref{ch:rasprava} obrazlaže
+domet takve evaluacije.
 
 Poglavlje~\ref{ch:pozadina} postavlja pravni i tehnički kontekst.
 Poglavlja~\ref{ch:raspodijeljeni} do~\ref{ch:tijekovi} daju pojmovni aparat:
-djelomični otkaz i klasifikaciju otkaza, rječnik obrazaca, i granice
+djelomični otkaz i klasifikaciju otkaza, rječnik obrazaca i granice
 transakcije u raspodijeljenim tijekovima. Poglavlje~\ref{ch:studija} je doprinos
 rada i odgovara na RQ1. Poglavlje~\ref{ch:implementacija} opisuje ilustrativni
 prototip, a poglavlje~\ref{ch:evaluacija} matricu pokrivenosti kojom se
