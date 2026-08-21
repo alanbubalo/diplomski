@@ -42,8 +42,8 @@ priznati i opisati na sučelju.
 %   izraziti SAMO na razini sučelja i da bolja implementacija ne pomaže.
 %   Njegov primjer je red čekanja sa standardiziranim sučeljem u koje se
 %   ne mogu dodati identifikatori zahtjeva. To je TEORIJSKI TEMELJ za
-%   tezu o regulatorno induciranoj nesvodivosti: kod fiskalizacije sučelje
-%   fiksira propis, pa implementator nema ni tu mogućnost. Vidi 6.2.
+%   regulatorno inducirano ograničenje: kod fiskalizacije dio sučelja
+%   fiksira propis, pa implementator nema punu slobodu izmjene. Vidi 6.2.
 
 Waldo i suradnici razlikuju lokalno i raspodijeljeno
 računanje\cite{waldo1994note}. Lokalno je ono ograničeno na jedan adresni
@@ -56,12 +56,12 @@ djelomični otkaz i istodobnost. Tvrde da su prva dva možda premostiva, a
 druga dva nisu. \strani{Djelomični otkaz}{partial failure} je onaj u
 kojem jedna komponenta stane dok ostale rade dalje.
 
-U lokalnom pozivu takvo stanje ne postoji. Funkcija se možda ne dovrši
-uredno, ali se uvijek dovrši. Ako otkaže, otkaz je ili potpun, pa pogađa
-sve sudionike, ili ga uočava središnji upravitelj resursa. Raspodijeljeni
-poziv nema ni jedno ni drugo. Nema zajedničkog posrednika koji bi utvrdio
-koja je komponenta otkazala i o tome obavijestio ostale. Nema globalnog
-stanja u koje se može pogledati.
+Lokalni poziv također može zapeti ili srušiti proces, ali pozivatelj i pozvana
+funkcija dijele adresni prostor i sudbinu procesa. Nema odvojene udaljene
+komponente koja može obraditi zahtjev nakon što je lokalni pozivatelj prestao
+čekati. Raspodijeljeni poziv nema takvu zajedničku sudbinu. Nema zajedničkog
+posrednika koji bi pouzdano utvrdio koja je komponenta otkazala i o tome
+obavijestio ostale. Nema globalnog stanja u koje se može pogledati.
 
 Iz toga slijedi tvrdnja koju ovaj rad koristi na svakom koraku:
 

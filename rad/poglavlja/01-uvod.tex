@@ -22,29 +22,28 @@
 Obveznik koji od 2026.\ izdaje eRačun dužan je učiniti dvije stvari. Dokument
 mora dostaviti primatelju i podatke o njemu mora prijaviti Poreznoj upravi.
 Pretpostavimo da prijava ne dobije odgovor u očekivanom vremenu i da obveznik
-poruku pošalje ponovno. Sustav za fiskalizaciju odgovara šifrom S008.
+poruku pošalje ponovno. Sustav za fiskalizaciju odgovara šifrom S008, iz koje se
+može zaključiti da zapis s istim identifikatorom već postoji.
 
-Ista šifra odgovara i na propisani ispravak podatka koji ne utječe na obračun
-poreza, jer se takav ispravak izdaje pod istim brojem računa. U jednom slučaju
-šifra znači da je ranija prijava prošla. U drugom znači da je propisani postupak
-odbijen. U poruci nema polja koje bi ta dva razlikovalo.
+Isti skup izvora uređuje i ispravak podatka koji ne utječe na obračun poreza.
+Takav se ispravak izdaje pod istim brojem računa i s indikatorom kopije. Provjera
+S008, međutim, radi sa složenim identifikatorom koji indikator kopije ne sadrži.
+Ako ispravak zadrži datum izvornika, provjera ga odbija; ako dobije novi datum i
+referencu na prethodni račun, postoji izvediv put. Izvori ne određuju koji je
+datum ispravka mjerodavan. Problem zato nije dokazana nemogućnost ispravka nego
+nedovoljno određena semantika sučelja.
 
-Ovo nije greška izvedbe. Oba tijeka nalaže isti skup pravila, a provjera koja
-ih sudara dio je iste tehničke specifikacije koja ih propisuje. Nijedan izbor
-dizajna taj sudar ne razrješava, jer bi razrješenje značilo da izvedba odluči
-ono što propis nije odlučio.
+Takav slučaj nije jedini. Rad izvodi jedanaest načina otkazivanja i razdvaja
+njihove izvore. Dio proizlazi iz svojstava raspodijeljene razmjene, poput
+nemogućnosti da pošiljatelj sazna ishod poruke bez odgovora. Dio proizlazi iz
+obvezne arhitekture ili iz pravila koja ne određuju semantiku kvara. Za drugu
+skupinu rad rabi radni pojam \emph{regulatorno inducirano ograničenje}.
 
-Takav slučaj nije jedini. Rad ih izvodi dvanaest i pokazuje da se dijele na dvije
-vrste. Prvu literatura poznaje: nesvodiva je jer proizlazi iz svojstava
-raspodijeljene razmjene, poput nemogućnosti da pošiljatelj sazna ishod poruke bez
-odgovora. Druga vrsta je nesvodiva \emph{jer je propis takvom čini}. Literatura
-o toleranciji na greške radi s uzrocima koje izvedba smije ukloniti. Rad za
-drugu vrstu predlaže naziv \emph{regulatorno inducirana nesvodivost}.
-
-Razlika nije akademska. Obrasci koji rješavaju prvu vrstu opisani su i dokazani.
-Za drugu vrstu obrasci mogu najviše učiniti da otkaz bude uočen i zabilježen.
-Jedan od njih pritom šteti svugdje gdje uz kanal stoji zakonski rok, o čemu
-govori poglavlje~\ref{ch:rasprava}.
+Razlika je praktična. Za prvu skupinu literatura daje poznate mehanizme. Za
+drugu obrasci mogu suziti prozor nepoznatog ishoda, učiniti ga vidljivim i
+sačuvati dokaz o postupanju, ali ne mogu sami odrediti pravno značenje pojma
+koji propis nije odredio. Poglavlje~\ref{ch:rasprava} zato učinak obrazaca
+ocjenjuje uvjetno, s obzirom na granicu i konfiguraciju.
 
 % ------------------------------------------------------------
 \section{Ciljevi i istraživačka pitanja}
@@ -63,24 +62,24 @@ Rad odgovara na tri pitanja.
   zakonsku obvezu?
 
   \item[RQ2] Koji obrasci tolerancije na greške pokrivaju koja od izvedenih
-  završnih stanja, a koja ostaju nesvodiva, i proizlazi li njihova nesvodivost
-  iz svojstava raspodijeljenih sustava ili iz samog propisa?
+  završnih stanja, koja ostaju samo detektirana ili nepokrivena te proizlazi li
+  granica pokrivenosti iz svojstava raspodijeljenih sustava ili iz propisa?
 
   \item[RQ3] Koju cijenu u složenosti, kašnjenju i riziku prekoračenja
   propisanog roka nose ti obrasci, i u kojim slučajevima pogoršavaju usklađenost
   umjesto da je poboljšaju?
 \end{description}
 
-Drugi dio drugog pitanja nosi tezu rada. Formulacija je pritom takva da negativan
-nalaz prima kao rezultat. Odgovor da ništa nije nesvodivo i odgovor da je gotovo
-sve nesvodivo oba su odgovori, pa pitanje ne može ostati neodgovoreno.
+Drugi dio drugog pitanja nosi tezu rada. Formulacija je pritom takva da kao
+rezultat prima i nalaz potpune pokrivenosti i nalaz regulatorne granice, pa
+ishod nije unaprijed ugrađen u pitanje.
 
 Odgovori na ta pitanja daju tri stvari upotrebljive i izvan ovog rada. Katalog
-dvanaest načina otkazivanja izveden je iz obveza koje dijele svi obveznici, pa
+jedanaest načina otkazivanja izveden je iz obveza koje dijele svi obveznici, pa
 vrijedi za svako usklađeno rješenje, a ne za jedan sustav. Pojam regulatorno
-inducirane nesvodivosti imenuje klasu i daje joj izvod na koji se može uputiti.
+induciranog ograničenja imenuje skupinu i daje joj izvod na koji se može uputiti.
 Matrica pokrivenosti daje podlogu za izbor obrazaca, uključujući slučajeve u
-kojima obrazac usklađenost pogoršava.
+kojima učinak ovisi o konfiguraciji i preostalom roku.
 
 Istek vremena, ponavljanje, prekidač i saga tretiraju se kao kandidati. Obrazac
 koji izvod odbaci ostaje istražen, uz naveden razlog zbog kojeg ne ulazi u
@@ -108,5 +107,5 @@ transakcije u raspodijeljenim tijekovima. Poglavlje~\ref{ch:studija} je doprinos
 rada i odgovara na RQ1. Poglavlje~\ref{ch:implementacija} opisuje ilustrativni
 prototip, a poglavlje~\ref{ch:evaluacija} matricu pokrivenosti kojom se
 odgovara na RQ2. Poglavlje~\ref{ch:rasprava} odgovara na RQ3.
-Prilog~\ref{ch:prilog-sutnje} popisuje osam mjesta na kojima propis šuti, a
+Prilog~\ref{ch:prilog-sutnje} popisuje sedam mjesta na kojima propis šuti, a
 šutnja se nije mogla razviti u potpun izvod.

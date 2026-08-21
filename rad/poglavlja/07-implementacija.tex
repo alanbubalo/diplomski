@@ -35,8 +35,12 @@ ni transportnog protokola, jer su predmet stanja nakon greške.
 Prototip izvršava dvije granice iz referentne arhitekture. Prva je predaja od
 poslovnog sustava njegovoj pristupnoj točki, C1 prema C2, koja nosi slučaj E1.
 Druga je sinkroni kanal prema Sustavu za fiskalizaciju, na kojem pokreće
-slučajeve B1, B2 i D1. Time konkretni primjer obuhvaća predaju računa, slanje
-fiskalizacijske poruke, izostanak odgovora, odgovor S008 i oporavak odredišta.
+slučajeve B1, B2 i D1. U slučaju B2 dvojnik modelira samo granu ispravka koja
+zadržava složeni identifikator računa i zato dobiva S008. Ispravak s novim
+datumom izdavanja i referencom na prethodni račun zasebna je dopuštena grana
+koju prototip ne izvodi. Time konkretni primjer obuhvaća predaju računa,
+slanje fiskalizacijske poruke, izostanak odgovora, jedan modelirani odgovor
+S008 i oporavak odredišta.
 
 Popis onoga što prototip nema dulji je od popisa onoga što ima, i to
 namjerno:
@@ -112,7 +116,8 @@ odjeljka~\ref{sec:dizajn}\cite{schneider1990statemachine}.
 \caption[Automat predaje dokumenta]{Automat predaje. Oznake su iz programskog
 koda: \texttt{prepared} je zapisana namjera prije pokušaja,
 \texttt{sent-unconfirmed} je poslano bez potvrde, \texttt{confirmed} je
-potvrđen primitak, \texttt{correction-rejected} je ispravak odbijen šifrom
+potvrđen primitak, \texttt{correction-rejected} je ispravak sa zadržanim
+identifikatorom odbijen šifrom
 S008, a \texttt{deadline-expired} je rok istekao prije potvrde. Dvostruki obrub
 označava stanje iz kojeg nema prijelaza. Izostanak odgovora nije prijelaz nego
 petlja: dokument koji je poslan i nije potvrđen ostaje poslan i nepotvrđen.}
@@ -150,8 +155,8 @@ teži od prvog. Listing~\ref{lst:s008} pokazuje mjesto na kojem se šifra S008
 tumači.
 
 \begin{lstlisting}[language=PHP, caption={[Tumačenje šifre S008 uz zapisanu
-namjeru]Tumačenje šifre S008. Ista šifra vodi u dva suprotna prijelaza, a
-razlučuje ih samo namjera zapisana prije slanja.}, label={lst:s008}]
+namjeru]Tumačenje šifre S008 u modeliranoj grani. Zapisana namjera razlikuje
+ponovni pokušaj od ispravka sa zadržanim identifikatorom.}, label={lst:s008}]
 return match ($intent) {
     Intent::RETRY => Interpretation::unambiguous(
         Trigger::CONFIRMATION_FROM_S008,
@@ -160,11 +165,11 @@ return match ($intent) {
 
     Intent::CORRECTION => Interpretation::unambiguous(
         Trigger::REJECTION_FROM_S008,
-        'S008 uz zapisan ispravak znaci odbijenicu propisanog tijeka ispravka',
+        'S008 znaci da je odbijen ispravak sa zadrzanim identifikatorom',
     ),
 
     null => Interpretation::ambiguous(
-        'S008 bez zapisane namjere: ista sifra znaci i potvrdu i odbijenicu',
+        'S008 bez namjere: nije poznato je li poslan retry ili ispravak',
     ),
 };
 \end{lstlisting}
@@ -202,7 +207,7 @@ stupcima nastaje samo iz trenutka u kojem se zapisuje namjera.}
 & Odgovor & Sa zapisom namjere & Bez zapisa namjere \\
 \midrule
 B1 & izostaje       & \texttt{sent-unconfirmed}    & nema zapisa \\
-B2 & S008 uz ispravak & \texttt{correction-rejected} & \texttt{sent-unconfirmed} \\
+B2 & S008 uz isti identifikator & \texttt{correction-rejected} & \texttt{sent-unconfirmed} \\
 D1 & izostaje, zatim potvrda & \texttt{confirmed} & nema zapisa \\
 E1 & izostaje       & predaja bez potvrde: 1       & predaja bez potvrde: 0 \\
 \bottomrule
@@ -258,14 +263,17 @@ postoji, a trag predaje ne postoji.
 
 Scenarij popunjava ćeliju E1 uz odlazni pretinac i zapis namjere.
 
-\paragraph{B2: ista šifra za dva ishoda.}
+\paragraph{B2: ista šifra u dvije modelirane namjere.}
 Scenarij ima dva dijela. U prvom se poruka ponavlja nakon isteka vremena i
 dobiva S008. U drugom se šalje ispravak pod istim brojem računa i dobiva istu
-šifru. Listing~\ref{lst:ispis} prepisuje završno stanje baze.
+šifru. Taj drugi dio ilustrira samo ispravak sa zadržanim identifikatorom;
+ne tvrdi da bi stvarni sustav jednako odgovorio na ispravak s novim datumom i
+referencom na prethodni račun. Listing~\ref{lst:ispis} prepisuje završno
+stanje baze.
 
 \begin{lstlisting}[caption={[Završno stanje baze nakon scenarija
 B2]Završno stanje nakon scenarija B2, izlaz naredbe \texttt{php artisan
-state}. Ista šifra, dva različita završna stanja.}, label={lst:ispis},
+state}. Ista šifra u dvije modelirane namjere, dva različita završna stanja.}, label={lst:ispis},
 basicstyle=\ttfamily\scriptsize]
 PREDAJE
 +----+------------+------------+---------------------+------+---------+
@@ -292,8 +300,9 @@ trenutku znao da ne zna i to je zapisao. Kasniji odgovor S008 taj trenutak
 razrješava, ali ga ne briše.
 
 Bez zapisa namjere oba dijela scenarija završavaju u istom stanju,
-\texttt{sent-unconfirmed}. Dvije suprotne namjere, ista šifra i isti ishod.
-To je slučaj B2 u izvedbi.
+\texttt{sent-unconfirmed}. Dvije različite namjere, ista modelirana šifra i
+isti lokalni ishod. To je slučaj B2 u izvedbi, a ne dokaz ponašanja vanjskog
+sustava za sve dopuštene oblike ispravka.
 
 Scenarij popunjava ćeliju B2 uz odlazni pretinac i zapis namjere.
 

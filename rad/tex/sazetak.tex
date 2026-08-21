@@ -19,24 +19,26 @@ na koje se taj tijek može pokvariti. Izvod stoji na Zakonu, Pravilniku i
 tehničkoj specifikaciji, pa je svaka tvrdnja provjerljiva bez pristupa ijednom
 sustavu.
 
-Izvedeno je dvanaest načina otkazivanja. Najjači pojedinačni nalaz je da šifra
-S008 istodobno znači da je ponovljena prijava prošla i da je propisani ispravak
-odbijen. Ispravak se izdaje pod istim brojem računa, a indikator kopije nije dio
-identifikatora po kojem se provjerava duplikat, pa provjera koja štiti od
-duplikata odbija tijek koji isti propis nalaže.
+Izvedeno je jedanaest načina otkazivanja. Jedan od njih pokazuje da način
+identifikacije ispravljenog eRačuna nije potpuno određen. Ispravak bez poreznog
+učinka izdaje se pod istim brojem, provjera S008 duplikat prepoznaje po složenom
+identifikatoru koji indikator kopije ne sadrži, a izvori ne određuju mora li
+ispravak zadržati datum izvornika. Novi datum i referenca na prethodni račun daju
+izvediv put, dok zadržavanje datuma vodi u odbijanje. Rad zato utvrđuje
+nedorečenost sučelja, a ne tvrdi da je svaki ispravak nužno odbijen.
 
-Iz toga slijedi teza rada. Dio slučajeva nesvodiv je, ali ne zbog svojstava
-raspodijeljene razmjene, nego zato što ih propis nalaže ili zato što propis
-uklanja mehanizam koji bi ih zatvorio. Rad tu vrstu naziva \emph{regulatorno
-induciranom nesvodivošću}. Pokrivenost je ocijenjena matricom od
-dvanaest načina otkazivanja i šest obrazaca, uz označenu razinu dokaza za svaku
-ćeliju. Vrijednost \emph{uklanja} ne nastupa nijednom, a sedam ćelija pokazuje
-obrazac koji usklađenost pogoršava umjesto da je poboljša. Granica pokrivenosti
-time nije tehnička nego pravna. Pomiče se izmjenom propisa, ne boljim dizajnom.
+Iz toga slijedi teza rada. Dio posljedica nastaje iz svojstava raspodijeljene
+razmjene, a dio iz obvezne arhitekture ili iz pravila koja ne određuju semantiku
+kvara. Rad za drugu skupinu rabi radni pojam \emph{regulatorno inducirano
+ograničenje}. Pokrivenost je ocijenjena matricom jedanaest načina otkazivanja i
+šest obrazaca, uz označenu razinu dokaza za svaku ćeliju. Obrasci ne uklanjaju
+nijedan način otkazivanja, ali sužavaju prozor nepoznatog ishoda ili ga čine
+vidljivim. Njihov učinak ovisi o granici i konfiguraciji: isti mehanizam može
+zaštititi lokalne resurse, ali loše podešen može potrošiti dio zakonskog roka.
 
 \vspace{1em}
 \noindent\textbf{Ključne riječi:} tolerancija na greške, raspodijeljeni sustavi,
-fiskalizacija eRačuna, obrasci otpornosti, regulatorno inducirana nesvodivost,
+fiskalizacija eRačuna, obrasci otpornosti, regulatorno inducirano ograničenje,
 referentna arhitektura,
 mjerilo izvedeno iz propisa
 
@@ -50,26 +52,27 @@ which that flow can break. The derivation uses the Act, the Ordinance and the
 technical specification, so every claim is verifiable without access to any
 system.
 
-Twelve failure modes are derived. The strongest single finding is that the code
-S008 means both that a repeated report was accepted and that a mandated
-correction was rejected. A correction is issued under the same invoice number,
-and the copy indicator is not part of the identifier used for the duplicate
-check, so the check that protects against duplicates rejects the flow that the
-same rules mandate.
+Eleven failure modes are derived. One of them shows that the identification of a
+corrected eInvoice is not fully specified. A correction without tax effect uses
+the same invoice number, while the S008 duplicate check uses a composite
+identifier that excludes the copy indicator, and the sources do not determine
+whether the correction retains the original issue date. A new date with a
+reference to the preceding invoice provides a feasible path, while retaining the
+date leads to rejection. The thesis therefore identifies an interface ambiguity;
+it does not claim that every correction is necessarily rejected.
 
-From this follows the thesis of the work. Some failure modes are irreducible, but
-not because of properties of distributed exchange. They are irreducible because
-the regulation mandates them, or because the regulation removes the mechanism
-that would close them. The thesis names this class \emph{regulation-induced
-irreducibility}. Coverage is assessed with a matrix of twelve failure modes
-and six patterns, with a labelled evidence level for every cell. The value
-\emph{removes} never occurs, and seven cells show a pattern that worsens
-compliance instead of improving it. The limit of coverage is therefore legal
-rather than technical, and it moves by amending the regulation, not by better
-design.
+Some consequences arise from distributed exchange, while others arise from the
+mandated architecture or from rules that leave failure semantics undefined. The
+thesis uses \emph{regulation-induced constraint} as a working term for the latter
+group. Coverage is assessed with a matrix of eleven failure modes and six
+patterns, with a labelled evidence level for every cell. No pattern removes a
+failure mode, but patterns narrow the window of an unknown outcome or make it
+observable. Their effect depends on the boundary and configuration: the same
+mechanism may protect local resources, while a poor configuration may consume
+part of a statutory deadline.
 
 \vspace{1em}
 \noindent\textbf{Keywords:} fault tolerance, distributed systems, eInvoice
-fiscalization, resilience patterns, regulation-induced irreducibility,
+fiscalization, resilience patterns, regulation-induced constraint,
 reference architecture,
 regulation-derived oracle

@@ -38,9 +38,9 @@ Poglavlje~\ref{ch:evaluacija} pokazalo je što obrasci pokrivaju. Ostaje pitanje
 \label{sec:cijena}
 
 Cijena se ovdje mjeri u tri stvari: u složenosti izvedbe, u dodanom
-kašnjenju i u riziku da dokument prekorači propisani rok. Nijedna od tri ne
-traži vlastito mjerenje. Prva se argumentira, druga se preuzima iz literature,
-a treća se izvodi iz propisa.
+kašnjenju i u riziku da dokument prekorači propisani rok. Rad ih ocjenjuje
+kvalitativno: složenost argumentira, učinke kašnjenja preuzima iz literature,
+a rizik roka izvodi iz propisa. Ne iznosi vlastita mjerenja performansi.
 
 \paragraph{Složenost.}
 Sustav koji bi samo pozvao sučelje i zapisao ishod trebao bi jedno polje.
@@ -71,49 +71,46 @@ se ne obnavlja.
 
 \paragraph{Rizik prekoračenja roka.}
 Ta cijena izvire iz propisa, ne iz arhitekture.
-Izdavatelj fiskalizira „u trenutku izdavanja“ (čl.~48.~st.~3.), a tolerancija
-nije izražena. Nijedna odredba ne izuzima kašnjenje zbog reda čekanja u
-posredniku. Svaki obrazac koji dokument stavlja u red čekanja time povećava
-izloženost prekršaju, a upravo je red čekanja ono što odlazni pretinac i
-ponavljanje traže.
+Izdavatelj u redovnom tijeku fiskalizira „u trenutku izdavanja“
+(čl.~48.~st.~3.), dok članak 49. za tehničku nemogućnost propisuje poseban rok
+od pet radnih dana od dana nastanka nemogućnosti. Red čekanja zato nije sam po
+sebi kašnjenje protivno propisu ako omogućuje dovršetak unutar tog posebnog
+roka. Rizik nastaje kada raspored ne prati rok, kada ne čuva dan nastanka
+nemogućnosti ili kada ispad traje dulje od pet radnih dana.
 
 Ponovni pokušaj koji
-uspije iz četvrtog pokušaja tehnički je uspio, a pravno je mogao propustiti rok.
-Obrazac je u tom slučaju obavio točno ono za što je napravljen i time pogoršao
-položaj obveznika.
+uspije iz četvrtog pokušaja tehnički je uspio, ali njegov pravni učinak ovisi
+o tome je li dovršen unutar primjenjivog roka. Zato broj pokušaja nije dovoljno
+mjerilo uspjeha; raspored mora pratiti i preostalo vrijeme.
 
 % ------------------------------------------------------------
 \section{Gdje obrasci smanjuju usklađenost}
 \label{sec:pogorsanje}
 
 Drugi dio trećeg istraživačkog pitanja traži slučajeve u kojima obrazac
-otpornosti usklađenost pogoršava. Matrica ih je označila sedam, a dva su
-zanimljiva jer u njima obrazac ne griješi nego radi ispravno.
+otpornosti usklađenost pogoršava. Matrica jasno označuje jedan takav slučaj:
+ponavljanje cijele skupne poruke nakon odgovora koji opisuje najviše jednu
+grešku. Za prekidač i deduplikaciju nalaz je uvjetan, pa nisu označeni kao
+intrinzično štetni obrasci.
 
-\paragraph{Prekidač pretvara kvar dostupnosti u kvar obveze.}
+\paragraph{Prekidač bez trajnog reda može povećati rizik roka.}
 Prekidač je napravljen da prestane slati kada odredište ne odgovara. Time
-štedi kašnjenje i tuđi kapacitet. Prema Sustavu za fiskalizaciju ne štedi ni
-jedno ni drugo. Kašnjenje nikoga ne pogađa, kapacitet nije obveznikov, a rok iz
-članka 49.\ stavka 1.\ teče od dana kada je nastupila nemogućnost, ne od dana
-kada je uklonjena. Dok je prekidač otvoren, obveznik troši rok da bi uštedio
-ono što mu ništa ne vrijedi.
+štedi lokalne resurse i ograničava kaskadno opterećenje. Prema Sustavu za
+fiskalizaciju mora se, međutim, promatrati zajedno s člankom 49.: rok od pet
+radnih dana teče od dana nastanka nemogućnosti. Ako prekidač radi uz trajni
+odlazni pretinac, čuva poruku i dopušta probne pozive prema rasporedu svjesnom
+roka, može biti koristan. Ako samo zaustavi slanje i izgubi vezu s rokom,
+povećava rizik da oporavak ne bude iskorišten na vrijeme. Matrica ga zato kao
+samostalan obrazac označuje pretežno neutralnim.
 
-Sankcija stoji samo na jednoj strani te zamjene. Nedostupnost Sustava za
-fiskalizaciju nije prekršaj obveznika, a propuštanje roka jest
-(čl.~73.~st.~1.~t.~21.). Obrazac dakle pretvara stanje koje nije sankcionirano
-u stanje koje jest. Ta je ocjena prosudba autora izvedena iz propisa. Tako je
-označena i u tablici~\ref{tab:matrica}.
-
-\paragraph{Provjera duplikata blokira propisani ispravak.}
-Drugi slučaj nije obrazac koji izvedba bira nego mehanizam koji sučelje već
-ima. Provjera S008 odbija zapis s istim složenim identifikatorom, što je
-ispravno ponašanje za duplikat. Hrvatsko suženje norme istodobno nalaže da
-ispravak podatka bez poreznog učinka ide pod istim brojem
-računa\cite{pu2026hrcius}. Zaštita od duplikata time blokira tijek koji isti
-propis nalaže.
-
-Ta ocjena stoji na razini citata, ne prosudbe. Ona je i jedini slučaj u ovom
-radu u kojem se dva zahtjeva istog propisa sudaraju u jednoj provjeri.
+\paragraph{Provjera duplikata ostavlja izbor grane ispravka otvorenim.}
+Provjera S008 odbija zapis s istim složenim identifikatorom, što je ispravno
+ponašanje za duplikat. Objavljeni dokumenti istodobno dopuštaju ispravak s
+novim datumom izdavanja i referencom na prethodni račun, dok uputa o kopiji
+predviđa zadržavanje broja i datuma uz oznaku kopije
+\cite{pu2026hrcius,pu2026tehspec}. Problem zato nije univerzalna zabrana
+ispravka, nego nedovoljno određena veza između datuma, oznake kopije,
+reference i provjere jedinstvenosti.
 
 Treći mehanizam pripada sučelju, a ne izvedbi. Ponavljanje skupne poruke
 umnaža izloženost duplikatima, jer zahtjev nosi do sto zapisa, a odgovor
@@ -121,22 +118,23 @@ najviše jednu grešku. Taj je slučaj razrađen u
 odjeljku~\ref{sec:matrica}, a izlaz iz njega nije bolji obrazac nego odricanje
 od skupnosti.
 
-\paragraph{Granica pokrivenosti je pravna, ne tehnička.}
+\paragraph{Dio granice pokrivenosti je regulatoran.}
 Odjeljak~\ref{sec:nepokriveno} pokazao je da nepokriveni slučajevi nastaju iz
 propisa, a ne iz svojstava raspodijeljene razmjene. Za njih bi mehanizam značio
 da izvedba sama odluči ono što propis nije odlučio.
 
-Da mehanizam nije nedostupan, pokazuje isti zakon. Za promet u krajnjoj
+Da regulatorni mehanizam postoji, pokazuje isti zakon. Za promet u krajnjoj
 potrošnji Sustav za fiskalizaciju vraća Jedinstveni identifikator računa
-(čl.~15.~st.~3.), a zakon uz to daje fikciju urednosti za postupanje u roku od
-dva radna dana (čl.~21.~st.~3.). Za fiskalizaciju eRačuna nema ni jednog ni
-drugog. Razlika nije u tehnologiji nego u tome što je za jedan režim odlučeno,
-a za drugi nije.
+(čl.~15.~st.~3.) i uređuje naknadno postupanje. Za fiskalizaciju eRačuna
+članak 49. također uređuje naknadno postupanje, ali ne daje identifikator
+potvrđenog primitka ni rješenje za nedostupnost dulju od pet radnih dana.
+Razlika zato nije samo tehnološka nego i u regulatorno određenim dokazima i
+granicama oporavka.
 
 \paragraph{Zašto to nije samo sukob zahtjeva.}
-Tvrdnju iz prethodnog odlomka najlakše obara prigovor da je nesvodivost izvedena
-iz propisa samo novo ime za sukob zahtjeva, a taj pojam inženjerstvo zahtjeva
-već ima. Prigovor promašuje na tri mjesta.
+Tvrdnju iz prethodnog odlomka najlakše obara prigovor da je regulatorno
+inducirano ograničenje samo novo ime za sukob zahtjeva, a taj pojam
+inženjerstvo zahtjeva već ima. Prigovor promašuje na tri mjesta.
 
 Prvo, sukob zahtjeva pretpostavlja onoga tko ga smije razriješiti. Postupci
 otkrivanja i razrješavanja sukoba računaju na naručitelja koji odlučuje o
@@ -151,9 +149,10 @@ ispraviti. Tvrdnja ovoga rada nije o dokumentu zahtjeva nego o prostoru
 obrazaca. Način otkazivanja ostaje i nakon što je obrazac primijenjen, što je
 tvrdnja o tome što obrasci mogu, a ne o tome što zahtjevi kažu.
 
-Treće, klasa nije jednorodna. Sudar oko šifre S008 jest sukob dvaju zahtjeva.
-Rok koji teče od nedefiniranog primitka nije sukob nego izostanak pravila, pa
-tu nema dvaju zahtjeva između kojih bi se prioritet mogao postaviti.
+Treće, klasa nije jednorodna. Odnos datuma, oznake kopije, reference na
+prethodni račun i šifre S008 primjer je nedovoljno određene kombinacije
+pravila. Rok koji teče od nedefiniranog primitka nije sukob nego izostanak
+pravila, pa tu nema dvaju zahtjeva između kojih bi se prioritet mogao postaviti.
 Odjeljak~\ref{sec:klasifikacija-otkaza} tu razliku već imenuje kao uzrok u
 specifikaciji propustom i uzrok nedosljednošću. Svođenje cijele klase na sukob
 zahtjeva spaja ono što taksonomija razdvaja.
@@ -200,9 +199,9 @@ ostvarenjem u radu.}
 \toprule
 Element teme & Ostvarenje u radu \\
 \midrule
-Tipične greške & Dvanaest načina otkazivanja izvedenih iz cijelog propisanog tijeka. \\
+Tipične greške & Jedanaest načina otkazivanja izvedenih iz cijelog propisanog tijeka. \\
 Istek vremena i ponavljanje & Primijenjeni u dizajnu i izvršeni u scenarijima B1 i D1, uz raspored svjestan roka. \\
-Prekidač i saga & Istraženi kao kandidati. Prekidač je odbačen na fiskalizacijskom kanalu, a saga zadržava evidentirani niz bez kompenzacije. \\
+Prekidač i saga & Istraženi kao kandidati. Prekidač je uvjetno primjenjiv uz trajni red i raspored svjestan roka, a saga zadržava evidentirani niz bez kompenzacije. \\
 Cijeli tijek računa & Pokriven referentnom arhitekturom. Prototip izvršava granicu C1 prema C2 i sinkroni kanal prema Sustavu za fiskalizaciju. \\
 Scenariji grešaka & Četiri načina otkazivanja pokrenuta su u osnovnoj i predloženoj izvedbi. \\
 Učinkovitiji pristup & Usporedba završnih stanja pokazuje smanjuje li zapis namjere nepoznat ishod i omogućuje li oporavak. \\
@@ -211,7 +210,7 @@ Učinkovitiji pristup & Usporedba završnih stanja pokazuje smanjuje li zapis na
 \end{table}
 
 Evaluacija kroz scenarije provedena je u dvije razine. Matrica izvodi očekivani
-ishod za svih 72 spojeva načina otkazivanja i obrasca. Prototip izvršava četiri
+ishod za svih 66 spojeva načina otkazivanja i obrasca. Prototip izvršava četiri
 načina otkazivanja na dvije granice. Devet ćelija zato nosi razinu pokazanog,
 dok ostale stoje na citatu ili na označenoj prosudbi autora.
 

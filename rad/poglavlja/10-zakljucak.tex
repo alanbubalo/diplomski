@@ -17,61 +17,57 @@
 \chapter{Zaključak}
 \label{ch:zakljucak}
 
-Šifra S008 u fiskalizaciji eRačuna znači dvije suprotne stvari. Znači da je
-ponovljena prijava prošla i znači da je propisani ispravak odbijen. Oba tijeka
-nalaže isti skup pravila, provjera koja ih sudara dio je iste specifikacije, a
-poruka ne nosi polje koje bi ih razlikovalo. Rad je taj sudar izveo iz
-objavljenih dokumenata i pokazao da se ne može zatvoriti izborom dizajna.
+Šifra S008 u fiskalizaciji eRačuna pouzdano pokazuje da složeni identifikator
+već postoji, ali sama ne otkriva je li prethodno slanje završilo potvrdom.
+Kod ispravka objavljeni dokumenti daju dva relevantna mehanizma: novi datum uz
+referencu na prethodni račun te oznaku kopije uz zadržavanje broja i datuma.
+Njihov odnos prema provjeri jedinstvenosti nije potpuno određen. Rad zato ne
+zaključuje da je svaki ispravak blokiran, nego da izvedba mora zapisati namjeru
+i odabranu granu kako bi njezin ishod bio naknadno objašnjiv.
 
-Iz tog jednog slučaja izvedena je šira klasa. Dio načina otkazivanja u ovom
-tijeku nesvodiv je, ali ne zbog fizike raspodijeljene razmjene. Nesvodiv je jer
-ga propis nalaže ili jer propis uklanja mehanizam koji bi ga zatvorio.
-Literatura o toleranciji na greške tu klasu ne opisuje, a za obveznika je ona
-odlučujuća, jer određuje što uopće ima smisla graditi.
+Taj primjer pripada širem nalazu: dio ograničenja ne nastaje samo iz fizike
+raspodijeljene razmjene nego iz razdvojenog regulatornog tijeka, nedostajućih
+podataka i nedovoljno preciznih pravila. Rad za to koristi radni naziv
+regulatorno inducirano ograničenje. Naziv sažima nalaz studije slučaja; ne
+predstavlja tvrdnju da je iscrpnim pregledom uspostavljena nova opća teorija.
 
 % ------------------------------------------------------------
 \section*{Odgovori na istraživačka pitanja}
 
 \paragraph{RQ1.}
-Iz propisanog tijeka izvedeno je dvanaest načina otkazivanja, grupiranih po
+Iz propisanog tijeka izvedeno je jedanaest načina otkazivanja, grupiranih po
 uzroku: propisano razdvajanje kanala, sinkroni kanal bez definirane semantike
-kvara, rokovi koji teku od nedefiniranih događaja, ispad infrastrukture bez
-pravnog ventila i neuređena granica između poslovnog sustava i pristupne točke.
-S obzirom na zakonsku obvezu ostavljaju sustav u četiri stanja. Treće od njih,
-u kojem ishod nije loš nego nepoznat, ono je koje obrasci mogu najviše suziti.
+kvara, rokovi vezani uz nedovoljno određene događaje, ispad infrastrukture i
+neuređena granica između poslovnog sustava i pristupne točke. Kvalitativna
+klasifikacija razlikuje nedovršen tijek izložen roku, neodređen ishod i
+oporavak unutar posebnog roka. Neodređen ishod jest područje na kojem obrasci
+mogu najviše pomoći.
 
 \paragraph{RQ2.}
-Matrica od dvanaest načina otkazivanja i šest obrazaca pokazuje da vrijednost
+Matrica od jedanaest načina otkazivanja i šest obrazaca pokazuje da vrijednost
 \emph{uklanja} ne nastupa nijednom. Obrasci pokrivaju ono što nastaje iz
-svojstava raspodijeljene razmjene. Ne pokrivaju ono što nastaje iz propisa, jer
-bi pokrivanje značilo da izvedba odluči ono što propis nije odlučio. Za takve
-slučajeve najviša dostižna vrijednost je \emph{detektira}, dakle da sustav zna
-da je otkaz nastupio i da to može dokazati.
-
-Nesvodivost je time razdvojena na fizikalnu i regulatorno induciranu, a to
-razdvajanje je teza rada.
-Granica pokrivenosti nije tehnička nego pravna i pomiče se izmjenom propisa, ne
-boljim dizajnom. Da mehanizam nije nedostupan pokazuje isti zakon, jer za promet
-u krajnjoj potrošnji daje i identifikator računa i fikciju urednosti, a za
-fiskalizaciju eRačuna ni jedno ni drugo.
+svojstava raspodijeljene razmjene: čuvaju namjeru, ograničavaju ponavljanje i
+omogućuju nastavak nakon oporavka. Kada nedostaje podatak ili jednoznačno
+pravilo, najviše mogu detektirati stanje i sačuvati dokaz o odabranoj
+interpretaciji. Granica pokrivenosti zato je dijelom tehnička, a dijelom
+regulatorna. Tehnički se dio pomiče boljim dizajnom, a regulatorni preciznijim
+pravilom, sučeljem ili dokazom primitka.
 
 \paragraph{RQ3.}
-Cijena je izražena u tri stvari. Složenost raste jer sustav mora imenovati
-stanje koje propis ne imenuje. Kašnjenje raste po definiciji obrasca, ali se
-ovdje ne troši na račun korisnika nego na račun roka, jer na fiskalizacijskom
-kanalu nitko ne čeka. Rizik prekoračenja roka izveden je iz odredbe koja
-trenutak izdavanja ne kvantificira i ne izuzima kašnjenje zbog reda čekanja.
-
-Sedam ćelija matrice pokazuje obrazac koji usklađenost pogoršava. Pet ih pripada
-prekidaču, koji kvar dostupnosti pretvara u propuštanje zakonskog roka, a
-sankcioniran je samo drugi. Ponavljanje koje uspije iz četvrtog pokušaja
-tehnički je uspjelo, a pravno je moglo propustiti rok.
+Cijena je izražena u tri stvari i ocijenjena kvalitativno. Složenost raste jer
+sustav mora imenovati i dokazivati međustanja. Kašnjenje raste zbog isteka
+vremena i ponavljanja, a njegov je pravni značaj vezan uz redovni trenutak
+fiskalizacije i poseban rok od pet radnih dana iz članka 49. Prekidač zato nije
+sam po sebi štetan: uz trajni red i raspored svjestan roka može zaštititi
+lokalne resurse, a bez njih može potrošiti vrijeme za oporavak. Jedina jasno
+označena ćelija \emph{pogoršava} jest ponovno slanje cijele skupne poruke kada
+odgovor ne određuje sudbinu svih zapisa.
 
 % ------------------------------------------------------------
 \section*{Granice i nadogradnje}
 
 Evaluacija je analitička, uz izvršne scenarije za četiri načina otkazivanja na
-dvije granice. Devet od 72 ćelije matrice pokazano je prototipom. Usporedba
+dvije granice. Devet od 66 ćelija matrice pokazano je prototipom. Usporedba
 osnovne i predložene izvedbe utvrđuje koja ostavlja poznatije i dokazivije
 stanje. Ne mjeri performanse i ne tvrdi da su odabrani obrasci najbolji među
 svim alternativama. Studija slučaja je referentna arhitektura, pa rad ne može
@@ -85,11 +81,12 @@ prosudbi autora dobile bi mjerenje kao podlogu, uz uvjet da okolina i sudionik
 budu imenovani, jer bi rezultat inače ostao neponovljiv.
 
 Druga je proširenje prototipa na razmjenu između pristupnih točaka i predaju
-primatelju. Time bi se uz sadašnje dvije granice izvršili slučajevi D2 i C3 te
-zatvorio cijeli put dokumenta iz referentne arhitekture.
+primatelju. Time bi se uz sadašnje dvije granice izvršio slučaj D2 i provjerila
+granica prema primatelju, čime bi se zatvorio cijeli put dokumenta iz
+referentne arhitekture.
 
-Treća je provjera stoji li izvedeni sudar oko šifre S008 i u izvedbi Porezne
-uprave. Rad tvrdi da specifikacija ne daje odgovor, a ne da izvedba ne radi.
-Ako izvedba indikator kopije uključuje u provjeru jedinstvenosti, jedna polovica
-sudara nestaje, a druga ostaje, jer ispravak s novim datumom izdavanja nema
-polja kojim bi referencirao izvornik.
+Treća je provjera ponašanja stvarne demo izvedbe za kombinacije datuma
+izdavanja, oznake kopije, reference \texttt{PrethodniERacun} i šifre S008.
+Time bi se utvrdilo koju granu Porezna uprava prihvaća i odgovara li ponašanje
+objavljenoj tehničkoj specifikaciji. Rad tvrdi da odnos tih elemenata nije
+potpuno određen dokumentima, a ne da izvedba nužno odbija ispravak.

@@ -10,19 +10,19 @@
 %
 %  ⚠ RAZINA (b) DANA JE SAMO ZA ONO ŠTO PROTOTIP DOISTA POKREĆE.
 %    Prototip vrti B1, B2 i D1 na fiskalizacijskom kanalu te E1 na
-%    granici C1↔C2. D2 i C3 ne izvodi, pa ondje ostaje (c).
+%    granici C1↔C2. D2 ne izvodi, pa ondje ostaje (c).
 %    Devet ćelija nosi (b). Ne dijeliti (b) po sličnosti mehanizma.
 %
 %  ✔ attali2004chilean PROVJEREN 2026-08-14 čitanjem rada (HAL inria-00087210,
 %    PDF u rad/izvori/teorija/ uz SHA-256). Citiran u 8.1 kao drugi razlog
-%    zašto matrica postoji, i u 6.2 uz naziv regulatorno inducirane
-%    nesvodivosti. Navod: „We assume that the communication channels are
+%    zašto matrica postoji, i u 6.2 uz regulatorno inducirano ograničenje.
+%    Navod: „We assume that the communication channels are
 %    reliable." Naslov i DOI u bibu su ispravljeni istog dana.
 % ============================================================
 \chapter{Evaluacija}
 \label{ch:evaluacija}
 
-Poglavlje~\ref{ch:studija} izvelo je dvanaest načina otkazivanja, a
+Poglavlje~\ref{ch:studija} izvelo je jedanaest načina otkazivanja, a
 odjeljak~\ref{sec:dizajn} predložio šest obrazaca. Ostaje pitanje koliko ti
 obrasci doista pokrivaju i po kojem se postupku takva tvrdnja može provjeriti
 spojem analitičkog izvoda i izvršnih scenarija.
@@ -74,8 +74,8 @@ Razina \textsuperscript{c} znači da je tvrdnja prosudba autora.
 
 Prosudba je dopuštena, prešućena prosudba nije. Razinu \textsuperscript{b}
 nose samo one ćelije koje prototip doista pokreće. To su slučajevi B1, B2 i D1
-na sinkronom fiskalizacijskom kanalu te E1 na granici C1 prema C2. Slučajevi D2
-i C3 imaju sličan oblik, ali ih prototip ne izvodi, pa ondje stoji
+na sinkronom fiskalizacijskom kanalu te E1 na granici C1 prema C2. Slučaj D2
+ima sličan oblik, ali ga prototip ne izvodi, pa ondje stoji
 \textsuperscript{c} i kada bi mehanizam bio isti.
 
 % ------------------------------------------------------------
@@ -84,7 +84,7 @@ i C3 imaju sličan oblik, ali ih prototip ne izvodi, pa ondje stoji
 
 \begin{table}[htbp]
 \centering
-\caption[Pokrivenost načina otkazivanja obrascima]{Pokrivenost dvanaest načina
+\caption[Pokrivenost načina otkazivanja obrascima]{Pokrivenost jedanaest načina
 otkazivanja iz odjeljka~\ref{sec:failure-modes} sa šest obrazaca iz
 odjeljka~\ref{sec:dizajn}.}
 \label{tab:matrica}
@@ -99,19 +99,18 @@ odjeljka~\ref{sec:dizajn}.}
 & \parbox{1.3cm}{\centering ključ za\\dedupl.}
 & \parbox{1.1cm}{\centering prekidač} \\
 \midrule
-A1 razmijenjen bez fiskalizacije & N\textsuperscript{a} & S\textsuperscript{c} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{c} & \textbf{P}\textsuperscript{c} \\
+A1 razmijenjen bez fiskalizacije & N\textsuperscript{a} & S\textsuperscript{c} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{c} & N\textsuperscript{c} \\
 A2 fiskaliziran bez razmjene     & N\textsuperscript{a} & S\textsuperscript{a} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{c} & N\textsuperscript{c} \\
 \addlinespace
-B1 istek vremena                 & D\textsuperscript{a} & S\textsuperscript{b} & D\textsuperscript{b} & D\textsuperscript{b} & S\textsuperscript{a} & \textbf{P}\textsuperscript{c} \\
-B2 ista šifra, dva ishoda        & N\textsuperscript{c} & N\textsuperscript{c} & S\textsuperscript{b} & D\textsuperscript{c} & \textbf{P}\textsuperscript{a} & N\textsuperscript{c} \\
+B1 istek vremena                 & D\textsuperscript{a} & S\textsuperscript{b} & D\textsuperscript{b} & D\textsuperscript{b} & S\textsuperscript{a} & N\textsuperscript{c} \\
+B2 nedovoljno određena identifikacija ispravka & N\textsuperscript{c} & N\textsuperscript{c} & S\textsuperscript{b} & D\textsuperscript{c} & N\textsuperscript{c} & N\textsuperscript{c} \\
 B3 djelomičan uspjeh skupa       & N\textsuperscript{a} & \textbf{P}\textsuperscript{a} & S\textsuperscript{c} & S\textsuperscript{c} & S\textsuperscript{a} & N\textsuperscript{c} \\
 B4 trajno i prolazno             & N\textsuperscript{a} & N\textsuperscript{c} & N\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{c} & N\textsuperscript{c} \\
 \addlinespace
 C1 rok od nedefiniranog primitka & N\textsuperscript{a} & N\textsuperscript{a} & N\textsuperscript{a} & D\textsuperscript{c} & N\textsuperscript{a} & N\textsuperscript{a} \\
-C2 trenutak izdavanja            & N\textsuperscript{a} & N\textsuperscript{a} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{a} & \textbf{P}\textsuperscript{c} \\
-C3 zakašnjelo bez fikcije        & N\textsuperscript{a} & S\textsuperscript{c} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{a} & \textbf{P}\textsuperscript{c} \\
+C2 trenutak izdavanja            & N\textsuperscript{a} & N\textsuperscript{a} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{a} & N\textsuperscript{c} \\
 \addlinespace
-D1 sustav nedostupan             & D\textsuperscript{a} & S\textsuperscript{b} & D\textsuperscript{b} & D\textsuperscript{b} & N\textsuperscript{c} & \textbf{P}\textsuperscript{c} \\
+D1 sustav nedostupan             & D\textsuperscript{a} & S\textsuperscript{b} & D\textsuperscript{b} & D\textsuperscript{b} & N\textsuperscript{c} & N\textsuperscript{c} \\
 D2 posrednik nedostupan          & D\textsuperscript{a} & S\textsuperscript{c} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{c} & S\textsuperscript{c} \\
 \addlinespace
 E1 neuređena predaja             & D\textsuperscript{a} & S\textsuperscript{c} & D\textsuperscript{b} & D\textsuperscript{b} & S\textsuperscript{a} & N\textsuperscript{c} \\
@@ -137,40 +136,39 @@ N ne pomaže \textbullet{}
 
 Iz tablice~\ref{tab:matrica} prvo se čita ono čega u njoj nema. Vrijednost
 \emph{uklanja} ne pojavljuje se nijednom. To nije neuspjeh
-obrazaca nego posljedica teze iz odjeljka~\ref{sec:failure-modes}. Za slučaj
-koji je nesvodiv jer ga propis nalaže, najviša dostižna vrijednost je
-\emph{detektira}, a ona znači da sustav zna da je otkaz nastupio i da to može
-dokazati.
+obrazaca: oni ne uklanjaju mogućnost udaljenog otkaza ni obvezno razdvajanje
+postupaka, nego sužavaju posljedicu ili je čine dokazivom. Vrijednost
+\emph{detektira} znači da otkaz može nastupiti, ali sustav zna da je nastupio
+i to može dokazati.
 
-\paragraph{Stupac prekidača ponavlja jedan mehanizam pet puta.}
-Prekidač je označen kao \emph{pogoršava} u pet redaka, a razlog je u svih pet
-isti. Dok je otvoren, prekidač prestaje slati, a rok iz propisa i dalje teče.
-Kvar dostupnosti time prelazi u propuštanje zakonskog roka, a sankcioniran je
-samo drugi (čl.~73.~st.~1.~t.~21.). Ponavljanje iste ocjene nije nepažnja nego
-nalaz: obrazac koji je u literaturi opće preporučen ovdje šteti svugdje gdje
-uz kanal stoji rok.
+\paragraph{Prekidač je neutralan bez reda koji čuva poruke.}
+Sam prekidač ne rješava nijedan izvedeni način otkazivanja: samo ranije
+prekida pozive odredištu koje se čini nedostupnim. Zato je u matrici pretežno
+označen kao \emph{ne pomaže}. Ako je spojen s trajnim odlaznim pretincem i
+ponavljanjem svjesnim roka, može zaštititi lokalne resurse bez gubitka poruke;
+ako se otvori bez takvog reda i ostane otvoren do isteka roka, može povećati
+rizik zakašnjenja. Ocjena zato ovisi o sastavu obrazaca, a nije intrinzično
+svojstvo prekidača. Redak D2 zadržava \emph{sužava} kao autorsku prosudbu za
+slučaj u kojem se poruka prema posredniku trajno zadržava lokalno.
 
-Redak D2 pokazuje da ocjena nije o obrascu nego o granici. Prema
-informacijskom posredniku prekidač zadržava smisao, jer ondje postoji ugovorni
-odnos i brz kvar dopušta lokalno zadržavanje poruke. Isti obrazac, dvije
-granice, dvije suprotne ocjene.
+\paragraph{Ključ za deduplikaciju ne određuje pravilo ispravka.}
+Složeni identifikator stabilan je kroz ponovni pokušaj, pa provjera S008
+ispravno otkriva da zapis s tim identifikatorom već postoji. Za ispravak je
+situacija uža: novi datum izdavanja uz referencu na prethodni račun stvara
+nov identifikator, dok ispravak koji zadržava identifikator može biti odbijen
+kao duplikat\cite{pu2026hrcius,pu2026tehspec}. Ključ sam ne odlučuje koju od
+tih grana treba primijeniti, pa je u retku B2 označen kao \emph{ne pomaže}, a
+ne kao obrazac koji nužno pogoršava stanje.
 
-\paragraph{Ključ za deduplikaciju u retku B2 pogoršava.}
-Dvije ocjene \emph{pogoršava} ne pripadaju prekidaču: ova i ponavljanje u
-retku B3. Upravo te dvije stoje na razini \textsuperscript{a}, dok je svih pet
-prekidačevih ocjena prosudba autora. Složeni identifikator postoji i stabilan
-je kroz ponovni pokušaj, pa provjera S008 ispravno odbija duplikat. Ista provjera
-odbija i propisani ispravak, jer hrvatsko suženje norme nalaže da ispravak ide
-pod istim brojem računa, a indikator kopije nije dio
-identifikatora\cite{pu2026hrcius}. Mehanizam koji štiti od duplikata time
-blokira tijek koji isti propis nalaže.
-
-\paragraph{Redak B2 uz odlazni pretinac sužava dvoznačnost.}
-Uvjetna tvrdnja glasi: ako Sustav za fiskalizaciju vrati šifru S008, uz zapis namjere
-nastao prije slanja dokument završava u stanju \texttt{confirmed} kada je
-poslan ponovni pokušaj, odnosno u stanju \texttt{correction-rejected} kada je
-poslan ispravak. Bez zapisa oba puta završava u stanju
-\texttt{sent-unconfirmed}. Odjeljak~\ref{sec:scenariji} pokazuje oba ishoda.
+\paragraph{Redak B2 uz odlazni pretinac sužava lokalnu dvoznačnost.}
+Uvjetna tvrdnja glasi: ako modelirani Sustav za fiskalizaciju vrati šifru
+S008, uz zapis namjere nastao prije slanja dokument završava u stanju
+\texttt{confirmed} kada je poslan ponovni pokušaj, odnosno u stanju
+\texttt{correction-rejected} kada je poslan ispravak sa zadržanim
+identifikatorom. Bez zapisa oba puta završava u stanju
+\texttt{sent-unconfirmed}. Odjeljak~\ref{sec:scenariji} pokazuje oba ishoda,
+ali ne dokazuje odgovor stvarnog sustava na ispravak s novim datumom i
+referencom na prethodni račun.
 
 Vrijednost je \emph{sužava}, ne \emph{uklanja}. Razlikovanje ovisi o lokalnom
 zapisu, a ako se zapis izgubi, rekonstruirati ga iz podataka Sustava za
@@ -210,33 +208,27 @@ podatak kojeg u sučelju nema.
 \label{sec:nepokriveno}
 
 Nepokriveno je skup redaka u kojima najviša postignuta vrijednost nije bolja
-od \emph{detektira}. Iz tablice~\ref{tab:matrica} to su A1, A2, B4, C1, C2 i C3.
+od \emph{detektira}. Iz tablice~\ref{tab:matrica} to su B4, C1 i C2.
 
-Taj skup gotovo se poklapa sa skupom regulatorno nesvodivih slučajeva iz
-odjeljka~\ref{sec:failure-modes}, koji obuhvaća A1, A2, B2, C3 i D1, uz B1 i
-B4 kao fizikalno nesvodive. Poklapanje nije slučajno i služi kao provjera da su
-izvod i evaluacija dosljedni. Tri odstupanja treba objasniti.
-
-Slučaj B2 u matrici doseže \emph{sužava}, iako je u odjeljku~\ref{sec:dizajn}
-označen kao regulatorno nesvodiv. Oboje stoji. Zapis namjere razrješava
-tumačenje dok postoji, a nesvodivost se odnosi na slučaj u kojem je izgubljen.
-Slučajevi C1 i C2 obrnuto su u matrici lošiji nego u izvodu, jer njihov uzrok
-nije kvar nego nedefiniran pojam, a na to nijedan obrazac ne djeluje.
+Ta tri slučaja povezuje nedostatak ulaznog podatka ili jednoznačnog pravila.
+U B4 sučelje ne razlikuje prolazne od trajnih grešaka. U C1 pravni pojam
+primitka nije vezan uz jednoznačan tehnički događaj, a u C2 trenutak izdavanja
+nije kvantificiran tako da bi ga raspored ponavljanja mogao izračunati.
+Obrasci mogu sačuvati dokaz i imenovati stanje, ali ne mogu sami proizvesti
+nedostajući podatak ili obvezujuće tumačenje.
 
 Slučaj D1 u matrici doseže \emph{sužava} jer ponavljanje nakon oporavka može
-dovršiti fiskalizaciju unutar roka. Regulatorna nesvodivost ipak ostaje. Ako
-nedostupnost traje dulje od roka, obrazac nema mehanizam kojim bi rok produljio
-ili zakašnjelom postupku dao učinak pravovremenog.
+dovršiti fiskalizaciju unutar roka. Ograničenje ipak ostaje ako nedostupnost
+traje dulje od roka, jer obrazac nema mehanizam kojim bi rok produljio ili
+zakašnjelom postupku dao učinak pravovremenog.
 
 Iz toga slijedi odgovor na drugo istraživačko pitanje. Obrasci tolerancije na
-greške pokrivaju one načine otkazivanja koji nastaju iz svojstava raspodijeljene
-razmjene, a ne pokrivaju one koji nastaju iz propisa. Za prve postoji dokazan
-mehanizam u literaturi. Za druge bi mehanizam značio da izvedba sama odluči
-ono što propis nije odlučio, a takva odluka nije obranjiva pozivom na propis.
-
-Granica pokrivenosti stoga nije tehnička nego pravna. Pomiče se izmjenom
-propisa, ne boljim dizajnom. Poglavlje~\ref{ch:rasprava} razrađuje što to
-znači za obveznika koji do te izmjene mora raditi.
+greške dobro djeluju na neodređenost prijenosa: čuvaju namjeru, ograničavaju
+ponavljanje i omogućuju nastavak nakon oporavka. Slabije djeluju kada je
+neodređenost ugrađena u pravilo ili sučelje. Tada najviše mogu sačuvati trag i
+učiniti odabranu interpretaciju vidljivom. Dio granice pokrivenosti zato je
+regulatoran i može se pomaknuti preciznijim pravilom ili specifikacijom, dok
+fizikalna neodređenost udaljenog poziva ostaje tehnički problem.
 
 % ------------------------------------------------------------
 % ⚠ Dvije stvari koje evaluacija NE tvrdi, i to je namjerno:
@@ -244,6 +236,6 @@ znači za obveznika koji do te izmjene mora raditi.
 %   2. da je pokrivenost izmjerena — nije, izvedena je
 %   Oba priznanja idu u pogl. 9, ne ovdje. Ovdje bi razvodnila nalaz.
 
-Devet od 72 ćelije nosi razinu \textsuperscript{b}. One počivaju na završnim
+Devet od 66 ćelija nosi razinu \textsuperscript{b}. One počivaju na završnim
 stanjima iz izvršnih scenarija, ne na mjerenju performansi. Domet i cijena tog izbora razrađeni su u
 poglavlju~\ref{ch:rasprava}.
