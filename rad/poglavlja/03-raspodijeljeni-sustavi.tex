@@ -325,10 +325,11 @@ Odgovor prakse nije dostava točno jednom nego učinak koji se tako ponaša.
 Poruka se šalje barem jednom, a primatelj se gradi tako da ponovljena
 poruka ne mijenja ishod. Helland to opisuje kao svojstvo entiteta koji
 pamti da je poruku već obradio, pa na ponovljenu poruku odgovara odgovorom
-koji oponaša prvi\cite{helland2007lifebeyond}. Ključna je ta druga
-polovica. Nije dovoljno da ponovljena poruka ne našteti. Ponavljanje mora
-dati isti odgovor, inače pozivatelj iz odgovora ne može zaključiti u kojem
-je stanju.
+koji oponaša prvi\cite{helland2007lifebeyond}. Idempotentnost se odnosi
+na učinak obrade i ne zahtijeva jednak odgovor. Za razrješavanje nepoznatog
+ishoda pozivatelju treba odgovor iz kojeg može zaključiti što je učinjeno
+ili zaseban dohvat statusa. Ponavljanje ranijeg odgovora jedan je način
+da se takvo razrješavanje omogući.
 
 Gdje se ta obrana smješta, pitanje je koje su Saltzer, Reed i Clark
 riješili šire nego za ovaj slučaj\cite{saltzer1984endtoend}. Njihov

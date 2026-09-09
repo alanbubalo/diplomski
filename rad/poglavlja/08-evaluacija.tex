@@ -104,7 +104,7 @@ A2 fiskaliziran bez razmjene     & N\textsuperscript{a} & S\textsuperscript{a} &
 \addlinespace
 B1 istek vremena                 & D\textsuperscript{a} & S\textsuperscript{b} & D\textsuperscript{b} & D\textsuperscript{b} & S\textsuperscript{a} & N\textsuperscript{c} \\
 B2 nedovoljno određena identifikacija ispravka & N\textsuperscript{c} & N\textsuperscript{c} & S\textsuperscript{b} & D\textsuperscript{c} & N\textsuperscript{c} & N\textsuperscript{c} \\
-B3 djelomičan uspjeh skupa       & N\textsuperscript{a} & \textbf{P}\textsuperscript{c} & S\textsuperscript{c} & S\textsuperscript{c} & S\textsuperscript{a} & N\textsuperscript{c} \\
+B3 neodređena atomarnost skupa   & N\textsuperscript{a} & \textbf{P}\textsuperscript{c} & S\textsuperscript{c} & S\textsuperscript{c} & S\textsuperscript{a} & N\textsuperscript{c} \\
 B4 trajno i prolazno             & N\textsuperscript{a} & N\textsuperscript{c} & N\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{c} & N\textsuperscript{c} \\
 \addlinespace
 C1 rok od nedefiniranog primitka & N\textsuperscript{a} & N\textsuperscript{a} & N\textsuperscript{a} & D\textsuperscript{c} & N\textsuperscript{a} & N\textsuperscript{a} \\
@@ -210,8 +210,10 @@ obrazac uklanja nedostupnost niti da produljuje rok.
 
 \paragraph{Ponavljanje cijele skupne poruke nosi rizik, uz navedene
 pretpostavke.}
-Zahtjev nosi do sto zapisa, odgovor najviše jednu grešku, a sudbina preostalih
-zapisa nije definirana\cite{pu2026tehspec}. Ovo je jedina ćelija s vrijednošću
+Zahtjev nosi do sto zapisa, a odgovor opisuje neprihvaćen zahtjev i prvu
+grešku zbog koje nije prihvaćen. Specifikacija time upućuje na odbijanje
+zahtjeva kao cjeline, ali ne opisuje izričito atomarnost obrade pojedinih
+zapisa\cite{pu2026tehspec}. Ovo je jedina ćelija s vrijednošću
 \emph{pogoršava} i na njoj stoji dio odgovora na treće istraživačko pitanje, pa
 i pretpostavke i razina dokaza traže preciznost.
 

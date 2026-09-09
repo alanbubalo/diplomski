@@ -50,7 +50,7 @@ php artisan scenario e1                          # predaja bez potvrde
 php artisan scenario b2 --without-intent-record  # ista stvar bez odlaznog pretinca
 
 php artisan state                                # ispis završnog stanja
-php artisan test                                 # 32 tvrdnje, 104 provjere
+php artisan test                                 # 32 tvrdnje, 105 provjera
 ```
 
 Sat je pri scenariju fiksiran na `2026-09-01 09:00:00` da ispis bude ponovljiv.
@@ -72,7 +72,7 @@ pokazuje jedno i drugo.
 | `sent-unconfirmed` | poslano, nepotvrđeno |
 | `correction-rejected` | odbijen ispravak |
 | `original` / `correction` | izvornik / ispravak (poslovna namjera) |
-| `deadline-expired` | rok istekao |
+| `deadline-expired` | rok istekao, ishod ranijeg slanja ostaje nepoznat |
 | `Handover` | predaja |
 | `AuditEntry` | evidencija |
 

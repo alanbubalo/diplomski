@@ -23,9 +23,9 @@ use DomainException;
  * Uvjet iz tocke 2. je GRANICA PROTOTIPA, ne zakonska zabrana. Cl. 49. st. 1.
  * odreduje rok izvrsenja obveze; ne kaze da se nakon roka ne smije poslati.
  * Prototip promatranje zavrsava na granici pravovremenog postupanja, jer je
- * predmet rada stanje u kojem sustav zavrsi, a ne naknadno postupanje. Zakasnjelo
- * izvrsenje, pravovremeno izvrsenje i neizvrsena obveza su tri razlicite stvari
- * i model razlikuje samo prve dvije.
+ * predmet rada stanje u kojem sustav zavrsi, a ne naknadno postupanje. Istek
+ * roka ne otkriva je li raniji poziv uspio; model zavrsava pracenje uz
+ * nepoznat ishod, bez tvrdnje da fiskalizacija nije provedena.
  *
  * Nedopusten prijelaz je iznimka, ne tiho ignoriranje. Sustav koji propusti
  * nedopusten prijelaz prestaje biti dokaz o vlastitom stanju.
@@ -87,7 +87,7 @@ final class StateMachine
             // Granica prototipa, ne zakonska zabrana slanja. Vidi opis razreda.
             throw new DomainException(
                 'Prototip ne salje nakon isteka roka iz cl. 49. st. 1.:'
-                .' pravovremeno postupanje vise nije moguce.'
+                .' novi pokusaj vise ne bi bio unutar roka.'
             );
         }
 

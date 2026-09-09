@@ -34,14 +34,15 @@ enum State: string
     }
 
     /**
-     * Zna li poslovni sustav ishod fiskalizacije?
+     * Zna li poslovni sustav ishod predaje?
+     * Istek roka ne razrjesava raniji poziv.
      *
      * Ovo je razlika koju klasifikacija iz odjeljka 6.2 zove "neodredeno":
      * nije rijec o losem ishodu nego o ishodu koji sustav ne moze saznati.
      */
     public function outcomeKnown(): bool
     {
-        return $this !== self::SENT_UNCONFIRMED;
+        return ! in_array($this, [self::SENT_UNCONFIRMED, self::DEADLINE_EXPIRED], true);
     }
 
     /** Hrvatski opis za dokazni ispis u poglavlju 7. */
@@ -53,7 +54,7 @@ enum State: string
             self::CONFIRMED => 'odrediste je potvrdilo primitak',
             self::CORRECTION_REJECTED => 'propisani ispravak odbijen sifrom S008',
             self::DEADLINE_EXPIRED => 'rok iz cl. 49. st. 1. istekao prije potvrde;'
-                .' pravovremeno postupanje vise nije moguce',
+                .' ishod ranijeg slanja ostaje nepoznat',
         };
     }
 }

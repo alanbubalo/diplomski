@@ -89,9 +89,10 @@ mjerilo uspjeha; raspored mora pratiti i preostalo vrijeme.
 
 Drugi dio trećeg istraživačkog pitanja traži slučajeve u kojima obrazac
 otpornosti usklađenost pogoršava. Matrica označuje jedan takav slučaj:
-ponavljanje cijele skupne poruke nakon odgovora koji opisuje najviše jednu
-grešku. Ocjena je autorska prosudba rizika, jer specifikacija ne određuje kako
-odredište postupa s ostatkom skupa. Za prekidač i deduplikaciju nalaz je
+ponavljanje cijele skupne poruke kada atomarnost obrade pojedinih zapisa nije
+izričito opisana. Ocjena je autorska prosudba rizika, jer specifikacija opisuje
+neprihvaćen zahtjev i prvu grešku, ali ne razrađuje stanje svakog zapisa.
+Za prekidač i deduplikaciju nalaz je
 također uvjetan, pa nijedan obrazac nije označen kao intrinzično štetan.
 
 \paragraph{Prekidač bez trajnog reda može povećati rizik roka.}
@@ -118,9 +119,10 @@ ispravka, nego nedovoljno određena veza između datuma, oznake kopije,
 reference i provjere jedinstvenosti.
 
 Treći mehanizam pripada sučelju, a ne izvedbi. Ponavljanje skupne poruke
-povećava izloženost dvostrukom zapisu, jer zahtjev nosi do sto zapisa, a
-odgovor najviše jednu grešku. Pod kojim pretpostavkama ta izloženost prelazi u
-štetu, razrađuje odjeljak~\ref{sec:matrica}. Izlaz iz slučaja nije bolji
+povećava izloženost dvostrukom zapisu ako obrada nije atomarna i prethodno
+obrađene zapise ne pokriva provjera jedinstvenosti. Pod kojim pretpostavkama
+ta izloženost prelazi u štetu, razrađuje odjeljak~\ref{sec:matrica}. Izlaz
+iz slučaja nije bolji
 obrazac nego odricanje od skupnosti.
 
 \paragraph{Dio granice pokrivenosti je regulatoran.}

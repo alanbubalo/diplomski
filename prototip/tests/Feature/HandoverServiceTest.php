@@ -70,6 +70,8 @@ final class HandoverServiceTest extends TestCase
 
         $this->assertSame(State::DEADLINE_EXPIRED, $handover->state);
         $this->assertTrue($handover->state->isFinal());
+        $this->assertFalse($handover->state->outcomeKnown(),
+            'Istek roka ne otkriva je li raniji zahtjev bio obradjen.');
     }
 
     #[Test]

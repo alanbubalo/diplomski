@@ -43,8 +43,8 @@ poslovnog sustava njegovoj pristupnoj točki, C1 prema C2, koja nosi slučaj E1.
 Druga je sinkroni kanal prema Sustavu za fiskalizaciju, na kojem pokreće
 slučajeve B1, B2 i D1. U slučaju B2 dvojnik modelira samo granu ispravka koja
 zadržava složeni identifikator računa i zato dobiva S008. Ispravak s novim
-datumom izdavanja i referencom na prethodni račun zasebna je dopuštena grana
-koju prototip ne izvodi. Time konkretni primjer obuhvaća predaju računa,
+datumom izdavanja i referencom na prethodni račun zasebna je razmatrana
+konstrukcija koju prototip ne izvodi. Time konkretni primjer obuhvaća predaju računa,
 slanje fiskalizacijske poruke, izostanak odgovora, jedan modelirani odgovor
 S008 i oporavak odredišta.
 
@@ -85,7 +85,8 @@ se ispisi iz ovog poglavlja ponavljaju. Svaki \texttt{scenario} iznova gradi
 bazu, pa \texttt{state} pokazuje stanje one varijante koja je zadnja
 pokrenuta. Sat prototipa je fiksiran, pa je izlaz jednak pri svakom
 pokretanju.}, label={lst:naredbe}, basicstyle=\ttfamily\small]
-composer install
+cd prototip
+composer setup
 
 # predlozena izvedba: listing 7.4 je izlaz ovog para naredbi
 php artisan scenario b2                          # i b1, d1, e1
@@ -134,8 +135,9 @@ poziva\cite{helland2007lifebeyond}. Različite tablice nisu različite
 transakcijske granice.
 
 Životni ciklus predaje opisan je automatom sa slike~\ref{fig:automat}. Stanje
-\texttt{sent-unconfirmed} je jedino iz kojeg se ishod ne može pročitati i
-jedino koje propis ne imenuje. Ovdje je ravnopravno stanje, uz obrazloženje iz
+\texttt{sent-unconfirmed} označava nepoznat ishod slanja. Istek roka vodi u
+\texttt{deadline-expired}, ali ne otkriva je li raniji zahtjev obrađen.
+Oba stanja zato zadržavaju nepoznat udaljeni ishod, uz obrazloženje iz
 odjeljka~\ref{sec:dizajn}\cite{schneider1990statemachine}.
 
 \begin{figure}[htbp]
@@ -186,7 +188,7 @@ if ($trigger === Trigger::SENT && $expired) {
     // Granica prototipa, ne zakonska zabrana slanja.
     throw new DomainException(
         'Prototip ne salje nakon isteka roka iz cl. 49. st. 1.:'
-        .' pravovremeno postupanje vise nije moguce.'
+        .' novi pokusaj vise ne bi bio unutar roka.'
     );
 }
 
@@ -204,11 +206,12 @@ Prvi uvjet je granica prototipa, ne zabrana iz propisa. Članak 49.\ stavak 1.\
 određuje rok u kojem se obveza mora izvršiti. Ne
 uspostavlja zabranu slanja nakon tog roka, a Zakon za slučaj eRačuna nema
 odredbu poput one iz članka 21.\ stavka 3., koja zakašnjelu dostavu unutar
-sanacijskog roka izjednačava s pravovremenom. Model zato razlikuje samo
-pravovremeno izvršenje i stanje u kojem pravovremeno izvršenje više nije
-moguće. Zakašnjelo izvršenje i neizvršena obveza treća su i četvrta
-mogućnost, čije pravno značenje izvori ne određuju, pa ih prototip ne
-modelira.
+sanacijskog roka izjednačava s pravovremenom. Model zato nakon isteka roka
+zaustavlja nove pokušaje i bilježi da potvrda nije stigla unutar roka.
+Raniji zahtjev možda je obrađen
+pravodobno, pa udaljeni ishod ostaje nepoznat. Polje \texttt{ishod poznat}
+u tom stanju ima vrijednost \texttt{NE}. Zakašnjelo izvršenje i naknadno
+razrješavanje ranijeg ishoda nisu obuhvaćeni prototipom.
 
 Predaja se u odlazni pretinac zapisuje prije poziva, u istoj transakciji u
 kojoj nastaje dokument, uz ključ koji određuje
@@ -291,7 +294,7 @@ nosi sam dokument.}
 \toprule
 & Odgovor & Sa zapisom namjere & Bez zapisa namjere \\
 \midrule
-B1 & izostaje & \texttt{sent-unconfirmed} & nema zapisa \\
+B1 & izostaje; zatim istječe rok & \texttt{deadline-expired} & nema zapisa \\
 \addlinespace
 B2/1 & izostaje, zatim S008 uz isti identifikator & \texttt{confirmed} &
 nema zapisa, pa ponavljanja nema \\
@@ -310,8 +313,11 @@ E1 & izostaje & predaja bez potvrde: 1 & predaja bez potvrde: 0 \\
 \end{table}
 
 \paragraph{B1: poziv istekne bez odgovora.}
-Sa zapisom namjere dokument završava u stanju \texttt{sent-unconfirmed}, uz
-zabilježen dan nastupa nemogućnosti i zakazan sljedeći pokušaj. Bez zapisa u
+Sa zapisom namjere dokument nakon prvog poziva ostaje u stanju
+\texttt{sent-unconfirmed}, uz zabilježen dan nastupa nemogućnosti i zakazan
+sljedeći pokušaj. Scenarij zatim pomiče sat iza roka i pokreće pokušaj koji
+automat vodi u završno stanje \texttt{deadline-expired}, bez novog slanja.
+Ishod prethodnog poziva i tada ostaje nepoznat. Bez zapisa u
 bazi ne postoji nijedan redak o predaji, iako je račun izdan.
 
 Scenarij pokazuje i zašto raspored ponavljanja mora gledati rok.
@@ -379,7 +385,7 @@ prethodni račun. Listing~\ref{lst:ispis} prepisuje završno stanje baze.
 B2]Završno stanje nakon scenarija B2, izlaz naredbe \texttt{php artisan
 state}. Ista šifra u tri modelirana spoja, tri različita ishoda tumačenja.
 Radi širine stranice izostavljeni su stupac \texttt{ishod poznat} iz prve
-tablice i stupac \texttt{iz} iz druge; ostalo je prepisano doslovno.},
+tablice te iz druge tablice stupac nazvan \texttt{iz}; ostalo je prepisano doslovno.},
 label={lst:ispis}, basicstyle=\ttfamily\scriptsize]
 PREDAJE
 +----+------------+------------+---------------------+------+---------+
@@ -477,7 +483,8 @@ automat s imenovanim stanjem.
 Svaka tvrdnja iz ovog odjeljka zapisana je i kao izvršni test, u obliku koji
 Filibuster koristi za uvjetne tvrdnje\cite{meiklejohn2021filibuster}. Test ne
 provjerava da je poziv uspio nego da je završno stanje ono koje propis i
-obrazac zajedno nalažu. Prototip nosi 32 takva testa, koji zajedno izvode 104 pojedinačne provjere. Broj testova je broj tvrdnji o ishodu; broj
+obrazac zajedno nalažu. Prototip nosi 32 takva testa, koji zajedno izvode
+105 pojedinačnih provjera. Broj testova je broj tvrdnji o ishodu; broj
 provjera je veći jer jedna tvrdnja često provjerava stanje, zapis roka i zapis
 u evidenciji. Poglavlje~\ref{ch:evaluacija} poziva se na te tvrdnje kada
 ćeliju označava kao pokazanu.
