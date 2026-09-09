@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Domain\Intent;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -28,9 +29,27 @@ final class Invoice extends Model
         ];
     }
 
-    public function handovers(): HasMany
+        public function handovers(): HasMany
     {
         return $this->hasMany(Handover::class);
+    }
+
+    /**
+     * Poslovna namjera koliko se moze IZVESTI iz samog dokumenta.
+     *
+     * Indikator kopije je polje eRacuna (HR-BT-1), pa ga ima svaki sustav koji
+     * je dokument spremio -- i onaj koji namjeru nije zapisao. Izvedba koja
+     * namjeru ne biljezi zato nije bez konteksta: ovo je kontekst koji joj
+     * stvarno ostaje i prototip joj ga daje.
+     *
+     * Ono sto se iz dokumenta NE moze izvesti je redni pokusaj dostave.
+     * Ponovljena dostava ispravka nosi isti copy_indicator kao i prva. Ta
+     * razlika zivi samo u zapisu predaje, i to je ono sto zapis prije predaje
+     * doista kupuje (vidi ResponseInterpreter i odjeljak 7.3 rada).
+     */
+    public function derivedIntent(): Intent
+    {
+        return $this->copy_indicator === true ? Intent::CORRECTION : Intent::ORIGINAL;
     }
 
     /**

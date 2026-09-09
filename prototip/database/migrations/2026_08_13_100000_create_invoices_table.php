@@ -10,9 +10,14 @@ use Illuminate\Support\Facades\Schema;
  * Racun kao prvi entitet.
  *
  * Helland (odjeljak 5.1) trazi da se sustav podijeli na entitete, svaki sa
- * svojim opsegom serijalizacije, a da transakcije preko granice nema. Ovdje su
- * entiteti dva: sam dokument i njegova predaja. Zato dvije tablice, a ne jedna
- * sira.
+ * svojim opsegom serijalizacije, a da transakcije preko granice ENTITETA nema.
+ * Ovdje su entiteti dva: sam dokument i njegova predaja. Zato dvije tablice, a
+ * ne jedna sira.
+ *
+ * ⚠ Dvije tablice NE znace dvije transakcijske granice. Dokument i pocetni
+ * zapis predaje nastaju u jednoj lokalnoj transakciji (HandoverService), jer
+ * bi ih inace prekid razdvojio. Transakcija koje nema je ona koja bi obuhvatila
+ * i lokalni zapis i ishod vanjskog poziva.
  *
  * Cetiri polja slozenog identifikatora nose oznake iz norme, jer se S008
  * provjerava tocno po njima uz vrstu eRacuna.

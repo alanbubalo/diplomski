@@ -262,17 +262,23 @@ prvu liniju koda.
 Jedna odredba proizvodi veći dio popisa. Zakon nalaže da se fiskalizacija
 provodi „odvojeno od postupka razmjene eRačuna“ (čl.~48.~st.~3., citirano u
 odjeljku~\ref{sec:fiskalizacija-2-0}). Razdvajanje kanala nije dopušteno
-nego propisano. Iz toga slijedi da transakcija koja bi oba kanala zatvorila
-u jedan atomaran čin ne smije postojati. Nesklad između stanja
-„dostavljeno“ i stanja „fiskalizirano“ zato nije nedostatak izvedbe. To je
-stanje koje propis zahtijeva.
+nego propisano.
+
+Propis uređuje dva odvojena postupka, a promatrana sučelja ne pružaju
+zajednički protokol atomarnog dovršetka. Odredba pritom ne opisuje
+transakcijsku organizaciju lokalne baze i ne zabranjuje izrijekom da izvedba
+dva postupka koordinira. Izvedba zato mora računati na međustanja u kojima je
+jedan postupak dovršen, a drugi nije. Nesklad između stanja „dostavljeno“ i
+stanja „fiskalizirano“ nije nedostatak izvedbe koji bi bolja izvedba
+uklonila.
 
 % ------------------------------------------------------------
 \subsection*{A. Propisano razdvajanje kanala}
 
 \paragraph{A1: razmijenjen, nije fiskaliziran.}
-Razdvajanje iz članka 48.\ stavka 3.\ znači da nijedna transakcija ne
-obuhvaća oba kanala. Dostava od pristupne točke izdavatelja do pristupne
+Razdvajanje iz članka 48.\ stavka 3.\ i izostanak zajedničkog protokola
+dovršetka znače da nijedan atomaran čin ne obuhvaća oba kanala. Dostava od
+pristupne točke izdavatelja do pristupne
 točke primatelja može uspjeti i biti potvrđena
 (čl.~6.~st.~1.~t.~8.\ Pravilnika\cite{nn2026pravilnikeracun}), a
 fiskalizacijski poziv neovisno o tome pasti. Dokument je tada pravno
@@ -341,8 +347,20 @@ S008 odbija zapis za koji već postoji fiskaliziran eRačun s istim složenim
 identifikatorom i istom vrstom eRačuna.
 
 Ključ za razlikovanje duplikata dakle postoji i stabilan je kroz ponovni
-pokušaj. Šifra S008 nakon isteka vremena doista dokazuje da je prvi pokušaj
-prošao. Otvoreno pitanje nastaje kod ispravka.
+pokušaj. Ono što S008 dokazuje ipak je uže od onoga što se iz šifre čita na
+prvi pogled. Provjera potvrđuje da kod odredišta postoji zapis s tim složenim
+identifikatorom i tom vrstom eRačuna. Ne potvrđuje da su svi podaci
+istovjetni, ni da je zapis stvorio upravo promatrani pokušaj. Da bi nakon isteka vremena šifra doista pokazivala da je prvi pokušaj prošao,
+moraju vrijediti tri pretpostavke:
+
+\begin{itemize}[nosep, leftmargin=1.4cm]
+  \item identifikator nije ranije upotrijebljen za drukčiji sadržaj,
+  \item ponovljena poruka je nepromijenjena,
+  \item nema istodobnog slanja pod istim ključem.
+\end{itemize}
+
+Pod tim pretpostavkama zaključak stoji. Izvedba ih može zabilježiti i time
+učiniti provjerljivima. Otvoreno pitanje nastaje kod ispravka.
 
 Hrvatsko suženje norme nalaže da se ispravak podatka koji ne utječe na
 obračun poreza šalje pod istim brojem računa, uz indikator kopije postavljen
@@ -364,14 +382,19 @@ referencom na prethodni račun. Rad iz toga ne zaključuje da je svaki ispravak
 nužno odbijen, nego da dva sukladna implementatora mogu iz istih izvora izvesti
 različit oblik ispravka.
 
-Zakon isti tijek uređuje još jednom i ne poklapa se sa specifikacijom.
-Članak 43.\ stavak 1.\ ponovno izdavanje pod istim brojem \emph{dopušta},
-dok ga hrvatsko suženje norme nalaže. Zakon uz to traži da se to dogodi u
-istom razdoblju oporezivanja, o čemu hrvatsko suženje norme šuti. Zakon
-indikator kopije čini obveznim, dok ga HR-CIUS u semantičkom modelu vodi s
-kardinalnošću 0..1. Fiskalizacijska tehnička specifikacija istodobno ga vodi
-kao obvezan element, s pojavnošću 1..1. Izvori se, dakle, ne poklapaju ni u
-kardinalnosti podatka koji razlikuje kopiju od izvornika.
+Zakon isti tijek uređuje još jednom i ne poklapa se sa specifikacijom u
+jednoj točki. Članak 43.\ stavak 1.\ ponovno izdavanje pod istim brojem
+\emph{dopušta}, dok ga hrvatsko suženje norme za taj oblik ispravka nalaže.
+Zakon uz to traži da se to dogodi u istom razdoblju oporezivanja, o čemu
+hrvatsko suženje norme šuti.
+
+Razlika u kardinalnosti indikatora kopije nije ista vrsta nalaza. Rad tu
+razliku ne uzima kao proturječje. HR-CIUS ga u semantičkom modelu vodi s kardinalnošću
+0..1, a fiskalizacijska tehnička specifikacija kao obvezan element, s
+pojavnošću 1..1. To su dva modela s različitim predmetom. Opći model računa
+dopušta da oznake za izvornik nema, a fiskalizacijska poruka je zaseban model
+koji smije zahtijevati izričito \texttt{true} ili \texttt{false} za svaki
+zapis. Dva zahtjeva mogu istodobno vrijediti bez sukoba.
 
 Regulator je pitanje dotaknuo. Nije ga prešutio nego ostavio otvorenim.
 Uputa u rubrici pitanja i odgovora
@@ -382,12 +405,18 @@ uz to izrijekom izuzima iz slučaja koji ovaj odjeljak razmatra, riječima da
 eRačun s oznakom kopije nije njezin predmet i da se šalje po posebnim
 pravilima. Ta posebna pravila su upravo dva izvora koji se ne poklapaju.
 
-Ista uputa uvodi i treći put, koji ne vodi u istom smjeru kao prva dva. Nakon
-uspješne dostave sve naknadne poslovne ispravke provode se, kako uputa kaže,
-isključivo putem storna i izdavanja novog eRačuna. Granica između poslovne
-ispravke i ispravka podatka koji ne utječe na obračun poreza nije nigdje
-određena, pa obveznik ima tri izvora i tri različita postupka za jedan
-životni događaj.
+Ista uputa uvodi i treći put. Nakon uspješne dostave sve naknadne poslovne
+ispravke provode se, kako uputa kaže, isključivo putem storna i izdavanja
+novog eRačuna. Uputa time i razdvaja dva slučaja: oznaka kopije za ispravak
+podatka bez poreznog učinka, storno i novi eRačun za poslovnu ispravku.
+Mogućnost izbora postupka i obvezan način označavanja kada se taj postupak
+odabere mogu istodobno vrijediti, pa tri postupka nisu nužno tri nespojiva
+pravila.
+
+Ostaje ono što nijedan izvor ne određuje. Granica između poslovne ispravke i
+ispravka podatka koji ne utječe na obračun poreza nije nigdje povučena, a
+datum ispravka i njegov odnos prema provjeri jedinstvenosti nisu određeni.
+Nedorečenost je u tome, a ne u broju dopuštenih postupaka.
 
 \paragraph{B3: djelomičan uspjeh skupne poruke.}
 Jedan zahtjev nosi do sto zapisa, a odgovor sadrži najviše jednu grešku, s
@@ -508,12 +537,16 @@ Druga klasa je metodološki najvažnija. Kod nje ishod nije loš nego nepoznat.
 Sustav ne zna je li obvezu ispunio. To neznanje nije privremeno stanje prije
 nego što stigne odgovor, nego trajno svojstvo situacije u kojoj odgovora nema.
 
-Odjeljak~\ref{sec:klasifikacija-otkaza} dao je ime toj razlici. Avizienis
+Odjeljak~\ref{sec:klasifikacija-otkaza} dao je ime srodnoj razlici. Avizienis
 razlikuje signalizirane i nesignalizirane otkaze, a nesignaliziran otkaz je
-onaj za koji sudionik ne zna da se dogodio. Klasa „neodređeno“ skup je
-nesignaliziranih otkaza propisanog tijeka. To je i granica onoga što
-obrasci iz poglavlja~\ref{ch:pristupi} mogu postići. Oni je mogu suziti.
-Ukloniti je ne mogu.
+onaj za koji sudionik ne zna da se dogodio. Klasu „neodređeno“ s time ne
+treba izjednačiti. Nakon isteka vremena usluga je možda uspješno izvršena, pa
+je klasa širi skup: obuhvaća i nesignalizirane otkaze i uspjehe o kojima
+sudionik ne zna. Ono što sustav u takvom stanju drži jest dokaz da je pokušao
+i da potvrde nema, a ne dokaz da je udaljena obrada pala.
+
+To je i granica onoga što obrasci iz poglavlja~\ref{ch:pristupi} mogu
+postići. Oni klasu mogu suziti. Ukloniti je ne mogu.
 
 % ------------------------------------------------------------
 \subsection*{Dva izvora ograničenja}
@@ -657,11 +690,11 @@ kojem je „poslano, nepotvrđeno“ ravnopravno stanje, a ne rupa između dva
 stanja. Prijelaz iz njega vodi ili potvrda, ili odgovor s greškom, ili
 istek roka.
 
-Rokovi u taj automat ne ulaze kao stanja. Odjeljak~\ref{sec:automat}
-pokazao je zašto: automat je određen nizom poruka, a rokovi se mjere satom.
-Rok zato ulazi kao uvjet nad prijelazom. Time se izbjegava dizajn u kojem
-protek vremena sam po sebi mijenja stanje dokumenta, iako ga nijedna poruka
-nije dotaknula.
+Rokovi u taj automat ne ulaze kao stanja. Ulaze na dva mjesta, kako
+odjeljak~\ref{sec:automat} dopušta. Kao uvjet nad prijelazom rok odlučuje je
+li poticaj dopušten, a kao izričit poticaj protek roka vodi u završno stanje.
+Zajedničko im je da stanje dokumenta mijenja poticaj koji netko dostavi, a ne
+protek vremena sam po sebi.
 
 % ------------------------------------------------------------
 \paragraph{Zapis namjere prije predaje.}
@@ -685,23 +718,44 @@ kraj\cite{saltzer1984endtoend}.
 
 % ------------------------------------------------------------
 \paragraph{Što poslovni sustav smije zaključiti iz šifre S008.}
-Zaključak ovisi o lokalnoj namjeri i o obliku dokumenta. Nakon ponovnog
-pokušaja iste poruke S008 dokazuje da zapis s istim identifikatorom već
-postoji. Ako ispravak zadrži identifikator izvornika, ista šifra znači da je
-ta grana ispravka odbijena. Ako ispravak dobije novi datum i referencu na
-prethodni račun, identifikator više nije isti i S008 se po opisanoj provjeri ne
-očekuje.
+Sama šifra kaže samo da kod odredišta postoji zapis s tim složenim
+identifikatorom. Što iz nje slijedi ovisi o dva lokalna podatka: o tome je li
+dokument izvornik ili ispravak, i o tome je li ovo prva ili ponovljena dostava
+iste poruke.
 
-Poslovni sustav zato prije slanja treba zapisati namjeru, datum ispravka i
-referencu na prethodni račun. Zapis ne rješava nedorečenost izvora, ali
-omogućuje da se naknadni odgovor protumači u odnosu na stvarno poslanu
-poruku, umjesto da se zaključuje samo iz šifre.
+Dva spoja daju jednoznačan zaključak. Kod ponovljene dostave nepromijenjenog
+izvornika šifra pokazuje da je raniji pokušaj prošao, uz tri pretpostavke
+navedene u odjeljku~\ref{sec:failure-modes}. Kod prve dostave ispravka sa
+zadržanim identifikatorom zapis koji šifra prijavljuje je izvornik, pa je ta
+grana ispravka odbijena.
+
+Druga dva spoja ostaju dvoznačna i uz zapisanu namjeru. Kod prve dostave
+izvornika šifra znači da je isti identifikator već fiskaliziran, a ovaj ga
+pošiljatelj nije poslao. Kod ponovljene dostave ispravka sa zadržanim
+identifikatorom šifra se može odnositi na izvornik ili na vlastiti raniji
+pokušaj, a razlika se lokalno ne može utvrditi. Ako ispravak dobije novi datum
+i referencu na prethodni račun, identifikator više nije isti i S008 se po
+opisanoj provjeri ne očekuje.
+
+Poslovni sustav zato prije slanja treba zapisati poslovnu namjeru, redni
+pokušaj dostave, datum ispravka i referencu na prethodni račun.
+
+Od tih podataka jedan zapis ne mora nositi. Poslovna namjera je u samom
+dokumentu, jer indikator kopije razlikuje ispravak od izvornika. Redni pokušaj
+dostave nije: prva i ponovljena dostava istog ispravka nose isti dokument, pa ta
+razlika postoji samo ako ju je izvedba zapisala. Time se određuje i trenutak
+zapisivanja. Podatak treba onda kada odgovora nema, a zapis nastao tek nakon
+odgovora u tom slučaju ne nastaje.
+
+Zapis ne rješava nedorečenost izvora i ne razrješava svaki spoj. Omogućuje da se
+naknadni odgovor protumači u odnosu na stvarno poslanu poruku, i da se ondje
+gdje jednoznačnog tumačenja nema to izrijekom zabilježi umjesto da se pogodi.
 
 Helland isti mehanizam opisuje kao stanje koje entitet vodi o svom odnosu s
 partnerom\cite{helland2007lifebeyond}. Ovdje to stanje omogućuje dokazati
 koju je od dopuštenih konstrukcija izvedba odabrala. B2 ostaje nedorečenost
 specifikacije, ali prestaje biti nedokazana tvrdnja da su svi ispravci nužno
-odbijeni.
+odbijeni. Zapis namjere pritom dvoznačnost sužava, a ne uklanja.
 
 % ------------------------------------------------------------
 \paragraph{Ponavljanje koje zna koliko mu je roka ostalo.}
@@ -758,8 +812,8 @@ dokazivim. Sustav koji za svaki dokument bilježi u kojem je stanju stao,
 kada je pokušao i što je dobio kao odgovor ne jamči usklađenost. Jamči da
 vlastito postupanje može rekonstruirati i pokazati.
 
-Ta razlika nije mala. Obveznik odgovara za ishod postupka koji se odvija u
-tuđem sustavu (čl.~58.~st.~2.), a jedini dokaz kojim raspolaže je onaj koji
+Toj razlici težinu daje raspored odgovornosti. Obveznik odgovara za ishod
+postupka koji se odvija u tuđem sustavu (čl.~58.~st.~2.), a jedini dokaz kojim raspolaže je onaj koji
 sam napravi. U fiskalizaciji u krajnjoj potrošnji dokaz daje država i
 zove se Jedinstveni identifikator računa. Ovdje ga nema, pa dokaznu ulogu
 mora preuzeti vlastita evidencija obveznika.

@@ -44,7 +44,7 @@ final class DumpState extends Command
             Handover::query()->with('invoice')->get()->map(fn (Handover $handover): array => [
                 (string) $handover->id,
                 $handover->invoice->document_number,
-                $handover->intent->value,
+                $handover->intent?->value ?? '-',
                 $handover->state->value,
                 (string) $handover->attempt,
                 $handover->last_response ?? '-',

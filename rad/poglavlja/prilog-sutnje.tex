@@ -23,18 +23,32 @@ Tablica~\ref{tab:sutnje} nije popis primjedbi. Svaka stavka je mjesto na kojem
 izvedba mora odlučiti nešto što propis nije odlučio, a takva odluka se ne može
 obraniti pozivom na izvor.
 
-\begin{table}[htbp]
-\centering
-\caption[Preostale šutnje propisa]{Mjesta na kojima propis ne daje podatak koji
-izvedba treba. Oznake slijede numeraciju iz izvoda.}
-\label{tab:sutnje}
-\scriptsize
+Oznake S12 do S23 nisu neprekinut niz. Tijekom izvoda
+zabilježene su dvadeset i tri šutnje, numerirane redom kojim su nađene u
+izvorima. Petnaest ih je razvijeno u jedanaest načina otkazivanja iz
+odjeljka~\ref{sec:failure-modes}, gdje nose oznake A1 do E1, a jedna je
+razrađena u odjeljku~\ref{sec:ogranicenja}. Sedam preostalih zadržava izvornu
+oznaku, pa se svaka može pratiti do mjesta u izvodu na kojem je nastala. Rupe u
+nizu su upravo one šutnje koje su prešle u tekst rada.
+
+\begingroup
+\small
 \setlength{\tabcolsep}{4pt}
 \renewcommand{\arraystretch}{1.25}
-\begin{tabular}{@{}p{0.7cm}p{5.4cm}p{8.4cm}@{}}
+\begin{longtable}{@{}p{0.9cm}p{5.4cm}p{8.4cm}@{}}
+\caption[Preostale šutnje propisa]{Mjesta na kojima propis ne daje podatak koji
+izvedba treba. Oznake slijede numeraciju iz izvoda.}
+\label{tab:sutnje} \\
 \toprule
 & \textsc{Šutnja} & \textsc{Što izvedba mora odlučiti sama} \\
 \midrule
+\endfirsthead
+\toprule
+& \textsc{Šutnja} & \textsc{Što izvedba mora odlučiti sama} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
 
 S12 & Nedostupnost AMS-a kao servisa nije uređena &
 Članak 40.\ pokriva nedostupnost \emph{identifikatora} u AMS-u, dakle slučaj u
@@ -76,9 +90,8 @@ zaprimila i postupanje s tehničkim duplikatom razrađeni su isključivo u rubri
 pitanja i odgovora\cite{pu2026pitanjaodgovori}. Ni Zakon, ni Pravilnik, ni
 tehnička specifikacija taj obrazac ne sadrže. \\
 
-\bottomrule
-\end{tabular}
-\end{table}
+\end{longtable}
+\endgroup
 
 Posljednja stavka ima drukčiju narav od ostalih šest i zato je razrađena u
 odjeljku~\ref{sec:ogranicenja}. Kod nje propis ne šuti zato što pitanje nije

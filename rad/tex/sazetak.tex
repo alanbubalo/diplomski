@@ -23,9 +23,10 @@ Izvedeno je jedanaest načina otkazivanja. Jedan od njih pokazuje da način
 identifikacije ispravljenog eRačuna nije potpuno određen. Ispravak bez poreznog
 učinka izdaje se pod istim brojem, provjera S008 duplikat prepoznaje po složenom
 identifikatoru koji indikator kopije ne sadrži, a izvori ne određuju mora li
-ispravak zadržati datum izvornika. Novi datum i referenca na prethodni račun daju
-izvediv put, dok zadržavanje datuma vodi u odbijanje. Rad zato utvrđuje
-nedorečenost sučelja, a ne tvrdi da je svaki ispravak nužno odbijen.
+ispravak zadržati datum izvornika. Zadržavanje datuma po opisanom ključu vodi u
+odbijanje, a novi datum uz referencu na prethodni račun tu provjeru izbjegava.
+Rad zato utvrđuje nedorečenost sučelja; ne tvrdi da je svaki ispravak nužno
+odbijen ni da bi stvarni sustav drugu granu prihvatio.
 
 Iz toga slijedi teza rada. Dio posljedica nastaje iz svojstava raspodijeljene
 razmjene, a dio iz obvezne arhitekture ili iz pravila koja ne određuju semantiku
@@ -56,10 +57,11 @@ Eleven failure modes are derived. One of them shows that the identification of a
 corrected eInvoice is not fully specified. A correction without tax effect uses
 the same invoice number, while the S008 duplicate check uses a composite
 identifier that excludes the copy indicator, and the sources do not determine
-whether the correction retains the original issue date. A new date with a
-reference to the preceding invoice provides a feasible path, while retaining the
-date leads to rejection. The thesis therefore identifies an interface ambiguity;
-it does not claim that every correction is necessarily rejected.
+whether the correction retains the original issue date. Retaining the date leads to
+rejection under the documented key, while a new date with a reference to the
+preceding invoice avoids that check. The thesis therefore identifies an
+interface ambiguity; it neither claims that every correction is necessarily
+rejected, nor that the production system would accept the other branch.
 
 Some consequences arise from distributed exchange, while others arise from the
 mandated architecture or from rules that leave failure semantics undefined. The

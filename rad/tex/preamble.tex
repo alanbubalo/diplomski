@@ -53,6 +53,8 @@
 \usepackage{subcaption}
 \usepackage{xcolor}
 \usepackage{enumitem}
+% Za listinge koji se ne smiju odvojiti od svojeg opisa.
+\usepackage{needspace}
 
 % ---- Dijagrami (TikZ) --------------------------------------
 \usepackage{tikz}
@@ -78,7 +80,13 @@
   numberstyle=\tiny\color{gray},
   numbersep=8pt,
   breaklines=true,
-  showstringspaces=false,
+    showstringspaces=false,
+  % Fiksni stupci ubacuju razmake oko znakova koje listings vidi kao zasebne
+  % tokene, pa se `--without-intent-record` ispisivao kao `-- without - intent`.
+  % Fleksibilni stupci uz keepspaces to uklanjaju, a monospace font i dalje
+  % drži poravnanje ASCII tablica u dokaznim ispisima.
+  columns=fullflexible,
+  keepspaces=true,
   frame=single,
   rulecolor=\color{gray!40},
   tabsize=2,
@@ -104,7 +112,20 @@
 
 % ---- Bibliografija -----------------------------------------
 \usepackage[backend=biber,style=ieee,sorting=none]{biblatex}
+
+% Stil ieee ne poznaje tipove @legislation i @standard, pa je bez ovih dviju
+% naredbi ispisivao „No driver for..." i posezao za zamjenskim oblikovanjem.
+% Aliasi taj izbor čine izričitim: propisi i norme oblikuju se kao @misc, koji
+% ispisuje polje howpublished (npr. „Narodne novine, br. 89/2025").
+\DeclareBibliographyAlias{legislation}{misc}
+\DeclareBibliographyAlias{standard}{misc}
+
 \addbibresource{references.bib}
+
+% Bilješka koja se lomi između stranica teško se čita, a rad ima nekoliko
+% dugih doslovnih citata u bilješkama. Visoka kazna TeX-u govori da radije
+% pomakne odlomak nego da bilješku prelomi.
+\interfootnotelinepenalty=10000
 
 % ---- Poveznice (učitati pri kraju) -------------------------
 \usepackage[hidelinks]{hyperref}

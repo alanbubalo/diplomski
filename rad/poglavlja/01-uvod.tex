@@ -28,10 +28,12 @@ može zaključiti da zapis s istim identifikatorom već postoji.
 Isti skup izvora uređuje i ispravak podatka koji ne utječe na obračun poreza.
 Takav se ispravak izdaje pod istim brojem računa i s indikatorom kopije. Provjera
 S008, međutim, radi sa složenim identifikatorom koji indikator kopije ne sadrži.
-Ako ispravak zadrži datum izvornika, provjera ga odbija; ako dobije novi datum i
-referencu na prethodni račun, postoji izvediv put. Izvori ne određuju koji je
-datum ispravka mjerodavan. Problem zato nije dokazana nemogućnost ispravka nego
-nedovoljno određena semantika sučelja.
+Ako ispravak zadrži datum izvornika, identifikator je istovjetan i provjera ga po
+opisanom ključu odbija. Ako dobije novi datum i
+referencu na prethodni račun, identifikator je drugi i provjera se izbjegava.
+Je li takav dokument u stvarnom sustavu prihvatljiv, rad nije provjerio. Izvori ne određuju koji je datum ispravka
+mjerodavan. Problem zato nije dokazana nemogućnost ispravka nego nedovoljno
+određena semantika sučelja.
 
 Takav slučaj nije jedini. Rad izvodi jedanaest načina otkazivanja i razdvaja
 njihove izvore. Dio proizlazi iz svojstava raspodijeljene razmjene, poput
@@ -76,10 +78,14 @@ ishod nije unaprijed ugrađen u pitanje.
 
 Odgovori na ta pitanja daju tri stvari upotrebljive i izvan ovog rada. Katalog
 jedanaest načina otkazivanja izveden je iz obveza koje dijele svi obveznici, pa
-vrijedi za svako usklađeno rješenje, a ne za jedan sustav. Pojam regulatorno
-induciranog ograničenja imenuje skupinu i daje joj izvod na koji se može uputiti.
-Matrica pokrivenosti daje podlogu za izbor obrazaca, uključujući slučajeve u
-kojima učinak ovisi o konfiguraciji i preostalom roku.
+nije vezan na jedan sustav. Koliko se katalog primjenjuje
+na pojedinu izvedbu, ovisi o odabranoj arhitekturi. Obveznik koji je vlastita
+pristupna točka nema granicu prema posredniku u obliku u kojem je nose slučajevi
+D2 i E1. Obveznik koji posrednika koristi nosi oba. Skupina A i skupina C slijede iz obveza i ne
+ovise o tom izboru. Pojam regulatorno induciranog ograničenja imenuje skupinu i
+daje joj izvod na koji se može uputiti. Matrica pokrivenosti daje podlogu za
+izbor obrazaca, uključujući slučajeve u kojima učinak ovisi o konfiguraciji i
+preostalom roku.
 
 Istek vremena, ponavljanje, prekidač i saga tretiraju se kao kandidati. Obrazac
 koji izvod odbaci ostaje istražen, uz naveden razlog zbog kojeg ne ulazi u
@@ -92,8 +98,8 @@ rješenje.
 Studija slučaja pokriva cijeli propisani tijek na razini arhitekture, stanja i
 odgovornosti sudionika. Predmet je referentna arhitektura izvedena iz propisa,
 a ne postojeći sustav. Izvršni prototip ostvaruje dvije granice na kojima se
-pojavljuju slučajevi B1, B2, D1 i E1. Uspoređuje izvedbu koja namjeru zapisuje
-tek nakon odgovora s izvedbom koja je zapisuje prije slanja.
+pojavljuju slučajevi B1, B2, D1 i E1. Uspoređuje dvije izvedbe. Jedna zapis predaje stvara tek nakon odgovora i
+namjeru ne zapisuje. Druga namjeru zapisuje prije slanja.
 
 Evaluacija spaja analitičku matricu s četiri izvršna scenarija. Učinkovitost
 znači da sustav pod istim kvarom završava u poznatom i dokazivom stanju, a ne

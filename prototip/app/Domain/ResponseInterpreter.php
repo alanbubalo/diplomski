@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace App\Domain;
 
 /**
- * Tumacenje odgovora posrednika uz zapisanu namjeru.
+ * Tumacenje odgovora odredista uz zapisanu poslovnu namjeru i redni pokusaj.
  *
  * Ovo je jezgra slucaja B2 i, uz StateMachine, najvazniji razred prototipa.
  *
- * Sifra S008 znaci istovremeno "tvoj ponovni pokusaj je prosao" i "tvoj
- * propisani ispravak je odbijen". Poruka ne nosi polje koje bi to razlikovalo,
- * pa razlikovanje mora biti LOKALNO. Poslovni sustav zna nesto sto Sustav za
- * fiskalizaciju ne zna: zna je li poslao ponovni pokusaj ili ispravak.
+ * Sifra S008 znaci samo da zapis s istim slozenim identifikatorom i istom
+ * vrstom eRacuna kod odredista postoji. Ne kaze da je sadrzaj istovjetan, ni da
+ * ga je stvorio upravo promatrani pokusaj. Sto iz nje posiljatelj smije
+ * zakljuciti ovisi o dva LOKALNA podatka: o tome sto je dokument (namjera) i o
+ * tome je li ovo prva ili ponovljena dostava te iste poruke.
  *
  * Metoda prima $intent kao nullable upravo zato da se moze pokazati sto se
  * dogodi kada zapisa nema. Tada povratna vrijednost nije pogodena nego
@@ -20,8 +21,11 @@ namespace App\Domain;
  */
 final class ResponseInterpreter
 {
-    public function interpret(IntermediaryResponse $response, ?Intent $intent): Interpretation
-    {
+    public function interpret(
+        IntermediaryResponse $response,
+        ?Intent $intent,
+        bool $repeatDelivery = false,
+    ): Interpretation {
         return match ($response) {
             IntermediaryResponse::SUCCESS => Interpretation::unambiguous(
                 Trigger::CONFIRMATION,
@@ -34,31 +38,53 @@ final class ResponseInterpreter
                 'odgovor nije stigao; nije poznato je li poruka obradena',
             ),
 
-            IntermediaryResponse::S008 => $this->interpretS008($intent),
+            IntermediaryResponse::S008 => $this->interpretS008($intent, $repeatDelivery),
         };
     }
 
-    private function interpretS008(?Intent $intent): Interpretation
+    /**
+     * Cetiri spoja namjere i rednog pokusaja daju tri razlicita ishoda.
+     *
+     * Samo dva spoja su jednoznacna, i oba uz izrecene pretpostavke. Ostala dva
+     * ostaju dvoznacna: zapis namjere suzava dvoznacnost, ne uklanja je.
+     */
+    private function interpretS008(?Intent $intent, bool $repeatDelivery): Interpretation
     {
-        return match ($intent) {
-            Intent::RETRY => Interpretation::unambiguous(
+        return match (true) {
+            // Ponovljena dostava izvornika. S008 govori da je raniji pokusaj
+            // prosao, ali samo uz tri pretpostavke: poruka je nepromijenjena,
+            // slozeni identifikator nije ranije upotrijebljen za drugi sadrzaj i
+            // nema konkurentnog slanja s istim kljucem.
+            $intent === Intent::ORIGINAL && $repeatDelivery => Interpretation::unambiguous(
                 Trigger::CONFIRMATION_FROM_S008,
-                'S008 uz zapisan ponovni pokusaj dokazuje da je raniji pokusaj prosao',
+                'S008 na ponovljenu dostavu nepromijenjenog izvornika: raniji pokusaj je prosao,'
+                .' uz pretpostavku da identifikator nije upotrijebljen za drugi sadrzaj',
             ),
 
-            Intent::CORRECTION => Interpretation::unambiguous(
+            // Prva dostava ispravka sa zadrzanim identifikatorom. Zapis koji
+            // S008 prijavljuje je izvornik, jer ga ovaj posiljatelj u ovoj
+            // predaji nije mogao stvoriti.
+            $intent === Intent::CORRECTION && ! $repeatDelivery => Interpretation::unambiguous(
                 Trigger::REJECTION_FROM_S008,
-                'S008 uz zapisan ispravak znaci odbijenicu propisanog tijeka ispravka',
+                'S008 na prvu dostavu ispravka sa zadrzanim identifikatorom: ta grana ispravka je odbijena',
             ),
 
-            // Prvo slanje koje odmah dobije S008 znaci da je isti slozeni
-            // identifikator vec fiskaliziran, a ovaj ga posiljatelj nije
+            // Ponovljena dostava ispravka. Sifra se moze odnositi na izvornik
+            // ili na vlastiti raniji pokusaj, a identifikator je u obama isti.
+            // Zapisana namjera tu ne pomaze i to je nalaz, ne propust.
+            $intent === Intent::CORRECTION => Interpretation::ambiguous(
+                'S008 na ponovljenu dostavu ispravka sa zadrzanim identifikatorom:'
+                .' odnosi se na izvornik ili na vlastiti raniji pokusaj, razlika se lokalno ne moze utvrditi',
+            ),
+
+            // Prva dostava izvornika koja odmah dobije S008 znaci da je isti
+            // slozeni identifikator vec fiskaliziran, a ovaj ga posiljatelj nije
             // poslao. To je nalaz koji trazi ljudsko postupanje.
-            Intent::FIRST_SEND => Interpretation::ambiguous(
-                'S008 na prvo slanje: slozeni identifikator vec postoji, izvor nije poznat',
+            $intent === Intent::ORIGINAL => Interpretation::ambiguous(
+                'S008 na prvu dostavu izvornika: slozeni identifikator vec postoji, izvor nije poznat',
             ),
 
-            null => Interpretation::ambiguous(
+            default => Interpretation::ambiguous(
                 'S008 bez zapisane namjere: ista sifra znaci i potvrdu i odbijenicu',
             ),
         };

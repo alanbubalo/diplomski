@@ -17,8 +17,15 @@ use DomainException;
  *   1. Prijelaz pokrece poticaj, nikada protek vremena sam po sebi. Zato je
  *      DEADLINE_ELAPSED poticaj koji netko mora dostaviti, a ne pozadinski
  *      posao koji tise mijenja redak u bazi.
- *   2. Rok ulazi kao UVJET NAD PRIJELAZOM. Ponovno slanje je dopusteno samo dok
- *      roka ima; kad ga nema, jedini dopusten prijelaz vodi u DEADLINE_EXPIRED.
+ *   2. Rok ulazi kao UVJET NAD PRIJELAZOM. Prototip salje samo dok roka ima;
+ *      kad ga nema, jedini dopusten prijelaz vodi u DEADLINE_EXPIRED.
+ *
+ * Uvjet iz tocke 2. je GRANICA PROTOTIPA, ne zakonska zabrana. Cl. 49. st. 1.
+ * odreduje rok izvrsenja obveze; ne kaze da se nakon roka ne smije poslati.
+ * Prototip promatranje zavrsava na granici pravovremenog postupanja, jer je
+ * predmet rada stanje u kojem sustav zavrsi, a ne naknadno postupanje. Zakasnjelo
+ * izvrsenje, pravovremeno izvrsenje i neizvrsena obveza su tri razlicite stvari
+ * i model razlikuje samo prve dvije.
  *
  * Nedopusten prijelaz je iznimka, ne tiho ignoriranje. Sustav koji propusti
  * nedopusten prijelaz prestaje biti dokaz o vlastitom stanju.
@@ -77,8 +84,10 @@ final class StateMachine
         $expired = $deadline->hasExpired($now);
 
         if ($trigger === Trigger::SENT && $expired) {
+            // Granica prototipa, ne zakonska zabrana slanja. Vidi opis razreda.
             throw new DomainException(
-                'Ponovno slanje nije dopusteno: rok iz cl. 49. st. 1. je istrosen.'
+                'Prototip ne salje nakon isteka roka iz cl. 49. st. 1.:'
+                .' pravovremeno postupanje vise nije moguce.'
             );
         }
 

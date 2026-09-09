@@ -32,7 +32,7 @@ Više nije kako preživjeti kvar pojedinog poziva, nego kako držati stanje
 razumljivim kada je posao djelomično gotov, a nastavak neizvjestan.
 
 % ------------------------------------------------------------
-\section{Zašto klasične transakcije ne prelaze granicu servisa}
+\section{Granice klasičnih transakcija}
 \label{sec:granica-transakcije}
 % NIZVODNO: 6.3
 % ⚠ Skeen & Stonebraker 1983 NIJE pročitan (Cloudflare). Argument namjerno
@@ -76,11 +76,17 @@ blokira\cite{bailis2013eventual}.
 Za studiju slučaja iz poglavlja~\ref{ch:studija} rasprava završava ranije
 nego što bi trebala. Dvofazno počinjanje preko dva kanala nije isključeno
 zato što je skupo ili zato što bi koordinator blokirao. Isključeno je zato
-što članak 48.\ stavak 3.\ nalaže da se fiskalizacija provodi odvojeno od
-razmjene. Zajednička transakcija koja bi oba kanala zatvorila u jedan
-atomaran čin bila bi protivna propisu. Teorijsko ograničenje i pravno
-ograničenje ovdje pokazuju u istom smjeru, a pravno je jače, jer ga
-implementacija ne može zaobići ni po cijenu složenosti.
+što ni jedno od dvaju sučelja u takvom protokolu ne sudjeluje. Ni razmjena
+preko pristupnih točaka ni fiskalizacijski poziv ne nude fazu pripreme ni
+glasanje. Presudu koordinatora nema kome uputiti.
+
+Propis to tehničko stanje dodatno omeđuje. Članak 48.\ stavak 3.\ nalaže da
+se fiskalizacija provodi odvojeno od postupka razmjene, dakle kao dva
+postupka, a ne kao jedan. Rad iz te odredbe ne izvodi zabranu svake
+koordinacije dvaju postupaka u lokalnoj bazi, jer odredba o transakcijskoj
+organizaciji izvedbe ne govori. Izvodi uže: zajedničkog protokola atomarnog
+dovršetka nema, pa izvedba mora računati na međustanja u kojima je jedan
+postupak dovršen, a drugi nije.
 
 Ono što preostaje kada atomarnost otpadne obično se zove eventualnom
 konzistentnošću. Bailis i Ghodsi je definiraju kao jamstvo da će, ako nema
@@ -213,18 +219,32 @@ any other activity in a system.}“ \cite{schneider1990statemachine}}
 
 Dvije riječi u toj rečenici nose posljedice. Prva je niz. Stanje ovisi o
 redoslijedu obrađenih zahtjeva, pa se dva sustava koja su obradila isti niz
-nalaze u istom stanju. Time ponovljena poruka prestaje biti opasna, jer
-automat koji je poruku već obradio prepoznaje da mu ona ne mijenja stanje.
+nalaze u istom stanju.
+
+Odatle se lako izvede više nego što u rečenici stoji. Determinizam nije
+idempotentnost. Automat koji vodi brojač i dvaput primi istu naredbu povećat
+će brojač dvaput, jer su to dva zahtjeva u nizu, a ne jedan. Kako ponavljanje
+ne bi mijenjalo stanje, poruka mora nositi identifikator zahtjeva, a automat
+mora pamtiti koje je zahtjeve već obradio.
+
+Schneider to i razdvaja: jedno je da niz zahtjeva određuje izlaze, a drugo da
+svi primjerci obrade zahtjeve u istom redoslijedu. Popuštanje uvjeta redoslijeda
+Schneider veže uz komutativnost operacija. Jednak skup poruka u drukčijem
+redoslijedu zato ne daje jednako stanje.
 
 Druga je vrijeme. Izlazi ne ovise o vremenu. Schneider uz uvjete redoslijeda
 dodaje napomenu da zbog kašnjenja u mreži automat neće nužno obraditi
 zahtjeve redom kojim su poslani ni redom kojim su primljeni.
 
-Tu nastaje napetost koju poglavlje~\ref{ch:studija} nasljeđuje. Model koji
-je otporan na ponavljanje i preslagivanje određen je nizom poruka, a rokovi
-u propisu mjere se satom. „U trenutku izdavanja“ i „pet radnih dana“ su
-vremenske veličine. U automat se ne uklapaju kao stanja nego kao vanjski
-uvjeti nad prijelazima.
+Tu nastaje napetost koju poglavlje~\ref{ch:studija} nasljeđuje. Model je
+određen nizom poruka, a rokovi u propisu mjere se satom. „U trenutku
+izdavanja“ i „pet radnih dana“ su vremenske veličine. Model automata ih ne
+zabranjuje. Protek roka može se modelirati kao izričit događaj, koji netko
+mora dostaviti, i tada je redovan član niza. Može se modelirati i kao uvjet
+nad prijelazom, čime prijelaze pokreću samo poruke, a rok odlučuje je li
+prijelaz dopušten. Poglavlje~\ref{ch:implementacija} koristi oboje i
+obrazlaže zašto, ali oba su izvedbena izbora, a ne jedino teorijski dopušteno
+rješenje.
 
 Helland ta dva svijeta spaja u
 praksi\cite{helland2007lifebeyond}. Sustav se dijeli na entitete, svaki sa

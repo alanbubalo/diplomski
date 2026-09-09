@@ -209,10 +209,9 @@ lovcu na kvarove godinama, a i sam lovac može poremetiti stanje toliko da
 kvar nestane.
 
 Gray svoju tvrdnju naziva pretpostavkom i priznaje da je nije uspio
-kvantificirati. To nije sitnica. Ponavljanje je najčešći
-obrazac otpornosti u praksi, a opravdanje mu počiva na pretpostavci koju
-je njezin autor mogao potkrijepiti samo jednim pokusom na dnevnicima
-grešaka.
+kvantificirati. Ponavljanje je najčešći obrazac otpornosti u praksi, a
+opravdanje mu počiva na pretpostavci koju je njezin autor mogao potkrijepiti
+samo jednim pokusom na dnevnicima grešaka.
 
 % ✔ ODLUKA 2026-08-14: ODUSTAJE SE od Cristiana 1991. Oznaka zatvorena.
 %   ACM DL je iza robot-provjere i kroz nju se NE PROLAZI. Otvorena inačica
@@ -288,8 +287,9 @@ Prve dvije se izvode lako. Najviše jednom dobiva se tako da se ne ponavlja,
 barem jednom tako da se ponavlja dok ne stigne potvrda. Treća se ne izvodi.
 Vrijedi biti precizan oko toga zašto.
 
-Ne postoji rad koji dokazuje teorem oblika „dostava točno jednom je
-nemoguća“. Ono što postoji je stariji i uži rezultat. Gray ga izlaže kao
+Ovaj rad se pritom ne oslanja na teorem oblika „dostava točno jednom je
+nemoguća“. Takav teorem za izvod nije potreban, a među pročitanim izvorima nije
+ni nađen. Ono na čemu izvod stoji stariji je i uži rezultat. Gray ga izlaže kao
 paradoks dvaju generala\cite{gray1978notes}. Dva generala moraju napasti
 istodobno, poruke između njih nose glasnici, a svaki glasnik se može
 izgubiti. Dokaz da protokol ne postoji staje u nekoliko redaka. Neka je
@@ -299,11 +299,27 @@ ne dobiva poruku koja mu treba, pa ne kreće.
 
 Ograda je bitna i često se ispušta. Gray dokazuje da ne postoji protokol
 \emph{fiksne duljine}. Odmah zatim kaže da se popuštanjem tog ograničenja
-rješenje dobiva. Opisuje protokol u dvije faze koji ponekad traži proizvoljno
-mnogo poruka. Problem dvaju generala dakle nije zid, nego cijena.
-Cijena je da se najgori slučaj ne može omeđiti. Uz to, nemogućnost
-konsenzusa u asinkronom sustavu s jednim mogućim otkazom procesa poznata je
-i formalno\cite{fischer1985impossibility}.
+rješenje dobiva, i opisuje protokol u dvije faze koji ponekad traži
+proizvoljno mnogo poruka.
+
+Ni to popuštanje nije bez cijene. Protokol koji nije omeđen duljinom uključuje
+i izvođenja u kojima poruka ima beskonačno mnogo, dakle izvođenja u kojima
+protokol ne završava. Cijena zato nije samo da se najgori slučaj ne može
+omeđiti; završetak nije zajamčen u svim izvođenjima. Uz to, nemogućnost konsenzusa u
+asinkronom sustavu s jednim mogućim otkazom procesa poznata je i
+formalno\cite{fischer1985impossibility}.
+
+Iz te analogije zato ne slijedi opći teorem o dostavi točno jednom. Tri stvari
+ostaju odvojene:
+
+\begin{itemize}[nosep, leftmargin=1.4cm]
+  \item prijenos poruke,
+  \item učinak njezine obrade,
+  \item dogovor dvaju sudionika o tome što je učinjeno.
+\end{itemize}
+
+Problem dvaju generala govori o zadnjem. Ono što ovaj rad iz njega uzima jest da
+potvrda o učinjenom nije zajamčena, a ne da je ponovljena obrada neizbježna.
 
 Odgovor prakse nije dostava točno jednom nego učinak koji se tako ponaša.
 Poruka se šalje barem jednom, a primatelj se gradi tako da ponovljena

@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property string $sender_key
- * @property Intent $intent
+ * @property Intent|null $intent
  * @property State $state
  * @property int $attempt
  * @property CarbonImmutable|null $impossibility_onset_at
@@ -34,6 +34,12 @@ final class Handover extends Model
             'impossibility_onset_at' => 'immutable_datetime',
             'next_attempt_at' => 'immutable_datetime',
         ];
+    }
+
+    /** Je li ovo ponovljena dostava iste poruke, a ne prva. */
+    public function isRepeatDelivery(): bool
+    {
+        return $this->attempt > 1;
     }
 
     public function invoice(): BelongsTo

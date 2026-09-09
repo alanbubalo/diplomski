@@ -32,23 +32,33 @@ Traži PHP 8.5 (razvijano na 8.5.8) i Composer. Laravel 13.25, SQLite.
 composer setup
 ```
 
-Četiri scenarija, svaki u dvije izvedbe. Razlika je samo u jednome: piše li se
-zapis namjere prije predaje ili poslije odgovora.
+Četiri scenarija, svaki u dvije izvedbe. Predložena izvedba zapisuje namjeru
+prije predaje; osnovna zapis predaje stvara tek nakon odgovora.
+
+Usporedba je namjerno poštena: osnovna izvedba tumači odgovor iz svega što joj
+stvarno ostaje, pa poslovnu namjeru izvodi iz spremljenog dokumenta
+(`Invoice::derivedIntent()`, indikator kopije je polje eRačuna). Iz dokumenta se
+ne može izvesti redni pokušaj dostave, i to je ono što zapis prije predaje
+doista kupuje.
 
 ```bash
 php artisan scenario b1                          # istek vremena bez odgovora
-php artisan scenario b2                          # ista šifra S008 za dva ishoda
+php artisan scenario b2                          # ista šifra S008 u tri spoja
 php artisan scenario d1                          # nedostupnost i oporavak Sustava
 php artisan scenario e1                          # predaja bez potvrde
 
 php artisan scenario b2 --without-intent-record  # ista stvar bez odlaznog pretinca
 
 php artisan state                                # ispis završnog stanja
-php artisan test                                 # 25 tvrdnji
+php artisan test                                 # 32 tvrdnje, 104 provjere
 ```
 
 Sat je pri scenariju fiksiran na `2026-09-01 09:00:00` da ispis bude ponovljiv.
 Isti sat dobiva i dnevnik, pa se baza i `storage/logs/laravel.log` slažu.
+
+Rok od pet radnih dana preskače subotu i nedjelju, ali ne obrađuje blagdane.
+Kalendar blagdana nije predmet rada; njegov izostanak mijenja apsolutni datum
+isteka, ne odnos rasporeda i roka.
 
 ## Jezik
 
@@ -61,6 +71,7 @@ pokazuje jedno i drugo.
 |---|---|
 | `sent-unconfirmed` | poslano, nepotvrđeno |
 | `correction-rejected` | odbijen ispravak |
+| `original` / `correction` | izvornik / ispravak (poslovna namjera) |
 | `deadline-expired` | rok istekao |
 | `Handover` | predaja |
 | `AuditEntry` | evidencija |
@@ -70,8 +81,10 @@ pokazuje jedno i drugo.
 | Putanja | Sadržaj |
 |---|---|
 | `app/Domain/State.php` | stanja, uključujući `sent-unconfirmed` koje propis ne imenuje |
-| `app/Domain/StateMachine.php` | dopušteni prijelazi; rok kao uvjet nad prijelazom |
-| `app/Domain/ResponseInterpreter.php` | jezgra slučaja B2: ista šifra, dva značenja |
+| `app/Domain/StateMachine.php` | dopušteni prijelazi; rok kao uvjet nad prijelazom i kao poticaj |
+| `app/Domain/Intent.php` | poslovna namjera, odvojena od rednog pokušaja dostave |
+| `app/Domain/ResponseInterpreter.php` | jezgra slučaja B2: ista šifra, tri ishoda tumačenja |
+| `app/Models/Invoice.php` | `derivedIntent()`: namjera koliko je izvediva iz samog dokumenta |
 | `app/Domain/RetrySchedule.php` | raspored vođen preostalim rokom, uz eksponencijalni odmak za usporedbu |
 | `app/Domain/Deadline.php` | pet radnih dana od nastupa, čl. 49. st. 1. |
 | `app/Services/HandoverService.php` | odlazni pretinac; obje izvedbe |

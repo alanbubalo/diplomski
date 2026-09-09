@@ -17,13 +17,16 @@
 \chapter{Zaključak}
 \label{ch:zakljucak}
 
-Šifra S008 u fiskalizaciji eRačuna pouzdano pokazuje da složeni identifikator
-već postoji, ali sama ne otkriva je li prethodno slanje završilo potvrdom.
-Kod ispravka objavljeni dokumenti daju dva relevantna mehanizma: novi datum uz
-referencu na prethodni račun te oznaku kopije uz zadržavanje broja i datuma.
-Njihov odnos prema provjeri jedinstvenosti nije potpuno određen. Rad zato ne
-zaključuje da je svaki ispravak blokiran, nego da izvedba mora zapisati namjeru
-i odabranu granu kako bi njezin ishod bio naknadno objašnjiv.
+Šifra S008 u fiskalizaciji eRačuna pokazuje da kod odredišta postoji zapis s
+istim složenim identifikatorom. Sama ne otkriva je li prethodno slanje završilo
+potvrdom, ni je li zapis stvorio upravo promatrani pokušaj. Kod ispravka
+objavljeni dokumenti daju dva relevantna mehanizma: oznaku kopije uz zadržavanje
+broja računa te referencu na prethodni račun. O datumu ispravka ne kažu ništa,
+pa njihov odnos prema provjeri jedinstvenosti ostaje neodređen. Rad zato ne
+zaključuje da je svaki ispravak blokiran, nego da izvedba mora zapisati
+poslovnu namjeru, redni pokušaj dostave i odabranu granu kako bi njezin ishod
+bio naknadno objašnjiv. Ni taj zapis ne razrješava svaki slučaj: ponovljena
+dostava ispravka sa zadržanim identifikatorom ostaje dvoznačna.
 
 Taj primjer pripada širem nalazu: dio ograničenja ne nastaje samo iz fizike
 raspodijeljene razmjene nego iz razdvojenog regulatornog tijeka, nedostajućih
@@ -59,26 +62,27 @@ sustav mora imenovati i dokazivati međustanja. Kašnjenje raste zbog isteka
 vremena i ponavljanja, a njegov je pravni značaj vezan uz redovni trenutak
 fiskalizacije i poseban rok od pet radnih dana iz članka 49. Prekidač zato nije
 sam po sebi štetan: uz trajni red i raspored svjestan roka može zaštititi
-lokalne resurse, a bez njih može potrošiti vrijeme za oporavak. Jedina jasno
-označena ćelija \emph{pogoršava} jest ponovno slanje cijele skupne poruke kada
-odgovor ne određuje sudbinu svih zapisa.
+lokalne resurse, a bez njih može potrošiti vrijeme za oporavak. Jedina ćelija s vrijednošću \emph{pogoršava} jest ponovno slanje cijele skupne
+poruke kada odgovor ne određuje sudbinu svih zapisa, i to kao označena prosudba
+rizika, a ne kao dokazano ponašanje odredišta.
 
 % ------------------------------------------------------------
 \section*{Granice i nadogradnje}
 
 Evaluacija je analitička, uz izvršne scenarije za četiri načina otkazivanja na
-dvije granice. Devet od 66 ćelija matrice pokazano je prototipom. Usporedba
-osnovne i predložene izvedbe utvrđuje koja ostavlja poznatije i dokazivije
-stanje. Ne mjeri performanse i ne tvrdi da su odabrani obrasci najbolji među
-svim alternativama. Studija slučaja je referentna arhitektura, pa rad ne može
-reći koliko se izvedenih slučajeva u praksi pojavljuje.
+dvije granice i 32 testa koji te scenarije provjeravaju. Devet od 66
+ćelija matrice pokazano je prototipom. Usporedba osnovne i predložene izvedbe
+utvrđuje koja ostavlja poznatije i dokazivije stanje. Ne mjeri performanse i ne
+tvrdi da su odabrani obrasci najbolji među svim alternativama. Prototip uz to rok od pet radnih dana računa bez kalendara blagdana, a ni
+produkcijska ni demo validacija nisu obuhvaćene. Studija slučaja je referentna arhitektura, pa rad
+ne može reći koliko se izvedenih slučajeva u praksi pojavljuje.
 
 Iz tih granica slijede tri konkretne nadogradnje.
 
 Prva je mjerenje u demo okolini Sustava za fiskalizaciju, koju pravilnik
 propisuje, uz vjerodajnicu izdanu za tu svrhu. Ćelije koje sada stoje na
-prosudbi autora dobile bi mjerenje kao podlogu, uz uvjet da okolina i sudionik
-budu imenovani, jer bi rezultat inače ostao neponovljiv.
+prosudbi autora dobile bi mjerenje kao podlogu. Da bi takav rezultat bio
+ponovljiv, uz njega moraju stajati opis okoline, verzije, ulazi i postupak.
 
 Druga je proširenje prototipa na razmjenu između pristupnih točaka i predaju
 primatelju. Time bi se uz sadašnje dvije granice izvršio slučaj D2 i provjerila

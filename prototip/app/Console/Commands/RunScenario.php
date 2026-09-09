@@ -79,7 +79,7 @@ final class RunScenario extends Command
     private function scenarioB1(bool $withRecord): int
     {
         $service = $this->fiscalizationService([IntermediaryResponse::TIMEOUT], $withRecord);
-        $handover = $service->issueAndHandOver($this->invoiceData('R-2026-001'), Intent::FIRST_SEND);
+        $handover = $service->issueAndHandOver($this->invoiceData('R-2026-001'), Intent::ORIGINAL);
 
         if ($handover === null) {
             $this->noTrace();
@@ -111,7 +111,7 @@ final class RunScenario extends Command
     private function scenarioE1(bool $withRecord): int
     {
         $service = $this->intermediaryService([IntermediaryResponse::TIMEOUT], $withRecord);
-        $service->issueAndHandOver($this->invoiceData('R-2026-002'), Intent::FIRST_SEND);
+        $service->issueAndHandOver($this->invoiceData('R-2026-002'), Intent::ORIGINAL);
 
         $this->step('Sustav se pita: koje sam dokumente predao, a nemam potvrdu?');
 
@@ -140,22 +140,24 @@ final class RunScenario extends Command
         );
     }
 
-    /**
-     * B2: ista sifra S008 za dva suprotna ishoda.
+        /**
+     * B2: ista sifra S008 u tri spoja namjere i rednog pokusaja.
      *
-     * Prvi dio je ponovni pokusaj nakon isteka vremena, drugi je propisani
-     * ispravak pod istim brojem racuna. Sustav za fiskalizaciju oba puta vraca
-     * S008.
+     * ⚠ USPOREDBA JE POSTENA: izvedba bez zapisa namjere iz spremljenog
+     * dokumenta izvodi je li predmet ispravak (indikator kopije je polje
+     * eRacuna). Zato dio 2 u OBJE izvedbe zavrsi jednako, i to je nalaz, a ne
+     * propust scenarija. Kontrast se pojavljuje tek u dijelovima 1 i 3, gdje
+     * treba redni pokusaj dostave, a njega dokument ne nosi.
      */
     private function scenarioB2(bool $withRecord): int
     {
-        $this->step('Dio 1: ponovni pokusaj nakon isteka vremena dobiva S008.');
+                $this->step('Dio 1: ponovljena dostava izvornika nakon isteka vremena dobiva S008.');
 
         $first = $this->fiscalizationService(
             [IntermediaryResponse::TIMEOUT, IntermediaryResponse::S008],
             $withRecord,
         );
-        $handover = $first->issueAndHandOver($this->invoiceData('R-2026-003'), Intent::FIRST_SEND);
+        $handover = $first->issueAndHandOver($this->invoiceData('R-2026-003'), Intent::ORIGINAL);
 
         if ($handover === null) {
             // Izvedba bez zapisa ovdje gubi trag, pa ponovni pokusaj nema na sto
@@ -163,12 +165,19 @@ final class RunScenario extends Command
             // treba pokazati i bez prvog dijela.
             $this->noTrace();
         } else {
-            CarbonImmutable::setTestNow(CarbonImmutable::parse(self::CLOCK_START)->addHours(6));
+            // Pokusaj se pokrece na trenutak koji je raspored zakazao, ne na
+            // proizvoljan. Sustav koji raspored izracuna i ne drzi ga se nema
+            // sto pokazati.
+            CarbonImmutable::setTestNow($handover->next_attempt_at);
             $handover = $first->retry($handover->refresh());
             $this->dumpHandover($handover);
         }
 
         $this->step('Dio 2: propisani ispravak pod istim brojem racuna dobiva istu sifru.');
+
+        // Svaki dio pocinje od istog trenutka, jer inace nosi rok koji je
+        // pomaknuo prethodni dio i ispis se vise ne cita kao jedna slika.
+        CarbonImmutable::setTestNow(CarbonImmutable::parse(self::CLOCK_START));
 
         $second = $this->fiscalizationService([IntermediaryResponse::S008], $withRecord);
         $correction = $second->issueAndHandOver(
@@ -178,18 +187,18 @@ final class RunScenario extends Command
 
         $this->dumpHandover($correction);
 
-        $this->step('Ista sifra, dva ishoda.');
+                $this->step('Dio 2: ista sifra, ishod jednak u obje izvedbe.');
         $this->table(
-            ['poslano kao', 'odgovor', 'zavrsno stanje', 'ishod poznat'],
+            ['namjera i dostava', 'odgovor', 'zavrsno stanje', 'ishod poznat'],
             array_values(array_filter([
                 $handover !== null ? [
-                    $handover->intent->value,
+                    $this->intentLabel($handover),
                     $handover->last_response,
                     $handover->state->value,
                     $handover->state->outcomeKnown() ? 'da' : 'ne',
                 ] : null,
                 [
-                    $correction->intent->value,
+                    $this->intentLabel($correction),
                     $correction->last_response,
                     $correction->state->value,
                     $correction->state->outcomeKnown() ? 'da' : 'ne',
@@ -197,12 +206,40 @@ final class RunScenario extends Command
             ])),
         );
 
-        if (! $withRecord) {
-            $this->line('  Bez zapisane namjere ista sifra vodi u isto stanje, pa se dva');
-            $this->line('  suprotna ishoda ne razlikuju. To je slucaj B2.');
+                        $this->line(sprintf(
+            '  Zapisana namjera: %s. Iz dokumenta izvedena namjera: %s.',
+            $correction->intent?->value ?? 'nema je',
+            $correction->invoice->derivedIntent()->value,
+        ));
+        $this->line('  Prva dostava ispravka zato u obje izvedbe zavrsi jednako:');
+        $this->line('  poslovnu namjeru nosi sam dokument, pa za nju zapis nije potreban.');
+
+                $this->step('Dio 3: ponovljena dostava ispravka. Ni zapis je ne razrjesava.');
+
+        CarbonImmutable::setTestNow(CarbonImmutable::parse(self::CLOCK_START));
+
+        $third = $this->fiscalizationService(
+            [IntermediaryResponse::TIMEOUT, IntermediaryResponse::S008],
+            $withRecord,
+        );
+        $repeated = $third->issueAndHandOver(
+            $this->invoiceData('R-2026-005', copyIndicator: true),
+            Intent::CORRECTION,
+        );
+
+                if ($repeated === null) {
+            $this->noTrace();
+            $this->line('  Bez zapisa nema ni rednog pokusaja dostave, pa se prva i');
+            $this->line('  ponovljena dostava ne mogu razlikovati.');
+        } else {
+            CarbonImmutable::setTestNow($repeated->next_attempt_at);
+            $repeated = $third->retry($repeated->refresh());
+            $this->dumpHandover($repeated);
+            $this->line('  Sifra se moze odnositi na izvornik ili na vlastiti raniji pokusaj.');
+            $this->line('  Zapis rednog pokusaja dvoznacnost suzava, ne uklanja je.');
         }
 
-        return $this->summary($correction->state, 'B2 x odlazni pretinac i zapis namjere');
+                return $this->summary($correction->state, 'B2 x odlazni pretinac i zapis rednog pokusaja');
     }
 
     /** D1: Sustav za fiskalizaciju ne odgovori, pa se oporavi unutar roka. */
@@ -217,7 +254,7 @@ final class RunScenario extends Command
         $this->step('Sustav za fiskalizaciju ne odgovara na prvi poziv.');
         $handover = $service->issueAndHandOver(
             $this->invoiceData('R-2026-004'),
-            Intent::FIRST_SEND,
+            Intent::ORIGINAL,
         );
 
         if ($handover === null) {
@@ -230,7 +267,12 @@ final class RunScenario extends Command
 
         $this->step('Odrediste se oporavlja sljedeci dan, prije isteka roka.');
         CarbonImmutable::setTestNow(CarbonImmutable::parse(self::CLOCK_START)->addDay());
-        $handover = $service->retry($handover->refresh());
+
+        // Raspored je sljedeci pokusaj zakazao za 5. rujna, jer racuna s tim da
+        // se o odredistu nista novo ne zna. Dogadaj oporavka je ono sto raniji
+        // poziv opravdava, pa se biljezi prije njega.
+        $handover = $service->destinationRecovered($handover->refresh());
+        $handover = $service->retry($handover);
         $this->dumpHandover($handover);
 
         $this->table(
@@ -283,6 +325,21 @@ final class RunScenario extends Command
         ];
     }
 
+    /**
+     * Namjera i redni pokusaj zajedno, jer sifru tumaci njihov spoj.
+     *
+     * Prazna namjera nije ukras ispisa. Izvedba koja predaju zapisuje tek nakon
+     * odgovora nema sto upisati, pa se to i vidi.
+     */
+    private function intentLabel(Handover $handover): string
+    {
+        return sprintf(
+            '%s / %s dostava',
+            $handover->intent?->value ?? 'namjera nije zapisana',
+            $handover->isRepeatDelivery() ? 'ponovljena' : 'prva',
+        );
+    }
+
     private function header(string $code, bool $withRecord): void
     {
         $this->newLine();
@@ -312,8 +369,9 @@ final class RunScenario extends Command
                 ['stanje', $handover->state->value],
                 ['opis stanja', $handover->state->description()],
                 ['ishod poznat', $handover->state->outcomeKnown() ? 'da' : 'ne'],
-                ['namjera', $handover->intent->value],
+                ['namjera', $handover->intent?->value ?? 'nije zapisana'],
                 ['pokusaj', (string) $handover->attempt],
+                ['dostava', $handover->isRepeatDelivery() ? 'ponovljena' : 'prva'],
                 ['zadnji odgovor', $handover->last_response ?? '-'],
                 $deadline !== null ? ['rok istice', $deadline->expiresAt->toDateTimeString()] : null,
                 $handover->next_attempt_at !== null
