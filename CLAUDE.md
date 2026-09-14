@@ -114,8 +114,8 @@ Otvoren i tvrdnji svjestan, ali bez samohvale. Rad ima tezu i ona se smije vidje
   Razlog: pogl. 2 i 6 citiraju propis na gotovo svakoj rečenici; u bilješkama bi ih bilo
   stotinjak i stranica bi bila neupotrebljiva.
 - Prvi put se navodi puni izvor uz `\cite{}`, dalje samo članak.
-- Nijedna citacija ne ulazi u rad bez provjere u primarnom izvoru. Arhivirane inačice
-  specifikacija su u `rad/izvori/`.
+- Nijedna citacija ne ulazi u rad bez provjere u primarnom izvoru. Inačice specifikacija
+  arhivirane su izvan repozitorija, uz SHA-256.
 
 ## Termini
 
