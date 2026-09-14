@@ -49,7 +49,7 @@ Teško je odabrati vrijednost. Prevelika vrijednost obesmišljava mehanizam.
 Premala ga pretvara u izvor kvara, jer prerano proglašava neuspjeh i time
 šalje na poslužitelja promet koji mu nije trebao. Brooker opisuje postupak
 koji Amazon koristi: bira se prihvatljiv udio lažnih isteka, primjerice
-0,1~\%, pa se gleda odgovarajući percentil kašnjenja odredišne usluge, u tom
+0,1\,\%, pa se gleda odgovarajući percentil kašnjenja odredišne usluge, u tom
 primjeru p99,9.
 
 Odjeljak~\ref{sec:detekcija-otkaza} već je rekao da istek vremena nije
@@ -154,7 +154,7 @@ premješta.
 
 Nezgodan dio je spoj s bazom podataka. Sustav koji u istom koraku mijenja
 vlastito stanje i šalje poruku ima dva odredišta i jednu obradu. Ako
-zapisivanje uspije a slanje padne, poruka nikada ne ode. Ako slanje uspije a
+zapisivanje uspije, a slanje padne, poruka nikada ne ode. Ako slanje uspije, a
 zapisivanje padne, poruka govori o promjeni koje nema. Problem se zove
 \strani{dvostruki zapis}{dual write}, a rješenje je \strani{odlazni
 pretinac}{outbox}\cite{richardsonoutbox}. Poruka se u istoj transakciji zapisuje u

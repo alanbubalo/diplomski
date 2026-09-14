@@ -88,12 +88,12 @@ mjerilo uspjeha; raspored mora pratiti i preostalo vrijeme.
 \label{sec:pogorsanje}
 
 Drugi dio trećeg istraživačkog pitanja traži slučajeve u kojima obrazac
-otpornosti usklađenost pogoršava. Matrica označuje jedan takav slučaj:
+otpornosti usklađenost pogoršava. Matrica označava jedan takav slučaj:
 ponavljanje cijele skupne poruke kada atomarnost obrade pojedinih zapisa nije
 izričito opisana. Ocjena je autorska prosudba rizika, jer specifikacija opisuje
 neprihvaćen zahtjev i prvu grešku, ali ne razrađuje stanje svakog zapisa.
 Za prekidač i deduplikaciju nalaz je
-također uvjetan, pa nijedan obrazac nije označen kao intrinzično štetan.
+također uvjetan, pa nijedan obrazac nije označen kao sam po sebi štetan.
 
 \paragraph{Prekidač bez trajnog reda može povećati rizik roka.}
 Prekidač je napravljen da prestane slati kada odredište ne odgovara. Time
@@ -103,7 +103,7 @@ radnih dana teče od dana nastanka nemogućnosti. Ako prekidač radi uz trajni
 odlazni pretinac, čuva poruku i dopušta probne pozive prema rasporedu svjesnom
 roka, može biti koristan. Ako samo zaustavi slanje i izgubi vezu s rokom,
 povećava rizik da oporavak ne bude iskorišten na vrijeme. Matrica ga zato kao
-samostalan obrazac označuje pretežno neutralnim.
+samostalan obrazac označava pretežno neutralnim.
 
 \paragraph{Provjera duplikata ostavlja izbor grane ispravka otvorenim.}
 Provjera S008 odbija zapis s istim složenim identifikatorom, što je ispravno
@@ -112,7 +112,7 @@ podatka bez poreznog učinka izdaje pod istim brojem računa, uz indikator
 kopije\cite{pu2026hrcius}. O datumu izdavanja takvog ispravka ne kaže ništa, pa
 ostaju dva puta. Ispravak koji zadrži datum izvornika nosi isti složeni
 identifikator i po opisanoj provjeri može biti odbijen. Ispravak s novim datumom i
-referencom na prethodni račun nosi drugi identifikator i tu se provjeru
+referencom na prethodni račun nosi drugi identifikator i tu provjeru
 izbjegava. Je li takav dokument u stvarnom sustavu prihvatljiv, rad nije
 provjerio\cite{pu2026tehspec}. Problem zato nije univerzalna zabrana
 ispravka, nego nedovoljno određena veza između datuma, oznake kopije,
@@ -180,7 +180,7 @@ propisa i iz svojstava obrazaca dokazanih u literaturi, a ne iz mjerenja na
 izvedenom sustavu.
 
 Razlog nije nedostupnost okoline. Demo okolina Sustava za fiskalizaciju
-postoji, pravilnik je propisuje za testiranje sukladnosti prije rada u
+postoji, Pravilnik je propisuje za testiranje sukladnosti prije rada u
 produkciji (čl.~18.\ Pravilnika\cite{nn2026pravilnikeracun}), a tehnička
 specifikacija objavljuje i njezinu adresu\cite{pu2026tehspec}. Pristup joj
 traži aplikativni certifikat s upisanim osobnim identifikacijskim brojem,
@@ -260,7 +260,7 @@ odgovora\cite{pu2026pitanjaodgovori}. Ondje stoji da se eRačun pod istim
 brojem smije poslati samo jednom, da se ponovno slanje bez oznake kopije
 smatra neregularnim i da pristupna točka primatelja mora vratiti potvrdu
 neovisno o tome je li dokument već zaprimila. Zadnje pravilo je dostava
-najmanje jednom uz potiskivanje duplikata na strani primatelja, dakle upravo
+barem jednom uz potiskivanje duplikata na strani primatelja, dakle upravo
 obrazac iz odjeljka~\ref{sec:semantika-dostave}. U Zakonu, Pravilniku i
 tehničkoj specifikaciji taj obrazac se ne pojavljuje.
 
