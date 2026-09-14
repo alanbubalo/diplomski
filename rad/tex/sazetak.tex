@@ -1,30 +1,29 @@
 \chapter*{Sažetak}
 \addcontentsline{toc}{chapter}{Sažetak}
 
-Obveznik u Hrvatskoj od 2026.\ mora svaki eRačun dostaviti primatelju i prijaviti
-ga Poreznoj upravi, i to dvama kanalima koje propis ne povezuje. Rad izvodi načine
-na koje se taj tijek može pokvariti. Izvod se oslanja na Zakon, Pravilnik i
-tehničku specifikaciju, pa je svaka tvrdnja provjerljiva bez pristupa ijednom
-sustavu.
+Rad analizira primjenu obrazaca tolerancije na greške u fiskalizaciji eRačuna
+u Hrvatskoj. Od 2026.\ izdavatelj eRačuna mora dostaviti dokument primatelju i
+prijaviti podatke Poreznoj upravi. Budući da se razmjena i fiskalizacija provode
+odvojeno, jedan postupak može uspjeti, a drugi ne. Analiza se temelji na Zakonu,
+Pravilniku i tehničkoj specifikaciji, što omogućuje provjeru izvedenih nalaza
+bez pristupa stvarnom sustavu.
 
-Izvedeno je jedanaest načina otkazivanja. Jedan od njih pokazuje da način
-identifikacije ispravljenog eRačuna nije potpuno određen. Ispravak bez poreznog
-učinka izdaje se pod istim brojem, provjera S008 duplikat prepoznaje po složenom
-identifikatoru koji ne sadrži indikator kopije, a izvori ne određuju mora li
-ispravak zadržati datum izvornika. Zadržavanje datuma po opisanom ključu vodi u
-odbijanje, a novi datum uz referencu na prethodni račun tu provjeru izbjegava.
-Rad zato utvrđuje nedorečenost sučelja; ne tvrdi da je svaki ispravak nužno
-odbijen ni da bi stvarni sustav drugu granu prihvatio.
+Iz propisanog tijeka izvedeno je jedanaest načina otkazivanja. Jedan se odnosi
+na nedovoljno određenu identifikaciju ispravka eRačuna bez poreznog učinka.
+Izvori ne određuju zadržava li takav ispravak datum izdavanja izvornika. Ako ga
+zadrži, složeni identifikator ostaje isti i opisana provjera duplikata S008
+odbija zapis. Novi datum uz referencu na prethodni račun mijenja identifikator
+i izbjegava tu provjeru. Prihvatljivost takvog ispravka u stvarnom sustavu nije
+provjerena.
 
-Taj slučaj nije jedini. Dio posljedica nastaje iz svojstava raspodijeljene
-razmjene, a dio iz obvezne arhitekture ili iz pravila koja ne određuju semantiku
-kvara. Rad za drugu skupinu upotrebljava radni pojam \emph{regulatorno inducirano
-ograničenje}. Pokrivenost je ocijenjena matricom jedanaest načina otkazivanja i
-šest obrazaca, uz označenu razinu dokaza za svaku čeliju. Obrasci ne uklanjaju
-nijedan način otkazivanja, ali sužavaju prozor nepoznatog ishoda ili taj ishod
-čine vidljivim. Njihov učinak ovisi o granici i konfiguraciji: isti mehanizam
-može zaštititi lokalne resurse, ali loše podešen može smanjiti vrijeme preostalo
-do isteka zakonskog roka.
+Dio ograničenja proizlazi iz svojstava raspodijeljene razmjene, a dio iz
+propisane arhitekture i nedovoljno određenih pravila postupanja nakon kvara.
+Za drugu skupinu rad upotrebljava radni pojam \emph{regulatorno inducirano
+ograničenje}. Pokrivenost je ocijenjena matricom jedanaest načina otkazivanja
+i šest obrazaca, uz označenu razinu dokaza za svaku ćeliju.
+U razmatranim slučajevima obrasci ne uklanjaju nijedan način otkazivanja, ali
+sužavaju neizvjesnost o ishodu ili omogućuju evidentiranje nepoznatog ishoda.
+Njihov učinak ovisi o granici sustava na kojoj se primjenjuju i o konfiguraciji.
 
 \vspace{1em}
 \noindent\textbf{Ključne riječi:} tolerancija na greške, raspodijeljeni sustavi,
@@ -34,32 +33,31 @@ mjerilo izvedeno iz propisa
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
 
-From 2026, a Croatian business subject to fiscalization must deliver every
-eInvoice to its recipient and report it to the Tax Administration, through two
-channels that the regulation does not connect. This thesis derives the ways in
-which that flow can break. The derivation draws on the Act, the Ordinance and
-the technical specification, so every claim is verifiable without access to any
-system.
+This thesis analyses the application of fault tolerance patterns to eInvoice
+fiscalization in Croatia. From 2026, an eInvoice issuer must deliver the document
+to its recipient and report the data to the Tax Administration. Since exchange
+and fiscalization are separate procedures, one may succeed while the other
+fails. The analysis draws on the Act, the Ordinance and the technical
+specification, allowing the derived findings to be verified without access to
+an actual system.
 
-Eleven failure modes are derived. One of them shows that the identification of a
-corrected eInvoice is not fully specified. A correction without tax effect uses
-the same invoice number, while the S008 duplicate check uses a composite
-identifier that excludes the copy indicator, and the sources do not determine
-whether the correction retains the original issue date. Retaining the date leads to
-rejection under the documented key, while a new date with a reference to the
-preceding invoice avoids that check. The thesis therefore identifies an
-interface ambiguity; it neither claims that every correction is necessarily
-rejected, nor that the production system would accept the other branch.
+Eleven failure modes are derived from the prescribed workflow. One concerns
+the insufficiently specified identification of an eInvoice correction without
+tax effect. The sources do not determine whether such a correction retains the
+original issue date. If it does, the composite identifier remains unchanged
+and the documented S008 duplicate check rejects the record. A new date with a
+reference to the preceding invoice changes the identifier and avoids that
+check. Acceptance of such a correction in an actual system has not been verified.
 
-That case is not the only one. Some consequences arise from distributed
-exchange, while others arise from the mandated architecture or from rules that
-leave failure semantics undefined. The thesis uses
-\emph{regulation-induced constraint} as a working term for the latter group. Coverage is assessed with a matrix of eleven failure modes and six
-patterns, with a labelled evidence level for every cell. No pattern removes a
-failure mode, but patterns narrow the window of an unknown outcome or make that
-outcome observable. Their effect depends on the boundary and configuration: the
-same mechanism may protect local resources, while a poor configuration may
-reduce the time remaining before a statutory deadline.
+Some constraints arise from the properties of distributed exchange, while
+others arise from the mandated architecture and insufficiently specified rules
+for handling failures. For the latter group, the thesis uses
+\emph{regulation-induced constraint} as a working term. Failure mode coverage
+is assessed using a matrix of eleven failure modes and six patterns, with a
+labelled evidence level for every cell. In the cases examined, the patterns do
+not eliminate any failure mode, but reduce uncertainty about the outcome or
+allow an unknown outcome to be recorded. Their effect depends on the system
+boundary at which they are applied and on their configuration.
 
 \vspace{1em}
 \noindent\textbf{Keywords:} fault tolerance, distributed systems, eInvoice
