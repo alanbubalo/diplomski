@@ -126,10 +126,10 @@ adrese, koje dokument ne prenosi.}
 Prije bilo koje razmjene primatelj mora biti pronalaziv. Identifikator u
 AMS dostavlja prije početka zaprimanja eRačuna, a svaku promjenu odmah po
 nastaloj promjeni (čl.~44.~st.~1.\ i~st.~4.). Pristupna točka izdavatelja
-adresu razrješava u dva koraka. DNS upitom prema AMS-u dobiva U-NAPTR
-zapis s URL-om metapodatkovnog servisa kod kojeg je primatelj registriran,
-a zatim REST upitom prema tom servisu dobiva krajnju adresu pristupne
-točke primatelja\cite{pu2025ams, pu2025mps}. Oba servisa počivaju na
+adresu razrješava u dva koraka. Upitom DNS prema AMS-u dobiva zapis
+U-NAPTR s URL-om metapodatkovnog servisa kod kojeg je primatelj registriran,
+a zatim upitom REST prema tom servisu dobiva krajnju adresu pristupne
+točke primatelja \cite{pu2025ams, pu2025mps}. Oba servisa počivaju na
 standardu eDelivery BDXL 1.6, u pojednostavljenom obliku. Peppol SML i SMP
 u hrvatskom profilu se ne koriste.
 
@@ -139,15 +139,15 @@ redoslijed ne slijedi iz numeracije:
 
 \begin{enumerate}[itemsep=2pt, topsep=4pt]
   \item Izdavatelj sastavlja eRačun u skladu s EU normom (čl.~36.), to
-    jest s hrvatskim suženjem norme\cite{pu2026hrcius}.
+    jest s hrvatskim suženjem norme \cite{pu2026hrcius}.
   \item Izdavatelj predaje eRačun svojoj pristupnoj točki, C1 prema C2.
   \item Pristupna točka izdavatelja razrješava adresu primatelja preko
     AMS-a i MPS-a (čl.~44.).
   \item Pristupna točka izdavatelja šalje eRačun pristupnoj točki
-    primatelja preko protokola AS4, C2 prema C3\cite{pu2025as4profil}.
+    primatelja preko protokola AS4, C2 prema C3 \cite{pu2025as4profil}.
   \item Pristupna točka primatelja prosljeđuje eRačun krajnjem primatelju,
     C3 prema C4 (čl.~6.~st.~1.~t.~7.\ Pravilnika o
-    eRačunu\cite{nn2026pravilnikeracun}).
+    eRačunu \cite{nn2026pravilnikeracun}).
   \item Nakon uspješne obrade i prosljeđivanja primatelju pristupna točka
     primatelja potvrđuje primitak pristupnoj točki izdavatelja. Ako sadržaj
     nije sukladan EU normi ili obrada nije uspjela, šalje poruku o grešci
@@ -159,12 +159,12 @@ redoslijed ne slijedi iz numeracije:
   \item Primatelj fiskalizira zaprimljeni eRačun istom metodom, najkasnije
     pet radnih dana od primitka (čl.~48.~st.~4.).
   \item Sustav za fiskalizaciju uparuje podatke koje su dostavili
-    izdavatelj i primatelj. Obveznik u statuse i greške ima uvid kroz
-    aplikaciju Porezne uprave (čl.~68.~st.~2.~t.~2.\ i~t.~3.).
+    izdavatelj i primatelj. Obveznik u statuse i greške ima uvid preko
+    aplikacije Porezne uprave (čl.~68.~st.~2.~t.~2.\ i~t.~3.).
   \item Odbijanje i naplata dostavljaju se do 20.~dana u mjesecu za
     prethodni mjesec (čl.~52.~st.~1.\ i~čl.~53.~st.~1.). Odbijanje
     primatelj prvo šalje dobavljaču kao poslovni odgovor, pa tek onda
-    Poreznoj upravi\cite{pu2026aplikacijskiodgovor}.
+    Poreznoj upravi \cite{pu2026aplikacijskiodgovor}.
   \item Obveznik čuva eRačun u izvornom obliku šest godina od isteka
     godine izdavanja (čl.~35.~st.~1.).
 \end{enumerate}
@@ -182,18 +182,18 @@ primatelja nisu time potpuno određeni.
 
 % Bez podnaslova: nijedno drugo poglavlje ne koristi \subsection.
 Razmjena između pristupnih točaka je asinkrona. Pravilnik o eRačunu govori
-o prijenosu asinkronih AS4 poruka (čl.~7.~st.~6.) i definira uzorak
+o prijenosu asinkronih poruka AS4 (čl.~7.~st.~6.) i definira uzorak
 razmjene One-way/Push kao onaj u kojem „pošiljatelj šalje poruku primatelju
 bez očekivanja poslovnog odgovora, osim tehničke potvrde o primitku“
 (čl.~2.~st.~1.~t.~11.). Hrvatski profil zove se eRačun-AS4 i počiva na
 profilu AS4 iz infrastrukture eDelivery, inačici
-1.15\cite{pu2025as4profil, cef2020as4v115}. Profil propisuje i ponašanje
+1.15 \cite{pu2025as4profil, cef2020as4v115}. Profil propisuje i ponašanje
 pri neuspjehu. Pošiljatelj poruku ponavlja najviše deset puta, u razmacima
 od tri sekunde, a primatelj potpisanom potvrdom dokazuje primitak.
 
 Fiskalizacija prema Sustavu za fiskalizaciju je sinkrona. Tehnička
 specifikacija kaže da sustav odmah odgovara na
-zahtjev\cite{pu2026tehspec}. Poruke idu preko protokola SOAP 1.1 u obliku
+zahtjev \cite{pu2026tehspec}. Poruke idu preko protokola SOAP 1.1 u obliku
 document/literal, preko jednosmjernog TLS-a, a zahtjev se potpisuje
 formatom XAdES-B. Poslovnih poruka koje je obveznik dužan dostavljati ima
 četiri:
@@ -260,7 +260,7 @@ Odjeljak~\ref{sec:fault-error-failure} dao je pojam koji ovakav izvod
 uopće čini legitimnim. Avizienis i suradnici otkaz definiraju u odnosu na
 funkciju sustava, a ne u odnosu na njezin opis, pa usluga koja je u skladu
 sa specifikacijom svejedno može otkriti uzrok u samoj
-specifikaciji\cite{avizienis2004taxonomy}. Ono što slijedi su takvi uzroci.
+specifikaciji \cite{avizienis2004taxonomy}. Ono što slijedi su takvi uzroci.
 Nisu programerske greške. Nalaze se u dokumentu prije nego što itko napiše
 prvu liniju koda.
 
@@ -285,7 +285,7 @@ Razdvajanje iz članka 48.\ stavka 3.\ i izostanak zajedničkog protokola
 dovršetka znače da nijedan atomaran čin ne obuhvaća oba kanala. Dostava od
 pristupne točke izdavatelja do pristupne
 točke primatelja može uspjeti i biti potvrđena
-(čl.~6.~st.~1.~t.~8.\ Pravilnika\cite{nn2026pravilnikeracun}), a
+(čl.~6.~st.~1.~t.~8.\ Pravilnika \cite{nn2026pravilnikeracun}), a
 fiskalizacijski poziv neovisno o tome pasti. Razmjena je tada potvrđena,
 a fiskalizacijska obveza iz članka 47.\ ostaje nedovršena.
 
@@ -293,7 +293,7 @@ Praćenje ishoda razlikuje se od sustava s JIR-om. Odgovor Sustava za
 fiskalizaciju nosi zastavicu o prihvaćanju zahtjeva i identifikator
 zahtjeva u obliku UUID-a, a tehnička specifikacija sama kaže čemu taj
 identifikator služi: „za jednostavniji pronalazak poruka u sustavu u
-slučaju grešaka“\cite{pu2026tehspec}. Odgovor je trag prihvaćanja zahtjeva,
+slučaju grešaka“ \cite{pu2026tehspec}. Odgovor je trag prihvaćanja zahtjeva,
 ali identifikator nema istu izričito propisanu ulogu kao JIR. Identifikator
 se uz to generira po zahtjevu, pa je nov pri svakom pokušaju. Oznaka je
 poziva, ne računa.
@@ -318,7 +318,7 @@ ali propis ne kaže što je obveza nakon toga.
 
 \paragraph{B1: istek vremena s nepoznatim ishodom.}
 Tehnička specifikacija razmjenu sa Sustavom za fiskalizaciju proglašava
-sinkronom\cite{pu2026tehspec}. Nijedna vrijednost čekanja pritom nije
+sinkronom \cite{pu2026tehspec}. Nijedna vrijednost čekanja pritom nije
 propisana, ni kao obveza ni kao preporuka. Nijedan izvor ne kaže što učiniti
 kada odgovor ne stigne. Nastaje stanje koje
 odjeljak~\ref{sec:detekcija-otkaza} opisuje kao neizbježno, a propis ga ne
@@ -326,7 +326,7 @@ imenuje. Poruka je poslana, potvrda nije stigla, a obveznik ne zna je li obveza
 ispunjena.
 
 Članak 13.\ Pravilnika nalaže ispravak podataka i ponovno dostavljanje
-ispravne poruke u zakonskim rokovima\cite{nn2026pravilnikeracun}.
+ispravne poruke u zakonskim rokovima \cite{nn2026pravilnikeracun}.
 Ponovno dostavljanje nakon greške zato jest uređeno. Odredba ipak ne
 određuje raspored automatskih pokušaja ni način razrješavanja ishoda kada
 odgovor izostane. Vrijeme čekanja i razmake izvedba bira, uz obvezu
@@ -339,20 +339,20 @@ takve odredbe nema.
 
 Uputa u rubrici pitanja i odgovora uređuje ponovno slanje eRačuna na
 relacijama C1 prema C2, C2 prema C3 i prema krajnjem primatelju, uključujući
-tehničke duplikate\cite{pu2026pitanjaodgovori}. Ona nije izričito pravilo
-o ponavljanju SOAP fiskalizacijskog zahtjeva. Rad zato iz nje ne izvodi
+tehničke duplikate \cite{pu2026pitanjaodgovori}. Ona nije izričito pravilo
+o ponavljanju fiskalizacijskog zahtjeva SOAP. Rad zato iz nje ne izvodi
 zabranu fiskalizacijskog ponavljanja nakon isteka vremena. Otvoreno ostaje
 kako pouzdano utvrditi ishod prethodnog zahtjeva.
 
 \paragraph{B2: identifikacija ispravka nije potpuno određena.}
 Identifikator eRačuna složen je od četiri polja. Specifikacija svako od njih
 izrijekom označava kao dio identifikatora: broj dokumenta, datum izdavanja,
-vrsta dokumenta i OIB izdavatelja\cite{pu2026tehspec}. Provjera
+vrsta dokumenta i OIB izdavatelja \cite{pu2026tehspec}. Provjera
 S008 odbija zapis za koji već postoji fiskaliziran eRačun s istim složenim
 identifikatorom i istom vrstom eRačuna.
 
-Ključ za razlikovanje duplikata dakle postoji i stabilan je kroz ponovni
-pokušaj. Ono što S008 dokazuje ipak je uže od onoga što se iz šifre čita na
+Ključ za razlikovanje duplikata dakle postoji i stabilan je pri ponovnom
+pokušaju. Ono što S008 dokazuje ipak je uže od onoga što se iz šifre čita na
 prvi pogled. Provjera potvrđuje da kod odredišta postoji zapis s tim složenim
 identifikatorom i tom vrstom eRačuna. Ne potvrđuje da su svi podaci
 istovjetni, ni da je zapis stvorio upravo promatrani pokušaj. Da bi nakon isteka vremena šifra doista pokazivala da je prvi pokušaj prošao,
@@ -369,7 +369,7 @@ učiniti provjerljivima. Otvoreno pitanje nastaje kod ispravka.
 
 Hrvatsko suženje norme nalaže da se ispravak podatka koji ne utječe na
 obračun poreza šalje pod istim brojem računa, uz indikator kopije postavljen
-na „true“\cite{pu2026hrcius}. Indikator kopije nije dio identifikatora.
+na „true“ \cite{pu2026hrcius}. Indikator kopije nije dio identifikatora.
 Specifikacija pritom ne kaže zadržava li ispravak isti datum izdavanja, pa
 su moguća dva ishoda. Ako ispravak zadrži datum, složeni
 identifikator je istovjetan i provjera S008 ga odbija, čime se propisani
@@ -414,7 +414,7 @@ Regulator je pitanje dotaknuo. Nije ga prešutio nego ostavio otvorenim.
 Uputa u rubrici pitanja i odgovora
 dopušta ponovno slanje pod istim brojem, ali samo u slučaju u kojem je
 dokument zaustavljen prije fiskalizacije, jer tada nije riječ o duplikatu
-nego o dovršetku nedovršenog postupka\cite{pu2026pitanjaodgovori}. Uputa se
+nego o dovršetku nedovršenog postupka \cite{pu2026pitanjaodgovori}. Uputa se
 uz to izrijekom izuzima iz slučaja koji ovaj odjeljak razmatra, riječima da
 eRačun s oznakom kopije nije njezin predmet i da se šalje po posebnim
 pravilima. Ta posebna pravila su upravo dva izvora koji se ne poklapaju.
@@ -434,7 +434,7 @@ Nedorečenost je u tome, a ne u broju dopuštenih postupaka.
 
 \paragraph{B3: nedovoljno određena atomarnost skupne poruke.}
 Jedan zahtjev nosi do sto zapisa, a odgovor sadrži najviše jednu grešku, s
-rednim brojem zapisa na koji se odnosi\cite{pu2026tehspec}. Specifikacija
+rednim brojem zapisa na koji se odnosi \cite{pu2026tehspec}. Specifikacija
 opisuje neprihvaćen zahtjev i prvu grešku zbog koje nije prihvaćen.
 To upućuje na odbijanje zahtjeva kao cjeline, ali ne opisuje izričito
 atomarnost pohrane ni poništavanje prethodno obrađenih zapisa.
@@ -449,7 +449,7 @@ nije ograničeno na jednu metodu.
 \paragraph{B4: trajno i prolazno se ne razlikuju.}
 Šifrarnik grešaka je ravan popis i nijedna šifra nije označena kao
 ponovljiva. WSDL uz to ne definira nijednu grešku na razini protokola, pa
-greške stižu kao uspješan SOAP odgovor\cite{pu2026tehspec}. Klijent iz
+greške stižu kao uspješan odgovor SOAP \cite{pu2026tehspec}. Klijent iz
 protokola ne može odlučiti smije li ponoviti.
 
 Odjeljak~\ref{sec:klasifikacija-otkaza} pokazao je da ponovni pokušaj ima
@@ -468,7 +468,7 @@ moguće jednoznačno izračunati rok u svim izvedbama.
 
 \paragraph{C2: trenutak izdavanja nije kvantificiran.}
 Izdavatelj fiskalizira „u trenutku izdavanja“ (čl.~48.~st.~3.). Tolerancija
-nije izražena ni u sekundama ni u satima, nigdje se ne kaže kada je taj
+nije izražena ni u sekundama ni u satima. Nigdje se ne kaže kada je taj
 trenutak istekao. Nijedna odredba ne kaže da kašnjenje zbog reda čekanja u
 posredniku nije prekršaj. Svaka asinkrona obrada u posredniku
 time je potencijalno već zakašnjela.
@@ -511,7 +511,7 @@ odjeljka~\ref{sec:arhitektura}, čije sučelje izvori ne opisuju.
 Tu granicu ipak uređuje jedan dokument. Upravo to čini slučaj zanimljivim.
 Uputa u rubrici pitanja i odgovora pristupnoj točki izdavatelja nalaže da
 onemogući ponovno slanje pod istim brojem nakon primljene potvrde o uspješnoj
-dostavi\cite{pu2026pitanjaodgovori}. Obveza dakle postoji, ali izvan
+dostavi \cite{pu2026pitanjaodgovori}. Obveza dakle postoji, ali izvan
 Narodnih novina, u dokumentu koji se sam opisuje kao operativno pojašnjenje.
 Poglavlje~\ref{ch:rasprava} tu okolnost razrađuje kao rizik za pouzdanost.
 
@@ -578,9 +578,9 @@ iz dva različita izvora. Ta razlika je teza ovoga rada.
 Prva vrsta poznata je literaturi. Nazvat ćemo je fizikalnom, jer slijedi iz
 svojstava raspodijeljenih sustava. Slučaj B1 je paradoks dvaju generala iz
 odjeljka~\ref{sec:semantika-dostave}: protokol fiksne duljine koji bi ga
-riješio ne postoji\cite{gray1978notes}. Dio slučaja B4 pripada istoj vrsti,
+riješio ne postoji \cite{gray1978notes}. Dio slučaja B4 pripada istoj vrsti,
 jer istek vremena ne razlikuje spor proces od
-mrtvog\cite{chandra1996failuredetectors}. Za tu vrstu propis nije kriv i
+mrtvog \cite{chandra1996failuredetectors}. Za tu vrstu propis nije kriv i
 nijedan propis je ne bi uklonio.
 
 Za drugu skupinu ovaj rad upotrebljava radni pojam regulatorno inducirano
@@ -590,8 +590,8 @@ odvojene korake ili ne određuje podatak potreban za jednoznačno postupanje.
 Pojam služi analizi ovog slučaja; rad ne tvrdi da je iscrpnim pregledom
 literature dokazana nova opća teorijska klasa. Literatura o usklađenosti radi
 s procesom koji se smije
-ispraviti\cite{sadiq2007compliance,ly2015compliance}, a formalni model domene
-pouzdanost kanala uzima kao pretpostavku\cite{attali2004chilean}. Prvi izvor
+ispraviti \cite{sadiq2007compliance,ly2015compliance}, a formalni model domene
+pouzdanost kanala uzima kao pretpostavku \cite{attali2004chilean}. Prvi izvor
 time pretpostavlja da je uzrok uklonjiv, drugi da otkaza nema. Doprinos nije
 sam naziv nego izvod razlike u promatranom tijeku. Prigovor da je pritom riječ samo o sukobu
 zahtjeva razrađen je u odjeljku~\ref{sec:pogorsanje}.
@@ -612,7 +612,7 @@ Ovdje se zatvara luk koji je otvorio odjeljak~\ref{sec:djelomicni-otkaz}.
 Waldo i suradnici tvrde da se otpornost izražava na razini sučelja i da
 bolja izvedba ne pomaže kada je sučelje to koje ne dopušta rješenje. Njihov
 primjer je red čekanja sa standardiziranim sučeljem u koje se ne mogu dodati
-identifikatori zahtjeva\cite{waldo1994note}. Fiskalizacija je isti slučaj,
+identifikatori zahtjeva \cite{waldo1994note}. Fiskalizacija je isti slučaj,
 stupanj teži. Ondje je sučelje fiksirao dobavljač. Ovdje ga je fiksirao
 zakon.
 
@@ -620,7 +620,7 @@ Ni transportni sloj tu ne pomaže. Za to postoji normativna potvrda.
 Profil AS4 na kojem hrvatska razmjena počiva traži podršku za otkrivanje
 duplikata, ali dopušta da se duplikati samo otkriju bez uklanjanja, uz
 obvezu da primatelj o njima obavijesti svoju
-aplikaciju\cite{oasis2013as4}. Vremenski prozor otkrivanja i najveću
+aplikaciju \cite{oasis2013as4}. Vremenski prozor otkrivanja i najveću
 veličinu dnevnika profil prepušta izvedbi, pa jamstvo nije omeđeno.
 Otkrivanje se uz to oslanja isključivo na identifikator poruke, koji je
 identifikator prijenosa, a ne identifikator računa.
@@ -679,7 +679,7 @@ normativno pravilo kojeg u izvoru nema.
 \paragraph{Entiteti umjesto transakcije.}
 Skupina A traži odgovor na pitanje što staviti na mjesto transakcije preko
 dvaju postupaka koje članak 48.\ stavak 3.\ nalaže provoditi odvojeno. Helland daje oblik koji ostaje kada
-transakcija preko granice otpadne\cite{helland2007lifebeyond}. Sustav se
+transakcija preko granice otpadne \cite{helland2007lifebeyond}. Sustav se
 dijeli na entitete, svaki sa svojim opsegom serijalizacije, a među njima
 putuju poruke koje se šalju barem jednom i obrađuju idempotentno.
 
@@ -702,7 +702,7 @@ poslana i potvrđena, poruka je poslana, a potvrda nije stigla. Treća nema
 ime ni u Zakonu, ni u Pravilniku, ni u tehničkoj specifikaciji.
 
 Schneiderova karakterizacija daje temelj da se ona ipak
-modelira\cite{schneider1990statemachine}. Ako su izlazi određeni nizom
+modelira \cite{schneider1990statemachine}. Ako su izlazi određeni nizom
 obrađenih zahtjeva, životni ciklus dokumenta može se opisati automatom u
 kojem je „poslano, nepotvrđeno“ ravnopravno stanje, a ne rupa između dva
 stanja. Prijelaz iz njega vodi ili potvrda, ili odgovor s greškom, ili
@@ -732,7 +732,7 @@ iz nalaza u odjeljku~\ref{sec:failure-modes}. Profil AS4
 duplikate prepoznaje po identifikatoru poruke, koji se pri ponavljanju na
 ovoj granici mijenja, pa transportni sloj ovdje ne pomaže. Potiskivanje se
 mora dogoditi na krajevima, kako to traži argument s kraja na
-kraj\cite{saltzer1984endtoend}.
+kraj \cite{saltzer1984endtoend}.
 
 % ------------------------------------------------------------
 \paragraph{Što poslovni sustav smije zaključiti iz šifre S008.}
@@ -770,7 +770,7 @@ naknadni odgovor protumači u odnosu na stvarno poslanu poruku, i da se ondje
 gdje jednoznačnog tumačenja nema to izrijekom zabilježi umjesto da se pogodi.
 
 Helland isti mehanizam opisuje kao stanje koje entitet vodi o svom odnosu s
-partnerom\cite{helland2007lifebeyond}. Ovdje to stanje omogućuje dokazati
+partnerom \cite{helland2007lifebeyond}. Ovdje to stanje omogućuje dokazati
 koju je od razmatranih konstrukcija izvedba odabrala. B2 ostaje nedorečenost
 specifikacije, ali prestaje biti nedokazana tvrdnja da su svi ispravci nužno
 odbijeni. Zapis namjere pritom dvoznačnost sužava, a ne uklanja.
@@ -809,9 +809,9 @@ ponavljanje i evidenciju.
 
 Kompenzacija ne ulazi jer u ovom tijeku nema što kompenzirati. Skup
 poslovnih poruka prema Sustavu za fiskalizaciju ima četiri člana i nijedan
-od njih ne poništava provedenu fiskalizaciju\cite{pu2026tehspec}. Fiskalizacija
+od njih ne poništava provedenu fiskalizaciju \cite{pu2026tehspec}. Fiskalizacija
 je po Grayevoj podjeli stvarna radnja, dakle ona koja se može odgoditi, ali
-ne poništiti\cite{gray1981transaction}.
+ne poništiti \cite{gray1981transaction}.
 
 Ispravak i odbijanje koji u propisu postoje nisu protuprimjer. Njih pokreće
 poslovni događaj, a ne tehnički kvar. Oni dodaju nov zapis umjesto da
@@ -833,7 +833,7 @@ vlastito postupanje može rekonstruirati i pokazati.
 
 Toj razlici težinu daje raspored odgovornosti. Obveznik odgovara za ishod
 postupka koji se odvija u tuđem sustavu (čl.~58.~st.~2.). Vlastita evidencija
-povezuje dokument, pokušaje i odgovore; dopunjuju je podaci dostupni kroz
-FiskAplikaciju prema članku 4.\ Pravilnika. Izostanak JIR-a ne znači da
+povezuje dokument, pokušaje i odgovore; dopunjuju je podaci dostupni u
+FiskAplikaciji prema članku 4.\ Pravilnika. Izostanak JIR-a ne znači da
 drugih dokaza nema. Lokalni zapis posebno je važan za pokušaje bez odgovora,
 čiji se ishod ne može zaključiti iz samog isteka vremena.

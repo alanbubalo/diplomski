@@ -52,8 +52,8 @@ Popis onoga što prototip nema dulji je od popisa onoga što ima, i to
 namjerno:
 
 \begin{itemize}[nosep]
-  \item bez sastavljanja i provjere UBL dokumenta,
-  \item bez Schematron pravila hrvatskog suženja norme,
+  \item bez sastavljanja i provjere dokumenta UBL,
+  \item bez pravila Schematron iz hrvatskog suženja norme,
   \item bez profila AS4 i bez ikakvog stvarnog prijenosa,
   \item bez elektroničkog potpisa i bez infrastrukture javnog ključa,
   \item bez otkrivanja adrese primatelja,
@@ -131,14 +131,14 @@ Podjela na entitete iz odjeljka~\ref{sec:dizajn} izvedena je doslovno.
 Dokument i njegova predaja pohranjeni su u odvojenim tablicama, a treća čuva
 evidenciju. Dokument i početni zapis predaje nastaju u jednoj lokalnoj
 transakciji; vanjski poziv izvršava se nakon njezina dovršetka. Ne postoji transakcija koja bi obuhvatila i lokalni zapis i ishod vanjskog
-poziva\cite{helland2007lifebeyond}. Različite tablice nisu različite
+poziva \cite{helland2007lifebeyond}. Različite tablice nisu različite
 transakcijske granice.
 
 Životni ciklus predaje opisan je automatom sa slike~\ref{fig:automat}. Stanje
 \texttt{sent-unconfirmed} označava nepoznat ishod slanja. Istek roka vodi u
 \texttt{deadline-expired}, ali ne otkriva je li raniji zahtjev obrađen.
 Oba stanja zato zadržavaju nepoznat udaljeni ishod, uz obrazloženje iz
-odjeljka~\ref{sec:dizajn}\cite{schneider1990statemachine}.
+odjeljka~\ref{sec:dizajn} \cite{schneider1990statemachine}.
 
 \begin{figure}[htbp]
 \centering
@@ -215,7 +215,7 @@ razrješavanje ranijeg ishoda nisu obuhvaćeni prototipom.
 
 Predaja se u odlazni pretinac zapisuje prije poziva, u istoj transakciji u
 kojoj nastaje dokument, uz ključ koji određuje
-pošiljatelj\cite{saltzer1984endtoend}. Zapisana namjera nosi i drugi posao,
+pošiljatelj \cite{saltzer1984endtoend}. Zapisana namjera nosi i drugi posao,
 teži od prvog. Listing~\ref{lst:s008} pokazuje mjesto na kojem se šifra S008
 tumači.
 
@@ -359,7 +359,7 @@ tablici. Prvi pokušaj pada tek 5.~rujna, gotovo četiri dana nakon kvara od
 bržeg oporavka; on samo jamči da nijedan pokušaj neće biti zakazan izvan roka. Ranije nego zakazano
 šalje se samo uz događaj oporavka, koji scenarij D1 pokazuje. Brookerovo
 slučajno raspršivanje razmaka isključeno je, da ispis ostane
-ponovljiv\cite{brookertimeouts}.
+ponovljiv \cite{brookertimeouts}.
 
 Scenarij popunjava ćelije B1 uz automat s imenovanim stanjem i B1 uz
 ponavljanje svjesno roka.
@@ -481,7 +481,7 @@ automat s imenovanim stanjem.
 % u 8.1 kao opravdanje metode; ovdje se citira samo OBLIK tvrdnje.
 
 Svaka tvrdnja iz ovog odjeljka zapisana je i kao izvršni test, u obliku koji
-Filibuster koristi za uvjetne tvrdnje\cite{meiklejohn2021filibuster}. Test ne
+Filibuster koristi za uvjetne tvrdnje \cite{meiklejohn2021filibuster}. Test ne
 provjerava da je poziv uspio nego da je završno stanje ono koje propis i
 obrazac zajedno nalažu. Prototip nosi 32 takva testa, koji zajedno izvode
 105 pojedinačnih provjera. Broj testova je broj tvrdnji o ishodu; broj

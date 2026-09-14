@@ -46,7 +46,7 @@ priznati i opisati na sučelju.
 %   fiksira propis, pa implementator nema punu slobodu izmjene. Vidi 6.2.
 
 Waldo i suradnici razlikuju lokalno i raspodijeljeno
-računanje\cite{waldo1994note}. Lokalno je ono ograničeno na jedan adresni
+računanje \cite{waldo1994note}. Lokalno je ono ograničeno na jedan adresni
 prostor. Raspodijeljeno je ono koje poziva u drugi adresni prostor, možda
 na drugom računalu, o kojem se ne zna ništa osim da podržava određeno
 sučelje.
@@ -108,7 +108,7 @@ rad. Deutsch prve četiri zablude ne pripisuje sebi, sljedeće četiri jest, a
 svih osam izložio je na internom izlaganju u Sun Microsystemsu između kraja
 1991.\ i početka 1993. Uvriježene godine time su netočne, a devetu zabludu
 ne potvrđuje kao Goslingovu nego samo kao proširenje
-četvrte\cite{deutsch2021fallacies}. Popis je koristan kao podsjetnik, ali
+četvrte \cite{deutsch2021fallacies}. Popis je koristan kao podsjetnik, ali
 ništa u ovom radu ne počiva na njemu.
 
 % ------------------------------------------------------------
@@ -125,7 +125,7 @@ ništa u ovom radu ne počiva na njemu.
 
 Rad o načinima otkazivanja treba pojmove koji razlikuju kvar od njegove
 posljedice. Avizienis i suradnici daju taksonomiju koja se u literaturi o
-pouzdanosti uzima kao referentna\cite{avizienis2004taxonomy}.
+pouzdanosti uzima kao referentna \cite{avizienis2004taxonomy}.
 
 Ispravna usluga isporučuje se kada sustav radi ono čemu služi. Otkaz
 (\emph{failure}) je događaj u kojem isporučena usluga odstupa od ispravne.
@@ -144,7 +144,7 @@ svakoj pogrešci koja se iznutra dogodi.
 Jedna odredba te taksonomije nosi više nego što se na prvi pogled čini.
 Autori otkaz definiraju u odnosu na funkciju sustava, ne u odnosu na opis
 te funkcije u specifikaciji. Usluga koja je u skladu sa specifikacijom
-može biti neprihvatljiva korisniku. Time otkriva uzrok u samoj
+može biti neprihvatljiva korisniku. Time se otkriva uzrok u samoj
 specifikaciji. Takvi uzroci dijele se na propuste i na pogrešne navode,
 među koje autori ubrajaju neopravdane pretpostavke i nedosljednosti.
 
@@ -169,7 +169,7 @@ ponovljivo zovu se čvrsti, a oni čije nije, neuhvatljivi.
 
 Otkazi se razlikuju po tome kako se očituju. Avizienis i suradnici dijele
 ih po četiri gledišta: po području, po uočljivosti, po dosljednosti i po
-posljedicama\cite{avizienis2004taxonomy}. Za ovaj rad su nosiva prva dva.
+posljedicama \cite{avizienis2004taxonomy}. Za ovaj rad su nosiva prva dva.
 
 Po području otkaz je sadržajni ili vremenski. Sadržajni znači da isporučeni
 podatak odstupa od ispravnog. Vremenski znači da odstupa trenutak isporuke
@@ -189,7 +189,7 @@ za koji sudionik ne zna da se dogodio, pa na njega ne može ni reagirati.
 Preostaje pitanje ponavljanja. Ako se otkaz može ponoviti odmah i uspjeti,
 ponavljanje ima smisla. Ako ne, ponavljanje samo troši vrijeme i stvara
 duplikate. Odgovor u literaturi dolazi od Graya, koji ga daje
-oprezno\cite{gray1986whystop}:
+oprezno \cite{gray1986whystop}:
 
 % ⚠ Crtica "--" u engleskoj bilješci ispod je GRAYEVA, iz izvornika.
 %   Ne dirati je u stilskom prolazu; citat mora ostati doslovan.
@@ -235,7 +235,7 @@ pitanje kako se otkaz uopće otkriva. Odgovor je da se ne otkriva pouzdano.
 
 Chandra i Toueg uvode detektor otkaza kao zaseban dio sustava. Svaki proces
 ima svoj modul koji održava popis procesa za koje sumnja da su
-pali\cite{chandra1996failuredetectors}. Modul smije griješiti. Smije na
+pali \cite{chandra1996failuredetectors}. Modul smije griješiti. Smije na
 popis dodati proces koji radi i smije ga poslije s popisa maknuti. U
 istom trenutku popisi kod dva procesa mogu biti različiti.
 
@@ -290,7 +290,7 @@ Vrijedi biti precizan oko toga zašto.
 Ovaj rad se pritom ne oslanja na teorem oblika „dostava točno jednom je
 nemoguća“. Takav teorem za izvod nije potreban, a među pročitanim izvorima nije
 ni nađen. Ono na čemu izvod stoji stariji je i uži rezultat. Gray ga izlaže kao
-paradoks dvaju generala\cite{gray1978notes}. Dva generala moraju napasti
+paradoks dvaju generala \cite{gray1978notes}. Dva generala moraju napasti
 istodobno, poruke između njih nose glasnici, a svaki glasnik se može
 izgubiti. Dokaz da protokol ne postoji staje u nekoliko redaka. Neka je
 protokol najkraći mogući i neka se posljednji glasnik izgubi. Tada je taj
@@ -307,7 +307,7 @@ i izvođenja u kojima poruka ima beskonačno mnogo, dakle izvođenja u kojima
 protokol ne završava. Cijena zato nije samo da se najgori slučaj ne može
 omeđiti; završetak nije zajamčen u svim izvođenjima. Uz to, nemogućnost konsenzusa u
 asinkronom sustavu s jednim mogućim otkazom procesa poznata je i
-formalno\cite{fischer1985impossibility}.
+formalno \cite{fischer1985impossibility}.
 
 Iz te analogije zato ne slijedi opći teorem o dostavi točno jednom. Tri stvari
 ostaju odvojene:
@@ -325,14 +325,14 @@ Odgovor prakse nije dostava točno jednom nego učinak koji se tako ponaša.
 Poruka se šalje barem jednom, a primatelj se gradi tako da ponovljena
 poruka ne mijenja ishod. Helland to opisuje kao svojstvo entiteta koji
 pamti da je poruku već obradio, pa na ponovljenu poruku odgovara odgovorom
-koji oponaša prvi\cite{helland2007lifebeyond}. Idempotentnost se odnosi
+koji oponaša prvi \cite{helland2007lifebeyond}. Idempotentnost se odnosi
 na učinak obrade i ne zahtijeva jednak odgovor. Za razrješavanje nepoznatog
 ishoda pozivatelju treba odgovor iz kojeg može zaključiti što je učinjeno
 ili zaseban dohvat statusa. Ponavljanje ranijeg odgovora jedan je način
 da se takvo razrješavanje omogući.
 
 Gdje se ta obrana smješta, pitanje je koje su Saltzer, Reed i Clark
-riješili šire nego za ovaj slučaj\cite{saltzer1984endtoend}. Njihov
+riješili šire nego za ovaj slučaj \cite{saltzer1984endtoend}. Njihov
 argument s kraja na kraj kaže da se funkcija može potpuno i ispravno
 izvesti samo uz znanje aplikacije na krajevima veze, pa je smještanje te
 funkcije u komunikacijski podsustav neizvedivo. Za duplikate to razrađuju
@@ -362,13 +362,13 @@ Preostaje ograničenje koje se uz ovo pitanje najčešće navodi.
 Gilbert i Lynch formalno su dokazali Brewerovu slutnju: u asinkronom
 mrežnom modelu nije moguće izvesti dijeljeni objekt koji istodobno jamči
 raspoloživost i atomarnu konzistentnost u svim izvođenjima u kojima se
-poruke gube\cite{gilbert2002brewer}. Isto vrijedi i u djelomično sinkronom
+poruke gube \cite{gilbert2002brewer}. Isto vrijedi i u djelomično sinkronom
 modelu. Njihov rad sadrži i ogradu koja se rijetko navodi. U djelomično
 sinkronom modelu moguće je vraćati atomarne podatke dok god nema
 razdvajanja mreže, a nekonzistentne tek kada se poruke izgube. Kompromis
 dakle nije stalan nego se aktivira razdvajanjem. Abadi na to nadovezuje
 opažanje da izbor postoji i bez razdvajanja, tada između kašnjenja i
-konzistentnosti\cite{abadi2012consistency}.
+konzistentnosti \cite{abadi2012consistency}.
 
 Za ovaj rad CAP nije okvir nego podsjetnik. Fiskalizacija nije replicirana
 baza podataka, pa se izbor između konzistentnosti i raspoloživosti ne

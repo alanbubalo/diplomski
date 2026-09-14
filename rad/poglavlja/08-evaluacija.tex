@@ -36,7 +36,7 @@ da ne pomaže. Automatsko izvođenje takvog mjerila otvoren je problem. CoFI je
 u testovima s ubrizgavanjem kvarova našao da je 67\,\% prijavljenih kvarova
 bilo lažno pozitivno, i to zato što provjere tvrde da je operacija uspjela u
 situacijama u kojima operacija mora
-pasti\cite{chen2020cofi}. Mjerilo izvedeno iz propisa odgovara na taj problem,
+pasti \cite{chen2020cofi}. Mjerilo izvedeno iz propisa odgovara na taj problem,
 jer propis kaže što je ispravan ishod neovisno o tome što je sustav htio
 postići.
 
@@ -45,7 +45,7 @@ verifikacija elektroničkog fakturiranja postoji, ali pouzdanost prijenosa
 uzima kao pretpostavku, a ne kao predmet. Attali, Barros i Madelaine u popisu
 pretpostavki svoga modela čileanskog sustava navode da su komunikacijski kanali
 pouzdani i da su svi procesi u sustavu od
-povjerenja\cite{attali2004chilean}. Ono što taj model isključuje jednom
+povjerenja \cite{attali2004chilean}. Ono što taj model isključuje jednom
 rečenicom predmet je cijelog ovog poglavlja.
 
 Iz toga slijede tri pravila kojih se ostatak poglavlja drži.
@@ -60,7 +60,7 @@ odjeljku~\ref{sec:dizajn}.
 \paragraph{Tvrdnja se piše kao uvjetna.}
 Filibuster mjerilo zapisuje kao uvjetnu tvrdnju oblika „ako je kvar ubrizgan u
 servis A, tada mora vrijediti\ldots“. Devet takvih tvrdnji kod njih je
-pokrilo 1606 testova\cite{meiklejohn2021filibuster}. Ćelija se u prozi
+pokrilo 1606 testova \cite{meiklejohn2021filibuster}. Ćelija se u prozi
 razrađuje u istom obliku. Ne „ponavljanje pomaže kod B1“, nego: ako
 fiskalizacijski poziv istekne bez odgovora, uz ponavljanje svjesno roka
 dokument završava ili potvrđen ili u imenovanom stanju s evidentiranim
@@ -154,11 +154,11 @@ samog prekidača. Redak D2 zadržava \emph{sužava} kao autorsku prosudbu za
 slučaj u kojem se poruka prema posredniku trajno zadržava lokalno.
 
 \paragraph{Ključ za deduplikaciju ne određuje pravilo ispravka.}
-Složeni identifikator stabilan je kroz ponovni pokušaj, pa provjera S008
+Složeni identifikator stabilan je pri ponovnom pokušaju, pa provjera S008
 ispravno otkriva da zapis s tim identifikatorom već postoji. Za ispravak je
 situacija uža: novi datum izdavanja uz referencu na prethodni račun stvara
 nov identifikator, dok ispravak koji zadržava identifikator može biti odbijen
-kao duplikat\cite{pu2026hrcius,pu2026tehspec}. Ključ sam ne odlučuje koju od
+kao duplikat \cite{pu2026hrcius,pu2026tehspec}. Ključ sam ne odlučuje koju od
 tih grana treba primijeniti, pa je u retku B2 označen kao \emph{ne pomaže}, a
 ne kao obrazac koji nužno pogoršava stanje.
 
@@ -173,7 +173,7 @@ nema. Odjeljak~\ref{sec:scenariji} pokazuje oba ishoda.
 njega. Poslovnu namjeru nosi sam dokument: indikator kopije je polje eRačuna, pa
 i izvedba koja namjeru nije zapisala iz spremljenog dokumenta izvodi da je
 predmet ispravak. Prva dostava ispravka zato u obje izvedbe završava u stanju
-\texttt{correction-rejected}. Ono što dokument ne nosi je redni pokušaj dostave,
+\texttt{correction-rejected}. Ono što dokument ne nosi jest redni pokušaj dostave,
 jer prva i ponovljena dostava istog ispravka nose isti indikator kopije. Ta
 razlika postoji samo u zapisu predaje, a zapis nastao tek nakon odgovora nakon
 isteka vremena ne nastaje uopće. Vrijednost \emph{sužava} u ovoj ćeliji zato
@@ -213,7 +213,7 @@ pretpostavke.}
 Zahtjev nosi do sto zapisa, a odgovor opisuje neprihvaćen zahtjev i prvu
 grešku zbog koje nije prihvaćen. Specifikacija time upućuje na odbijanje
 zahtjeva kao cjeline, ali ne opisuje izričito atomarnost obrade pojedinih
-zapisa\cite{pu2026tehspec}. Ovo je jedina ćelija s vrijednošću
+zapisa \cite{pu2026tehspec}. Ovo je jedina ćelija s vrijednošću
 \emph{pogoršava} i na njoj stoji dio odgovora na treće istraživačko pitanje, pa
 i pretpostavke i razina dokaza traže preciznost.
 
@@ -234,17 +234,17 @@ pouzdano potiskuje, učinak ponavljanja može biti drukčiji.
 Razlikovati treba i dvije stvari koje se lako spajaju. Ponovno poslan zapis nije
 isto što i uspješno stvoren dvostruki zapis na odredištu; provjera S008 postoji
 upravo kao provjera jedinstvenosti. Ono što ponavljanje cijelog skupa povećava
-je izloženost, ne dokazani dvostruki zapis.
+jest izloženost, ne dokazani dvostruki zapis.
 
 Izlaz iz slučaja nije bolji obrazac nego odricanje od značajke sučelja.
 Kardinalnost dopušta i jedan zapis po poruci, pa se skupnost može ne koristiti.
-Ublažavanje koje se sastoji od neupotrebe dijela sučelja sama je nalaz o
+Ublažavanje koje se sastoji od neupotrebe dijela sučelja jest nalaz o
 sučelju.
 
 \paragraph{Redci C1 i B4 gotovo su prazni.}
 U retku C1 pet od šest ćelija kaže \emph{ne pomaže}. Primatelj ne može
 izračunati vlastiti rok jer pojam primitka nije definiran, a nijedan obrazac
-ne definira pravni pojam. Jedino što preostaje je da sustav zabilježi trenutak
+ne definira pravni pojam. Jedino što preostaje jest da sustav zabilježi trenutak
 u kojem je dokument stigao do njegove pristupne točke, čime dobiva obranjivo
 polazište koje propis ne daje.
 
