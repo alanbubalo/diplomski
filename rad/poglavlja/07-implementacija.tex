@@ -232,7 +232,7 @@ Zapis namjere dvoznačnost sužava; ne uklanja je. Isto vrijedi za zadnji sluča
 u kojem zapisa uopće nema.
 
 U evidenciju ulazi svaki prijelaz, ali i svaki trenutak u kojem tumačenje nije
-bilo jednoznačno. To drugo je ono zbog čega tablica postoji.
+bilo jednoznačno, a to drugo je i razlog zbog kojeg tablica postoji.
 
 % ------------------------------------------------------------
 \section{Scenariji i ishodi}
@@ -305,8 +305,8 @@ Pokušaj & Svjestan roka & Eksponencijalni odmak \\
 \end{table}
 
 Tablica uspoređuje dva konkretna rasporeda uz jednu osnovicu. Nije presuda o
-obitelji eksponencijalnog odmaka. Uz ovu osnovicu odmak rok ne probija rano nego
-ga uopće ne dodiruje: prvih pet pokušaja potroši u trideset i jednoj minuti, a
+obitelji eksponencijalnog odmaka. Uz ovu osnovicu odmak rok uopće ne dodiruje:
+prvih pet pokušaja potroši u trideset i jednoj minuti, a
 rok prekorači tek na četrnaestom. Razlika nije u tome što odmak kasni, nego u
 tome što o roku ne zna ništa. Isti obrazac uz drukčiju osnovicu ponaša se
 posve drukčije, a propis se u tom izboru nigdje ne pojavljuje. Uvjet roka
@@ -322,7 +322,7 @@ bržeg oporavka; on samo jamči da nijedan pokušaj neće biti zakazan izvan rok
 slučajno raspršivanje razmaka isključeno je, da ispis ostane
 ponovljiv \cite{brookertimeouts}.
 
-Scenarij popunjava ćelije B1 uz automat s imenovanim stanjem i B1 uz
+Scenarij popunjava čelije B1 uz automat s imenovanim stanjem i B1 uz
 ponavljanje svjesno roka.
 
 \paragraph{E1: predaja bez potvrde.}
@@ -331,7 +331,7 @@ li poslovni sustav znati da ga je pokušao predati. Sa zapisom namjere odgovor
 postoji i provjerljiv je bez pristupa pristupnoj točki. Bez zapisa račun
 postoji, a trag predaje ne postoji.
 
-Scenarij popunjava ćeliju E1 uz odlazni pretinac i zapis namjere.
+Scenarij popunjava čeliju E1 uz odlazni pretinac i zapis namjere.
 
 \paragraph{B2: ista šifra u tri modelirana spoja.}
 Scenarij ima tri dijela. U prvom se poruka ponavlja na trenutak koji je raspored
@@ -377,9 +377,8 @@ EVIDENCIJA
 +---------+-----+--------------------------------+---------------------+-------------+
 \end{lstlisting}
 
-Treći redak evidencije prve predaje nosi tezu poglavlja. Sustav je u tom
-trenutku znao da ne zna i to je zapisao. Kasniji odgovor S008 taj trenutak
-razrješava, ali ga ne briše.
+U trećem retku evidencije prve predaje sustav je zabilježio da ishod nije
+poznat. Kasniji odgovor S008 taj trenutak razrješava, ali ga ne briše.
 
 Treća predaja pokazuje granicu istog obrasca. Namjera je zapisana i ostala
 ispravak i nakon ponavljanja, a šifra svejedno nije dala prijelaz: kod
@@ -400,10 +399,10 @@ ponovljena dostava istog ispravka nose isti indikator kopije. Prvi i treći dio
 scenarija to pokazuju: nakon izostanka odgovora osnovna izvedba ne ostavlja
 nijedan redak o predaji, pa se prva dostava od ponovljene ne može razlikovati i
 ponavljanje nema na što nastaviti. Ovdje se vidi zašto zapis mora nastati
-\emph{prije} predaje. Slučaj u kojem je najpotrebniji upravo je slučaj u kojem
-zapis nastao poslije odgovora ne bi nastao nikada.
+\emph{prije} predaje. U slučaju u kojem je najpotrebniji zapis nastao poslije
+odgovora ne bi nastao nikada.
 
-Scenarij zato popunjava ćeliju B2 uz odlazni pretinac, ali za sačuvani redni
+Scenarij zato popunjava čeliju B2 uz odlazni pretinac, ali za sačuvani redni
 pokušaj dostave, a ne za sačuvanu poslovnu namjeru.
 
 \paragraph{D1: Sustav za fiskalizaciju privremeno je nedostupan.}
@@ -433,7 +432,7 @@ Bez zapisa namjere prvi izostanak odgovora ne ostavlja predaju na kojoj bi se
 ponavljanje moglo nastaviti. Usporedba zato ne pokazuje samo da ponavljanje
 može uspjeti, nego uvjet pod kojim je oporavak uopće moguć.
 
-Scenarij popunjava ćelije D1 uz ponavljanje svjesno roka, odlazni pretinac i
+Scenarij popunjava čelije D1 uz ponavljanje svjesno roka, odlazni pretinac i
 automat s imenovanim stanjem.
 
 % ------------------------------------------------------------
@@ -445,4 +444,4 @@ obrazac zajedno nalažu. Prototip nosi 32 takva testa, koji zajedno izvode
 105 pojedinačnih provjera. Broj testova je broj tvrdnji o ishodu; broj
 provjera je veći jer jedna tvrdnja često provjerava stanje, zapis roka i zapis
 u evidenciji. Poglavlje~\ref{ch:evaluacija} poziva se na te tvrdnje kada
-ćeliju označava kao pokazanu.
+čeliju označava kao pokazanu.

@@ -5,31 +5,31 @@
 \section{Problem}
 \label{sec:problem}
 
-Obveznik koji od 2026.\ izdaje eRačun dužan je učiniti dvije stvari. Dokument
-mora dostaviti primatelju i podatke o njemu mora prijaviti Poreznoj upravi.
-Pretpostavimo da prijava ne dobije odgovor u očekivanom vremenu i da obveznik
-poruku pošalje ponovno. Sustav za fiskalizaciju odgovara šifrom S008, iz koje se
-može zaključiti da zapis s istim identifikatorom već postoji.
+Fiskalizacija eRačuna od 2026.\ traži prijavu Poreznoj upravi uz dostavu
+dokumenta primatelju. Prijava putuje mrežom i može ostati bez odgovora.
+Pošiljatelj tada ne zna je li stigla, pa je šalje ponovno. U razmatranom
+primjeru ponovljeni zahtjev vraća šifru S008, koja pokazuje da zapis s istim
+identifikatorom već postoji.
 
 Isti skup izvora uređuje i ispravak podatka koji ne utječe na obračun poreza.
 Takav se ispravak izdaje pod istim brojem računa i s indikatorom kopije. Provjera
 S008, međutim, radi sa složenim identifikatorom koji indikator kopije ne sadrži.
 Ako ispravak zadrži datum izvornika, identifikator je istovjetan i provjera ga po
-opisanom ključu odbija. Ako dobije novi datum i
-referencu na prethodni račun, identifikator je drugi i provjera se izbjegava.
-Je li takav dokument u stvarnom sustavu prihvatljiv, rad nije provjerio. Izvori ne određuju koji je datum ispravka
-mjerodavan. Problem zato nije dokazana nemogućnost ispravka nego nedovoljno
-određena semantika sučelja.
+opisanom ključu odbija. Ako dobije novi datum i referencu na prethodni račun,
+identifikator je drugi i provjera se izbjegava. Izvori ne određuju koji je datum ispravka mjerodavan, a
+je li takav dokument u stvarnom sustavu prihvatljiv, rad nije provjerio. Problem
+zato nije dokazana nemogućnost ispravka nego nedovoljno određena semantika
+sučelja.
 
-Takav slučaj nije jedini. Rad izvodi jedanaest načina otkazivanja i razdvaja
-njihove izvore. Dio proizlazi iz svojstava raspodijeljene razmjene, poput
-nemogućnosti da pošiljatelj sazna ishod poruke bez odgovora. Dio proizlazi iz
-obvezne arhitekture ili iz pravila koja ne određuju semantiku kvara. Za drugu
-skupinu rad upotrebljava radni pojam \emph{regulatorno inducirano ograničenje}.
+Opisani slučaj jedan je od jedanaest načina otkazivanja koje rad izvodi, a
+izvori tih načina nisu isti. Prvu skupinu nose svojstva raspodijeljene razmjene,
+poput nemogućnosti da pošiljatelj sazna ishod poruke bez odgovora. Drugu nose
+obvezna arhitektura i pravila koja ne određuju semantiku kvara. Za nju rad
+upotrebljava radni pojam \emph{regulatorno inducirano ograničenje}.
 
-Razlika je praktična. Za prvu skupinu literatura daje poznate mehanizme. Za
-drugu obrasci mogu suziti prozor nepoznatog ishoda, učiniti ga vidljivim i
-sačuvati dokaz o postupanju, ali ne mogu sami odrediti pravno značenje pojma
+Za prvu skupinu literatura daje poznate mehanizme. Za drugu obrasci mogu
+suziti prozor nepoznatog ishoda, učiniti ga vidljivim i sačuvati dokaz o
+postupanju, ali ne mogu sami odrediti pravno značenje pojma
 koji propis nije odredio. Poglavlje~\ref{ch:rasprava} zato učinak obrazaca
 ocjenjuje uvjetno, s obzirom na granicu i konfiguraciju.
 
@@ -58,22 +58,24 @@ Rad odgovara na tri pitanja.
   umjesto da je poboljšaju?
 \end{description}
 
-Drugi dio drugog pitanja nosi tezu rada. Formulacija je pritom takva da kao
-rezultat prima i nalaz potpune pokrivenosti i nalaz regulatorne granice, pa
-ishod nije unaprijed ugrađen u pitanje.
+Drugi dio drugog pitanja nosi tezu rada. Pitanje kao rezultat prima i nalaz
+potpune pokrivenosti i nalaz regulatorne granice, pa ishod u njega nije
+unaprijed ugrađen.
 
-Odgovori na ta pitanja daju tri stvari upotrebljive i izvan ovog rada. Katalog
-jedanaest načina otkazivanja izveden je iz obveza koje dijele svi obveznici, pa
-nije vezan na jedan sustav. Koliko se katalog primjenjuje
-na pojedinu izvedbu, ovisi o odabranoj arhitekturi. Obveznik koji je vlastita
+Odgovori na ta pitanja daju tri rezultata upotrebljiva i izvan ovog rada. Prvi
+je katalog jedanaest načina otkazivanja, izveden iz obveza koje dijele svi
+obveznici, pa nije vezan na jedan sustav. Koliko se katalog primjenjuje na
+pojedinu izvedbu, ovisi o odabranoj arhitekturi. Obveznik koji je vlastita
 pristupna točka nema granicu prema posredniku u obliku u kojem je nose slučajevi
-D2 i E1. Obveznik koji posrednika koristi nosi oba. Skupina A i skupina C slijede iz obveza i ne
-ovise o tom izboru. Pojam regulatorno induciranog ograničenja imenuje skupinu i
-daje joj izvod na koji se može uputiti. Matrica pokrivenosti daje podlogu za
-izbor obrazaca, uključujući slučajeve u kojima učinak ovisi o konfiguraciji i
-preostalom roku.
+D2 i E1, a obveznik koji posrednika koristi nosi oba slučaja. Skupina A i
+skupina C slijede iz obveza i ne ovise o tom izboru.
 
-Istek vremena, ponavljanje, prekidač i saga tretiraju se kao kandidati. Obrazac
+Drugi je rezultat pojam regulatorno induciranog ograničenja, koji skupinu
+imenuje i daje joj izvod na koji se može uputiti. Treći je matrica pokrivenosti,
+podloga za izbor obrazaca koja obuhvaća i slučajeve u kojima učinak ovisi o
+konfiguraciji i preostalom roku.
+
+Istek vremena, ponavljanje, prekidač i saga razmatraju se kao kandidati. Obrazac
 koji izvod odbaci ostaje istražen, uz naveden razlog zbog kojeg ne ulazi u
 rješenje.
 
@@ -84,12 +86,13 @@ rješenje.
 Studija slučaja pokriva cijeli propisani tijek na razini arhitekture, stanja i
 odgovornosti sudionika. Predmet je referentna arhitektura izvedena iz propisa,
 a ne postojeći sustav. Izvršni prototip ostvaruje dvije granice na kojima se
-pojavljuju slučajevi B1, B2, D1 i E1. Uspoređuje dvije izvedbe. Jedna zapis predaje stvara tek nakon odgovora i
-namjeru ne zapisuje. Druga namjeru zapisuje prije slanja.
+pojavljuju slučajevi B1, B2, D1 i E1. Uspoređuje dvije izvedbe: jedna zapis
+predaje stvara tek nakon odgovora i namjeru ne zapisuje, a druga namjeru
+zapisuje prije slanja.
 
 Evaluacija spaja analitičku matricu s četiri izvršna scenarija. Učinkovitost
-znači da sustav pod istim kvarom završava u poznatom i dokazivom stanju, a ne
-propusnost ili najmanje vrijeme odziva. Poglavlje~\ref{ch:rasprava} obrazlaže
+ovdje znači da sustav pod istim kvarom završava u poznatom i dokazivom stanju.
+Propusnost i vrijeme odziva nisu mjerilo. Poglavlje~\ref{ch:rasprava} obrazlaže
 domet takve evaluacije.
 
 Poglavlje~\ref{ch:pozadina} postavlja pravni i tehnički kontekst.

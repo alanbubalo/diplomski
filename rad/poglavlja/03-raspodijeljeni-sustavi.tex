@@ -2,10 +2,9 @@
 \label{ch:raspodijeljeni}
 
 Poglavlje uspostavlja pojmove kojima poglavlje~\ref{ch:studija} izvodi
-načine otkazivanja. Tvrdnja koja ga drži na okupu je jednostavna. Poziv
-preko mreže uvodi klasu otkaza koju lokalni poziv nema, a ta se klasa ne
-može ukloniti boljom izvedbom pozivatelja ili pozvanog. Može se samo
-priznati i opisati na sučelju.
+načine otkazivanja. Poziv preko mreže uvodi klasu otkaza koju lokalni poziv
+nema. Ta se klasa ne može ukloniti boljom izvedbom pozivatelja ili pozvanog,
+pa se s njom postupa na razini sučelja.
 
 % ------------------------------------------------------------
 \section{Raspodijeljeni sustav i djelomični otkaz}
@@ -27,7 +26,7 @@ funkcija dijele adresni prostor i sudbinu procesa. Nema odvojene udaljene
 komponente koja može obraditi zahtjev nakon što je lokalni pozivatelj prestao
 čekati. Raspodijeljeni poziv nema takvu zajedničku sudbinu. Nema zajedničkog
 posrednika koji bi pouzdano utvrdio koja je komponenta otkazala i o tome
-obavijestio ostale. Nema globalnog stanja u koje se može pogledati.
+obavijestio ostale, ni globalnog stanja u koje bi se moglo pogledati.
 
 Iz toga slijedi tvrdnja koju ovaj rad koristi na svakom koraku:
 
@@ -38,16 +37,16 @@ system, the failure of a network link is indistinguishable from the
 failure of a processor on the other side of that link.}“
 \cite{waldo1994note}} \end{quote}
 
-Pozivatelj ne dobiva odgovor. To je sve što zna. Je li poruka izgubljena
-na putu, je li primatelj pao prije obrade, je li obradio pa pao prije
-odgovora, ili je odgovor izgubljen na povratku, iz same činjenice izostanka
-odgovora nije moguće zaključiti. Waldo to zove neodređenošću i tvrdi da
+Iz samog izostanka odgovora pozivatelj ne može utvrditi što se dogodilo.
+Zahtjev je mogao biti izgubljen na putu, primatelj je mogao otkazati prije
+obrade ili nakon obrade, prije slanja odgovora, a mogao je biti izgubljen i
+odgovor na povratku. Waldo to zove neodređenošću i tvrdi da
 sučelja moraju biti oblikovana tako da sudionici na nju mogu dosljedno
 reagirati.
 
-Zanimljiviji je dio rada koji dolazi poslije. Autori napadaju uvjerenje da
-je otpornost svojstvo izvedbe, nešto što se dobiva kupnjom pouzdanije
-komponente. Njihov primjer je red čekanja iza standardiziranog sučelja.
+Autori razmatraju i uvjerenje da je otpornost svojstvo izvedbe, nešto što
+se dobiva kupnjom pouzdanije komponente. Njihov protuprimjer je red čekanja
+iza standardiziranog sučelja.
 Klijent odustaje zbog \strani{isteka vremena}{timeout}, pa uvodi
 \strani{ponavljanje}{retry}, pa otkriva da
 se dio zahtjeva obavlja više puta. Krivnja nije na dobavljaču reda čekanja.
@@ -65,8 +64,7 @@ with the exact same parameters as previously?}“ \cite{waldo1994note}}
 \end{quote}
 
 To pitanje poglavlje~\ref{ch:studija} postavlja fiskalizacijskom sučelju.
-Odgovor je ondje teži nego kod Walda, jer sučelje ne propisuje dobavljač
-nego zakon.
+Ondje sučelje propisuje zakon, pa ga sudionik ne može promijeniti.
 
 Uz ovaj rad obično se navodi i popis zabluda o raspodijeljenom računarstvu,
 a prva zabluda glasi da je mreža pouzdana. Popis nije nastao kao znanstveni
@@ -95,20 +93,20 @@ uspavan.
 
 Lanac ide u jednom smjeru. Uzrok proizvodi pogrešku, pogreška se širi, a
 otkaz nastaje tek ako pogreška dođe do vanjskog stanja. Pogreška do njega ne
-mora doći. Tada otkaza nema. Razlika je važna jer rad
+mora doći, i tada otkaza nema. Razlika je važna jer rad
 govori o načinima otkazivanja, dakle o onome što se vidi izvana, a ne o
 svakoj pogrešci koja se iznutra dogodi.
 
-Jedna odredba te taksonomije nosi više nego što se na prvi pogled čini.
+Jedna odredba te taksonomije uređuje odnos otkaza i specifikacije.
 Autori otkaz definiraju u odnosu na funkciju sustava, ne u odnosu na opis
 te funkcije u specifikaciji. Usluga koja je u skladu sa specifikacijom
 može biti neprihvatljiva korisniku. Time se otkriva uzrok u samoj
 specifikaciji. Takvi uzroci dijele se na propuste i na pogrešne navode,
 među koje autori ubrajaju neopravdane pretpostavke i nedosljednosti.
 
-Iz toga slijedi da specifikacija može biti uzrok otkaza. Za
-poglavlje~\ref{ch:studija} to je nosivo. Ono što se ondje izvodi nisu
-programerske greške nego uzroci u specifikaciji, a specifikacija je propis.
+Iz toga slijedi da specifikacija može biti uzrok otkaza. Slučajevi koje
+izvodi poglavlje~\ref{ch:studija} nisu programerske greške nego uzroci u
+specifikaciji, a specifikacija je ondje propis.
 
 Avizienis razlikuje uzroke i po postojanosti. Trajni uzrok prisutan je
 neprekidno, prolazni je vremenski omeđen. Uz to razlikuje uzroke po tome
@@ -188,11 +186,11 @@ pogrešno osumnjičeni, jer je teško utvrditi je li proces samo spor ili je pao
 Praktična posljedica je jedna rečenica koju rad koristi dalje. Istek
 vremena nije opažanje otkaza nego odluka pozivatelja da prestane čekati.
 Ta odluka ne mijenja ništa na strani primatelja. Zahtjev je možda obrađen,
-možda nije, a možda se obrađuje upravo sada.
+možda nije, a možda se obrađuje sada.
 
 Zato izostanak odgovora nikada ne znači da poruka nije zaprimljena. Znači
 samo da odgovor nije stigao unutar vremena koje je pozivatelj sam izabrao.
-Sustav koji tu razliku ne modelira zapravo tvrdi nešto što ne zna.
+Sustav koji tu razliku ne modelira tvrdi nešto što ne zna.
 
 % ------------------------------------------------------------
 \section{Semantika dostave i nemogućnost dostave točno jednom}
@@ -205,7 +203,6 @@ može biti obrađena više puta. Točno jednom znači oboje.
 
 Prve dvije se izvode lako. Najviše jednom dobiva se tako da se ne ponavlja,
 barem jednom tako da se ponavlja dok ne stigne potvrda. Treća se ne izvodi.
-Vrijedi biti precizan oko toga zašto.
 
 Ovaj rad se pritom ne oslanja na teorem oblika „dostava točno jednom je
 nemoguća“. Takav teorem za izvod nije potreban, a među pročitanim izvorima nije
@@ -270,11 +267,10 @@ like different messages to the communication system, so it cannot suppress
 them}“ \cite{saltzer1984endtoend}} \end{quote}
 
 Isti rad postavlja i pitanje što potvrda uopće dokazuje. Autori uzimaju
-mrežnu potvrdu o dostavi i pokazuju da aplikaciji ne koristi mnogo, jer
-ona ne želi znati da je poruka stigla na odredišno računalo nego je li
-odredište po njoj postupilo. Potvrda koja se zapravo želi je ona s kraja
-na kraj. Ona glasi „učinio sam“ ili „nisam“, a poslati ju može samo
-odredišna aplikacija.
+mrežnu potvrdu o dostavi i pokazuju da aplikaciji ne koristi mnogo. Njoj treba
+podatak o tome je li odredište po poruci postupilo, a dostava na odredišno
+računalo to ne kaže. Potvrda koja joj treba je ona s kraja na kraj. Ona glasi
+„učinio sam“ ili „nisam“, a poslati ju može samo odredišna aplikacija.
 
 Poglavlje~\ref{ch:studija} pokazuje sustav u kojem takva potvrda ne postoji.
 
@@ -285,12 +281,12 @@ raspoloživost i atomarnu konzistentnost u svim izvođenjima u kojima se
 poruke gube \cite{gilbert2002brewer}. Isto vrijedi i u djelomično sinkronom
 modelu. Njihov rad sadrži i ogradu koja se rijetko navodi. U djelomično
 sinkronom modelu moguće je vraćati atomarne podatke dok god nema
-razdvajanja mreže, a nekonzistentne tek kada se poruke izgube. Kompromis
-dakle nije stalan nego se aktivira razdvajanjem. Abadi na to nadovezuje
+razdvajanja mreže, a nekonzistentne tek kada se poruke izgube. Kompromis se
+dakle aktivira razdvajanjem. Abadi na to nadovezuje
 opažanje da izbor postoji i bez razdvajanja, tada između kašnjenja i
 konzistentnosti \cite{abadi2012consistency}.
 
-Za ovaj rad CAP nije okvir nego podsjetnik. Fiskalizacija nije replicirana
+Za ovaj rad CAP je podsjetnik. Fiskalizacija nije replicirana
 baza podataka, pa se izbor između konzistentnosti i raspoloživosti ne
 postavlja u tom obliku. Postavlja se u obliku koji opisuje
 poglavlje~\ref{ch:studija}: dva kanala, jedan dokument i nijedna odredba

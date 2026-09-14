@@ -2,8 +2,8 @@
 \label{ch:evaluacija}
 
 Poglavlje~\ref{ch:studija} izvelo je jedanaest načina otkazivanja, a
-odjeljak~\ref{sec:dizajn} predložio šest obrazaca. Ostaje pitanje koliko ti
-obrasci doista pokrivaju i po kojem se postupku takva tvrdnja može provjeriti
+odjeljak~\ref{sec:dizajn} predložio šest obrazaca. Ovo poglavlje utvrđuje
+koliko ti obrasci pokrivaju i po kojem se postupku takva tvrdnja provjerava,
 spojem analitičkog izvoda i izvršnih scenarija.
 
 % ------------------------------------------------------------
@@ -29,7 +29,7 @@ rečenicom predmet je cijelog ovog poglavlja.
 
 Iz toga slijede tri pravila kojih se ostatak poglavlja drži.
 
-\paragraph{Ćelija nosi jednu od pet vrijednosti.}
+\paragraph{Čelija nosi jednu od pet vrijednosti.}
 Vrijednosti su \emph{uklanja}, \emph{sužava}, \emph{detektira}, \emph{ne
 pomaže} i \emph{pogoršava}. Značenja su u legendi
 tablice~\ref{tab:matrica}. Kategorija \emph{pogoršava} postoji zato da matrica
@@ -39,20 +39,20 @@ odjeljku~\ref{sec:dizajn}.
 \paragraph{Tvrdnja se piše kao uvjetna.}
 Filibuster mjerilo zapisuje kao uvjetnu tvrdnju oblika „ako je kvar ubrizgan u
 servis A, tada mora vrijediti\ldots“. Devet takvih tvrdnji kod njih je
-pokrilo 1606 testova \cite{meiklejohn2021filibuster}. Ćelija se u prozi
+pokrilo 1606 testova \cite{meiklejohn2021filibuster}. Čelija se u prozi
 razrađuje u istom obliku. Ne „ponavljanje pomaže kod B1“, nego: ako
 fiskalizacijski poziv istekne bez odgovora, uz ponavljanje svjesno roka
 dokument završava ili potvrđen ili u imenovanom stanju s evidentiranim
 razlogom, a nikada u stanju bez zapisa nakon isteka roka iz članka 49.
 
-\paragraph{Svaka ćelija nosi razinu.}
+\paragraph{Svaka čelija nosi razinu.}
 Razina \textsuperscript{a} znači da tvrdnja slijedi iz propisa ili iz svojstva
 obrasca dokazanog u literaturi, pa je brani citat. Razina \textsuperscript{b}
 znači da tvrdnju pokazuje prototip iz poglavlja~\ref{ch:implementacija}.
 Razina \textsuperscript{c} znači da je tvrdnja prosudba autora.
 
 Prosudba je dopuštena, prešućena prosudba nije. Razinu \textsuperscript{b}
-nose samo one ćelije koje prototip doista pokreće. To su slučajevi B1, B2 i D1
+nose samo one čelije koje prototip pokreće. To su slučajevi B1, B2 i D1
 na sinkronom fiskalizacijskom kanalu te E1 na granici C1 prema C2. Slučaj D2
 ima sličan oblik, ali ga prototip ne izvodi, pa ondje stoji
 \textsuperscript{c} i kada bi mehanizam bio isti.
@@ -155,7 +155,7 @@ predmet ispravak. Prva dostava ispravka zato u obje izvedbe završava u stanju
 \texttt{correction-rejected}. Ono što dokument ne nosi jest redni pokušaj dostave,
 jer prva i ponovljena dostava istog ispravka nose isti indikator kopije. Ta
 razlika postoji samo u zapisu predaje, a zapis nastao tek nakon odgovora nakon
-isteka vremena ne nastaje uopće. Vrijednost \emph{sužava} u ovoj ćeliji zato
+isteka vremena ne nastaje uopće. Vrijednost \emph{sužava} u ovoj čeliji zato
 stoji na sačuvanom rednom pokušaju dostave, ne na sačuvanoj namjeri.
 
 Zapis ne razrješava svaki spoj. Kod ponovljene dostave ispravka sa zadržanim
@@ -192,7 +192,7 @@ pretpostavke.}
 Zahtjev nosi do sto zapisa, a odgovor opisuje neprihvaćen zahtjev i prvu
 grešku zbog koje nije prihvaćen. Specifikacija time upućuje na odbijanje
 zahtjeva kao cjeline, ali ne opisuje izričito atomarnost obrade pojedinih
-zapisa \cite{pu2026tehspec}. Ovo je jedina ćelija s vrijednošću
+zapisa \cite{pu2026tehspec}. Ovo je jedina čelija s vrijednošću
 \emph{pogoršava} i na njoj stoji dio odgovora na treće istraživačko pitanje, pa
 i pretpostavke i razina dokaza traže preciznost.
 
@@ -205,23 +205,22 @@ Specifikacija ne određuje vrijede li te pretpostavke. Iz njezine šutnje ne
 slijedi da odredište skup ne odbacuje atomarno, ni da duplikate ne potiskuje;
 šutnja znači da ponašanje nije određeno, a ne da je dokazana njegova nepovoljna
 varijanta. Obrnuto također ne stoji: povoljno ponašanje neke izvedbe ne bi samo
-po sebi značilo da je specifikacija dopunjena. Ocjena u ovoj ćeliji zato je
+po sebi značilo da je specifikacija dopunjena. Ocjena u ovoj čeliji zato je
 autorska prosudba rizika u nepovoljnom scenariju i nosi razinu
 \textsuperscript{c}. Ako odredište skup odbacuje atomarno ili duplikate
 pouzdano potiskuje, učinak ponavljanja može biti drukčiji.
 
 Razlikovati treba i dvije stvari koje se lako spajaju. Ponovno poslan zapis nije
 isto što i uspješno stvoren dvostruki zapis na odredištu; provjera S008 postoji
-upravo kao provjera jedinstvenosti. Ono što ponavljanje cijelog skupa povećava
+kao provjera jedinstvenosti. Ono što ponavljanje cijelog skupa povećava
 jest izloženost, ne dokazani dvostruki zapis.
 
-Izlaz iz slučaja nije bolji obrazac nego odricanje od značajke sučelja.
-Kardinalnost dopušta i jedan zapis po poruci, pa se skupnost može ne koristiti.
-Ublažavanje koje se sastoji od neupotrebe dijela sučelja jest nalaz o
-sučelju.
+Iz slučaja se izlazi odricanjem od značajke sučelja. Kardinalnost dopušta i
+jedan zapis po poruci, pa se skupnost može ne koristiti, a to je nalaz o
+sučelju, ne o obrascu.
 
 \paragraph{Redci C1 i B4 gotovo su prazni.}
-U retku C1 pet od šest ćelija kaže \emph{ne pomaže}. Primatelj ne može
+U retku C1 pet od šest čelija kaže \emph{ne pomaže}. Primatelj ne može
 izračunati vlastiti rok jer pojam primitka nije definiran, a nijedan obrazac
 ne definira pravni pojam. Jedino što preostaje jest da sustav zabilježi trenutak
 u kojem je dokument stigao do njegove pristupne točke, čime dobiva obranjivo
@@ -261,6 +260,6 @@ fizikalna neodređenost udaljenog poziva ostaje tehnički problem.
 
 % ------------------------------------------------------------
 
-Devet od 66 ćelija nosi razinu \textsuperscript{b}. One počivaju na završnim
+Devet od 66 čelija nosi razinu \textsuperscript{b}. One počivaju na završnim
 stanjima iz izvršnih scenarija i iz 32 testa koji te scenarije provjeravaju, ne na mjerenju performansi. Domet i cijena tog izbora razrađeni
 su u poglavlju~\ref{ch:rasprava}.

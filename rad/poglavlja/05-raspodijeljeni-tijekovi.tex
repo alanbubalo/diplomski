@@ -2,9 +2,8 @@
 \label{ch:tijekovi}
 
 Poglavlje~\ref{ch:raspodijeljeni} govorilo je o jednom pozivu. Ovo poglavlje
-govori o nizu koraka koji zajedno čine jedan posao. Pitanje se time mijenja.
-Više nije kako preživjeti kvar pojedinog poziva, nego kako držati stanje
-razumljivim kada je posao djelomično gotov, a nastavak neizvjestan.
+govori o nizu koraka koji zajedno čine jedan posao. Utvrđuje kako se stanje
+drži razumljivim kada je posao djelomično gotov, a nastavak neizvjestan.
 
 % ------------------------------------------------------------
 \section{Granice klasičnih transakcija}
@@ -50,7 +49,7 @@ nego što bi trebala. Dvofazno počinjanje preko dva kanala nije isključeno
 zato što je skupo ili zato što bi koordinator blokirao. Isključeno je zato
 što nijedno od dvaju sučelja u takvom protokolu ne sudjeluje. Ni razmjena
 preko pristupnih točaka ni fiskalizacijski poziv ne nude fazu pripreme ni
-glasanje. Presudu koordinatora nema kome uputiti.
+glasanje, pa presudu koordinatora nema kome uputiti.
 
 Propis to tehničko stanje dodatno omeđuje. Članak 48.\ stavak 3.\ nalaže da
 se fiskalizacija provodi odvojeno od postupka razmjene, dakle kao dva
@@ -72,14 +71,14 @@ raspoloživost mogu zadržati i jača svojstva, među njima uzročna
 konzistentnost. Navode i rezultat po kojem je ona gornja granica onoga što se
 pod razdvajanjem mreže može postići. Za ovaj rad iz
 toga slijedi metodološko pravilo. Reći da sustav nije konzistentan ne znači
-mnogo. Treba imenovati koje jamstvo daje.
+mnogo; treba imenovati koje jamstvo daje.
 
 % ------------------------------------------------------------
 \section{Saga i kompenzacija}
 \label{sec:saga}
 
-Kada atomarnost preko granice otpadne, popravljanje se seli iz protokola u
-poslovnu logiku. Gray tu selidbu imenuje \cite{gray1981transaction}:
+Kada atomarnost preko granice otpadne, popravljanje prelazi iz protokola u
+poslovnu logiku. Gray taj prijelaz imenuje \cite{gray1981transaction}:
 
 \begin{quote}
 „Nakon što se transakcija počini, njezini se učinci mogu izmijeniti samo
@@ -105,7 +104,7 @@ saga \cite{garciamolina1987sagas}. Dugotrajna transakcija je saga ako se može
 napisati kao niz transakcija koje se smiju izmjenjivati s drugima. Sustav
 jamči da će ili sve transakcije u sagi uspjeti, ili će se izvesti
 kompenzacijske transakcije koje djelomično izvođenje isprave. Cijena je
-poznata. Međustanja sage vide se izvana, pa saga nije izolirana.
+poznata: međustanja sage vide se izvana, pa saga nije izolirana.
 
 Izvedba sage traži i odluku o tome tko vodi niz. Orkestracija stavlja jednog
 voditelja koji poziva korake redom. Koreografija razdjeljuje odluku na
@@ -115,8 +114,8 @@ izbor slijedi iz propisa, ne iz ukusa. Za ispravno izdavanje, zaprimanje i
 fiskalizaciju odgovara porezni obveznik (čl.~58.~st.~2.). Kada odgovornost
 za ishod nosi jedan sudionik, niz vodi taj sudionik.
 
-Ostaje pitanje koje ovaj odjeljak mora postaviti, jer o njemu ovisi
-poglavlje~\ref{ch:studija}. Ima li u fiskalizaciji uopće što kompenzirati?
+Poglavlje~\ref{ch:studija} ovisi o tome ima li u fiskalizaciji što
+kompenzirati.
 
 Odgovor daje Grayeva podjela sastavnica transakcije na četiri vrste:
 
@@ -132,20 +131,18 @@ zakonska je obveza, ne rezervacija. Propis ne predviđa poruku kojom bi obveznik
 povukao provedenu fiskalizaciju. Predviđa odgodu, i to omeđenu: pet radnih
 dana kod tehničke nemogućnosti (čl.~49.~st.~1.).
 
-Iz toga slijedi da se saga na fiskalizaciju primjenjuje samo napola.
-Polovica koja govori o nizu lokalnih koraka s evidentiranim napretkom
-primjenjuje se. Polovica koja govori o kompenzaciji nema na što se primijeniti,
-jer koraci nisu poništivi. Obrazac koji ostaje nije poništavanje nego
-odgoda uz zapis. Upravo to poglavlje~\ref{ch:studija} treba od
-poglavlja~\ref{ch:pristupi}.
+Na fiskalizaciju je primjenjiv onaj dio obrasca sage koji prati niz lokalnih
+koraka i evidentira njihov napredak. Kompenzacija nije primjenjiva, jer koraci
+nisu poništivi. Poglavlje~\ref{ch:studija} iz obrasca preuzima odgodu uz zapis
+o napretku.
 
 Helland i Campbell isti zaključak izvode iz druge strane. Kada se poslovno
 pravilo provodi asinkrono, ono postaje vjerojatnosno, jer sustav koji ga
 provodi ne zna hoće li biti dostupan da ga
-provede \cite{helland2009quicksand}. Njihov zaključak je da sustav ili plaća
-sinkronu potvrdu, ili se povremeno mora ispričati. Fiskalizacija tu
-mogućnost nema. Isprika prema Poreznoj upravi nije predviđena kategorija,
-a propuštanje roka je prekršaj (čl.~73.~st.~1.~t.~21.).
+provede \cite{helland2009quicksand}. Njihov zaključak je da sustav ili snosi
+trošak sinkrone potvrde, ili se povremeno mora ispričati. Fiskalizaciji drugi
+izlaz nije dostupan. Propis ne predviđa naknadnu ispriku kao način rješavanja
+propuštene prijave, a propuštanje roka je prekršaj (čl.~73.~st.~1.~t.~21.).
 
 Iz toga slijedi granica koju odjeljak~\ref{sec:dizajn} razrađuje. Skup
 poslovnih poruka ne sadrži nijednu koja bi provedenu fiskalizaciju poništila,
@@ -186,8 +183,8 @@ Druga je vrijeme. Izlazi ne ovise o vremenu. Schneider uz uvjete redoslijeda
 dodaje napomenu da zbog kašnjenja u mreži automat neće nužno obraditi
 zahtjeve redom kojim su poslani ni redom kojim su primljeni.
 
-Tu nastaje napetost koju poglavlje~\ref{ch:studija} nasljeđuje. Model je
-određen nizom poruka, a rokovi u propisu mjere se satom. „U trenutku
+Tu se model razilazi s propisom, a poglavlje~\ref{ch:studija} tu razliku
+nasljeđuje. Model je određen nizom poruka, a rokovi u propisu mjere se satom. „U trenutku
 izdavanja“ i „pet radnih dana“ su vremenske veličine. Model automata ih ne
 zabranjuje. Protek roka može se modelirati kao izričit događaj, koji netko
 mora dostaviti, i tada je redovan član niza. Može se modelirati i kao uvjet
@@ -210,4 +207,4 @@ Odatle slijedi model koji poglavlje~\ref{ch:studija} treba.
 Životni ciklus dokumenta opisuje se kao automat čija su stanja izrijekom
 imenovana, uključujući ona koja propis ne imenuje. Stanje
 „poslano, nepotvrđeno“ nije rupa u izvedbi. To je stanje u kojem se sustav
-zaista nalazi dok čeka odgovor koji možda nikada ne stigne.
+nalazi dok čeka odgovor koji možda nikada ne stigne.

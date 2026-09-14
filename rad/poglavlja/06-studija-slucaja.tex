@@ -178,9 +178,8 @@ Odjeljak~\ref{sec:fault-error-failure} dao je pojam koji ovakav izvod
 uopće čini legitimnim. Avizienis i suradnici otkaz definiraju u odnosu na
 funkciju sustava, a ne u odnosu na njezin opis, pa usluga koja je u skladu
 sa specifikacijom svejedno može otkriti uzrok u samoj
-specifikaciji \cite{avizienis2004taxonomy}. Ono što slijedi su takvi uzroci.
-Nisu programerske greške. Nalaze se u dokumentu prije nego što itko napiše
-prvu liniju koda.
+specifikaciji \cite{avizienis2004taxonomy}. Ono što slijedi su takvi uzroci,
+prisutni u dokumentu prije nego što izvedba nastane.
 
 Jedna odredba proizvodi veći dio popisa. Zakon nalaže da se fiskalizacija
 provodi „odvojeno od postupka razmjene eRačuna“ (čl.~48.~st.~3., citirano u
@@ -213,8 +212,8 @@ zahtjeva u obliku UUID-a, a tehnička specifikacija sama kaže čemu taj
 identifikator služi: „za jednostavniji pronalazak poruka u sustavu u
 slučaju grešaka“ \cite{pu2026tehspec}. Odgovor je trag prihvaćanja zahtjeva,
 ali identifikator nema istu izričito propisanu ulogu kao JIR. Identifikator
-se uz to generira po zahtjevu, pa je nov pri svakom pokušaju. Oznaka je
-poziva, ne računa.
+se uz to generira po zahtjevu, pa je nov pri svakom pokušaju: oznaka je poziva,
+a ne računa.
 
 Razlika prema fiskalizaciji u krajnjoj potrošnji nije u tome što je jedan
 sustav stariji. Oba su uređena istim zakonom. Za promet u krajnjoj
@@ -251,8 +250,8 @@ odgovor izostane. Vrijeme čekanja i razmake izvedba bira, uz obvezu
 poštivanja primjenjivog roka; iz slobode tog izbora ne slijedi pravo
 odustajanja od same fiskalizacije.
 
-Kontrast s istim zakonom je oštar. Za fiskalizaciju u krajnjoj potrošnji
-pravilnik propisuje cilj obrade od dvije sekunde. Za fiskalizaciju eRačuna
+Za fiskalizaciju u krajnjoj potrošnji pravilnik propisuje cilj obrade od dvije
+sekunde. Za fiskalizaciju eRačuna
 takve odredbe nema.
 
 Uputa u rubrici pitanja i odgovora uređuje ponovno slanje eRačuna na
@@ -270,11 +269,12 @@ S008 odbija zapis za koji već postoji fiskaliziran eRačun s istim složenim
 identifikatorom i istom vrstom eRačuna.
 
 Ključ za razlikovanje duplikata dakle postoji i stabilan je pri ponovnom
-pokušaju. Ono što S008 dokazuje ipak je uže od onoga što se iz šifre čita na
-prvi pogled. Provjera potvrđuje da kod odredišta postoji zapis s tim složenim
+pokušaju. Dokaz koji S008 daje uži je od potvrde da je promatrani pokušaj
+prošao. Provjera potvrđuje da kod odredišta postoji zapis s tim složenim
 identifikatorom i tom vrstom eRačuna. Ne potvrđuje da su svi podaci
-istovjetni, ni da je zapis stvorio upravo promatrani pokušaj. Da bi nakon isteka vremena šifra doista pokazivala da je prvi pokušaj prošao,
-moraju vrijediti tri pretpostavke:
+istovjetni, ni da je zapis stvorio promatrani pokušaj. Da bi nakon isteka
+vremena šifra pokazivala da je prvi pokušaj prošao, moraju vrijediti tri
+pretpostavke:
 
 \begin{itemize}[nosep, leftmargin=1.4cm]
   \item identifikator nije ranije upotrijebljen za drukčiji sadržaj,
@@ -328,14 +328,14 @@ dopušta da oznake za izvornik nema, a fiskalizacijska poruka je zaseban model
 koji smije zahtijevati izričito \texttt{true} ili \texttt{false} za svaki
 zapis. Dva zahtjeva mogu istodobno vrijediti bez sukoba.
 
-Regulator je pitanje dotaknuo. Nije ga prešutio nego ostavio otvorenim.
+Regulator je pitanje dotaknuo i ostavio otvorenim.
 Uputa u rubrici pitanja i odgovora
 dopušta ponovno slanje pod istim brojem, ali samo u slučaju u kojem je
 dokument zaustavljen prije fiskalizacije, jer tada nije riječ o duplikatu
 nego o dovršetku nedovršenog postupka \cite{pu2026pitanjaodgovori}. Uputa se
 uz to izrijekom izuzima iz slučaja koji ovaj odjeljak razmatra, riječima da
 eRačun s oznakom kopije nije njezin predmet i da se šalje po posebnim
-pravilima. Ta posebna pravila su upravo dva izvora koji se ne poklapaju.
+pravilima. Ta posebna pravila su dva izvora koji se ne poklapaju.
 
 Ista uputa uvodi i treći put. Nakon uspješne dostave svi naknadni poslovni
 ispravci provode se, kako uputa kaže, isključivo putem storna i izdavanja
@@ -348,7 +348,7 @@ pravila.
 Ostaje ono što nijedan izvor ne određuje. Granica između poslovnog ispravka i
 ispravka podatka koji ne utječe na obračun poreza nije nigdje povučena, a
 datum ispravka i njegov odnos prema provjeri jedinstvenosti nisu određeni.
-Nedorečenost je u tome, a ne u broju dopuštenih postupaka.
+Broj dopuštenih postupaka pritom nije sporan.
 
 \paragraph{B3: nedovoljno određena atomarnost skupne poruke.}
 Jedan zahtjev nosi do sto zapisa, a odgovor sadrži najviše jednu grešku, s
@@ -371,7 +371,7 @@ greške stižu kao uspješan odgovor SOAP \cite{pu2026tehspec}. Klijent iz
 protokola ne može odlučiti smije li ponoviti.
 
 Odjeljak~\ref{sec:klasifikacija-otkaza} pokazao je da ponovni pokušaj ima
-smisla samo za prolazne kvarove. Upravo tu razliku specifikacija ne daje.
+smisla samo za prolazne kvarove. Tu razliku specifikacija ne daje.
 
 % ------------------------------------------------------------
 \subsection*{C. Rokovi koji teku od nedefiniranih događaja}
@@ -391,8 +391,8 @@ trenutak istekao. Nijedna odredba ne kaže da kašnjenje zbog reda čekanja u
 posredniku nije prekršaj. Svaka asinkrona obrada u posredniku
 time je potencijalno već zakašnjela.
 
-U 83 stranice tehničke specifikacije nema nijednog roka. Svi dolaze iz
-Zakona, nijedan iz dokumenta koji opisuje sučelje.
+U 83 stranice tehničke specifikacije nema nijednog roka; svi dolaze iz
+Zakona.
 
 % ------------------------------------------------------------
 \subsection*{D. Ispad infrastrukture i granica posebnog roka}
@@ -408,7 +408,7 @@ objavljenog jamstva razine usluge ni pravila o produljenju roka za takav ispad.
 Posrednik nema zakonsku obvezu raspoloživosti. Nema obvezu zadržavanja
 poruke do uspješne dostave, ni obvezu ponovnog pokušaja, ni obvezu
 obavještavanja klijenta o neuspjehu. Brisanje s Popisa ima jednu jedinu
-osnovu, istek certifikata ISO/IEC 27001 dulje od 60 dana (čl.~62.). Za lošu
+osnovu, istek certifikata ISO/IEC 27001 dulje od 60 dana (čl.~62.), a za lošu
 dostupnost nema nijedne.
 
 Odgovornost pritom ide u suprotnom smjeru od kontrole. Posrednik odgovara za
@@ -426,7 +426,7 @@ izdavatelja i njegove pristupne točke ne kaže ništa. Ni o obliku predaje, ni
 o potvrdi, ni o roku, ni o obavijesti o neuspjehu. To je korak 2 tijeka iz
 odjeljka~\ref{sec:arhitektura}, čije sučelje izvori ne opisuju.
 
-Tu granicu ipak uređuje jedan dokument. Upravo to čini slučaj zanimljivim.
+Tu granicu ipak uređuje jedan dokument.
 Uputa u rubrici pitanja i odgovora pristupnoj točki izdavatelja nalaže da
 onemogući ponovno slanje pod istim brojem nakon primljene potvrde o uspješnoj
 dostavi \cite{pu2026pitanjaodgovori}. Obveza dakle postoji, ali izvan
@@ -470,9 +470,8 @@ postupanje unutar pet radnih dana pravovremeno je po iznimci iz
 \end{tabular}
 \end{table}
 
-Druga klasa je metodološki najvažnija. Kod nje ishod nije loš nego nepoznat.
-Sustav ne zna je li obvezu ispunio. To neznanje nije privremeno stanje prije
-nego što stigne odgovor, nego trajno svojstvo situacije u kojoj odgovora nema.
+U drugoj klasi ishod nije loš nego nepoznat: sustav ne zna je li obvezu
+ispunio. Kada odgovora nema, to neznanje ne prestaje.
 
 Odjeljak~\ref{sec:klasifikacija-otkaza} dao je ime srodnoj razlici. Avizienis
 razlikuje signalizirane i nesignalizirane otkaze, a nesignaliziran otkaz je
@@ -483,7 +482,7 @@ sudionik ne zna. Ono što sustav u takvom stanju drži jest dokaz da je pokušao
 i da potvrde nema, a ne dokaz da je udaljena obrada pala.
 
 To je i granica onoga što obrasci iz poglavlja~\ref{ch:pristupi} mogu
-postići. Oni klasu mogu suziti. Ukloniti je ne mogu.
+postići. Oni klasu mogu suziti, ali ne i ukloniti.
 
 % ------------------------------------------------------------
 \subsection*{Dva izvora ograničenja}
@@ -491,7 +490,7 @@ postići. Oni klasu mogu suziti. Ukloniti je ne mogu.
 \label{sec:dvije-vrste}
 
 Izvedeni slučajevi pokazuju da granica onoga što izvedba može postići dolazi
-iz dva različita izvora. Ta razlika je teza ovoga rada.
+iz dva različita izvora.
 
 Prva vrsta poznata je literaturi. Nazvat ćemo je fizikalnom, jer slijedi iz
 svojstava raspodijeljenih sustava. Slučaj B1 je paradoks dvaju generala iz
@@ -510,8 +509,8 @@ literature dokazana nova opća teorijska klasa. Literatura o usklađenosti radi
 s procesom koji se smije
 ispraviti \cite{sadiq2007compliance,ly2015compliance}, a formalni model domene
 pouzdanost kanala uzima kao pretpostavku \cite{attali2004chilean}. Prvi izvor
-time pretpostavlja da je uzrok uklonjiv, drugi da otkaza nema. Doprinos nije
-sam naziv nego izvod razlike u promatranom tijeku. Prigovor da je pritom riječ samo o sukobu
+time pretpostavlja da je uzrok uklonjiv, drugi da otkaza nema. Doprinos je
+izvod te razlike u promatranom tijeku. Prigovor da je pritom riječ samo o sukobu
 zahtjeva razrađen je u odjeljku~\ref{sec:pogorsanje}.
 
 Slučajevi A1 i A2 proizlaze iz obveznog razdvajanja kanala. Članak 48.\
@@ -526,13 +525,12 @@ U slučaju D1 ograničenje ostaje ako kvar na strani države traje dulje od
 posebnog roka, jer obveznik nema polugu ni prema dostupnosti ni prema
 produljenju roka.
 
-Ovdje se zatvara luk koji je otvorio odjeljak~\ref{sec:djelomicni-otkaz}.
+To vraća izvod na odjeljak~\ref{sec:djelomicni-otkaz}.
 Waldo i suradnici tvrde da se otpornost izražava na razini sučelja i da
 bolja izvedba ne pomaže kada je sučelje to koje ne dopušta rješenje. Njihov
 primjer je red čekanja sa standardiziranim sučeljem u koje se ne mogu dodati
 identifikatori zahtjeva \cite{waldo1994note}. Fiskalizacija je isti slučaj,
-stupanj teži. Ondje je sučelje fiksirao dobavljač. Ovdje ga je fiksirao
-zakon.
+stupanj teži. Ondje je sučelje fiksirao dobavljač, a ovdje zakon.
 
 Ni transportni sloj tu ne pomaže. Za to postoji normativna potvrda.
 Profil AS4 na kojem hrvatska razmjena počiva traži podršku za otkrivanje
@@ -547,20 +545,20 @@ Odatle slijedi zaključak koji je odjeljak~\ref{sec:semantika-dostave} već
 najavio, ovdje s odredbom iza sebe. Duplikat koji nastane ponavljanjem na
 sloju između poslovnog sustava i pristupne točke dobiva nov identifikator
 poruke. Za AS4 to nije duplikat. Potiskivanje se mora dogoditi na krajevima,
-a kraj koji bi ga trebao izvesti je upravo onaj sloj koji propis ne uređuje.
+a kraj koji bi ga trebao izvesti je onaj sloj koji propis ne uređuje.
 
 Analiza obuhvaća jedanaest razrađenih načina otkazivanja i ne predstavlja
 iscrpan popis neodređenosti propisa. Jedno je pitanje premješteno u
-odjeljak~\ref{sec:ogranicenja}, jer kod njega propis ne šuti nego je odgovor
-izmješten u dokument koji nije propis.
+odjeljak~\ref{sec:ogranicenja}, jer je kod njega odgovor izmješten u dokument
+koji nije propis.
 
 % ------------------------------------------------------------
 \section{Dizajn otpornog rješenja}
 \label{sec:dizajn}
 
-Dizajn koji slijedi ne bira iz kataloga nego iz izvoda. Svaki obrazac ulazi
-kao odgovor na imenovanu skupinu iz odjeljka~\ref{sec:failure-modes}, a dva
-poznata obrasca ne ulaze. Za oba je razlog naveden.
+Svaki obrazac u dizajnu koji slijedi ulazi kao odgovor na imenovanu skupinu
+iz odjeljka~\ref{sec:failure-modes}. Dva poznata obrasca ne ulaze i za oba je
+razlog naveden.
 
 Podjela iz prethodnog odjeljka postavlja i gornju granicu onoga što se može
 postići. Za slučajeve iz raspodijeljene razmjene obrasci sužavaju prozor u
@@ -616,11 +614,10 @@ ne dobiva potvrdu koja bi imala propisano značenje.
 Obrazac koji tu granicu čini provjerljivom je odlazni pretinac iz
 odjeljka~\ref{sec:asinkrono}. Namjera da se dokument preda zapisuje se u
 istoj transakciji u kojoj i sam dokument, pa poslovni sustav nakon svakog
-prekida može utvrditi što je namjeravao poslati. Bez toga se dvostruki
-zapis pojavljuje na najgorem mjestu: sustav koji je dokument izdao ne bi
-znao je li ga i predao.
+prekida može utvrditi što je namjeravao poslati. Bez toga sustav koji je
+dokument izdao ne bi znao je li ga i predao.
 
-Ključ za razlikovanje duplikata mora doći od pošiljatelja. Taj zahtjev izvire
+Ključ za razlikovanje duplikata mora doći od pošiljatelja. Taj zahtjev slijedi
 iz nalaza u odjeljku~\ref{sec:failure-modes}. Profil AS4
 duplikate prepoznaje po identifikatoru poruke, koji se pri ponavljanju na
 ovoj granici mijenja, pa transportni sloj ovdje ne pomaže. Potiskivanje se
@@ -682,8 +679,8 @@ jednoj razini u lancu, jer se inače pokušaji množe. Tempo se ograničava
 lokalno, spremnikom žetona, čime se dobiva zaštita od preopterećenja bez
 modalnog ponašanja prekidača.
 
-Ovdje se pojavljuje trošak koji poglavlje~\ref{ch:rasprava} razrađuje.
-Ponavljanje kupuje ishod vremenom, a vrijeme je ovdje zakonski rok.
+Ovdje se pojavljuje trošak koji poglavlje~\ref{ch:rasprava} razrađuje. Svaki
+dodatni pokušaj troši dio zakonskog roka.
 
 % ------------------------------------------------------------
 \paragraph{Dva obrasca koja namjerno ne ulaze.}
@@ -710,7 +707,7 @@ Ispravak i odbijanje koji u propisu postoje nisu protuprimjer. Njih pokreće
 poslovni događaj, a ne tehnički kvar. Oni dodaju nov zapis umjesto da
 poništavaju raniji. Saga se time primjenjuje samo polovično. Niz koraka s
 evidentiranim napretkom ostaje koristan, kompenzacijski dio nema predmet.
-Obrazac koji preostaje nije poništavanje nego odgoda uz zapis.
+Preostaje odgoda uz zapis.
 
 % ------------------------------------------------------------
 \paragraph{Ono što preostaje jest evidencija.}
@@ -721,7 +718,7 @@ obveznik ne kontrolira traje dulje od posebnog roka iz članka 49.
 
 Ono što dizajn u tim slučajevima može jest učiniti stanje vidljivim i
 dokazivim. Sustav koji za svaki dokument bilježi u kojem je stanju stao,
-kada je pokušao i što je dobio kao odgovor ne jamči usklađenost. Jamči da
+kada je pokušao i što je dobio kao odgovor ne jamči usklađenost, ali jamči da
 vlastito postupanje može rekonstruirati i pokazati.
 
 Toj razlici težinu daje raspored odgovornosti. Obveznik odgovara za ishod

@@ -2,10 +2,9 @@
 \label{ch:pozadina}
 
 Poglavlje uspostavlja propis iz kojeg poglavlje~\ref{ch:studija} izvodi
-načine otkazivanja. Redoslijed je namjeran. Prvo se opisuje fiskalizacija
-u krajnjoj potrošnji, jer ona pokazuje koje zaštite hrvatski zakonodavac
-zna propisati. Zatim se opisuje fiskalizacija eRačuna, koja te zaštite ne
-sadrži.
+načine otkazivanja. Prvo se opisuje fiskalizacija u krajnjoj potrošnji i
+zaštite koje su za nju propisane. Zatim se opisuje fiskalizacija eRačuna,
+koja te zaštite ne sadrži.
 
 % ------------------------------------------------------------
 \section{Fiskalizacija u Hrvatskoj}
@@ -37,13 +36,13 @@ elementi i jesu li potpisani ispravnim certifikatom (st.~2.). Ako jesu,
 vraća obvezniku Jedinstveni identifikator računa, JIR (st.~3.). Ako JIR
 ne može odrediti, vraća poruku o odbijanju (st.~4.).
 
-Ta razmjena obvezniku ostavlja trag. JIR je dokaz da je obveza ispunjena.
-Taj dokaz stiže od Sustava za fiskalizaciju.
+Razmjena obvezniku ostavlja dokaz o ispunjenoj obvezi: JIR koji izdaje
+Sustav za fiskalizaciju.
 
 Zakon uređuje i slučaj kada veza ne radi. Obveznik tada izdaje račune bez
 JIR-a (čl.~21.~st.~1.) i u roku od dva radna dana dužan je uspostaviti
-vezu te dostaviti elemente svih tako izdanih računa (st.~2.). Rok sam po
-sebi ne bi značio mnogo. Značenje mu daje stavak koji dolazi iza njega:
+vezu te dostaviti elemente svih tako izdanih računa (st.~2.). Pravni učinak
+tog roka određuje sljedeći stavak:
 
 \begin{quote}
 „Za račune izdane prema stavku 1.\ ovoga članka smatra se da je ispravno
@@ -51,16 +50,14 @@ proveden postupak fiskalizacije računa ako se postupi u roku propisanom
 stavkom 2.\ ovoga članka.“ \hfill (čl.~21.~st.~3.)
 \end{quote}
 
-Zakon propisuje rok i pravni učinak njegova poštivanja. Zakašnjela
-dostava unutar sanacijskog roka izjednačena je s pravovremenom. Za
-potpuni prestanak rada uređaja propisan je i izvanmrežni izlaz, uvezana
+Zakašnjela dostava unutar sanacijskog roka izjednačena je s pravovremenom.
+Za potpuni prestanak rada uređaja propisan je i izvanmrežni izlaz, uvezana
 knjiga računa ovjerena putem sustava ePorezna (čl.~22.).
 
-Obveznik u sustavu B2C na kraju postupka zna na čemu je. Ima potvrdu da
-je poruka stigla, propisano postupanje kada veza padne i papirnati izlaz
-kada uređaj stane. Fiskalizacija eRačuna ima vlastiti poseban rok za
-tehničku nemogućnost, ali nema JIR ni jednak izvanmrežni postupak. Razlike
-razrađuje
+Obveznik u sustavu B2C na kraju postupka ima potvrdu da je poruka stigla,
+propisano postupanje pri prekidu veze i papirnati izlaz pri prestanku rada
+uređaja. Fiskalizacija eRačuna ima vlastiti poseban rok za tehničku
+nemogućnost, ali nema JIR ni jednak izvanmrežni postupak. Razlike razrađuje
 odjeljak~\ref{sec:fiskalizacija-2-0}.
 
 % ------------------------------------------------------------
@@ -109,8 +106,7 @@ izdavanja, a kod samoizdavanja najkasnije pet radnih dana nakon izdavanja
 (čl.~48.~st.~3.). Primatelj fiskalizira najkasnije pet radnih dana od
 primitka eRačuna (st.~4.).
 
-Iz istog stavka dolazi odredba koja određuje arhitekturu svakog sustava
-usklađenog s ovim zakonom:
+Isti stavak razdvaja fiskalizaciju od razmjene eRačuna:
 
 \begin{quote}
 „Fiskalizaciju eRačuna za izdani eRačun izdavatelj eRačuna dužan je
@@ -119,10 +115,9 @@ izdavanja eRačuna, a u slučaju samoizdavanja računa najkasnije pet radnih
 dana nakon što je eRačun izdan.“ \hfill (čl.~48.~st.~3.)
 \end{quote}
 
-Razmjena i fiskalizacija zakonom su razdvojene. Dokument putuje jednim
-kanalom, a podaci o njemu drugim. Zakon to razdvajanje ne dopušta nego
-nalaže, pa ga implementacija ne može ukinuti. Poglavlje~\ref{ch:studija}
-pokazuje koje posljedice iz toga slijede.
+Dokument putuje jednim kanalom, a podaci o njemu drugim. Zakon to
+razdvajanje ne dopušta nego nalaže, pa ga izvedba ne može ukinuti.
+Poglavlje~\ref{ch:studija} pokazuje koje posljedice iz toga slijede.
 
 Zakon uređuje i ponovno slanje. Kada se ispravlja podatak koji ne utječe
 na obračun poreza, eRačun se \emph{može} u istom razdoblju oporezivanja
@@ -163,7 +158,7 @@ Popis posrednika s izdanom potvrdom objavljuje se na Javnom portalu
 (st.~3.). Dokumentacija uključuje i dokaz o zaštiti osobnih podataka
 prema članku 32.\ Opće uredbe o zaštiti podataka (čl.~61.).
 
-Izlaz iz te uloge uređen je po jednoj jedinoj osnovi. Posrednik je dužan
+Izlaz iz te uloge uređen je po jednoj osnovi. Posrednik je dužan
 najkasnije u roku od 60 dana od isteka valjanosti dostaviti Poreznoj
 upravi najnoviju verziju certifikata ISO/IEC 27001. Ako to ne učini,
 Porezna uprava briše ga s Popisa (čl.~62.~st.~1.\ i~2.). Drugih osnova
@@ -186,13 +181,13 @@ ostaje na ugovoru, a ugovor nije predmet ovoga rada.
 \section{Europski okvir}
 \label{sec:eu-okvir}
 
-Hrvatski propis ne stoji sam. Direktiva 2014/55/EU uspostavila je okvir
-elektroničkog fakturiranja u javnoj nabavi \cite{eu2014direktiva55}, iz
-kojega je nastala europska norma EN 16931. Norma definira semantički
-podatkovni model računa, ali ne propisuje kako se račun prenosi.
+Hrvatski propis oslanja se na europske dokumente. Direktiva 2014/55/EU
+uspostavila je okvir elektroničkog fakturiranja u javnoj
+nabavi \cite{eu2014direktiva55}, iz kojega je nastala europska norma
+EN 16931. Norma definira semantički podatkovni model računa, ali ne
+propisuje kako se račun prenosi.
 
-Zakon o fiskalizaciji poziva se na tu normu definicijom koja je šira nego
-što se očekuje:
+Zakon o fiskalizaciji pojam EU norme definira šire od same norme:
 
 \begin{quote}
 „EU norma je EU norma 16931-1:2017, kao i Tehnička specifikacija osnovne

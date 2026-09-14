@@ -3,12 +3,12 @@
 
 Ovo poglavlje ne donosi nov rezultat. Ono skuplja rječnik, jer
 odjeljak~\ref{sec:dizajn} bira iz skupa obrazaca, a izbor bez imenovanog
-skupa nije izbor nego navika. Svaki obrazac dobiva tri stvari: što rješava,
+skupa ne može se obrazložiti. Svaki obrazac dobiva tri stvari: što rješava,
 po kojoj cijeni i gdje odmaže.
 
-Treća stavka je ovdje najvažnija. Obrasci otpornosti opisuju se obično kao
-dodaci koji sustav čine boljim. Mjerenja koja slijede pokazuju da svaki od
-njih ima režim u kojem stanje pogoršava.
+Obrasci otpornosti opisuju se obično kao dodaci koji sustav čine boljim.
+Mjerenja koja slijede pokazuju da svaki od njih ima režim u kojem stanje
+pogoršava, pa treća stavka dobiva jednaku razradu kao prve dvije.
 
 % ------------------------------------------------------------
 \section{Sinkrona komunikacija}
@@ -27,12 +27,11 @@ koji Amazon koristi: bira se prihvatljiv udio lažnih isteka, primjerice
 primjeru p99,9.
 
 Odjeljak~\ref{sec:detekcija-otkaza} već je rekao da istek vremena nije
-opažanje otkaza. Ovdje se dodaje da nije ni besplatan.
+opažanje otkaza; ovdje se dodaje da ima cijenu.
 
 Ponovni pokušaj je drugi obrazac. Opravdava ga Grayeva pretpostavka iz
 odjeljka~\ref{sec:klasifikacija-otkaza}: ako je većina kvarova prolazna,
-drugi pokušaj najčešće uspije. Brooker isti mehanizam opisuje oštrije. Ta
-je slika korisnija od uobičajenog opisa:
+drugi pokušaj najčešće uspije. Brooker isti mehanizam opisuje drukčije:
 
 \begin{quote}
 „Ponovni pokušaji su sebični. Drugim riječima, kada klijent ponovno
@@ -117,8 +116,7 @@ je onaj koji ponovljenu poruku prepoznaje i ne obrađuje je dvaput.
 
 Cijena tog para je pomak u vremenu. Pošiljatelj zna da je poruka predana, ne
 da je posao obavljen. To je razlika koju su Saltzer i suradnici opisali u
-odjeljku~\ref{sec:semantika-dostave}. Predaja u red je ne uklanja nego
-premješta.
+odjeljku~\ref{sec:semantika-dostave}, a predaja u red je premješta.
 
 Nezgodan dio je spoj s bazom podataka. Sustav koji u istom koraku mijenja
 vlastito stanje i šalje poruku ima dva odredišta i jednu obradu. Ako
@@ -145,5 +143,4 @@ kojem se dvije poruke prepoznaju kao ista poruka. Taj ključ mora dolaziti od
 pošiljatelja, ne od primatelja. Ključ koji generira primatelj pri svakom
 zahtjevu je nov, pa ne razlikuje ponovljeni zahtjev od novog.
 
-Zadnja rečenica nije općenita napomena. Poglavlje~\ref{ch:studija} pokazuje
-sučelje kod kojeg je to točno pitanje.
+Poglavlje~\ref{ch:studija} pokazuje sučelje kod kojeg je to točno pitanje.

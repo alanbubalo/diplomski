@@ -3,32 +3,32 @@
 
 Obveznik u Hrvatskoj od 2026.\ mora svaki eRačun dostaviti primatelju i prijaviti
 ga Poreznoj upravi, i to dvama kanalima koje propis ne povezuje. Rad izvodi načine
-na koje se taj tijek može pokvariti. Izvod stoji na Zakonu, Pravilniku i
-tehničkoj specifikaciji, pa je svaka tvrdnja provjerljiva bez pristupa ijednom
+na koje se taj tijek može pokvariti. Izvod se oslanja na Zakon, Pravilnik i
+tehničku specifikaciju, pa je svaka tvrdnja provjerljiva bez pristupa ijednom
 sustavu.
 
 Izvedeno je jedanaest načina otkazivanja. Jedan od njih pokazuje da način
 identifikacije ispravljenog eRačuna nije potpuno određen. Ispravak bez poreznog
 učinka izdaje se pod istim brojem, provjera S008 duplikat prepoznaje po složenom
-identifikatoru koji indikator kopije ne sadrži, a izvori ne određuju mora li
+identifikatoru koji ne sadrži indikator kopije, a izvori ne određuju mora li
 ispravak zadržati datum izvornika. Zadržavanje datuma po opisanom ključu vodi u
 odbijanje, a novi datum uz referencu na prethodni račun tu provjeru izbjegava.
 Rad zato utvrđuje nedorečenost sučelja; ne tvrdi da je svaki ispravak nužno
 odbijen ni da bi stvarni sustav drugu granu prihvatio.
 
-Iz toga slijedi teza rada. Dio posljedica nastaje iz svojstava raspodijeljene
+Taj slučaj nije jedini. Dio posljedica nastaje iz svojstava raspodijeljene
 razmjene, a dio iz obvezne arhitekture ili iz pravila koja ne određuju semantiku
 kvara. Rad za drugu skupinu upotrebljava radni pojam \emph{regulatorno inducirano
 ograničenje}. Pokrivenost je ocijenjena matricom jedanaest načina otkazivanja i
-šest obrazaca, uz označenu razinu dokaza za svaku ćeliju. Obrasci ne uklanjaju
-nijedan način otkazivanja, ali sužavaju prozor nepoznatog ishoda ili ga čine
-vidljivim. Njihov učinak ovisi o granici i konfiguraciji: isti mehanizam može
-zaštititi lokalne resurse, ali loše podešen može potrošiti dio zakonskog roka.
+šest obrazaca, uz označenu razinu dokaza za svaku čeliju. Obrasci ne uklanjaju
+nijedan način otkazivanja, ali sužavaju prozor nepoznatog ishoda ili taj ishod
+čine vidljivim. Njihov učinak ovisi o granici i konfiguraciji: isti mehanizam
+može zaštititi lokalne resurse, ali loše podešen može smanjiti vrijeme preostalo
+do isteka zakonskog roka.
 
 \vspace{1em}
 \noindent\textbf{Ključne riječi:} tolerancija na greške, raspodijeljeni sustavi,
 fiskalizacija eRačuna, obrasci otpornosti, regulatorno inducirano ograničenje,
-referentna arhitektura,
 mjerilo izvedeno iz propisa
 
 \chapter*{Abstract}
@@ -37,8 +37,8 @@ mjerilo izvedeno iz propisa
 From 2026, a Croatian business subject to fiscalization must deliver every
 eInvoice to its recipient and report it to the Tax Administration, through two
 channels that the regulation does not connect. This thesis derives the ways in
-which that flow can break. The derivation uses the Act, the Ordinance and the
-technical specification, so every claim is verifiable without access to any
+which that flow can break. The derivation draws on the Act, the Ordinance and
+the technical specification, so every claim is verifiable without access to any
 system.
 
 Eleven failure modes are derived. One of them shows that the identification of a
@@ -51,18 +51,17 @@ preceding invoice avoids that check. The thesis therefore identifies an
 interface ambiguity; it neither claims that every correction is necessarily
 rejected, nor that the production system would accept the other branch.
 
-Some consequences arise from distributed exchange, while others arise from the
-mandated architecture or from rules that leave failure semantics undefined. The
-thesis uses \emph{regulation-induced constraint} as a working term for the latter
-group. Coverage is assessed with a matrix of eleven failure modes and six
+That case is not the only one. Some consequences arise from distributed
+exchange, while others arise from the mandated architecture or from rules that
+leave failure semantics undefined. The thesis uses
+\emph{regulation-induced constraint} as a working term for the latter group. Coverage is assessed with a matrix of eleven failure modes and six
 patterns, with a labelled evidence level for every cell. No pattern removes a
-failure mode, but patterns narrow the window of an unknown outcome or make it
-observable. Their effect depends on the boundary and configuration: the same
-mechanism may protect local resources, while a poor configuration may consume
-part of a statutory deadline.
+failure mode, but patterns narrow the window of an unknown outcome or make that
+outcome observable. Their effect depends on the boundary and configuration: the
+same mechanism may protect local resources, while a poor configuration may
+reduce the time remaining before a statutory deadline.
 
 \vspace{1em}
 \noindent\textbf{Keywords:} fault tolerance, distributed systems, eInvoice
 fiscalization, resilience patterns, regulation-induced constraint,
-reference architecture,
 regulation-derived oracle

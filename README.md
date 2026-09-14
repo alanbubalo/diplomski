@@ -29,7 +29,7 @@ latexmk -c                # počisti pomoćne datoteke
 ## Opseg evaluacije
 
 Evaluacija je analitička. Spaja matricu *način otkazivanja × obrazac* s ilustrativnim
-prototipom. Svaka ćelija matrice nosi razinu tvrdnje: (a) citat, (b) prototip ili
+prototipom. Svaka čelija matrice nosi razinu tvrdnje: (a) citat, (b) prototip ili
 (c) prosudba autora. Prešućena prosudba je ono što pada na obrani.
 
 Empirijska evaluacija je izvan opsega. Nema sustava pod testom, chaos enginea, harnessa
