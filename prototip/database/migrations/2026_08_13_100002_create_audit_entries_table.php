@@ -7,15 +7,9 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Evidencija kao ostatak.
- *
- * Kada se dio slucajeva ne moze ukloniti, preostaje da se stanje uoci i
- * zabiljezi. Ova tablica je taj ostatak: niz dogadaja koji objasnjava kako je
- * predaja dosla u zavrsno stanje, ukljucujuci trenutke u kojima sustav nije
- * znao sto se dogodilo.
- *
- * Zapisuje se i tumacenje koje NIJE bilo jednoznacno. Presucen trenutak
- * neznanja je upravo ono sto evidencija treba sacuvati.
+ * Evidencija kao ostatak: niz dogadaja koji objasnjava kako je predaja dosla u
+ * zavrsno stanje. Zapisuje se i tumacenje koje nije bilo jednoznacno, jer je
+ * trenutak neznanja upravo ono sto evidencija treba sacuvati.
  */
 return new class extends Migration
 {

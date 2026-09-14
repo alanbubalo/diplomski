@@ -1,24 +1,3 @@
-% ============================================================
-%  8. Evaluacija
-%  Budžet: ~4 str. ODGOVARA RQ2, doprinosi RQ3.
-%  Struktura zaključana 2026-08-13.
-%
-%  ⚠ KOSTUR PREPISAN 2026-08-13, tekst napisan 2026-08-13.
-%    Raniji kostur je govorio o "presudi oraclea", "stepenicama ljestvice"
-%    i tablicama koje se GENERIRAJU iz harnessa. Nema harnessa, nema
-%    ljestvice, nema mjerenja. Ne vraćati.
-%
-%  ⚠ RAZINA (b) DANA JE SAMO ZA ONO ŠTO PROTOTIP DOISTA POKREĆE.
-%    Prototip vrti B1, B2 i D1 na fiskalizacijskom kanalu te E1 na
-%    granici C1↔C2. D2 ne izvodi, pa ondje ostaje (c).
-%    Devet ćelija nosi (b). Ne dijeliti (b) po sličnosti mehanizma.
-%
-%  ✔ attali2004chilean PROVJEREN 2026-08-14 čitanjem rada (HAL inria-00087210,
-%    PDF arhiviran izvan repozitorija uz SHA-256). Citiran u 8.1 kao drugi razlog
-%    zašto matrica postoji, i u 6.2 uz regulatorno inducirano ograničenje.
-%    Navod: „We assume that the communication channels are
-%    reliable." Naslov i DOI u bibu su ispravljeni istog dana.
-% ============================================================
 \chapter{Evaluacija}
 \label{ch:evaluacija}
 
@@ -281,10 +260,6 @@ regulatoran i može se pomaknuti preciznijim pravilom ili specifikacijom, dok
 fizikalna neodređenost udaljenog poziva ostaje tehnički problem.
 
 % ------------------------------------------------------------
-% ⚠ Dvije stvari koje evaluacija NE tvrdi, i to je namjerno:
-%   1. da su obrasci najbolji mogući — usporedbe s alternativama nema
-%   2. da je pokrivenost izmjerena — nije, izvedena je
-%   Oba priznanja idu u pogl. 9, ne ovdje. Ovdje bi razvodnila nalaz.
 
 Devet od 66 ćelija nosi razinu \textsuperscript{b}. One počivaju na završnim
 stanjima iz izvršnih scenarija i iz 32 testa koji te scenarije provjeravaju, ne na mjerenju performansi. Domet i cijena tog izbora razrađeni

@@ -52,11 +52,7 @@ final class Handover extends Model
         return $this->hasMany(AuditEntry::class)->orderBy('sequence');
     }
 
-    /**
-     * Rok postoji tek kada je nemogucnost nastupila.
-     *
-     * Dok sve radi, roka iz cl. 49. st. 1. nema jer nema od cega teci.
-     */
+    /** Rok iz cl. 49. st. 1. postoji tek kada je nemogucnost nastupila. */
     public function deadline(): ?Deadline
     {
         return $this->impossibility_onset_at !== null

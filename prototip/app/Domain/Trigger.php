@@ -5,15 +5,11 @@ declare(strict_types=1);
 namespace App\Domain;
 
 /**
- * Dogadaji koji pomicu automat.
+ * Dogadaji koji pomicu automat. Isteka vremena nema medu njima: dokument koji
+ * je poslan i nije potvrden ostaje poslan i nepotvrden.
  *
- * Primijetiti da isteka vremena nema medu njima. Izostanak odgovora ne pomice
- * stanje: dokument koji je poslan i nije potvrden ostaje poslan i nepotvrden. To
- * je razlika izmedu automata koji priznaje neznanje i automata koji ga prikriva
- * pogadanjem.
- *
- * Iz istog razloga postoje DVA poticaja koja nose sifru S008. Sifra je jedna,
- * znacenja su dva, a razlucuje ih zapisana namjera (vidi ResponseInterpreter).
+ * Dva poticaja nose sifru S008. Sifra je jedna, znacenja su dva, a razlucuje ih
+ * zapisana namjera (vidi ResponseInterpreter).
  */
 enum Trigger: string
 {

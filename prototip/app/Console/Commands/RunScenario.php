@@ -22,12 +22,8 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 
 /**
- * Pokretac cetiri scenarija iz poglavlja 7.
- *
- * Sat je fiksiran na jedan trenutak da bi ispis bio ponovljiv. Bez toga dokazni
- * listing u radu ne bi bio provjerljiv, jer bi se mijenjao pri svakom
- * pokretanju. Fiksiranje sata ne dira nijedan nalaz: rok se racuna iz razlike
- * trenutaka, ne iz njihovih apsolutnih vrijednosti.
+ * Pokretac cetiri scenarija iz poglavlja 7. Sat je fiksiran da bi ispis bio
+ * ponovljiv; rok se racuna iz razlike trenutaka, pa to ne dira nijedan nalaz.
  *
  * Ispisi su hrvatski jer su dokazni materijal za rad na hrvatskom. Kod je
  * engleski.
@@ -70,10 +66,8 @@ final class RunScenario extends Command
     }
 
     /**
-     * B1: sinkroni poziv istekne bez odgovora.
-     *
-     * Pokazuje da dokument zavrsi u imenovanom stanju umjesto u rupi, da se
-     * raspored ponavljanja racuna iz preostalog roka, i da se u DEADLINE_EXPIRED
+     * B1: sinkroni poziv istekne bez odgovora. Dokument zavrsi u imenovanom
+     * stanju, raspored se racuna iz preostalog roka, a u DEADLINE_EXPIRED se
      * ulazi pokusajem koji naide na istrosen rok.
      */
     private function scenarioB1(bool $withRecord): int
@@ -103,10 +97,8 @@ final class RunScenario extends Command
     }
 
     /**
-     * E1: predaja bez potvrde na nereguliranoj granici.
-     *
-     * Pitanje na koje scenarij odgovara nije "je li dokument stigao" nego "moze
-     * li poslovni sustav uopce znati da ga je pokusao predati".
+     * E1: predaja bez potvrde na nereguliranoj granici. Pitanje nije je li
+     * dokument stigao nego moze li sustav znati da ga je pokusao predati.
      */
     private function scenarioE1(bool $withRecord): int
     {
@@ -140,14 +132,10 @@ final class RunScenario extends Command
         );
     }
 
-        /**
-     * B2: ista sifra S008 u tri spoja namjere i rednog pokusaja.
-     *
-     * ⚠ USPOREDBA JE POSTENA: izvedba bez zapisa namjere iz spremljenog
-     * dokumenta izvodi je li predmet ispravak (indikator kopije je polje
-     * eRacuna). Zato dio 2 u OBJE izvedbe zavrsi jednako, i to je nalaz, a ne
-     * propust scenarija. Kontrast se pojavljuje tek u dijelovima 1 i 3, gdje
-     * treba redni pokusaj dostave, a njega dokument ne nosi.
+    /**
+     * B2: ista sifra S008 u tri spoja namjere i rednog pokusaja. Dio 2 u obje
+     * izvedbe zavrsi jednako, jer se ispravak izvodi iz indikatora kopije.
+     * Kontrast se pojavljuje u dijelovima 1 i 3, gdje treba redni pokusaj.
      */
     private function scenarioB2(bool $withRecord): int
     {
@@ -160,14 +148,11 @@ final class RunScenario extends Command
         $handover = $first->issueAndHandOver($this->invoiceData('R-2026-003'), Intent::ORIGINAL);
 
         if ($handover === null) {
-            // Izvedba bez zapisa ovdje gubi trag, pa ponovni pokusaj nema na sto
-            // nastaviti. Scenarij svejedno ide dalje, jer dvoznacnost sifre S008
-            // treba pokazati i bez prvog dijela.
+            // Izvedba bez zapisa gubi trag, pa ponovni pokusaj nema na sto
+            // nastaviti. Scenarij ide dalje i bez prvog dijela.
             $this->noTrace();
         } else {
-            // Pokusaj se pokrece na trenutak koji je raspored zakazao, ne na
-            // proizvoljan. Sustav koji raspored izracuna i ne drzi ga se nema
-            // sto pokazati.
+            // Pokusaj se pokrece na trenutak koji je raspored zakazao.
             CarbonImmutable::setTestNow($handover->next_attempt_at);
             $handover = $first->retry($handover->refresh());
             $this->dumpHandover($handover);
@@ -175,8 +160,8 @@ final class RunScenario extends Command
 
         $this->step('Dio 2: propisani ispravak pod istim brojem racuna dobiva istu sifru.');
 
-        // Svaki dio pocinje od istog trenutka, jer inace nosi rok koji je
-        // pomaknuo prethodni dio i ispis se vise ne cita kao jedna slika.
+        // Svaki dio pocinje od istog trenutka, inace nosi rok koji je pomaknuo
+        // prethodni dio i ispis se vise ne cita kao jedna slika.
         CarbonImmutable::setTestNow(CarbonImmutable::parse(self::CLOCK_START));
 
         $second = $this->fiscalizationService([IntermediaryResponse::S008], $withRecord);
@@ -268,9 +253,8 @@ final class RunScenario extends Command
         $this->step('Odrediste se oporavlja sljedeci dan, prije isteka roka.');
         CarbonImmutable::setTestNow(CarbonImmutable::parse(self::CLOCK_START)->addDay());
 
-        // Raspored je sljedeci pokusaj zakazao za 5. rujna, jer racuna s tim da
-        // se o odredistu nista novo ne zna. Dogadaj oporavka je ono sto raniji
-        // poziv opravdava, pa se biljezi prije njega.
+        // Dogadaj oporavka je ono sto raniji poziv opravdava, pa se biljezi
+        // prije njega.
         $handover = $service->destinationRecovered($handover->refresh());
         $handover = $service->retry($handover);
         $this->dumpHandover($handover);
@@ -326,10 +310,8 @@ final class RunScenario extends Command
     }
 
     /**
-     * Namjera i redni pokusaj zajedno, jer sifru tumaci njihov spoj.
-     *
-     * Prazna namjera nije ukras ispisa. Izvedba koja predaju zapisuje tek nakon
-     * odgovora nema sto upisati, pa se to i vidi.
+     * Namjera i redni pokusaj zajedno, jer sifru tumaci njihov spoj. Izvedba
+     * koja predaju zapisuje tek nakon odgovora nema sto upisati, pa se to vidi.
      */
     private function intentLabel(Handover $handover): string
     {
@@ -426,10 +408,7 @@ final class RunScenario extends Command
 
     /**
      * Na kojem pokusaju eksponencijalni odmak prvi put zakaze slanje izvan roka.
-     *
-     * Broj nije ukras. On pokazuje da obrazac nema nikakav odnos prema roku: isti
-     * raspored uz drukciju osnovicu prekoracuje ranije ili kasnije, a propis se u
-     * tom izboru ne pojavljuje.
+     * Broj pokazuje da obrazac nema nikakav odnos prema roku.
      */
     private function firstAttemptPastDeadline(RetrySchedule $schedule, Deadline $deadline): int
     {

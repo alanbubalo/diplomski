@@ -10,18 +10,11 @@ use Carbon\CarbonInterface;
 /**
  * Dva rasporeda ponavljanja, jedan pokraj drugog, da se razlika vidi.
  *
- * Eksponencijalni odmak razmak POVECAVA kako pokusaji rastu. Rok iz cl. 49.
- * st. 1. istovremeno se SMANJUJE, jer tece od nastupa nemogucnosti. Dva se
- * kretanja razilaze, i to je razlog zbog kojeg uobicajeni obrazac ovdje ne
- * zadovoljava uvjet koji skupina C postavlja.
+ * Eksponencijalni odmak razmak povecava, a rok iz cl. 49. st. 1. se istovremeno
+ * smanjuje. Raspored svjestan roka radi obrnuto: sljedeci pokusaj stavlja na
+ * polovicu preostalog roka, pa se pokusaji zgusnjavaju i nikada ne prelaze rok.
  *
- * Raspored svjestan roka radi obrnuto: sljedeci pokusaj stavlja na polovicu
- * PREOSTALOG roka, pa se pokusaji zgusnjavaju kako rok tanji. Uz to nikada ne
- * prelazi rok, jer je polovica preostalog uvijek unutar preostalog.
- *
- * Slucajni razmak (Brooker) namjerno je iskljucen po zadanom. Dokazni ispis u
- * poglavlju 7 mora biti ponovljiv, a jedan posiljatelj u prototipu ionako nema
- * s kim se sudariti. U pogonu bi bio ukljucen.
+ * Slucajni razmak iskljucen je po zadanom da dokazni ispis ostane ponovljiv.
  */
 final readonly class RetrySchedule
 {
@@ -32,10 +25,8 @@ final readonly class RetrySchedule
     ) {}
 
     /**
-     * Sljedeci pokusaj na polovici preostalog roka.
-     *
-     * Vraca null kada roka vise nema -- tada se ne ponavlja nego se prelazi u
-     * DEADLINE_EXPIRED, sto je uvjet nad prijelazom iz StateMachine.
+     * Sljedeci pokusaj na polovici preostalog roka. Vraca null kada roka vise
+     * nema; tada se ne ponavlja nego se prelazi u DEADLINE_EXPIRED.
      */
     public function deadlineAware(Deadline $deadline, CarbonInterface $now): ?CarbonImmutable
     {
@@ -54,11 +45,7 @@ final readonly class RetrySchedule
         return CarbonImmutable::instance($now)->addSeconds(min($interval, $remaining));
     }
 
-    /**
-     * Klasicni eksponencijalni odmak, ovdje samo za usporedbu.
-     *
-     * Ne prima rok jer ga i ne gleda. To je cijela poanta.
-     */
+    /** Klasicni eksponencijalni odmak, za usporedbu. Rok ne prima jer ga i ne gleda. */
     public function exponentialBackoff(int $attempt, CarbonInterface $now): CarbonImmutable
     {
         $interval = self::MIN_INTERVAL_S * (2 ** max(0, $attempt - 1));

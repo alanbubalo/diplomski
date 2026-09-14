@@ -7,14 +7,10 @@ namespace App\Domain;
 /**
  * Stanja u kojima se predaja dokumenta moze naci.
  *
- * SENT_UNCONFIRMED je stanje koje ni Zakon, ni Pravilnik, ni tehnicka
- * specifikacija ne imenuju. Odjeljak 6.3 rada tvrdi da ga sustav svejedno mora
- * imenovati, jer ga inace mora lagati u jedno od dva susjedna stanja. Ovaj enum
- * je izvedba te tvrdnje.
- *
- * DEADLINE_EXPIRED nije stanje u koje se ulazi protekom vremena. U njega se
- * ulazi pokusajem koji naidje na istrosen rok -- rok je uvjet nad prijelazom,
- * ne stanje. Razlog je u odjeljku 5.3: automat je odreden nizom poruka.
+ * SENT_UNCONFIRMED ne imenuje ni Zakon, ni Pravilnik, ni tehnicka
+ * specifikacija; odjeljak 6.3 tvrdi da ga sustav svejedno mora imenovati.
+ * U DEADLINE_EXPIRED se ne ulazi protekom vremena nego pokusajem koji naidje
+ * na istrosen rok, jer je rok uvjet nad prijelazom (odjeljak 5.3).
  */
 enum State: string
 {
@@ -24,7 +20,6 @@ enum State: string
     case CORRECTION_REJECTED = 'correction-rejected';
     case DEADLINE_EXPIRED = 'deadline-expired';
 
-    /** Stanja iz kojih vise nema prijelaza. */
     public function isFinal(): bool
     {
         return match ($this) {
@@ -34,11 +29,8 @@ enum State: string
     }
 
     /**
-     * Zna li poslovni sustav ishod predaje?
-     * Istek roka ne razrjesava raniji poziv.
-     *
-     * Ovo je razlika koju klasifikacija iz odjeljka 6.2 zove "neodredeno":
-     * nije rijec o losem ishodu nego o ishodu koji sustav ne moze saznati.
+     * Zna li poslovni sustav ishod predaje? Istek roka ne razrjesava raniji
+     * poziv. To je klasa koju odjeljak 6.2 zove "neodredeno".
      */
     public function outcomeKnown(): bool
     {

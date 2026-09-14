@@ -35,17 +35,10 @@ final class Invoice extends Model
     }
 
     /**
-     * Poslovna namjera koliko se moze IZVESTI iz samog dokumenta.
-     *
-     * Indikator kopije je polje eRacuna (HR-BT-1), pa ga ima svaki sustav koji
-     * je dokument spremio -- i onaj koji namjeru nije zapisao. Izvedba koja
-     * namjeru ne biljezi zato nije bez konteksta: ovo je kontekst koji joj
-     * stvarno ostaje i prototip joj ga daje.
-     *
-     * Ono sto se iz dokumenta NE moze izvesti je redni pokusaj dostave.
-     * Ponovljena dostava ispravka nosi isti copy_indicator kao i prva. Ta
-     * razlika zivi samo u zapisu predaje, i to je ono sto zapis prije predaje
-     * doista kupuje (vidi ResponseInterpreter i odjeljak 7.3 rada).
+     * Poslovna namjera koliko se moze izvesti iz samog dokumenta. Indikator
+     * kopije je polje eRacuna (HR-BT-1), pa ga ima i izvedba koja namjeru nije
+     * zapisala. Redni pokusaj dostave se iz dokumenta ne moze izvesti; on zivi
+     * samo u zapisu predaje (vidi ResponseInterpreter i odjeljak 7.3 rada).
      */
     public function derivedIntent(): Intent
     {
@@ -53,11 +46,9 @@ final class Invoice extends Model
     }
 
     /**
-     * Slozeni identifikator po kojem Sustav za fiskalizaciju provjerava S008.
-     *
-     * Cetiri polja iz norme uz vrstu eRacuna. Indikator kopije NIJE ovdje, i to
-     * je cijeli slucaj B2: propisani ispravak nosi isti identifikator kao
-     * izvornik, a polje koje ga cini ispravkom ne ulazi u provjeru.
+     * Slozeni identifikator po kojem Sustav za fiskalizaciju provjerava S008:
+     * cetiri polja iz norme uz vrstu eRacuna. Indikator kopije nije medu njima,
+     * pa propisani ispravak nosi isti identifikator kao izvornik (slucaj B2).
      */
     public function compositeIdentifier(): string
     {

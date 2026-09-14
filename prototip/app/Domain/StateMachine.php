@@ -8,27 +8,16 @@ use Carbon\CarbonInterface;
 use DomainException;
 
 /**
- * Automat zivotnog ciklusa predaje.
+ * Automat zivotnog ciklusa predaje. Schneiderova karakterizacija (odjeljak 5.3)
+ * trazi da izlaze odreduje niz obradenih zahtjeva, pa vrijede dva pravila:
  *
- * Schneiderova karakterizacija (odjeljak 5.3) trazi da izlazi budu odredeni
- * NIZOM OBRADENIH ZAHTJEVA. Iz toga slijede dva pravila koja ovaj razred
- * provodi doslovno:
+ *   1. Prijelaz pokrece poticaj, nikada protek vremena sam po sebi. Zato je i
+ *      DEADLINE_ELAPSED poticaj koji netko mora dostaviti.
+ *   2. Rok ulazi kao uvjet nad prijelazom. Dok roka ima, salje se; kad ga nema,
+ *      jedini dopusten prijelaz vodi u DEADLINE_EXPIRED.
  *
- *   1. Prijelaz pokrece poticaj, nikada protek vremena sam po sebi. Zato je
- *      DEADLINE_ELAPSED poticaj koji netko mora dostaviti, a ne pozadinski
- *      posao koji tise mijenja redak u bazi.
- *   2. Rok ulazi kao UVJET NAD PRIJELAZOM. Prototip salje samo dok roka ima;
- *      kad ga nema, jedini dopusten prijelaz vodi u DEADLINE_EXPIRED.
- *
- * Uvjet iz tocke 2. je GRANICA PROTOTIPA, ne zakonska zabrana. Cl. 49. st. 1.
- * odreduje rok izvrsenja obveze; ne kaze da se nakon roka ne smije poslati.
- * Prototip promatranje zavrsava na granici pravovremenog postupanja, jer je
- * predmet rada stanje u kojem sustav zavrsi, a ne naknadno postupanje. Istek
- * roka ne otkriva je li raniji poziv uspio; model zavrsava pracenje uz
- * nepoznat ishod, bez tvrdnje da fiskalizacija nije provedena.
- *
- * Nedopusten prijelaz je iznimka, ne tiho ignoriranje. Sustav koji propusti
- * nedopusten prijelaz prestaje biti dokaz o vlastitom stanju.
+ * Zaustavljanje slanja nakon roka je granica prototipa, ne zakonska zabrana.
+ * Nedopusten prijelaz baca iznimku umjesto da se tiho preskoci.
  */
 final class StateMachine
 {
@@ -52,8 +41,7 @@ final class StateMachine
     }
 
     /**
-     * $deadline je null dok nemogucnost nije nastupila -- tada nema od cega
-     * teci, pa uvjet roka otpada.
+     * $deadline je null dok nemogucnost nije nastupila; tada uvjet roka otpada.
      *
      * @throws DomainException kada prijelaz nije dopusten ili uvjet roka ne prolazi
      */

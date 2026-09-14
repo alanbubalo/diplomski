@@ -1,13 +1,3 @@
-% ============================================================
-%  6. Studija slučaja: Fiskalizacija 2.0
-%  DOPRINOS RADA · ~27% opsega (cca 14 str. pri 52 str.; smije rasti)
-%  Struktura 6.2 zaključana; 6.1 i 6.3 slijede iz nje.
-%
-%  ⚠ TVRDO OGRANIČENJE: studija slučaja je REFERENTNA ARHITEKTURA
-%    IZVEDENA IZ JAVNE SPECIFIKACIJE. Ni jedan stvarni sustav, poslodavac
-%    ni klijent ne spominje se nigdje. Ni ranije studentski projekt.
-%    Svaka tvrdnja mora imati citat propisa iza sebe.
-% ============================================================
 \chapter{Studija slučaja: Fiskalizacija 2.0}
 \label{ch:studija}
 
@@ -26,45 +16,6 @@ pa se svaka može provjeriti bez pristupa ijednom sustavu.
 % ------------------------------------------------------------
 \section{Arhitektura i tijek dokumenta}
 \label{sec:arhitektura}
-% Budžet: ~5 str. (omjer, ne meta)
-% SADRŽI:
-%   - četverokutni model C1→C2→C3→C4 + CIS sa strane
-%   - sudionici i njihove zakonske definicije [ZoF čl. 2.]
-%   - DVA KANALA i DVA MODELA POUZDANOSTI:
-%       razmjena PT↔PT: asinkrona, AS4 One-way/Push, maxretries=10,
-%         potpisana potvrda primitka [PoeR čl. 6. st. 1. t. 8.]
-%       fiskalizacija PT↔CIS: sinkroni SOAP [TS pogl. 8.],
-%         bez timeouta, bez retryja, bez potvrde s pravnim učinkom
-%     → NIJEDNA ODREDBA IH NE PREMOŠĆUJE
-%
-% ⚠ NE OVDJE, PREBAČENO U 6.2 (2026-08-13):
-%   granica povjerenja (C1↔C2) i granica transakcije (između koraka 7 i 8).
-%   Oba su teorijski pojmovi iz pogl. 3 i 5 i njihova analiza je posao 6.2.
-%   6.1 se piše u fazi 1, prije teorije, pa mora ostati STROGO OPISAN:
-%   tko su sudionici, kojim putem ide dokument, kojim putem podaci, rokovi.
-%   Bez tumačenja i bez forward-referencija na pojmove koje čitatelj nema.
-%
-% ✔ RIJEŠENO 2026-08-12 provjerom na primarnim dokumentima. Točno je:
-%   - hrvatski profil: "Tehnički standardi i specifikacija povezivanja —
-%     Pristupna točka i standardni AS4 profil", v1.4, 7.10.2025. (dok. 140)
-%   - profil se zove eRačun-AS4 i sjedi na CEF eDelivery AS4 Profile
-%     v1.15 (NE 1.14, NE Peppol AS4)
-%   - "Peppol" se u dokumentu ne pojavljuje NIJEDNOM
-%   - otkrivanje: AMS (Adresar Metapodatkovnih Servisa) + MPS
-%     (Metapodatkovni servis), DNS/U-NAPTR → AMS, pa REST → MPS.
-%     Peppol SML/SMP se NE koriste.
-%   - Peppol legitimno ulazi samo kroz (a) kodne liste za prošireni
-%     ISO 6523 (9934 = OIB, 0088 = GLN) i (b) naslijeđena imena shema
-%     (busdox-docid-qns, cenbii-procid-ubl, iso6523-actorid-upis),
-%     koja nose HRVATSKE vrijednosti.
-%   - dva dodatna primarna dokumenta za sloj otkrivanja:
-%     AMS v1.4, 9.10.2025 (dok. 142) i MPS v1.3, 8.10.2025 (dok. 141)
-%
-% ⚠ NE PISATI "BDXL 1.61" — ta verzija NE POSTOJI. Broj je artefakt
-%   izvlačenja teksta iz PDF-a (oznaka fusnote "1" zalijepljena na "1.6").
-%   Ispravno je BDXL 1.6 (30.5.2018.).
-%
-% SLIKA: dijagram tijeka u TikZ-u → rad/slike/
 
 Razmjena eRačuna obavlja se putem pristupnih točaka
 (čl.~37.~st.~1.). Iz toga slijedi \strani{četverokutni
@@ -178,7 +129,6 @@ naprotiv, uređuje obvezom prosljeđivanja i potvrdom nakon tog koraka.
 Tehnički način prosljeđivanja i točan događaj primitka u poslovnom sustavu
 primatelja nisu time potpuno određeni.
 
-% Bez podnaslova: nijedno drugo poglavlje ne koristi \subsection.
 Razmjena između pristupnih točaka je asinkrona. Pravilnik o eRačunu govori
 o prijenosu asinkronih poruka AS4 (čl.~7.~st.~6.) i definira uzorak
 razmjene One-way/Push kao onaj u kojem „pošiljatelj šalje poruku primatelju
@@ -217,36 +167,6 @@ odjeljak~\ref{sec:failure-modes}.
 % ------------------------------------------------------------
 \section{Identifikacija načina otkazivanja}
 \label{sec:failure-modes}
-% Budžet: ~7 str. — JEZGRA RADA. Smije rasti ako materijal nosi.
-%
-% OBLIK ARGUMENTA, BEZ IZNIMKE:
-%   propis zahtijeva X [citat] → slijedi stanje S → S je neusklađen jer Z
-% Iskustvo bira KOJE uzimamo ozbiljno; propis dokazuje da su MOGUĆI.
-%
-% NOSIVI CITAT CIJELOG POGLAVLJA — [ZoF čl. 48. st. 3.]:
-%   "Fiskalizaciju eRačuna ... dužan je provoditi ODVOJENO OD POSTUPKA
-%    RAZMJENE eRačuna u trenutku izdavanja eRačuna"
-%   → zakon NALAŽE razdvajanje koje stvara problem konzistentnosti;
-%     nesklad nije nedostatak implementacije nego PROPISANO STANJE.
-%
-% 11 RAZRAĐENIH SLUČAJEVA, GRUPIRANO UZROČNO (ne kao popis):
-%   A  propisano razdvajanje kanala      A1, A2
-%   B  sinkroni kanal bez semantike kvara B1, B2★, B3, B4
-%      (B3: kardinalnost [1,100] s jednom greškom vrijedi za SVE ČETIRI
-%       poslovne poruke, ne samo eRačun — sustavno svojstvo API-ja)
-%   C  rokovi od nedefiniranih događaja   C1, C2
-%   D  ispad infrastrukture               D1, D2
-%   E  neregulirana granica C1↔C2         E1
-%
-% ★ B2: ključ za deduplikaciju postoji. Novi datum i PrethodniERacun daju
-%   izvedivu granu ispravka; neodređen ostaje odnos datuma, CopyIndicatora,
-%   reference i S008. Ne tvrditi da su svi ispravci odbijeni.
-%
-% KLASIFIKACIJA PO POSLJEDICI ima tri opisne skupine: nedovršeno i izloženo
-% roku, neodređeno te oporavljeno unutar posebnog roka. To nije pravna ocjena.
-%
-% Preostalih 7 šutnji (S12–S14, S19–S21, S23) ostaje izvan rada. Prilog s
-% njihovom tablicom uklonjen 2026-09-11.
 
 Svaki izvod koji slijedi ima isti oblik. Propis zahtijeva nešto, iz toga
 slijedi stanje sustava koje obvezu može učiniti nedovršenom, neodređenom ili
@@ -637,31 +557,6 @@ izmješten u dokument koji nije propis.
 % ------------------------------------------------------------
 \section{Dizajn otpornog rješenja}
 \label{sec:dizajn}
-% Budžet: ~4 str.
-% Bira iz rječnika poglavlja 4 prema načinima otkazivanja iz 6.2.
-%
-% NOSIVI IZVORI:
-%   Helland 2007 — "entiteti" s vlastitim transakcijskim opsegom +
-%     idempotentne at-least-once poruke među njima.
-%     TO JE ODGOVOR NA A1/A2: kad transakcija preko kanala nije dopuštena,
-%     entiteti + idempotentne poruke su ono što preostaje.
-%   Schneider 1990 — stroj stanja kao odgovor na klasu "NEODREĐENO":
-%     eksplicitno stanje "poslano-ali-nepotvrđeno" koje propis ne imenuje.
-%   Saltzer i dr. 1984 — deduplikacija MORA biti na krajevima, ne u
-%     transportu. Potkrijepljeno normativno: [OASISAS4 §3.4] kaže da se
-%     semantika dostave ne smije pretpostaviti i da dedup nije obvezan.
-%
-% MORA ODGOVORITI, jer 6.2 to postavlja:
-%   - kako razlikovati S008-kao-uspjeh od S008-kao-odbijeni-ispravak (B2)?
-%   - kako se modelira stanje koje propis ne imenuje (B1)?
-%   - što ERP smije zaključiti iz S008 nakon timeouta (B2, S6)?
-%   - što se može učiniti kada nedostaje mjerodavan podatak ili pravilo —
-%     odgovor je DETEKCIJA I EVIDENCIJA, ne stvaranje pravila u izvedbi
-%
-% OTVORENO PITANJE IZ POGL. 5.2, ODGOVARAJU GA POGL. 7 I 8:
-%   ima li fiskalizacija uopće što kompenzirati? Ako je jednosmjerna
-%   zakonska obveza bez rollbacka, SAGA je tema pogl. 5 a ne uzorak ovdje.
-%   To je legitiman nalaz, ali mora biti odlučen i obrazložen.
 
 Dizajn koji slijedi ne bira iz kataloga nego iz izvoda. Svaki obrazac ulazi
 kao odgovor na imenovanu skupinu iz odjeljka~\ref{sec:failure-modes}, a dva

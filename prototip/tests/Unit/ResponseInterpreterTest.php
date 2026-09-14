@@ -12,12 +12,9 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Jezgra slucaja B2: ista sifra, tri ishoda tumacenja.
- *
- * Sifru tumaci SPOJ poslovne namjere i rednog pokusaja dostave. Zapis namjere
- * dvoznacnost suzava, ali je ne uklanja: ponovljena dostava ispravka ostaje
- * dvoznacna i uz zapis, jer se S008 moze odnositi na izvornik ili na vlastiti
- * raniji pokusaj.
+ * Jezgra slucaja B2: ista sifra, tri ishoda tumacenja. Sifru tumaci spoj
+ * poslovne namjere i rednog pokusaja dostave, a zapis namjere dvoznacnost
+ * suzava, ali je ne uklanja.
  */
 final class ResponseInterpreterTest extends TestCase
 {
@@ -74,11 +71,8 @@ final class ResponseInterpreterTest extends TestCase
     }
 
     /**
-     * Spoj koji zapis namjere NE razrjesava.
-     *
-     * Ponovljena dostava ispravka sa zadrzanim identifikatorom: S008 se moze
-     * odnositi na izvornik ili na vlastiti raniji pokusaj. Lokalno se razlika ne
-     * moze utvrditi, pa tumacenje ostaje dvoznacno.
+     * Spoj koji zapis namjere ne razrjesava: kod ponovljene dostave ispravka
+     * S008 se moze odnositi na izvornik ili na vlastiti raniji pokusaj.
      */
     #[Test]
     public function s008_on_a_repeated_delivery_of_a_correction_stays_ambiguous(): void

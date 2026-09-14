@@ -22,11 +22,9 @@ use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
- * Tvrdnje o ishodu, po jedna za svaki scenarij iz poglavlja 7.
- *
- * Svaka je pisana u uvjetnom obliku: uz zadani nacin otkazivanja i zadani
- * obrazac, zavrsno stanje mora biti odredeno. Time testovi nisu samo zastita od
- * regresije nego i izvedba oraclea koji poglavlje 8 opisuje.
+ * Tvrdnje o ishodu, po jedna za svaki scenarij iz poglavlja 7. Svaka je pisana
+ * u uvjetnom obliku: uz zadani nacin otkazivanja i zadani obrazac zavrsno stanje
+ * mora biti odredeno.
  */
 final class HandoverServiceTest extends TestCase
 {
@@ -119,13 +117,7 @@ final class HandoverServiceTest extends TestCase
         $this->assertSame(State::CORRECTION_REJECTED, $handover->state);
     }
 
-    /**
-     * Ponavljanje ne smije obrisati poslovnu namjeru.
-     *
-     * Ovo je spoj koji je prije bio nevidljiv: ponavljanje je namjeru prepisivalo
-     * u RETRY, pa je ponovljena dostava ispravka izgledala kao potvrda ranijeg
-     * pokusaja. Sada namjera ostaje ispravak, a tumacenje ostaje dvoznacno.
-     */
+    /** Ponavljanje ne smije obrisati poslovnu namjeru. */
     #[Test]
     public function b2_a_repeated_delivery_of_a_correction_keeps_the_intent_and_stays_unresolved(): void
     {
@@ -143,14 +135,9 @@ final class HandoverServiceTest extends TestCase
         $this->assertFalse($handover->state->outcomeKnown());
     }
 
-        /**
-     * Poslovna namjera je izvediva iz dokumenta, pa je zapis za nju ne treba.
-     *
-     * Ovo je negativan nalaz i namjerno stoji medu tvrdnjama. Indikator kopije
-     * je polje eRacuna, pa i izvedba bez zapisa namjere iz spremljenog
-     * dokumenta izvodi da je predmet ispravak. Prva dostava ispravka zato u
-     * obje izvedbe zavrsi jednako. Kontrast koji bi se ovdje dobio uskracivanjem
-     * dokumenta ne bi dokazivao nista o trajnosti zapisa.
+    /**
+     * Negativan nalaz koji namjerno stoji medu tvrdnjama: poslovnu namjeru nosi
+     * i sam dokument, pa prva dostava ispravka u obje izvedbe zavrsi jednako.
      */
     #[Test]
     public function b2_a_first_delivery_of_a_correction_ends_the_same_in_both_implementations(): void
@@ -173,12 +160,9 @@ final class HandoverServiceTest extends TestCase
     }
 
     /**
-     * Ono sto zapis prije predaje doista kupuje: redni pokusaj dostave.
-     *
-     * Iz dokumenta se ne moze izvesti je li ovo prva ili ponovljena dostava.
-     * Ta razlika zivi samo u zapisu predaje, a zapis nastao tek nakon odgovora
-     * nakon isteka vremena ne nastaje uopce. Bez njega ponovljena dostava nema
-     * na cemu nastaviti, pa se S008 ne moze procitati kao potvrda.
+     * Ono sto zapis prije predaje doista kupuje: redni pokusaj dostave. Iz
+     * dokumenta se ne moze izvesti je li dostava prva ili ponovljena, a zapis
+     * nastao tek nakon odgovora nakon isteka vremena ne nastaje uopce.
      */
     #[Test]
     public function b2_the_delivery_ordinal_survives_only_in_a_record_written_before_the_call(): void
@@ -257,13 +241,7 @@ final class HandoverServiceTest extends TestCase
         $this->assertTrue($handover->deadline()->expiresAt->isFuture());
     }
 
-    /**
-     * Raspored koji se ne provodi nije raspored.
-     *
-     * Bez ovog uvjeta scenarij D1 pokretao je ponavljanje danom nakon kvara, dok
-     * je zakazani trenutak bio cetiri dana kasnije, i nista u evidenciji taj
-     * raniji poziv nije opravdavalo.
-     */
+    /** Raspored koji se ne provodi nije raspored. */
     #[Test]
     public function d1_an_attempt_before_the_scheduled_instant_is_refused(): void
     {

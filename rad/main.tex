@@ -11,12 +11,6 @@
 \input{tex/preamble}
 
 % ---- Metapodaci rada ---------------------------------------
-% Polja naslovnice slijede službeni obrazac UNIPU
-% „Naslovna i prva stranica — diplomski rad", preuzet 2026-08-14.
-%
-% ⚠ SVE ŠTO JE U UGLATIM ZAGRADAMA POPUNJAVA SE PRIJE PREDAJE.
-%   Ta polja ne ovise o sadržaju rada; popunjavaju se na kraju,
-%   u jednom prolazu, i to je jedino mjesto na kojem se mijenjaju.
 \newcommand{\radNaslov}{Obrasci tolerancije na greške u raspodijeljenim sustavima: studija slučaja Fiskalizacije 2.0}
 \newcommand{\radNaslovEng}{Fault-Tolerance Patterns in Distributed Systems: A Case Study of Fiscalization 2.0}
 \newcommand{\radAutor}{Alan Bubalo}
@@ -47,9 +41,8 @@
 \frontmatter
 \pagenumbering{roman}
 
-% Izjave se ne slažu u radu. Odluka 2026-08-14: predaju se kao zasebne
-% stranice, na službenim obrascima. tex/izjave.tex ostaje u repozitoriju s
-% doslovnim tekstom obiju izjava, ako ih ikada zatreba složiti.
+% Izjave se predaju kao zasebne stranice, na službenim obrascima;
+% tex/izjave.tex nosi njihov doslovan tekst.
 % \input{tex/izjave}
 \input{tex/sazetak}
 
@@ -71,26 +64,11 @@
 \input{poglavlja/09-rasprava}
 \input{poglavlja/10-zakljucak}
 
-% ---- Prilozi -----------------------------------------------
-% Prilog A („Preostale šutnje propisa") uklonjen 2026-09-11.
-% Izvorna datoteka poglavlja/prilog-sutnje.tex ostaje u repozitoriju,
-% neuključena. Ako se prilog vrati, ovdje se vraćaju \appendix i \input,
-% a uputnice na njega u 1.3 i 6.2.
-% \appendix
-% \input{poglavlja/prilog-sutnje}
-
 % ---- Literatura --------------------------------------------
 \backmatter
 \begingroup
 \setlength{\emergencystretch}{3em}
 \printbibliography[heading=bibintoc,title={Literatura}]
 \endgroup
-
-% ---- Popis nedovršenog -------------------------------------
-% Uklonjen 2026-08-14, jer nijedna \todo oznaka više ne postoji.
-% Naredbe \todo i \popistodo ostaju u preambuli. Ako se u doradi
-% pojavi nova oznaka, vratiti \popistodo ovamo da se ne izgubi
-% iz vida, i ukloniti ga opet prije predaje.
-% \popistodo
 
 \end{document}

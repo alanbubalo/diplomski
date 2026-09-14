@@ -1,27 +1,3 @@
-% ============================================================
-%  3. Raspodijeljeni sustavi i tolerancija na greške
-%  DUBINSKO poglavlje · budžet ~8 str.
-%  Struktura zaključana.
-%  CAP je namjerno UNUTAR 3.5, nema vlastiti odjeljak:
-%  ne služi ničemu nizvodno osim 9.1.
-%
-%  IZVORI PROČITANI I PROVJERENI 2026-08-13 u primarnim dokumentima:
-%    Waldo 1994 (SMLI TR-94-29)   — u cijelosti
-%    Saltzer i dr. 1984           — u cijelosti
-%    Avizienis i dr. 2004         — §2.2, §3.2, §3.3, §3.4 doslovno
-%    Chandra & Toueg 1996         — §2 definicije potpunosti i točnosti
-%    Gray 1985 (Tandem TR 85.7)   — str. 16--18 iz skena, doslovno
-%    Gray 1978 (LNCS 60)          — §5.8.3.3.1, str. 466, doslovno
-%    Gilbert & Lynch 2002         — teoremi 1, 2 i korolar 1.1
-%    Helland 2007 (CIDR)          — §3, §4 o idempotentnosti
-%
-%  ⚠ NIJE PROČITANO, dvije rupe:
-%    Cristian 1991 — ACM DL je iza Cloudflare robot-provjere.
-%      Zamijenjen Avizienisovom taksonomijom, koja je novija i bogatija.
-%      Ako Alan dobavi PDF, dodati klasični crash/omission/timing okvir.
-%    Helland 2012 "Idempotence Is Not a Medical Condition" — queue.acm.org
-%      vraća 403. Zamijenjen Hellandom 2007, koji nosi isti argument.
-% ============================================================
 \chapter{Raspodijeljeni sustavi i tolerancija na greške}
 \label{ch:raspodijeljeni}
 
@@ -34,16 +10,6 @@ priznati i opisati na sučelju.
 % ------------------------------------------------------------
 \section{Raspodijeljeni sustav i djelomični otkaz}
 \label{sec:djelomicni-otkaz}
-% NOSIVI IZVOR: Waldo i dr. 1994 — pročitan u cijelosti 2026-08-13.
-% NIZVODNO: 6.1 i 6.2 (granica ERP↔posrednik je točno takva granica)
-%
-% ★ NALAZ IZ ČITANJA, jači nego što je plan predviđao:
-%   Waldo §5 "The Myth of Quality of Service" tvrdi da se otpornost može
-%   izraziti SAMO na razini sučelja i da bolja implementacija ne pomaže.
-%   Njegov primjer je red čekanja sa standardiziranim sučeljem u koje se
-%   ne mogu dodati identifikatori zahtjeva. To je TEORIJSKI TEMELJ za
-%   regulatorno inducirano ograničenje: kod fiskalizacije dio sučelja
-%   fiksira propis, pa implementator nema punu slobodu izmjene. Vidi 6.2.
 
 Waldo i suradnici razlikuju lokalno i raspodijeljeno
 računanje \cite{waldo1994note}. Lokalno je ono ograničeno na jedan adresni
@@ -114,14 +80,6 @@ ništa u ovom radu ne počiva na njemu.
 % ------------------------------------------------------------
 \section{Pojmovi: uzrok, pogreška i otkaz}
 \label{sec:fault-error-failure}
-% NOSIVI IZVOR: Avizienis i dr. 2004, §2.2 i §3.3 — čitano doslovno.
-% NIZVODNO: daje JEZIK cijelom poglavlju 6.2.
-%
-% ★ NALAZ: §3.3.1 uvodi UZROK U SPECIFIKACIJI (specification fault), i to
-%   izrijekom dijeli na propust (omission) i pogrešan navod (commission,
-%   uključujući NEDOSLJEDNOSTI). To je taksonomsko mjesto za našu tezu:
-%   23 šutnje = uzroci propustom; sukob čl. 43 i HR-CIUS = nedosljednost.
-%   Kad je specifikacija PROPIS, implementator uzrok ne može ukloniti.
 
 Rad o načinima otkazivanja treba pojmove koji razlikuju kvar od njegove
 posljedice. Avizienis i suradnici daju taksonomiju koja se u literaturi o
@@ -160,12 +118,6 @@ ponovljivo zovu se čvrsti, a oni čije nije, neuhvatljivi.
 % ------------------------------------------------------------
 \section{Klasifikacija otkaza}
 \label{sec:klasifikacija-otkaza}
-% IZVORI: Avizienis 2004 §3.3.1 (četiri gledišta) — PROVJERENO.
-%         Gray 1985, str. 16--18 iz skena — PROVJERENO DOSLOVNO.
-% ⚠ Cristian 1991 NIJE pročitan (Cloudflare). Klasični crash/omission/
-%   timing/Byzantine okvir zato NIJE napisan. Ako se PDF dobavi, ubaciti
-%   ga kao odlomak prije Avizienisove podjele.
-% NIZVODNO: 6.2 (koje klase uzimamo), 4.1 (opravdanje ponavljanja)
 
 Otkazi se razlikuju po tome kako se očituju. Avizienis i suradnici dijele
 ih po četiri gledišta: po području, po uočljivosti, po dosljednosti i po
@@ -191,8 +143,6 @@ ponavljanje ima smisla. Ako ne, ponavljanje samo troši vrijeme i stvara
 duplikate. Odgovor u literaturi dolazi od Graya, koji ga daje
 oprezno \cite{gray1986whystop}:
 
-% ⚠ Crtica "--" u engleskoj bilješci ispod je GRAYEVA, iz izvornika.
-%   Ne dirati je u stilskom prolazu; citat mora ostati doslovan.
 \begin{quote}
 „Pretpostavljam da postoji sličan fenomen u softveru: većina proizvodnih
 programskih uzroka je meka. Ako se stanje programa vrati na početno i
@@ -213,22 +163,9 @@ kvantificirati. Ponavljanje je najčešći obrazac otpornosti u praksi, a
 opravdanje mu počiva na pretpostavci koju je njezin autor mogao potkrijepiti
 samo jednim pokusom na dnevnicima grešaka.
 
-% ✔ ODLUKA 2026-08-14: ODUSTAJE SE od Cristiana 1991. Oznaka zatvorena.
-%   ACM DL je iza robot-provjere i kroz nju se NE PROLAZI. Otvorena inačica
-%   nije nađena ni 2026-08-13 ni 2026-08-14.
-%   Klasifikaciju otkaza u ovom radu nosi Avizienis i dr. 2004 u
-%   odjeljku 3.3, i to u obliku koji je za tezu važniji, jer uvodi UZROK U
-%   SPECIFIKACIJI. Cristianova četvorka crash/omission/timing/Byzantine
-%   dodala bi rječnik, ali ne bi promijenila nijedan izvod u poglavlju 6.
-%   ⚠ NE citirati ga po sjećanju ni preko sekundarnog izvora.
-
 % ------------------------------------------------------------
 \section{Istek vremena ne razlikuje sporo od mrtvog}
 \label{sec:detekcija-otkaza}
-% IZVOR: Chandra & Toueg 1996, §2 — definicije potpunosti i točnosti.
-%   PROVJERENO. Dokazi se namjerno ne prepričavaju.
-% NIZVODNO: 6.2 (sinkroni SOAP prema CIS-u nema propisan timeout),
-%           4.1 (zašto istek vremena sam nije rješenje)
 
 Ako se otkaz mrežne veze ne razlikuje od otkaza procesora, postavlja se
 pitanje kako se otkaz uopće otkriva. Odgovor je da se ne otkriva pouzdano.
@@ -260,23 +197,6 @@ Sustav koji tu razliku ne modelira zapravo tvrdi nešto što ne zna.
 % ------------------------------------------------------------
 \section{Semantika dostave i nemogućnost dostave točno jednom}
 \label{sec:semantika-dostave}
-% ★ NAJVRJEDNIJI ODJELJAK POGLAVLJA. Sam lanac citiranja je doprinos.
-%
-% ⚠ NE POSTOJI rad koji dokazuje "exactly-once dostava je nemoguća".
-%   Pošten lanac, sve provjereno u primarnim izvorima 2026-08-13:
-%     Gray 1978 §5.8.3.3.1, str. 466 — nema protokola FIKSNE DULJINE
-%       ⚠ Gray izrijekom kaže da se popuštanjem te restrikcije rješenje
-%         DOBIVA (2PC). Ne pisati da je problem dvaju generala nerješiv
-%         bez te ograde — to je česta i lako uhvatljiva greška.
-%     Saltzer i dr. 1984 — dedup MORA na krajeve; potvrda koja se želi
-%       je "I did it"/"I didn't", a nju može dati samo odredišna aplikacija
-%     Helland 2007 — idempotentnost: ponovljena poruka mora proizvesti
-%       odgovor koji OPONAŠA prvi
-%   FLP 1985 — samo citirano, nije čitano u cijelosti (tako i planirano).
-%
-% CAP: apsorbiran kao odlomak. Gilbert & Lynch 2002 provjeren (teoremi
-%   1 i 2, korolar 1.1). ⚠ Ekstrakcija teksta iz tog PDF-a gubi slovo "c",
-%   pa NE citirati doslovno iz nje. Zato je ovdje prepričano, ne citirano.
 
 Sustavi koji razmjenjuju poruke opisuju se trima semantikama dostave.
 Najviše jednom znači da poruka nikada neće biti obrađena dvaput, ali može

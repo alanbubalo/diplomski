@@ -10,11 +10,9 @@ use App\Models\Invoice;
 use Illuminate\Console\Command;
 
 /**
- * Ispis zavrsnog stanja baze nakon scenarija.
- *
- * Ovo je prva polovica dokaznog materijala poglavlja 7; druga je isjecak
- * dnevnika. Ispis se namjerno ne uljepsava: pokazuje redke onako kako stoje,
- * ukljucujuci dogadaje ciji zakljucak nije bio jednoznacan.
+ * Ispis zavrsnog stanja baze nakon scenarija, prva polovica dokaznog materijala
+ * poglavlja 7. Redci se pokazuju onako kako stoje, ukljucujuci dogadaje ciji
+ * zakljucak nije bio jednoznacan.
  */
 final class DumpState extends Command
 {

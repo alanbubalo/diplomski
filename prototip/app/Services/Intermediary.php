@@ -8,15 +8,11 @@ use App\Domain\IntermediaryResponse;
 use RuntimeException;
 
 /**
- * Stub informacijskog posrednika.
+ * Stub informacijskog posrednika, ne pristupna tocka. Vraca jedan od tri ishoda
+ * po unaprijed zadanoj skripti i time cini scenarije ponovljivima.
  *
- * Ovo NIJE pristupna tocka. Ne govori AS4, ne provjerava UBL, ne potpisuje i ne
- * otkriva adresu primatelja. Vraca jedan od tri ishoda po unaprijed zadanoj
- * skripti, i time cini scenarije ponovljivima.
- *
- * Granica je namjerna. Predmet rada je kako poslovni sustav rukuje greskom, a ne
- * je li posrednik sukladan. Vjerodostojna izvedba posrednika ne bi dodala
- * nijedan nalaz, a udvostrucila bi opseg.
+ * Predmet rada je kako poslovni sustav rukuje greskom, a ne je li posrednik
+ * sukladan, pa stub ne govori AS4, ne provjerava UBL i ne potpisuje.
  */
 final class Intermediary implements SubmissionEndpoint
 {
@@ -31,10 +27,7 @@ final class Intermediary implements SubmissionEndpoint
         }
     }
 
-    /**
-     * Zadnji ishod u skripti ponavlja se za sve daljnje pozive, pa scenarij koji
-     * ponavlja do isteka roka ne mora nabrajati svaki pokusaj.
-     */
+    /** Zadnji ishod u skripti ponavlja se za sve daljnje pozive. */
     public function send(string $senderKey, string $compositeIdentifier): IntermediaryResponse
     {
         $index = min($this->calls, count($this->script) - 1);

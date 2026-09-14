@@ -8,16 +8,11 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 
 /**
- * Rok iz cl. 49. st. 1.: pet radnih dana od dana kada je nastupila nemogucnost,
- * a NE od oporavka.
+ * Rok iz cl. 49. st. 1.: pet radnih dana od nastupa nemogucnosti, ne od
+ * oporavka. Rok tece i dok sustav ceka, pa raspored pokusaja mora ovisiti o
+ * preostalom roku (vidi RetrySchedule).
  *
- * Ta jedna rijec je razlog zbog kojeg obicni eksponencijalni odmak ovdje ne
- * valja. Rok se ne zaustavlja dok sustav ceka, pa raspored pokusaja mora
- * ovisiti o preostalom roku (vidi RetrySchedule).
- *
- * OPSEG: blagdani se ne racunaju. Prototip broji samo subotu i nedjelju kao
- * neradne. Kalendar blagdana nije predmet rada i njegov izostanak ne mijenja
- * nijedan nalaz -- mijenja samo apsolutni datum isteka.
+ * Blagdani se ne racunaju; neradni su samo subota i nedjelja.
  */
 final readonly class Deadline
 {

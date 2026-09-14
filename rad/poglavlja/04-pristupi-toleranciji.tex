@@ -1,26 +1,3 @@
-% ============================================================
-%  4. Pristupi toleranciji na greške
-%  ŠIROKO ALI PLITKO · budžet ~5 str.
-%  Struktura zaključana.
-%
-%  NAMJERNO BEZ ORIGINALNOG DOPRINOSA. Ovo poglavlje je RJEČNIK iz kojeg
-%  odjeljak 6.3 bira uzorke. Siva literatura je ovdje prihvatljiva jer je
-%  polje njome i pokriveno. NE KOPATI — dovoljno je.
-%
-%  IZVORI PROČITANI I PROVJERENI 2026-08-13:
-%    Sedghpour, Klein, Tordsson 2022 (ICPE) — sažetak, §2.2, §4, zaključci
-%    Bronson i dr. 2021 (HotOS)            — §1 i §2.1 doslovno
-%    Brooker, AWS Builders' Library        — u cijelosti, kroz preglednik
-%      (stranica je SPA; curl i WebFetch vraćaju prazno. Nije bot-gate.)
-%
-%  ⚠ NIJE PROČITANO:
-%    Sedghpour i dr. 2021 (HAOC) — urn.kb.se je iza bot-gatea
-%      ("Making sure you're not a bot!"). Nije se prolazilo kroz njega.
-%      Brojke koje je ranije istraživanje pripisalo tom radu (63% dostupnosti,
-%      30% prekinutih zahtjeva) NISU UŠLE U TEKST jer nisu provjerene.
-%      Zamijenjeno mjerenjima iz ICPE 2022, istih autora, koji je otvoren.
-%    Nygard, Hohpe & Woolf — knjige, samo citirane kao podrijetlo imena.
-% ============================================================
 \chapter{Pristupi toleranciji na greške}
 \label{ch:pristupi}
 
@@ -36,9 +13,6 @@ njih ima režim u kojem stanje pogoršava.
 % ------------------------------------------------------------
 \section{Sinkrona komunikacija}
 \label{sec:sinkrono}
-% ★ Pod ravnotežom (D) rad NEMA vlastita mjerenja, pa su tuđa mjerenja
-%   glavno empirijsko uporište. Pogl. 9 to mora PRIZNATI.
-% NIZVODNO: 6.3 (izbor uzoraka), 9.1 (kompromisi)
 
 Istek vremena je prvi obrazac i jedini bez kojeg ostali nemaju smisla.
 Klijent koji čeka drži resurse, pa dovoljno takvih klijenata iscrpi memoriju,
@@ -129,12 +103,6 @@ ne slijedi.
 % ------------------------------------------------------------
 \section{Asinkrona komunikacija}
 \label{sec:asinkrono}
-% ★ POŠTENA RUPA KOJU TREBA NAPISATI, NE ZATAŠKATI:
-%   OUTBOX NEMA RECENZIRANI PRIMARNI IZVOR. Crossref po naslovu vraća
-%   tri članka, sva tri pay-to-publish — NE CITIRATI ih. Provjereno je i
-%   očito mjesto gdje bi trebao biti (Laigner i dr., PVLDB 2021): ne
-%   spominje ni "outbox" ni "dual write".
-% NIZVODNO: 6.3, 7.x
 
 Kada pozivatelj ne mora čekati odgovor, obrasci se mijenjaju. Umjesto da se
 nosi s neizvjesnošću u trenutku poziva, sustav je odgađa i bilježi.

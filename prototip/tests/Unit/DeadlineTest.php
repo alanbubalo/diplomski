@@ -10,9 +10,7 @@ use Carbon\CarbonImmutable;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Rok iz cl. 49. st. 1. i raspored koji ga postuje.
- */
+/** Rok iz cl. 49. st. 1. i raspored koji ga postuje. */
 final class DeadlineTest extends TestCase
 {
     #[Test]
@@ -21,8 +19,7 @@ final class DeadlineTest extends TestCase
         $onset = CarbonImmutable::parse('2026-09-01 09:00:00');
         $deadline = Deadline::fromOnset($onset);
 
-        // Kasniji trenutak ne pomice istek. To je cijela razlika prema roku koji
-        // bi tekao od oporavka.
+        // Kasniji trenutak ne pomice istek: rok tece od nastupa, ne od oporavka.
         $same = Deadline::fromOnset($onset);
 
         $this->assertTrue($deadline->expiresAt->equalTo($same->expiresAt));

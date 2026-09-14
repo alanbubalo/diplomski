@@ -5,15 +5,11 @@ declare(strict_types=1);
 namespace App\Domain;
 
 /**
- * Sto posrednik moze vratiti.
+ * Sto odrediste moze vratiti. Predmet prototipa je kako poslovni sustav reagira
+ * na ova tri ishoda, pa stub ne provjerava UBL, ne potpisuje i ne govori AS4.
  *
- * Stub vraca samo ovo troje. Prototip ne provjerava UBL, ne potpisuje i ne
- * govori AS4 -- tvrda granica opsega prototipa. Predmet je iskljucivo kako
- * poslovni sustav reagira na ova tri ishoda.
- *
- * TIMEOUT nije odgovor nego njegov izostanak. Sinkroni kanal prema Sustavu za
- * fiskalizaciju nema propisan istek vremena ni ponovni pokusaj (odjeljak 6.2,
- * slucaj B1), pa je trajanje cekanja izbor izvedbe.
+ * TIMEOUT nije odgovor nego njegov izostanak. Sinkroni kanal nema propisan
+ * istek vremena (odjeljak 6.2, slucaj B1), pa je trajanje cekanja izbor izvedbe.
  */
 enum IntermediaryResponse: string
 {

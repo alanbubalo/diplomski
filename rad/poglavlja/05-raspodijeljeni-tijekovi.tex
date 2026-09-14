@@ -1,28 +1,3 @@
-% ============================================================
-%  5. Upravljanje raspodijeljenim tijekovima
-%  DUBINSKO poglavlje · budžet ~6 str.
-%  Struktura zaključana.
-%
-%  IZVORI PROČITANI I PROVJERENI 2026-08-13:
-%    Gray 1981 (VLDB)            — u cijelosti; svojstva, kompenzacija,
-%                                   putnička agencija, ČETIRI KATEGORIJE
-%    Gray 1978 (LNCS 60)         — §5.8.3.3.2, str. 467--469, 2PC doslovno
-%    Garcia-Molina & Salem 1987  — sažetak i §1; ⚠ sken, loš OCR
-%    Schneider 1990 (CSUR)       — §"Semantic Characterization" doslovno
-%    Bailis & Ghodsi 2013        — u cijelosti
-%    Helland & Campbell 2009     — §5.1--5.2 (isprike, probabilistička pravila)
-%    Helland 2007 (CIDR)         — čitan uz pogl. 3
-%    Colombo & Pace 2013         — kao karta, ne linearno
-%
-%  ⚠ NIJE PROČITANO — sve troje iza ACM DL Cloudflare provjere:
-%    Skeen & Stonebraker 1983 — formalni rezultat o neblokirajućem commitu.
-%      NIJE nosivo: argument je prestrukturiran tako da stoji na Grayu 1978
-%      (koji pokazuje da sudionik čeka presudu) i na Bailisu (blokiranje pod
-%      particijom). Ako se PDF dobavi, teorem se dodaje kao oštrica.
-%    Härder & Reuter 1983 — citiran SAMO kao podrijetlo akronima ACID,
-%      što je bibliografska činjenica. Ništa se ne pripisuje njihovu tekstu.
-%    Vogels 2009 — ispao. Bailis pokriva isto i pročitan je.
-% ============================================================
 \chapter{Upravljanje raspodijeljenim tijekovima}
 \label{ch:tijekovi}
 
@@ -34,9 +9,6 @@ razumljivim kada je posao djelomično gotov, a nastavak neizvjestan.
 % ------------------------------------------------------------
 \section{Granice klasičnih transakcija}
 \label{sec:granica-transakcije}
-% NIZVODNO: 6.3
-% ⚠ Skeen & Stonebraker 1983 NIJE pročitan (Cloudflare). Argument namjerno
-%   ne visi o njemu. Vidi komentar na vrhu datoteke.
 
 Transakcija je pojam stariji od računarstva i Gray ga tako i uvodi. Njegov
 primjer je ugovor: pregovori traju, a onda ih jedan čin
@@ -102,27 +74,9 @@ pod razdvajanjem mreže može postići. Za ovaj rad iz
 toga slijedi metodološko pravilo. Reći da sustav nije konzistentan ne znači
 mnogo. Treba imenovati koje jamstvo daje.
 
-% ✔ ODLUKA 2026-08-14: ODUSTAJE SE od Skeena i Stonebrakera 1983. Oznaka
-%   zatvorena. NE TRAŽITI GA OPET: 2026-08-13 provjereno preko Semantic
-%   Scholara i OpenAlexa da nema nijedne otvorene kopije, a ne samo
-%   pogađanjem URL-ova. Nemogućnost neblokirajućeg počinjanja pod razdvajanjem
-%   ovdje se ne tvrdi kao formalni rezultat, pa nedostatak izvora ne ostavlja
-%   nepokrivenu tvrdnju. Argument u 5.1 stoji na Grayu 1978 i na CAP-u.
-%   ⚠ Ne tvrditi taj rezultat bez pročitanog izvora.
-
 % ------------------------------------------------------------
 \section{Saga i kompenzacija}
 \label{sec:saga}
-% ★ OVDJE JE ODGOVOR NA OTVORENO PITANJE IZ PLANA POGL. 7 I 8.
-%   Gray 1981, str. 17, dijeli transakciju na četiri vrste sastavnica:
-%     - radnje nad nezaštićenim objektima
-%     - zaštićene radnje (undo/redo)
-%     - STVARNE RADNJE koje se mogu ODGODITI ali NE PONIŠTITI
-%     - ugniježđene transakcije (poništive kompenzacijom)
-%   Fiskalizacija je STVARNA RADNJA po toj podjeli. Odatle slijedi da
-%   polovica SAGA-e koja se tiče kompenzacije na nju NE PRIMJENJUJE, a
-%   polovica koja se tiče evidentiranog napretka primjenjuje.
-%   To je nalaz, ne izbjegavanje. Konačna odluka pada uz pogl. 7 i 8.
 
 Kada atomarnost preko granice otpadne, popravljanje se seli iz protokola u
 poslovnu logiku. Gray tu selidbu imenuje \cite{gray1981transaction}:
@@ -200,10 +154,6 @@ pa kompenzacija nema predmet.
 % ------------------------------------------------------------
 \section{Stanje kao automat}
 \label{sec:automat}
-% IZVOR: Schneider 1990, "Semantic Characterization of a State Machine" —
-%   PROVJERENO DOSLOVNO. Uz to O1/O2 i napomena da kašnjenja mreže znače
-%   da redoslijed obrade nije redoslijed slanja ni primanja.
-% NIZVODNO: 6.3 izravno
 
 Ako se posao ne može zatvoriti u jednu transakciju, mora se moći opisati
 kao stanje. Schneider daje karakterizaciju koja je za to

@@ -8,10 +8,8 @@ use App\Domain\IntermediaryResponse;
 use RuntimeException;
 
 /**
- * Kontrolirani dvojnik Sustava za fiskalizaciju.
- *
- * Skripta ishoda cini scenarij D1 ponovljivim. Prvi poziv moze ostati bez
- * odgovora, a sljedeci potvrditi oporavak unutar zakonskog roka.
+ * Kontrolirani dvojnik Sustava za fiskalizaciju. Skripta ishoda cini scenarij
+ * D1 ponovljivim: prvi poziv ostaje bez odgovora, sljedeci potvrduje oporavak.
  */
 final class FiscalizationSystem implements SubmissionEndpoint
 {

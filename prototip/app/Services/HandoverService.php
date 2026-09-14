@@ -21,33 +21,20 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 /**
- * Predaja dokumenta posredniku, u dvije izvedbe koje se razlikuju u jednoj
- * jedinoj stvari: pise li se zapis namjere PRIJE predaje ili POSLIJE odgovora.
+ * Predaja dokumenta odredistu, u dvije izvedbe koje se razlikuju u jednome:
+ * pise li se zapis namjere prije predaje ili tek nakon odgovora. Iz te razlike
+ * slijede tri kontrasta koja scenariji poglavlja 7 pokazuju:
  *
- * Ta razlika je cijeli dokazni sadrzaj poglavlja 7. Iz nje slijede sva tri
- * kontrasta koja scenariji pokazuju:
- *
- *   B1  bez zapisa izostanak odgovora ne ostavlja nikakav trag; sa zapisom
- *       dokument sjedi u imenovanom stanju SENT_UNCONFIRMED
+ *   B1  bez zapisa izostanak odgovora ne ostavlja trag; sa zapisom dokument
+ *       sjedi u imenovanom stanju SENT_UNCONFIRMED
  *   E1  bez zapisa poslovni sustav ne moze odgovoriti je li dokument predao
  *   B2  bez zapisa nema rednog pokusaja dostave, pa ponovljena dostava
- *       izvornika ostaje dvoznacna; sa zapisom je jednoznacna
+ *       izvornika ostaje dvoznacna
  *
- * ⚠ USPOREDBA MORA BITI POSTENA. Izvedba bez zapisa namjere tumaci odgovor iz
- * svega sto joj stvarno ostaje, ukljucujuci spremljeni dokument: poslovna
- * namjera se iz indikatora kopije MOZE izvesti (Invoice::derivedIntent()).
- * Uskracivanje tog konteksta dalo bi kontrast koji dokazuje samo da mu je
- * kontekst uskracen.
- *
- * Ono sto se iz dokumenta ne moze izvesti je REDNI POKUSAJ DOSTAVE. Prva i
- * ponovljena dostava istog ispravka nose isti dokument. Ta razlika zivi samo u
- * zapisu predaje, a zapis nastao TEK NAKON odgovora ne nastaje uopce kada
- * odgovora nema. Upravo zato zapis mora nastati prije predaje: slucaj u kojem
- * je najpotrebniji je slucaj u kojem se poslije nikad ne bi napisao.
- *
- * Zapis namjere pise se u istoj transakciji kao i sam dokument. Prekid izmedu te
- * dvije radnje inace je najgore mjesto na kojem se dvostruki zapis moze
- * pojaviti: sustav koji je dokument izdao ne bi znao je li ga i predao.
+ * Usporedba je postena: izvedba bez zapisa tumaci odgovor iz svega sto joj
+ * ostaje, ukljucujuci spremljeni dokument (Invoice::derivedIntent()). Ne ostaje
+ * joj redni pokusaj dostave, jer zapis nastao tek nakon odgovora ne nastaje
+ * uopce kada odgovora nema.
  */
 final class HandoverService
 {
@@ -60,10 +47,8 @@ final class HandoverService
     ) {}
 
     /**
-     * Izdavanje dokumenta i predaja u jednom potezu.
-     *
-     * Vraca null samo u izvedbi bez zapisa namjere, kada odgovor ne stigne. Tada
-     * u bazi ne postoji nista, i upravo je to nalaz.
+     * Izdavanje dokumenta i predaja u jednom potezu. Vraca null samo u izvedbi
+     * bez zapisa namjere, kada odgovor ne stigne: tada u bazi ne ostaje nista.
      *
      * @param  array<string, mixed>  $invoiceData
      */
@@ -91,20 +76,11 @@ final class HandoverService
     }
 
     /**
-     * Ponovni pokusaj.
+     * Ponovni pokusaj. Istrosen rok vodi u DEADLINE_EXPIRED umjesto u slanje.
+     * Pokusaj prije zakazanog trenutka nije dopusten bez dogadaja koji ga
+     * opravdava (destinationRecovered), inace bi raspored bio ukras.
      *
-     * Prvo se provjerava rok. Ako je istrosen, ne salje se nista nego se prelazi
-     * u DEADLINE_EXPIRED -- prijelaz koji netko mora pokrenuti, a ne stanje u
-     * koje se sklizne protekom vremena.
-     *
-     * Zatim se provjerava zakazani trenutak. Pokusaj prije njega nije dopusten,
-     * jer bi inace raspored iz RetrySchedule bio ukras: sustav bi ga izracunao i
-     * ne bi ga se drzao. Raniji pokusaj trazi dogadaj koji ga opravdava, a to je
-     * destinationRecovered().
-     *
-     * Poslovna namjera se pritom NE MIJENJA. Ponavljanje je redni pokusaj
-     * dostave, ne nova vrsta dokumenta, pa ponovljena dostava ispravka ostaje
-     * ispravak.
+     * Poslovna namjera se pritom ne mijenja.
      */
     public function retry(Handover $handover): Handover
     {
@@ -127,15 +103,9 @@ final class HandoverService
     }
 
     /**
-     * Vanjski dogadaj: odrediste je opet dostupno.
-     *
-     * Raspored iz RetrySchedule zakazuje pokusaj za slucaj u kojem se o
-     * odredistu ne zna nista novo. Kada se sazna da je odrediste opet dostupno,
-     * cekanje na taj trenutak nema svrhe. Dogadaj se zato biljezi i premjesta
-     * zakazani pokusaj na sada.
-     *
-     * Bez ovog dogadaja scenarij D1 pokretao bi ponavljanje ranije od
-     * zakazanoga, bez icega u evidenciji sto bi taj raniji poziv opravdalo.
+     * Vanjski dogadaj: odrediste je opet dostupno. Raspored zakazuje pokusaj za
+     * slucaj u kojem se o odredistu ne zna nista novo, pa se saznanje biljezi i
+     * zakazani pokusaj premjesta na sada.
      */
     public function destinationRecovered(Handover $handover): Handover
     {
@@ -172,11 +142,8 @@ final class HandoverService
 
         private function receive(Handover $handover, IntermediaryResponse $response, CarbonImmutable $now): Handover
     {
-        // Obje izvedbe tumace odgovor iz onoga sto im STVARNO stoji na
-        // raspolaganju. Ako namjera nije zapisana, izvodi se iz spremljenog
-        // dokumenta, jer je indikator kopije polje eRacuna i ima ga i izvedba
-        // koja namjeru nije zapisala. Uskracivanje tog konteksta dalo bi
-        // kontrast koji ne dokazuje nista o trajnosti zapisa.
+        // Ako namjera nije zapisana, izvodi se iz spremljenog dokumenta, jer
+        // je indikator kopije polje eRacuna i ima ga i takva izvedba.
         $intent = $handover->intent ?? $handover->invoice->derivedIntent();
 
         $interpretation = $this->interpreter->interpret(
@@ -195,11 +162,9 @@ final class HandoverService
     }
 
     /**
-     * Stanje se ne mice. Zapisuje se sto sustav zna i sto ne zna.
-     *
-     * Ovdje se radi jedina stvar koju izostanak odgovora smije pokrenuti: ako
-     * nemogucnost jos nije zabiljezena, biljezi se sada, jer od tog dana tece
-     * rok iz cl. 49. st. 1.
+     * Stanje se ne mice; zapisuje se sto sustav zna i sto ne zna. Jedino sto
+     * izostanak odgovora smije pokrenuti je biljezenje nastupa nemogucnosti,
+     * jer od tog dana tece rok iz cl. 49. st. 1.
      */
     private function recordUnknownOutcome(
         Handover $handover,
@@ -258,11 +223,8 @@ final class HandoverService
     }
 
     /**
-     * Izvedba u kojoj zapis predaje nastaje tek nakon odgovora.
-     *
-     * Stupac namjere ostaje prazan. Izvedba koja namjeru nije zapisala prije
-     * slanja ne moze je zapisati poslije: predaja bez potvrde nikada ne dode do
-     * zapisivanja, a i kad dode, zapisala bi ono sto vise nije provjerljivo.
+     * Izvedba u kojoj zapis predaje nastaje tek nakon odgovora. Stupac namjere
+     * ostaje prazan, a predaja bez potvrde nikada ne dode do zapisivanja.
      *
      * @param  array<string, mixed>  $invoiceData
      */
@@ -279,8 +241,8 @@ final class HandoverService
                 'namjera koja se nije zapisala' => $intent->value,
             ]);
 
-            // Namjerno se ne zapisuje nista. Poslovni sustav od ovog trenutka ne
-            // moze odgovoriti je li dokument predao.
+            // Namjerno se ne zapisuje nista: od ovog trenutka poslovni sustav
+            // ne moze odgovoriti je li dokument predao.
             return null;
         }
 
