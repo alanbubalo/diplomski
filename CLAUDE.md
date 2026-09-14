@@ -125,8 +125,7 @@ Dalje samo hrvatski oblik.
 ## Tvrda ograničenja
 
 - Ni jedan stvarni sustav, poslodavac ni klijent ne spominje se nigdje. Ni raniji studentski
-  projekt, koji se **ne citira** i iz kojeg se ne preuzima
-  ni kod ni tekst.
+  projekt, koji se **ne citira** i iz kojeg se ne preuzima ni kod ni tekst.
 - Studija slučaja je referentna arhitektura izvedena iz javne specifikacije. Svaka tvrdnja
   ima citat propisa iza sebe.
 

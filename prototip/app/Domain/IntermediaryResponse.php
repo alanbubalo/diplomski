@@ -8,7 +8,7 @@ namespace App\Domain;
  * Sto posrednik moze vratiti.
  *
  * Stub vraca samo ovo troje. Prototip ne provjerava UBL, ne potpisuje i ne
- * govori AS4 -- tvrda granica opsega. Predmet je iskljucivo kako
+ * govori AS4 -- tvrda granica opsega prototipa. Predmet je iskljucivo kako
  * poslovni sustav reagira na ova tri ishoda.
  *
  * TIMEOUT nije odgovor nego njegov izostanak. Sinkroni kanal prema Sustavu za

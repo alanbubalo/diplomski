@@ -29,6 +29,18 @@ rad/main.pdf
 .idea/
 .vscode/
 
-# ---- PHP / Laravel (svc, posrednik) ------------------------
+# ---- PHP / Laravel (prototip) ------------------------------
 vendor/
 node_modules/
+
+# ---- Arhivirani izvori -------------------------------------
+# Repo postaje javan, pa arhivirani PDF-ovi i obrasci ne idu pod git.
+# Ostaju lokalno; pod gitom su samo README.md i SHA256SUMS.txt,
+# koji bilježe što je arhivirano i s kojim hashem.
+rad/izvori/**
+!rad/izvori/
+!rad/izvori/**/
+!rad/izvori/**/README.md
+!rad/izvori/README.md
+!rad/izvori/**/SHA256SUMS.txt
+!rad/izvori/SHA256SUMS.txt

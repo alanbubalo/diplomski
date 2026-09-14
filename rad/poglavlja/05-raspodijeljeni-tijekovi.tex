@@ -1,7 +1,7 @@
 % ============================================================
 %  5. Upravljanje raspodijeljenim tijekovima
-%  DUBINSKO poglavlje · budžet ~6 str. (plan-pisanja, preračunato s 10)
-%  Struktura je zaključana.
+%  DUBINSKO poglavlje · budžet ~6 str.
+%  Struktura zaključana.
 %
 %  IZVORI PROČITANI I PROVJERENI 2026-08-13:
 %    Gray 1981 (VLDB)            — u cijelosti; svojstva, kompenzacija,
@@ -113,7 +113,7 @@ mnogo. Treba imenovati koje jamstvo daje.
 % ------------------------------------------------------------
 \section{Saga i kompenzacija}
 \label{sec:saga}
-% ★ OVDJE JE ODGOVOR NA OTVORENO PITANJE TIKETA 12.
+% ★ OVDJE JE ODGOVOR NA OTVORENO PITANJE IZ PLANA POGL. 7 I 8.
 %   Gray 1981, str. 17, dijeli transakciju na četiri vrste sastavnica:
 %     - radnje nad nezaštićenim objektima
 %     - zaštićene radnje (undo/redo)
@@ -122,7 +122,7 @@ mnogo. Treba imenovati koje jamstvo daje.
 %   Fiskalizacija je STVARNA RADNJA po toj podjeli. Odatle slijedi da
 %   polovica SAGA-e koja se tiče kompenzacije na nju NE PRIMJENJUJE, a
 %   polovica koja se tiče evidentiranog napretka primjenjuje.
-%   To je nalaz, ne izbjegavanje. Konačna odluka još nije donesena.
+%   To je nalaz, ne izbjegavanje. Konačna odluka pada uz pogl. 7 i 8.
 
 Kada atomarnost preko granice otpadne, popravljanje se seli iz protokola u
 poslovnu logiku. Gray tu selidbu imenuje \cite{gray1981transaction}:
