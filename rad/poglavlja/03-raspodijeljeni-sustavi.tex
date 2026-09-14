@@ -1,34 +1,32 @@
 \chapter{Raspodijeljeni sustavi i tolerancija na greške}
 \label{ch:raspodijeljeni}
 
-Poglavlje uspostavlja pojmove kojima poglavlje~\ref{ch:studija} izvodi
-načine otkazivanja. Poziv preko mreže uvodi klasu otkaza koju lokalni poziv
-nema. Ta se klasa ne može ukloniti boljom izvedbom pozivatelja ili pozvanog,
-pa se s njom postupa na razini sučelja.
+Poziv preko mreže uvodi načine otkazivanja kojih nema kod lokalnog poziva.
+Rukovanje njima zahtijeva da sučelje odredi postupanje kada odgovor izostane
+ili se zahtjev ponovi. Ti pojmovi služe analizi fiskalizacijskog tijeka u
+poglavlju~\ref{ch:studija}.
 
 % ------------------------------------------------------------
 \section{Raspodijeljeni sustav i djelomični otkaz}
 \label{sec:djelomicni-otkaz}
 
-Waldo i suradnici razlikuju lokalno i raspodijeljeno
-računanje \cite{waldo1994note}. Lokalno je ono ograničeno na jedan adresni
-prostor. Raspodijeljeno je ono koje poziva u drugi adresni prostor, možda
-na drugom računalu, o kojem se ne zna ništa osim da podržava određeno
-sučelje.
+Waldo i suradnici razlikuju lokalno računanje, ograničeno na jedan adresni
+prostor, od raspodijeljenog računanja, koje uključuje pozive u drugi adresni
+prostor \cite{waldo1994note}. Udaljena komponenta može biti na drugom računalu,
+a pozivatelj o njoj zna samo koje sučelje podržava.
 
-Razlika nije samo u brzini. Autori nabrajaju kašnjenje, pristup memoriji,
-djelomični otkaz i istodobnost. Tvrde da su prva dva možda premostiva, a
-druga dva nisu. \strani{Djelomični otkaz}{partial failure} je onaj u
-kojem jedna komponenta stane dok ostale rade dalje.
+Autori navode četiri razlike: kašnjenje, pristup memoriji, djelomični otkaz i
+istodobnost. Prve dvije smatraju potencijalno premostivima, dok druge dvije
+zahtijevaju drukčiji pristup oblikovanju sustava.
+\strani{Djelomični otkaz}{partial failure} nastaje kada jedna komponenta
+prestane raditi, a ostale nastave.
 
-Lokalni poziv također može zapeti ili srušiti proces, ali pozivatelj i pozvana
-funkcija dijele adresni prostor i sudbinu procesa. Nema odvojene udaljene
-komponente koja može obraditi zahtjev nakon što je lokalni pozivatelj prestao
-čekati. Raspodijeljeni poziv nema takvu zajedničku sudbinu. Nema zajedničkog
-posrednika koji bi pouzdano utvrdio koja je komponenta otkazala i o tome
-obavijestio ostale, ni globalnog stanja u koje bi se moglo pogledati.
-
-Iz toga slijedi tvrdnja koju ovaj rad koristi na svakom koraku:
+Lokalni poziv može zastati ili srušiti proces, ali pozivatelj i pozvana
+funkcija dijele adresni prostor i sudbinu procesa. Kod raspodijeljenog poziva
+udaljena komponenta može nastaviti obradu i nakon što je pozivatelj prestao
+čekati. Pritom nema zajedničkog posrednika koji bi pouzdano utvrdio koja je
+komponenta otkazala i obavijestio ostale. Waldo i suradnici to ograničenje
+opisuju ovako:
 
 \begin{quote}
 „U raspodijeljenom sustavu otkaz mrežne veze ne razlikuje se od otkaza
@@ -40,20 +38,16 @@ failure of a processor on the other side of that link.}“
 Iz samog izostanka odgovora pozivatelj ne može utvrditi što se dogodilo.
 Zahtjev je mogao biti izgubljen na putu, primatelj je mogao otkazati prije
 obrade ili nakon obrade, prije slanja odgovora, a mogao je biti izgubljen i
-odgovor na povratku. Waldo to zove neodređenošću i tvrdi da
-sučelja moraju biti oblikovana tako da sudionici na nju mogu dosljedno
-reagirati.
+odgovor na povratku. Sučelje zato mora omogućiti dosljedno postupanje i kada
+ishod prethodnog zahtjeva nije poznat.
 
-Autori razmatraju i uvjerenje da je otpornost svojstvo izvedbe, nešto što
-se dobiva kupnjom pouzdanije komponente. Njihov protuprimjer je red čekanja
-iza standardiziranog sučelja.
-Klijent odustaje zbog \strani{isteka vremena}{timeout}, pa uvodi
-\strani{ponavljanje}{retry}, pa otkriva da
-se dio zahtjeva obavlja više puta. Krivnja nije na dobavljaču reda čekanja.
-Poruke u redu su vrijednosti bez identifikatora, pa deduplikacija nije
-moguća, a identifikator se ne može dodati jer je sučelje standardizirano.
-
-Zaključak je da se otpornost izražava na razini sučelja, ne izvedbe:
+Autori taj problem prikazuju na primjeru reda čekanja sa standardiziranim
+sučeljem. Klijent nakon \strani{isteka vremena}{timeout} uvodi
+\strani{ponavljanje}{retry}, zbog čega dio zahtjeva može biti obrađen više
+puta. Poruke nemaju identifikator potreban za deduplikaciju, a standardizirano
+sučelje ne dopušta njegovo dodavanje. Pouzdanija izvedba reda čekanja sama ne
+može ukloniti to ograničenje. Pri oblikovanju sučelja zato treba odrediti
+učinak ponovljenog zahtjeva:
 
 \begin{quote}
 „Pri oblikovanju svake operacije mora se postaviti pitanje: što se događa
@@ -63,83 +57,62 @@ to be asked: what happens if the client chooses to repeat this operation
 with the exact same parameters as previously?}“ \cite{waldo1994note}}
 \end{quote}
 
-To pitanje poglavlje~\ref{ch:studija} postavlja fiskalizacijskom sučelju.
-Ondje sučelje propisuje zakon, pa ga sudionik ne može promijeniti.
-
-Uz ovaj rad obično se navodi i popis zabluda o raspodijeljenom računarstvu,
-a prva zabluda glasi da je mreža pouzdana. Popis nije nastao kao znanstveni
-rad. Deutsch prve četiri zablude ne pripisuje sebi, sljedeće četiri jest, a
-svih osam izložio je na internom izlaganju u Sun Microsystemsu između kraja
-1991.\ i početka 1993. Uvriježene godine time su netočne, a devetu zabludu
-ne potvrđuje kao Goslingovu nego samo kao proširenje
-četvrte \cite{deutsch2021fallacies}. Popis je koristan kao podsjetnik, ali
-ništa u ovom radu ne počiva na njemu.
+Poglavlje~\ref{ch:studija} razmatra isto pitanje za fiskalizacijsko sučelje,
+čija su pravila određena propisom i sudionik ih ne može samostalno mijenjati.
 
 % ------------------------------------------------------------
 \section{Pojmovi: uzrok, pogreška i otkaz}
 \label{sec:fault-error-failure}
 
-Rad o načinima otkazivanja treba pojmove koji razlikuju kvar od njegove
-posljedice. Avizienis i suradnici daju taksonomiju koja se u literaturi o
-pouzdanosti uzima kao referentna \cite{avizienis2004taxonomy}.
+Taksonomija Avizienisa i suradnika razlikuje uzrok, pogrešku i otkaz sustava
+\cite{avizienis2004taxonomy}. Otkaz (\emph{failure}) je događaj u kojem
+isporučena usluga odstupa od ispravne, odnosno sustav ne obavlja svoju
+funkciju. Pogreška (\emph{error}) je odstupanje stanja sustava od ispravnog,
+a uzrok (\emph{fault}) prosuđeni je ili pretpostavljeni razlog pogreške.
+Uzrok je aktivan kada proizvodi pogrešku, inače je uspavan.
 
-Ispravna usluga isporučuje se kada sustav radi ono čemu služi. Otkaz
-(\emph{failure}) je događaj u kojem isporučena usluga odstupa od ispravne.
-Budući da je usluga niz vanjskih stanja sustava, otkaz znači da barem
-jedno vanjsko stanje odstupa od ispravnog. To odstupanje zove se pogreška
-(\emph{error}). Uzrok (\emph{fault}) je prosuđeni ili pretpostavljeni
-razlog pogreške. Uzrok je aktivan kada proizvodi pogrešku, inače je
-uspavan.
+Uzrok proizvodi pogrešku koja se može širiti sustavom. Otkaz nastaje tek kada
+pogreška zahvati vanjsko stanje i utječe na isporučenu uslugu. Unutarnja
+pogreška zato ne mora dovesti do otkaza. Ovaj rad analizira načine
+otkazivanja, odnosno odstupanja vidljiva korisniku usluge.
 
-Lanac ide u jednom smjeru. Uzrok proizvodi pogrešku, pogreška se širi, a
-otkaz nastaje tek ako pogreška dođe do vanjskog stanja. Pogreška do njega ne
-mora doći, i tada otkaza nema. Razlika je važna jer rad
-govori o načinima otkazivanja, dakle o onome što se vidi izvana, a ne o
-svakoj pogrešci koja se iznutra dogodi.
+Autori ispravnost usluge određuju prema funkciji sustava. Usluga može
+odgovarati specifikaciji, a ipak biti neprihvatljiva korisniku, što upućuje na
+uzrok u samoj specifikaciji. Takvi uzroci uključuju propuste i pogrešne navode,
+poput neopravdanih pretpostavki ili nedosljednosti. Ta podjela omogućuje
+analizu uzroka u propisima koji određuju fiskalizacijski tijek u
+poglavlju~\ref{ch:studija}.
 
-Jedna odredba te taksonomije uređuje odnos otkaza i specifikacije.
-Autori otkaz definiraju u odnosu na funkciju sustava, ne u odnosu na opis
-te funkcije u specifikaciji. Usluga koja je u skladu sa specifikacijom
-može biti neprihvatljiva korisniku. Time se otkriva uzrok u samoj
-specifikaciji. Takvi uzroci dijele se na propuste i na pogrešne navode,
-među koje autori ubrajaju neopravdane pretpostavke i nedosljednosti.
-
-Iz toga slijedi da specifikacija može biti uzrok otkaza. Slučajevi koje
-izvodi poglavlje~\ref{ch:studija} nisu programerske greške nego uzroci u
-specifikaciji, a specifikacija je ondje propis.
-
-Avizienis razlikuje uzroke i po postojanosti. Trajni uzrok prisutan je
-neprekidno, prolazni je vremenski omeđen. Uz to razlikuje uzroke po tome
-može li se njihovo aktiviranje ponoviti. Oni čije je aktiviranje
-ponovljivo zovu se čvrsti, a oni čije nije, neuhvatljivi.
+Uzroci se razlikuju i po postojanosti te ponovljivosti aktiviranja. Trajni
+uzrok prisutan je neprekidno, a prolazni je vremenski ograničen. Uzroci čije
+se aktiviranje može ponoviti nazivaju se čvrstima, a oni čije aktiviranje
+nije ponovljivo neuhvatljivima.
 
 % ------------------------------------------------------------
 \section{Klasifikacija otkaza}
 \label{sec:klasifikacija-otkaza}
 
-Otkazi se razlikuju po tome kako se očituju. Avizienis i suradnici dijele
-ih po četiri gledišta: po području, po uočljivosti, po dosljednosti i po
-posljedicama \cite{avizienis2004taxonomy}. Za ovaj rad su nosiva prva dva.
+Avizienis i suradnici dijele otkaze prema području, uočljivosti, dosljednosti
+i posljedicama \cite{avizienis2004taxonomy}. Za ovaj rad relevantne su
+ponajprije podjele prema području i uočljivosti.
 
-Po području otkaz je sadržajni ili vremenski. Sadržajni znači da isporučeni
-podatak odstupa od ispravnog. Vremenski znači da odstupa trenutak isporuke
-ili njezino trajanje, pa je usluga prerana ili prekasna. Kada su i sadržaj
-i vrijeme neispravni, sustav se zaustavlja ili isporučuje neuredno. Poseban
-slučaj zaustavljanja je tiha isporuka, u kojoj se ne šalje nijedna poruka.
+Prema području otkaz može biti sadržajni ili vremenski. Kod sadržajnog otkaza
+isporučeni podatak odstupa od ispravnog. Kod vremenskog odstupa trenutak
+isporuke ili njezino trajanje, pa je usluga prerana ili prekasna. Ako su i
+sadržaj i vrijeme neispravni, sustav se zaustavlja ili isporučuje neuredno.
+Poseban slučaj zaustavljanja je tiha isporuka, u kojoj se ne šalje nijedna
+poruka.
 
-Po uočljivosti otkaz je signaliziran ili nesignaliziran. Signaliziran je
-onaj koji sustav javlja korisniku upozorenjem. Nesignaliziran je onaj koji
-se dogodi bez takve poruke. Sami mehanizmi otkrivanja imaju dva vlastita
-načina otkazivanja: lažnu uzbunu i propušteni signal.
+Prema uočljivosti otkaz je signaliziran kada sustav o njemu obavijesti
+korisnika, a nesignaliziran kada takva obavijest izostane. Mehanizmi otkrivanja
+pritom mogu proizvesti lažnu uzbunu ili propustiti signal. Ta je razlika važna
+za oporavak: sudionik koji ne zna da se otkaz dogodio ne može na njega
+reagirati.
 
-Ta podjela je za poglavlje~\ref{ch:studija} važnija od podjele po području.
-Nesignaliziran otkaz nije otkaz koji je gori od signaliziranog. To je otkaz
-za koji sudionik ne zna da se dogodio, pa na njega ne može ni reagirati.
-
-Preostaje pitanje ponavljanja. Ako se otkaz može ponoviti odmah i uspjeti,
-ponavljanje ima smisla. Ako ne, ponavljanje samo troši vrijeme i stvara
-duplikate. Odgovor u literaturi dolazi od Graya, koji ga daje
-oprezno \cite{gray1986whystop}:
+Primjenjivost ponavljanja ovisi o tome može li novi pokušaj uspjeti nakon
+neuspjelog. Gray iznosi pretpostavku da ponovno izvođenje operacije nakon
+vraćanja stanja programa na početno često omogućuje oporavak
+\cite{gray1986whystop}:
 
 \begin{quote}
 „Pretpostavljam da postoji sličan fenomen u softveru: većina proizvodnih
@@ -151,83 +124,47 @@ is reinitialized and the failed operation retried, the operation will
 usually not fail the second time.}“ \cite{gray1986whystop}}
 \end{quote}
 
-Gray razlikuje čvrste i meke kvarove imenima koja su ostala u upotrebi.
-Bohrbug je poput Bohrova atoma, čvrst i lako uhvatljiv. Heisenbug izmiče
-lovcu na kvarove godinama, a i sam lovac može poremetiti stanje toliko da
-kvar nestane.
-
-Gray svoju tvrdnju naziva pretpostavkom i priznaje da je nije uspio
-kvantificirati. Ponavljanje je najčešći obrazac otpornosti u praksi, a
-opravdanje mu počiva na pretpostavci koju je njezin autor mogao potkrijepiti
-samo jednim pokusom na dnevnicima grešaka.
+Gray za čvrste kvarove rabi naziv Bohrbug, a za meke Heisenbug. Potonje je
+teško ponoviti jer i samo ispitivanje može promijeniti uvjete u kojima se
+pojavljuju. Pretpostavku o uspjehu ponavljanja potkrepljuje pokusom na
+dnevnicima grešaka, ali navodi da je nije uspio kvantificirati. Ona stoga
+ne jamči uspjeh pojedinačnog ponovnog pokušaja.
 
 % ------------------------------------------------------------
-\section{Istek vremena ne razlikuje sporo od mrtvog}
+\section{Istek vremena i otkrivanje otkaza}
 \label{sec:detekcija-otkaza}
 
-Ako se otkaz mrežne veze ne razlikuje od otkaza procesora, postavlja se
-pitanje kako se otkaz uopće otkriva. Odgovor je da se ne otkriva pouzdano.
+Chandra i Toueg opisuju detektor otkaza kao skup modula. Svaki proces ima
+svoj modul koji održava popis procesa za koje sumnja da su otkazali
+\cite{chandra1996failuredetectors}. Detektor može pogrešno označiti ispravan
+proces i poslije ga ukloniti s popisa. Različiti procesi zato u istom
+trenutku mogu imati različite popise.
 
-Chandra i Toueg uvode detektor otkaza kao zaseban dio sustava. Svaki proces
-ima svoj modul koji održava popis procesa za koje sumnja da su
-pali \cite{chandra1996failuredetectors}. Modul smije griješiti. Smije na
-popis dodati proces koji radi i smije ga poslije s popisa maknuti. U
-istom trenutku popisi kod dva procesa mogu biti različiti.
+Detektori se opisuju svojstvima potpunosti i točnosti. Potpunost traži da
+procesi koji su otkazali na kraju budu trajno osumnjičeni, a točnost
+ograničava pogrešne sumnje. Jaka točnost zahtijeva da nijedan proces ne bude
+osumnjičen prije nego što otkaže. Autori navode da je takvo svojstvo u mnogim
+stvarnim sustavima teško, ako ne i nemoguće postići. Spor proces pritom je
+teško razlikovati od procesa koji je otkazao.
 
-Kvaliteta detektora opisuje se dvama svojstvima. Potpunost traži da svaki
-proces koji padne bude na kraju trajno osumnjičen. Točnost ograničava
-pogreške koje detektor smije napraviti, pa jaka točnost traži da nijedan
-proces ne bude osumnjičen prije nego što padne. Sami autori kažu da je
-jaku točnost teško, ako ne i nemoguće, postići u mnogim stvarnim sustavima.
-
-Razlog navode uz definiciju slabe točnosti. Ispravni procesi mogu biti
-pogrešno osumnjičeni, jer je teško utvrditi je li proces samo spor ili je pao.
-
-Praktična posljedica je jedna rečenica koju rad koristi dalje. Istek
-vremena nije opažanje otkaza nego odluka pozivatelja da prestane čekati.
-Ta odluka ne mijenja ništa na strani primatelja. Zahtjev je možda obrađen,
-možda nije, a možda se obrađuje sada.
-
-Zato izostanak odgovora nikada ne znači da poruka nije zaprimljena. Znači
-samo da odgovor nije stigao unutar vremena koje je pozivatelj sam izabrao.
-Sustav koji tu razliku ne modelira tvrdi nešto što ne zna.
+Istek vremena zato je odluka pozivatelja da prestane čekati, a ne dokaz
+otkaza primatelja. Zahtjev je možda već obrađen, možda nije zaprimljen ili
+se još obrađuje. Izostanak odgovora potvrđuje samo da odgovor nije stigao
+unutar odabranog vremena čekanja. Sustav zato treba razlikovati nepoznat
+ishod od potvrđenog neuspjeha.
 
 % ------------------------------------------------------------
-\section{Semantika dostave i nemogućnost dostave točno jednom}
+\section{Semantika dostave i granice potvrde ishoda}
 \label{sec:semantika-dostave}
 
-Sustavi koji razmjenjuju poruke opisuju se trima semantikama dostave.
-Najviše jednom znači da poruka nikada neće biti obrađena dvaput, ali može
-biti izgubljena. Barem jednom znači da poruka neće biti izgubljena, ali
-može biti obrađena više puta. Točno jednom znači oboje.
+Pri razmjeni poruka razlikuju se tri semantike dostave. Najviše jednom znači
+da poruka neće biti obrađena više puta, ali može biti izgubljena. Barem jednom
+znači da poruka neće biti izgubljena, ali može biti obrađena više puta. Točno
+jednom podrazumijeva da poruka bude obrađena i da se njezina obrada ne ponovi.
 
-Prve dvije se izvode lako. Najviše jednom dobiva se tako da se ne ponavlja,
-barem jednom tako da se ponavlja dok ne stigne potvrda. Treća se ne izvodi.
-
-Ovaj rad se pritom ne oslanja na teorem oblika „dostava točno jednom je
-nemoguća“. Takav teorem za izvod nije potreban, a među pročitanim izvorima nije
-ni nađen. Ono na čemu izvod stoji stariji je i uži rezultat. Gray ga izlaže kao
-paradoks dvaju generala \cite{gray1978notes}. Dva generala moraju napasti
-istodobno, poruke između njih nose glasnici, a svaki glasnik se može
-izgubiti. Dokaz da protokol ne postoji staje u nekoliko redaka. Neka je
-protokol najkraći mogući i neka se posljednji glasnik izgubi. Tada je taj
-glasnik ili bio suvišan, pa protokol nije bio najkraći, ili jedan general
-ne dobiva poruku koja mu treba, pa ne kreće.
-
-Ograda je bitna i često se ispušta. Gray dokazuje da ne postoji protokol
-\emph{fiksne duljine}. Odmah zatim kaže da se popuštanjem tog ograničenja
-rješenje dobiva, i opisuje protokol u dvije faze koji ponekad traži
-proizvoljno mnogo poruka.
-
-Ni to popuštanje nije bez cijene. Protokol koji nije omeđen duljinom uključuje
-i izvođenja u kojima poruka ima beskonačno mnogo, dakle izvođenja u kojima
-protokol ne završava. Cijena zato nije samo da se najgori slučaj ne može
-omeđiti; završetak nije zajamčen u svim izvođenjima. Uz to, nemogućnost konsenzusa u
-asinkronom sustavu s jednim mogućim otkazom procesa poznata je i
-formalno \cite{fischer1985impossibility}.
-
-Iz te analogije zato ne slijedi opći teorem o dostavi točno jednom. Tri stvari
-ostaju odvojene:
+Odustajanje od ponovnog slanja omogućuje semantiku najviše jednom, dok se
+semantika barem jednom ostvaruje ponavljanjem do primitka potvrde. Za analizu
+jamstava pritom treba razlikovati:
 
 \begin{itemize}[nosep, leftmargin=1.4cm]
   \item prijenos poruke,
@@ -235,25 +172,36 @@ ostaju odvojene:
   \item dogovor dvaju sudionika o tome što je učinjeno.
 \end{itemize}
 
-Problem dvaju generala govori o zadnjem. Ono što ovaj rad iz njega uzima jest da
-potvrda o učinjenom nije zajamčena, a ne da je ponovljena obrada neizbježna.
+Ograničenje dogovora opisuje paradoks dvaju generala koji izlaže
+Gray \cite{gray1978notes}. Generali se moraju dogovoriti o istodobnom napadu,
+a poruke prenose glasnicima koji se mogu izgubiti. Ako pretpostavimo
+najkraći protokol koji jamči dogovor, gubitak posljednje poruke znači da
+jednom generalu nedostaje potrebna potvrda. Ako mu ta potvrda nije potrebna,
+protokol se može skratiti i početna pretpostavka ne vrijedi.
 
-Odgovor prakse nije dostava točno jednom nego učinak koji se tako ponaša.
-Poruka se šalje barem jednom, a primatelj se gradi tako da ponovljena
-poruka ne mijenja ishod. Helland to opisuje kao svojstvo entiteta koji
-pamti da je poruku već obradio, pa na ponovljenu poruku odgovara odgovorom
-koji oponaša prvi \cite{helland2007lifebeyond}. Idempotentnost se odnosi
-na učinak obrade i ne zahtijeva jednak odgovor. Za razrješavanje nepoznatog
-ishoda pozivatelju treba odgovor iz kojeg može zaključiti što je učinjeno
-ili zaseban dohvat statusa. Ponavljanje ranijeg odgovora jedan je način
-da se takvo razrješavanje omogući.
+Rezultat se odnosi na protokol \emph{fiksne duljine}. Gray zatim opisuje
+protokol u dvije faze koji popušta to ograničenje i može zahtijevati
+proizvoljno mnogo poruka. Time završetak nije zajamčen u svim izvođenjima,
+jer su moguća i ona s beskonačno mnogo poruka. Zaseban formalni rezultat
+pokazuje nemogućnost konsenzusa u asinkronom sustavu s jednim mogućim
+otkazom procesa \cite{fischer1985impossibility}.
 
-Gdje se ta obrana smješta, pitanje je koje su Saltzer, Reed i Clark
-riješili šire nego za ovaj slučaj \cite{saltzer1984endtoend}. Njihov
-argument s kraja na kraj kaže da se funkcija može potpuno i ispravno
-izvesti samo uz znanje aplikacije na krajevima veze, pa je smještanje te
-funkcije u komunikacijski podsustav neizvedivo. Za duplikate to razrađuju
-izravno:
+Rad se na paradoks dvaju generala oslanja kao na ograničenje dogovora o
+ishodu. Iz njega ne izvodi opći teorem o nemogućnosti dostave točno jednom
+ni tvrdnju da je ponovljena obrada neizbježna.
+
+Praktičan pristup kombinira dostavu barem jednom s obradom u kojoj ponovljena
+poruka ne mijenja ishod. Helland opisuje entitet koji pamti obrađene poruke i
+na ponovljenu poruku vraća odgovor koji oponaša prvi
+\cite{helland2007lifebeyond}. Idempotentnost se odnosi na učinak obrade i
+sama ne zahtijeva jednak odgovor. Za razrješavanje nepoznatog ishoda
+pozivatelju treba odgovor iz kojeg može utvrditi što je učinjeno ili zaseban
+dohvat statusa. Ponavljanje ranijeg odgovora jedan je način da se to omogući.
+
+Saltzer, Reed i Clark argumentom s kraja na kraj objašnjavaju zašto
+komunikacijski podsustav ne može sam potpuno osigurati funkcije koje ovise o
+znanju aplikacije na krajevima veze \cite{saltzer1984endtoend}. To vrijedi i
+za potiskivanje duplikata:
 
 \begin{quote}
 „Čak i ako mreža potiskuje duplikate, sama aplikacija može nehotice
@@ -266,28 +214,20 @@ own failure/retry procedures. These application level duplications look
 like different messages to the communication system, so it cannot suppress
 them}“ \cite{saltzer1984endtoend}} \end{quote}
 
-Isti rad postavlja i pitanje što potvrda uopće dokazuje. Autori uzimaju
-mrežnu potvrdu o dostavi i pokazuju da aplikaciji ne koristi mnogo. Njoj treba
-podatak o tome je li odredište po poruci postupilo, a dostava na odredišno
-računalo to ne kaže. Potvrda koja joj treba je ona s kraja na kraj. Ona glasi
-„učinio sam“ ili „nisam“, a poslati ju može samo odredišna aplikacija.
+Mrežna potvrda dostave također ne dokazuje da je odredišna aplikacija
+postupila po poruci. Potvrdu o učinku obrade može dati odredišna aplikacija.
+Poglavlje~\ref{ch:studija} razmatra granice utvrđivanja ishoda na
+fiskalizacijskom sučelju.
 
-Poglavlje~\ref{ch:studija} pokazuje sustav u kojem takva potvrda ne postoji.
-
-Preostaje ograničenje koje se uz ovo pitanje najčešće navodi.
-Gilbert i Lynch formalno su dokazali Brewerovu slutnju: u asinkronom
-mrežnom modelu nije moguće izvesti dijeljeni objekt koji istodobno jamči
+Gilbert i Lynch formaliziraju drugo ograničenje, poznato kao CAP. U
+asinkronom mrežnom modelu dijeljeni objekt ne može istodobno jamčiti
 raspoloživost i atomarnu konzistentnost u svim izvođenjima u kojima se
-poruke gube \cite{gilbert2002brewer}. Isto vrijedi i u djelomično sinkronom
-modelu. Njihov rad sadrži i ogradu koja se rijetko navodi. U djelomično
-sinkronom modelu moguće je vraćati atomarne podatke dok god nema
-razdvajanja mreže, a nekonzistentne tek kada se poruke izgube. Kompromis se
-dakle aktivira razdvajanjem. Abadi na to nadovezuje
-opažanje da izbor postoji i bez razdvajanja, tada između kašnjenja i
-konzistentnosti \cite{abadi2012consistency}.
+poruke gube \cite{gilbert2002brewer}. Isto vrijedi u djelomično sinkronom
+modelu, ali je u njemu moguće održati atomarnu konzistentnost dok nema
+razdvajanja mreže, a dopustiti nekonzistentnost tijekom razdvajanja. Abadi
+razmatra i izbor između kašnjenja i konzistentnosti kada razdvajanja
+nema \cite{abadi2012consistency}.
 
-Za ovaj rad CAP je podsjetnik. Fiskalizacija nije replicirana
-baza podataka, pa se izbor između konzistentnosti i raspoloživosti ne
-postavlja u tom obliku. Postavlja se u obliku koji opisuje
-poglavlje~\ref{ch:studija}: dva kanala, jedan dokument i nijedna odredba
-koja bi ih vezala.
+CAP se ovdje ne primjenjuje izravno jer predmet rada nije replicirana baza
+podataka. Analiza u poglavlju~\ref{ch:studija} odnosi se na dva odvojena
+kanala obrade istog dokumenta bez zajedničkog protokola atomarnog dovršetka.
