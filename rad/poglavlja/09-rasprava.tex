@@ -2,8 +2,8 @@
 \label{ch:rasprava}
 
 Rezultati iz poglavlja~\ref{ch:evaluacija} pokazuju da učinak obrazaca ovisi
-o načinu otkazivanja i konfiguraciji. Rasprava razmatra složenost njihove
-primjene, posljedice kašnjenja i ograničenja provedene evaluacije.
+o načinu otkazivanja i konfiguraciji. Taj učinak ima cijenu u složenosti
+izvedbe i kašnjenju, a evaluacija koja ga je utvrdila ima vlastite granice.
 
 % ------------------------------------------------------------
 \section{Cijena obrazaca}
@@ -58,8 +58,8 @@ Matrica označava jedan slučaj mogućeg pogoršanja usklađenosti: ponavljanje
 cijele skupne poruke kada atomarnost obrade pojedinih zapisa nije izričito
 opisana. Ocjena je autorska prosudba rizika, jer specifikacija opisuje
 neprihvaćen zahtjev i prvu grešku, ali ne razrađuje stanje svakog zapisa.
-Učinak prekidača i deduplikacije također ovisi o uvjetima primjene, pa
-nijedan obrazac nije ocijenjen kao sam po sebi štetan.
+Učinak prekidača i deduplikacije ovisi o uvjetima primjene, pa nijedan
+obrazac nije ocijenjen kao sam po sebi štetan.
 
 \paragraph{Prekidač i preostali rok.}
 Prekidač zaustavlja pozive prema nedostupnom odredištu, čime štedi lokalne

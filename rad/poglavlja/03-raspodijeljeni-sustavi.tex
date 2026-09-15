@@ -93,7 +93,10 @@ poglavlju~\ref{ch:studija}.
 Uzroci se razlikuju i po postojanosti te ponovljivosti aktiviranja. Trajni
 uzrok prisutan je neprekidno, a prolazni je vremenski ograničen. Uzroci čije
 se aktiviranje može ponoviti nazivaju se čvrstima, a oni čije aktiviranje
-nije ponovljivo neuhvatljivima.
+nije ponovljivo neuhvatljivima. Ta podjela određuje ima li ponovni pokušaj
+izgleda za uspjeh: prolazni uzrok može nestati do sljedećeg pokušaja, trajni
+neće. Pošiljatelj tu razliku mora moći prepoznati iz odgovora, što
+odjeljak~\ref{sec:failure-modes} razmatra na fiskalizacijskom sučelju.
 
 % ------------------------------------------------------------
 \section{Klasifikacija otkaza}
@@ -157,7 +160,7 @@ teško razlikovati od procesa koji je otkazao.
 Istek vremena zato je odluka pozivatelja da prestane čekati, a ne dokaz
 otkaza primatelja. Zahtjev je možda već obrađen, možda nije zaprimljen ili
 se još obrađuje. Izostanak odgovora potvrđuje samo da odgovor nije stigao
-unutar odabranog vremena čekanja. Sustav zato treba razlikovati nepoznat
+unutar odabranog vremena čekanja. Sustav stoga treba razlikovati nepoznat
 ishod od potvrđenog neuspjeha.
 
 % ------------------------------------------------------------
