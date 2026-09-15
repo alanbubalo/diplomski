@@ -1,20 +1,23 @@
 \chapter{Zaključak}
 \label{ch:zakljucak}
 
-U promatranom tijeku fiskalizacije eRačuna ograničenja oporavka proizlaze iz
-svojstava raspodijeljene razmjene, ali i iz propisanog razdvajanja postupaka,
-nedostajućih podataka i nedovoljno preciznih pravila. Za drugu skupinu rad
-koristi pojam \emph{regulatorno inducirano ograničenje}. Pojam služi analizi
-ove studije slučaja i ne predstavlja novu opću teoriju.
+Rad pokazuje da za oporavak nakon kvara nije dovoljno samo ponavljati
+slanje. Sustav mora znati što je pokušao, koji je odgovor primio i koliko
+vremena ostaje do roka. Zapis namjere prije slanja omogućuje da se obrada
+nastavi i kada odgovor izostane.
 
-Primjer je šifra S008, koja potvrđuje postojanje zapisa s istim složenim
-identifikatorom. Ne otkriva koji ga je pokušaj stvorio ni je li prethodno
-slanje potvrđeno. Kod ispravka nije potpuno određen odnos datuma, oznake
-kopije i reference na prethodni račun prema provjeri jedinstvenosti.
-Zapisivanje poslovne namjere, rednog pokušaja dostave i odabrane grane
-omogućuje naknadno tumačenje ishoda. Ipak, ponovljena dostava ispravka sa
-zadržanim identifikatorom ostaje dvoznačna. Nalaz se odnosi na nedovoljno
-određen opis sučelja, a ne na dokaz da sustav odbija svaki ispravak.
+Mogućnosti oporavka ograničavaju i pravila postupka. Primjerice, tehnički
+obrazac ne može odrediti koji datum treba imati ispravak računa ako to
+izvori ne određuju. Ne može ni produljiti rok kada vanjski sustav ostane
+nedostupan. Za ograničenja koja proizlaze iz propisane arhitekture ili
+nedovoljno preciznih pravila rad koristi pojam \emph{regulatorno inducirano
+ograničenje}. Pojam služi analizi ove studije slučaja.
+
+Slučaj S008 pokazuje granicu lokalne evidencije. Podatak o tome šalje li
+se izvornik ili ispravak, zajedno s rednim pokušajem, omogućuje tumačenje
+nekih odgovora. Ponovljena dostava ispravka sa zadržanim identifikatorom
+ipak ostaje dvoznačna. Nalaz opisuje nedovoljno određeno sučelje, a ne
+dokazuje da stvarni sustav odbija svaki ispravak.
 
 % ------------------------------------------------------------
 \section*{Odgovori na istraživačka pitanja}
@@ -31,7 +34,7 @@ U matrici jedanaest načina otkazivanja i šest obrazaca nijedna ćelija nema
 ocjenu \emph{uklanja}. Obrasci čuvaju namjeru, ograničavaju ponavljanje i
 omogućuju nastavak nakon oporavka. Time mogu skratiti razdoblje nepoznatog
 ishoda ili omogućiti njegovo evidentiranje. Kada nedostaje podatak ili jednoznačno pravilo,
-najviše mogu detektirati stanje i sačuvati dokaz o odabranoj interpretaciji.
+najviše mogu evidentirati stanje i sačuvati dokaz o odabranoj interpretaciji.
 Za razrješavanje takvih slučajeva potrebno je preciznije pravilo, sučelje
 ili dokaz primitka.
 

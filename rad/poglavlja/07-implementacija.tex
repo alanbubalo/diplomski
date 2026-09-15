@@ -4,8 +4,15 @@
 Ilustrativni prototip provjerava dio tvrdnji o obrascima iz
 odjeljka~\ref{sec:dizajn} usporedbom završnih stanja dviju izvedbi nakon
 istog kvara. Predložena izvedba zapisuje namjeru prije vanjskog poziva, a
-osnovna stvara zapis predaje tek nakon odgovora. Usporedba pokazuje kako
-trenutak zapisivanja utječe na praćenje ishoda i mogućnost oporavka.
+osnovna stvara zapis predaje tek nakon odgovora.
+
+Razlika se može pratiti na računu \texttt{R-2026-003} iz uvodnog primjera.
+Obje izvedbe imaju spremljen račun. Predložena prije poziva dodaje zapis
+„ovaj račun treba poslati“, a zatim evidentira pokušaj. Ako odgovor
+izostane, taj zapis ostaje i obrada se može nastaviti. Osnovna zapis
+predaje stvara tek kada dobije odgovor, pa nakon poziva bez odgovora ima
+račun, ali nema zapis na kojem bi nastavila slanje. Prototip uspoređuje
+upravo te dvije izvedbe.
 
 % ------------------------------------------------------------
 \section{Opseg i granice}
@@ -32,7 +39,9 @@ Predmet provjere je rukovanje greškama. Prototip ne obuhvaća:
 Vanjska odredišta zamijenjena su \strani{krnjim dvojnicima}{stubs}. Dvojnik
 pristupne točke simulira potvrdu ili izostanak odgovora. Dvojnik Sustava za
 fiskalizaciju može vratiti i šifru S008. Unaprijed zadani niz odgovora
-omogućuje ponovljivo ispitivanje nedostupnosti i oporavka.
+omogućuje ponovljivo ispitivanje nedostupnosti i oporavka. Dvojnici su
+lokalne programske zamjene za vanjske servise: vraćaju unaprijed zadane
+odgovore, bez stvarnog slanja računa.
 
 Prototip je izveden u jeziku PHP 8.5 i okviru Laravel 13.25, kao skup konzolnih naredbi
 nad bazom SQLite, bez mrežnog sloja i bez korisničkog sučelja.
@@ -101,11 +110,11 @@ odjeljka~\ref{sec:dizajn} \cite{schneider1990statemachine}.
   pr/.style={-{Latex[length=1.8mm]}, thick},
   ozn/.style={font=\scriptsize, align=center, inner sep=1.5pt}
 ]
-  \node[st] (pri) {prepared};
-  \node[st, right=2.1cm of pri] (nep) {sent-\\unconfirmed};
-  \node[konac, right=2.3cm of nep] (pot) {confirmed};
-  \node[konac, above=1.0cm of pot] (odb) {correction-\\rejected};
-  \node[konac, below=1.0cm of pot] (rok) {deadline-\\expired};
+  \node[st] (pri) {Pripremljeno\\\texttt{prepared}};
+  \node[st, right=1.8cm of pri] (nep) {Poslano bez potvrde\\\texttt{sent-unconfirmed}};
+  \node[konac, right=2.0cm of nep] (pot) {Potvrđeno\\\texttt{confirmed}};
+  \node[konac, above=1.0cm of pot] (odb) {Ispravak odbijen\\\texttt{correction-rejected}};
+  \node[konac, below=1.0cm of pot] (rok) {Rok istekao\\\texttt{deadline-expired}};
 
   \draw[pr] (pri) -- node[ozn, above] {sent} (nep);
   \draw[pr] (nep) -- node[ozn, above] {confirmation} (pot);
@@ -113,18 +122,16 @@ odjeljka~\ref{sec:dizajn} \cite{schneider1990statemachine}.
   \draw[pr] (nep) -- node[ozn, below left, pos=0.35] {deadline\\elapsed} (rok);
   \draw[pr] (nep) to[loop above] node[ozn, above] {sent} (nep);
 \end{tikzpicture}
-\caption[Automat predaje dokumenta]{Automat predaje. Oznake su iz programskog
-koda: \texttt{prepared} je zapisana namjera prije pokušaja,
-\texttt{sent-unconfirmed} je poslano bez potvrde, \texttt{confirmed} je
-potvrđen primitak, \texttt{correction-rejected} je ispravak sa zadržanim
-identifikatorom odbijen šifrom S008, a \texttt{deadline-expired} označava
-istek roka prije potvrde. Dvostruki obrub označava završno stanje.
-Ponovno slanje pokreće samoprijelaz \texttt{sent}. Izostanak odgovora ne
-pokreće prijelaz, pa predaja ostaje u stanju \texttt{sent-unconfirmed}.}
+\caption[Automat predaje dokumenta]{Automat predaje. Uz hrvatski naziv
+svakog stanja navedena je oznaka iz programskog koda. Dvostruki obrub
+predstavlja završno stanje. Ponovno slanje pokreće samoprijelaz
+\texttt{sent}. Izostanak odgovora ne pokreće prijelaz: predaja ostaje
+poslana bez potvrde. Istek roka označava kraj čekanja u modelu, ali ne
+otkriva ishod ranije udaljene obrade.}
 \label{fig:automat}
 \end{figure}
 
-\needspace{26\baselineskip}
+\needspace{18\baselineskip}
 Rok iz članka 49.\ stavka 1.\ provjerava se uvjetima nad prijelazima, a njegov
 istek predstavlja zaseban poticaj, prema odjeljku~\ref{sec:automat}.
 Listing~\ref{lst:automat} prikazuje provjere dopuštenosti slanja i poticaja
@@ -165,6 +172,9 @@ razrješavanje ranijeg ishoda nisu obuhvaćeni prototipom.
 Zapis u odlaznom pretincu sadrži ključ koji određuje
 pošiljatelj \cite{saltzer1984endtoend}. Poslovna namjera i redni pokušaj
 dostave omogućuju tumačenje šifre S008 prema listingu~\ref{lst:s008}.
+Listing provodi četiri odluke iz tablice~\ref{tab:s008-tumacenje}:
+dvije kombinacije daju jednoznačan prijelaz, a dvije zadržavaju nepoznat
+ishod. Posljednja grana obrađuje nedostatak podatka o namjeri.
 
 \needspace{4\baselineskip}
 
@@ -220,7 +230,7 @@ odjeljka~\ref{sec:failure-modes}. Svaki se pokreće u obje izvedbe, sa zapisom
 namjere i bez njega. Scenariji upravljaju satom od unaprijed zadanog početnog
 trenutka, pa su ispisi ponovljivi.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption[Scenariji i završna stanja]{Završna stanja konzolnih scenarija.
 Vrijednosti su iz izlaza naredbe \texttt{php artisan scenario}. U retku B2/2
@@ -261,7 +271,7 @@ izdan, ali zapis predaje ne postoji.
 Tablica~\ref{tab:raspored} uspoređuje raspored koji uzima u obzir preostali rok
 s eksponencijalnim odmakom koji ovisi samo o broju pokušaja.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption[Raspored ponavljanja prema roku i prema broju pokušaja]{Raspored
 ponavljanja uz rok koji istječe 8.~rujna u 23:59:59.}
@@ -316,6 +326,7 @@ Scenarij ne provjerava ponašanje stvarnog sustava ni varijantu ispravka s
 novim datumom i referencom na prethodni račun.
 Listing~\ref{lst:ispis} prikazuje završno stanje baze.
 
+\noindent\begin{minipage}{\textwidth}
 \begin{lstlisting}[caption={[Završno stanje baze nakon scenarija
 B2]Završno stanje nakon scenarija B2, izlaz naredbe \texttt{php artisan
 state}. Tri modelirana slučaja daju različite ishode tumačenja šifre S008.
@@ -350,6 +361,7 @@ EVIDENCIJA
 | 3       | 5   | tumacenje odgovora             | sent-unconfirmed    | NE          |
 +---------+-----+--------------------------------+---------------------+-------------+
 \end{lstlisting}
+\end{minipage}
 
 Pri prvoj predaji treći redak evidencije bilježi nepoznat ishod. Kasniji
 odgovor S008 omogućuje potvrdu ranijeg pokušaja uz pretpostavke iz

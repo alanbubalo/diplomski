@@ -5,111 +5,95 @@
 \section{Problem}
 \label{sec:problem}
 
-Od 2026.\ obveznik uz dostavu eRačuna primatelju mora prijaviti i podatke o
-njemu Poreznoj upravi. Budući da su to odvojeni postupci, jedan može uspjeti,
-a drugi ne. Ako na fiskalizacijski zahtjev ne stigne
-odgovor, obveznik ne zna je li zahtjev obrađen. U razmatranom primjeru
-obveznik ponovno šalje zahtjev, a Sustav za fiskalizaciju odgovara šifrom
-S008. Ta šifra označava da zapis s istim identifikatorom već postoji.
+Izdavatelj eRačuna ima dvije odvojene zadaće: dostaviti račun primatelju
+i prijaviti podatke o njemu Poreznoj upravi. Drugi se postupak naziva
+fiskalizacija eRačuna. Budući da se postupci provode odvojeno, uspješna
+dostava računa ne znači da je uspjela i njegova fiskalizacija.
+Obveze i rokovi opisani su u odjeljku~\ref{sec:fiskalizacija-2-0}.
 
-Tumačenje šifre S008 otežano je kod ispravka podatka koji ne utječe na obračun
-poreza. Takav se ispravak izdaje pod istim brojem računa i s indikatorom
-kopije, ali indikator nije dio složenog identifikatora koji se koristi u
-provjeri S008. Ako ispravak zadrži datum izvornika, identifikator
-ostaje isti i opisana provjera vodi u odbijanje. Ako dobije novi datum i
-referencu na prethodni račun, identifikator se mijenja i ta se provjera
-izbjegava. Izvori ne određuju koji je datum ispravka mjerodavan.
-Prihvatljivost varijante s novim datumom u stvarnom sustavu nije provjerena.
-Nalaz se zato odnosi na nedovoljno određenu semantiku sučelja.
+Zamislimo da izdavatelj pošalje podatke o računu \texttt{R-2026-003}, ali
+ne primi odgovor. Moguće je da zahtjev nije stigao do Porezne uprave.
+Moguće je i da je zahtjev obrađen, a izgubio se samo odgovor. Izdavatelj
+u oba slučaja vidi isto: poslao je zahtjev i ostao bez potvrde. Mora
+odlučiti hoće li ga ponoviti, kako će spriječiti dvostruku obradu i kako
+će pratiti rok za izvršenje obveze.
 
-Rad iz propisanog tijeka izvodi jedanaest načina otkazivanja, među kojima je
-i opisani slučaj. Dio ograničenja proizlazi iz svojstava raspodijeljene
-razmjene, poput nemogućnosti da pošiljatelj iz samog izostanka odgovora
-utvrdi ishod zahtjeva. Drugi dio proizlazi iz obvezne arhitekture i pravila
-koja ne određuju semantiku kvara. Za tu skupinu rad upotrebljava radni pojam
-\emph{regulatorno inducirano ograničenje}.
+Obrasci tolerancije na greške uobičajeni su postupci za rukovanje takvim
+situacijama. Primjerice, sustav može ograničiti čekanje odgovora, ponoviti
+slanje ili prije slanja trajno zapisati što namjerava poslati. Taj zapis
+omogućuje nastavak obrade i kada odgovor izostane.
 
-Literatura opisuje mehanizme za ublažavanje ograničenja raspodijeljene
-razmjene. Kada ograničenje proizlazi iz propisa, obrasci mogu suziti prozor
-nepoznatog ishoda, izričito zabilježiti takvo stanje i sačuvati dokaz o
-postupanju. Ne mogu, međutim, odrediti pravno značenje pojma koje u propisu
-nije određeno. Poglavlje~\ref{ch:rasprava} zato učinak obrazaca ocjenjuje
-uvjetno, ovisno o granici sustava na kojoj se primjenjuju i njihovoj
-konfiguraciji.
+Dio poteškoća proizlazi iz same komunikacije preko mreže. Drugi dio nastaje
+zato što propisi i tehnička dokumentacija ne određuju dovoljno precizno
+kako postupiti. Primjer je ispravak računa: sustav treba razlikovati novi
+sadržaj od ponovnog slanja iste poruke, a pravila identifikacije nisu
+potpuno određena. Taj slučaj razrađuje odjeljak~\ref{sec:failure-modes}.
+Za ograničenja koja proizlaze iz propisane arhitekture ili nedovoljno
+određenih pravila rad upotrebljava pojam \emph{regulatorno inducirano
+ograničenje}.
+
+Rad ispituje koliko tehnički obrasci mogu pomoći kada se pravila vanjskog
+sustava ne mogu mijenjati. Pritom razlikuje uspješno izvršenje obveze od
+postojanja zapisa o pokušaju. Zapis da je zahtjev poslan koristan je za
+oporavak, ali sam ne potvrđuje da je zahtjev obrađen.
 
 % ------------------------------------------------------------
 \section{Ciljevi i istraživačka pitanja}
 \label{sec:ciljevi}
 
-Cilj rada je utvrditi koji se načini otkazivanja mogu izvesti iz propisanog
-tijeka fiskalizacije eRačuna i koje od njih pokrivaju obrasci tolerancije na
-greške. Pritom se razmatra kako primjena obrazaca utječe na složenost izvedbe,
-kašnjenje i rizik prekoračenja propisanog roka. Analiza se temelji na
-objavljenim dokumentima, pa se izvedene tvrdnje mogu provjeriti bez pristupa
-stvarnom sustavu.
+Cilj rada je utvrditi gdje propisani tijek fiskalizacije eRačuna može
+ostati nedovršen ili s nepoznatim ishodom te koliko obrasci tolerancije na
+greške mogu ublažiti te probleme. Takvi se slučajevi u radu nazivaju
+\emph{načinima otkazivanja}. Analiza se temelji na objavljenim dokumentima,
+pa se njezini zaključci mogu provjeriti bez pristupa stvarnom sustavu.
 
-Rad odgovara na tri pitanja.
+Rad odgovara na tri istraživačka pitanja, označena kraticom RQ:
 
 \begin{description}[leftmargin=1.6cm, style=nextline]
   \item[RQ1] Koji se načini otkazivanja mogu izvesti iz propisanog tijeka
-  fiskalizacije eRačuna i u kojim završnim stanjima ostavljaju sustav s obzirom na
-  zakonsku obvezu?
+  fiskalizacije eRačuna? U kakvom stanju nakon njih ostaje postupak
+  izvršenja zakonske obveze?
 
-  \item[RQ2] Koji obrasci tolerancije na greške pokrivaju koja od izvedenih
-  završnih stanja, koja ostaju samo detektirana ili nepokrivena te proizlazi li
-  granica pokrivenosti iz svojstava raspodijeljenih sustava ili iz propisa?
+  \item[RQ2] Koje slučajeve obrasci mogu ublažiti, a koje mogu samo
+  evidentirati ili na njih nemaju učinka? Proizlaze li ta ograničenja iz
+  svojstava raspodijeljenih sustava ili iz propisa?
 
-  \item[RQ3] Koju cijenu u složenosti, kašnjenju i riziku prekoračenja
-  propisanog roka nose ti obrasci i u kojim slučajevima pogoršavaju usklađenost
-  umjesto da je poboljšaju?
+  \item[RQ3] Koliko obrasci povećavaju složenost izvedbe, kašnjenje i rizik
+  prekoračenja roka? U kojim uvjetima mogu otežati izvršenje zakonske obveze?
 \end{description}
 
-Drugim se pitanjem ispituje i proizlaze li ograničenja obrazaca iz propisa.
-Time se provjerava teza rada, uz mogućnost da analiza pokaže potpunu
-pokrivenost ili ograničenje koje proizlazi iz propisa.
+Rezultati obuhvaćaju katalog jedanaest načina otkazivanja i matricu koja
+ih povezuje sa šest obrazaca. Svaka ćelija matrice opisuje učinak jednog
+obrasca na jedan slučaj te navodi na čemu se ocjena temelji. Matrica time
+daje podlogu za izbor obrazaca uz poznate uvjete i ograničenja njihove primjene.
 
-Rezultati rada obuhvaćaju katalog načina otkazivanja, radni pojam regulatorno
-induciranog ograničenja i matricu pokrivenosti. Katalog se temelji na
-propisanim obvezama, pa njegova primjena nije vezana uz jedan sustav. Ipak,
-ne pojavljuju se svi slučajevi u svakoj arhitekturi. Obveznik koji je vlastita
-pristupna točka nema granicu prema posredniku opisanu slučajevima D2 i E1,
-dok su za obveznika koji koristi posrednika relevantna oba slučaja. Skupine
-A i C proizlaze iz obveza koje ne ovise o tom izboru.
-
-Pojam regulatorno induciranog ograničenja povezuje slučajeve u kojima
-ograničenje proizlazi iz propisane arhitekture ili nedovoljno određenih
-pravila. Matrica pokrivenosti daje podlogu za izbor obrazaca, uz navedene
-uvjete njihove primjene. Obuhvaća i slučajeve u kojima učinak ovisi o
-konfiguraciji i preostalom roku.
-
-Istek vremena, ponavljanje, prekidač i saga razmatraju se kao mogući obrasci
-za primjenu u predloženom rješenju. Za svaki se obrazac ispituju uvjeti
-primjenjivosti, a odluka o njegovu uključivanju ili izostavljanju obrazlaže
-se rezultatima analize.
+Ne pojavljuju se svi slučajevi u svakoj arhitekturi. Obveznik koji koristi
+informacijskog posrednika, odnosno vanjskog pružatelja usluge razmjene i
+fiskalizacije, ovisi i o predaji dokumenta tom posredniku. Obveznik koji sam
+obavlja ulogu pristupne točke nema tu dodatnu granicu. Uloge sudionika
+objašnjava poglavlje~\ref{ch:pozadina}.
 
 % ------------------------------------------------------------
 \section{Opseg i struktura}
 \label{sec:opseg-rada}
 
-Studija slučaja obuhvaća arhitekturu, stanja i odgovornosti sudionika u
-cijelom propisanom tijeku. Predmet analize je referentna arhitektura izvedena
-iz propisa, a ne postojeći sustav. Izvršni prototip modelira dvije granice
-na kojima se pojavljuju slučajevi B1, B2, D1 i E1. Na njima uspoređuje dvije
-izvedbe: osnovna stvara zapis predaje tek nakon primitka odgovora, bez
-prethodnog zapisa namjere, a predložena zapisuje namjeru prije slanja.
+Studija slučaja opisuje referentnu arhitekturu: model sudionika i njihovih
+veza izveden iz propisa. Obuhvaća cijeli propisani tijek, a ilustrativni
+prototip provjerava četiri odabrana načina otkazivanja. Oni se pojavljuju
+pri predaji dokumenta pristupnoj točki i pri slanju zahtjeva Sustavu za
+fiskalizaciju.
 
-Evaluacija povezuje analitičku matricu s četiri izvršna scenarija.
-Učinkovitost se procjenjuje prema tome koliko je stanje sustava nakon istog
-kvara poznato i dokazivo. Propusnost i vrijeme odziva nisu mjerila ove
-evaluacije. Njezin opseg i ograničenja obrazlaže
-poglavlje~\ref{ch:rasprava}.
+Prototip uspoređuje dvije izvedbe nakon istog kvara. Osnovna zapis predaje
+stvara tek nakon odgovora. Predložena zapisuje namjeru prije slanja.
+Uspoređuje se može li sustav utvrditi što je pokušao i nastaviti obradu
+kada odgovor izostane. Propusnost i vrijeme odziva nisu mjerila ove
+evaluacije. Njezin opseg i ograničenja obrazlaže poglavlje~\ref{ch:rasprava}.
 
 Poglavlje~\ref{ch:pozadina} opisuje pravni i tehnički kontekst.
-Poglavlja~\ref{ch:raspodijeljeni} do~\ref{ch:tijekovi} objašnjavaju djelomični
-otkaz i klasifikaciju otkaza te obrasce tolerancije na greške i granice
-transakcije u raspodijeljenim tijekovima. Poglavlje~\ref{ch:studija} izvodi
-načine otkazivanja i odgovara na RQ1. Poglavlje~\ref{ch:implementacija}
-opisuje ilustrativni prototip, a poglavlje~\ref{ch:evaluacija} matricom
-pokrivenosti i izvršnim scenarijima odgovara na RQ2.
-Poglavlje~\ref{ch:rasprava} razmatra troškove i ograničenja primjene obrazaca
-te odgovara na RQ3.
+Poglavlja~\ref{ch:raspodijeljeni} do~\ref{ch:tijekovi} objašnjavaju
+raspodijeljene sustave, obrasce tolerancije na greške i praćenje tijeka
+obrade. Poglavlje~\ref{ch:studija} izvodi načine otkazivanja i odgovara na
+RQ1. Poglavlje~\ref{ch:implementacija} opisuje prototip, a
+poglavlje~\ref{ch:evaluacija} matricom i scenarijima odgovara na RQ2.
+Poglavlje~\ref{ch:rasprava} razmatra troškove i ograničenja obrazaca te
+odgovara na RQ3.

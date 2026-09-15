@@ -16,7 +16,9 @@ Konzistentnost znači da transakcija poštuje pravila sustava. Atomarnost znači
 da se izvrše sve njezine radnje ili nijedna. Trajnost znači da učinci jednom
 počinjene transakcije ostaju sačuvani. Taj popis ne uključuje izolaciju;
 akronim ACID uveli su dvije godine kasnije Härder i
-Reuter \cite{haerder1983principles}.
+Reuter \cite{haerder1983principles}. Izolacija određuje kako se istodobne
+transakcije međusobno vide. Izraz „počiniti transakciju“ u nastavku znači
+trajno potvrditi njezine promjene, odnosno izvršiti \emph{commit}.
 
 Za koordinaciju transakcije s više sudionika Gray opisuje dvofazno
 počinjanje \cite{gray1978notes}. U prvoj fazi koordinator pita sve sudionike
@@ -118,8 +120,11 @@ Kod fiskalizacije propuštanje roka predstavlja prekršaj
 \section{Stanje kao automat}
 \label{sec:automat}
 
-Napredak tijeka koji obuhvaća više transakcija može se pratiti automatom
-stanja. Schneider njegovo ponašanje opisuje ovako \cite{schneider1990statemachine}:
+Automat stanja opisuje dopuštena stanja i događaje koji ih mijenjaju.
+Predaja računa, primjerice, može biti pripremljena, poslana bez potvrde
+ili potvrđena. Primitak potvrde premješta je iz drugog u treće stanje.
+Tako se može pratiti napredak tijeka koji obuhvaća više transakcija.
+Schneider njegovo ponašanje opisuje ovako \cite{schneider1990statemachine}:
 
 \begin{quote}
 „Izlazi automata stanja potpuno su određeni nizom zahtjeva koje obrađuje,
@@ -137,8 +142,11 @@ pamtiti koje je zahtjeve već obradio.
 
 Schneider razlikuje određenost izlaza nizom zahtjeva od uvjeta da svi
 primjerci obrade zahtjeve u istom redoslijedu. Popuštanje uvjeta redoslijeda
-veže uz komutativnost operacija. Sam skup poruka zato nije dovoljan za
-određivanje stanja. Zbog mrežnog kašnjenja redoslijed obrade ne mora
+veže uz komutativnost operacija: njihov redoslijed tada ne mijenja rezultat.
+Primjerice, povećanje brojača za dva pa za tri daje isti rezultat kao
+obrnut redoslijed. Postavljanje brojača na nulu i povećanje za tri nemaju
+to svojstvo. Sam skup poruka zato nije dovoljan za određivanje stanja. Zbog
+mrežnog kašnjenja redoslijed obrade ne mora
 odgovarati ni redoslijedu slanja ni redoslijedu primitka zahtjeva.
 
 Za primjenu automata na fiskalizaciju treba opisati i vremenske uvjete:
@@ -149,8 +157,10 @@ Poglavlje~\ref{ch:implementacija} primjenjuje oba pristupa i obrazlaže njihov
 izbor. To su mogućnosti izvedbe, a ne jedino teorijski dopušteno rješenje.
 
 Helland opisuje organizaciju sustava u kojoj svaki entitet ima vlastiti
-opseg serijalizacije \cite{helland2007lifebeyond}. Transakcije se izvršavaju
-unutar entiteta, a među entitetima poruke se dostavljaju barem jednom i
+opseg serijalizacije \cite{helland2007lifebeyond}. To znači da se izmjene
+nad jednim entitetom uređuju kao niz, bez zajedničkog redoslijeda za sve
+entitete. Entitet može biti jedan račun s pripadajućim stanjem.
+Transakcije se izvršavaju unutar entiteta, a među entitetima poruke se dostavljaju barem jednom i
 obrađuju idempotentno. Svaki entitet pamti što je već obradio. Za opis uzročnog
 poretka događaja koristi se pojam uzročnog prethođenja, koji je uveo
 Lamport \cite{lamport1978time}.

@@ -8,22 +8,25 @@ odvojeno, jedan postupak može uspjeti, a drugi ne. Analiza se temelji na Zakonu
 Pravilniku i tehničkoj specifikaciji, što omogućuje provjeru izvedenih nalaza
 bez pristupa stvarnom sustavu.
 
-Iz propisanog tijeka izvedeno je jedanaest načina otkazivanja. Jedan se odnosi
-na nedovoljno određenu identifikaciju ispravka eRačuna bez poreznog učinka.
-Izvori ne određuju zadržava li takav ispravak datum izdavanja izvornika. Ako ga
-zadrži, složeni identifikator ostaje isti i opisana provjera duplikata S008
-odbija zapis. Novi datum uz referencu na prethodni račun mijenja identifikator
-i izbjegava tu provjeru. Prihvatljivost takvog ispravka u stvarnom sustavu nije
-provjerena.
+Iz propisanog tijeka izvedeno je jedanaest načina otkazivanja. Obuhvaćaju
+nedovršene postupke, nepoznate ishode i poteškoće s određivanjem rokova.
+Jedan od slučajeva pokazuje da dokumentacija ne određuje dovoljno precizno
+kako razlikovati ispravak računa od duplikata. Za ograničenja koja proizlaze
+iz propisane arhitekture ili nedovoljno određenih pravila rad upotrebljava
+radni pojam \emph{regulatorno inducirano ograničenje}.
 
-Dio ograničenja proizlazi iz svojstava raspodijeljene razmjene, a dio iz
-propisane arhitekture i nedovoljno određenih pravila postupanja nakon kvara.
-Za drugu skupinu rad upotrebljava radni pojam \emph{regulatorno inducirano
-ograničenje}. Pokrivenost je ocijenjena matricom jedanaest načina otkazivanja
-i šest obrazaca, uz označenu razinu dokaza za svaku ćeliju.
-U razmatranim slučajevima obrasci ne uklanjaju nijedan način otkazivanja, ali
-sužavaju neizvjesnost o ishodu ili omogućuju evidentiranje nepoznatog ishoda.
-Njihov učinak ovisi o granici sustava na kojoj se primjenjuju i o konfiguraciji.
+Matrica uspoređuje jedanaest načina otkazivanja sa šest obrazaca. Za svaku
+ocjenu navodi se temelji li se na propisu ili literaturi, provjeri
+prototipom ili prosudbi autora. Prototip uspoređuje dvije izvedbe: jedna
+zapisuje namjeru prije slanja, a druga zapis predaje stvara tek nakon
+odgovora. U četiri odabrana scenarija prikazuje kako trenutak zapisivanja
+utječe na praćenje ishoda i nastavak obrade.
+
+U razmatranim slučajevima obrasci ne uklanjaju nijedan način otkazivanja.
+Mogu ublažiti posljedice ili sačuvati zapis o pokušaju čiji ishod nije
+poznat. Njihov učinak ovisi o mjestu primjene i konfiguraciji. Ponašanje
+stvarnog sustava nije provjereno, pa nalazi opisuju ograničenja izvedena
+iz dokumenata i ishode modeliranih scenarija.
 
 \vspace{1em}
 \noindent\textbf{Ključne riječi:} tolerancija na greške, raspodijeljeni sustavi,
@@ -41,23 +44,26 @@ fails. The analysis draws on the Act, the Ordinance and the technical
 specification, allowing the derived findings to be verified without access to
 an actual system.
 
-Eleven failure modes are derived from the prescribed workflow. One concerns
-the insufficiently specified identification of an eInvoice correction without
-tax effect. The sources do not determine whether such a correction retains the
-original issue date. If it does, the composite identifier remains unchanged
-and the documented S008 duplicate check rejects the record. A new date with a
-reference to the preceding invoice changes the identifier and avoids that
-check. Acceptance of such a correction in an actual system has not been verified.
+Eleven failure modes are derived from the prescribed workflow. They include
+incomplete procedures, unknown outcomes and difficulties in determining
+deadlines. One case shows that the documentation does not specify precisely
+enough how to distinguish an invoice correction from a duplicate. The thesis
+uses \emph{regulation-induced constraint} as a working term for constraints
+arising from the mandated architecture or insufficiently specified rules.
 
-Some constraints arise from the properties of distributed exchange, while
-others arise from the mandated architecture and insufficiently specified rules
-for handling failures. For the latter group, the thesis uses
-\emph{regulation-induced constraint} as a working term. Failure mode coverage
-is assessed using a matrix of eleven failure modes and six patterns, with a
-labelled evidence level for every cell. In the cases examined, the patterns do
-not eliminate any failure mode, but reduce uncertainty about the outcome or
-allow an unknown outcome to be recorded. Their effect depends on the system
-boundary at which they are applied and on their configuration.
+A matrix compares the eleven failure modes with six patterns. Each rating
+states whether it is based on regulation or literature, a prototype check,
+or the author's judgement. The prototype compares two implementations: one
+records intent before sending, while the other creates a submission record
+only after receiving a response. Four selected scenarios show how the timing
+of this record affects outcome tracking and the ability to resume processing.
+
+In the cases examined, the patterns do not eliminate any failure mode.
+They can mitigate consequences or preserve a record of an attempt whose
+outcome is unknown. Their effect depends on where they are applied and how
+they are configured. The actual system has not been tested, so the findings
+describe constraints derived from documents and the outcomes of modelled
+scenarios.
 
 \vspace{1em}
 \noindent\textbf{Keywords:} fault tolerance, distributed systems, eInvoice

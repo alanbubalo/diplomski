@@ -9,6 +9,10 @@ primjene i mogući učinci na opterećenje, kašnjenje i oporavak sustava.
 \section{Sinkrona komunikacija}
 \label{sec:sinkrono}
 
+Kod sinkronog poziva klijent šalje zahtjev i čeka odgovor odredišta.
+Obrasci u ovom odjeljku određuju koliko će čekati, kada će pokušati ponovno
+i kada će privremeno zaustaviti pozive.
+
 Istek vremena ograničava koliko dugo klijent čeka odgovor. Tijekom čekanja
 klijent zauzima resurse, pa velik broj takvih poziva može iscrpiti memoriju,
 dretve ili priključke \cite{brookertimeouts}. Kako je objašnjeno u
@@ -19,7 +23,8 @@ Predugo čekanje produljuje zauzeće resursa. Prekratko čekanje uzrokuje lažne
 isteke i može potaknuti nepotrebne ponovne pokušaje. Brooker opisuje
 Amazonov postupak odabira vremena čekanja prema prihvatljivom udjelu lažnih
 isteka. Za udio od 0,1\,\% uzima se odgovarajući percentil kašnjenja
-odredišne usluge, p99,9.
+odredišne usluge, 99,9.\ percentil. To je vrijeme
+unutar kojeg završi 99,9\,\% promatranih poziva.
 
 Ponavljanje se oslanja na Grayevo objašnjenje prolaznih kvarova iz
 odjeljka~\ref{sec:klasifikacija-otkaza}. Prema njegovoj pretpostavci,
@@ -60,8 +65,9 @@ klijenti koji dosegnu tu vrijednost mogu nastaviti pokušavati istodobno.
 pokušaji rasporedili u vremenu i smanjilo istodobno opterećenje odredišta.
 
 \strani{Prekidač}{circuit breaker} zaustavlja pozive prema odredištu kada
-udio grešaka prijeđe zadani prag. Time ograničava čekanje, ali privremeno
-onemogućuje pozive. Sedghpour, Klein i Tordsson pokazuju da njegova korist
+udio grešaka prijeđe zadani prag. Tada se kaže da je prekidač otvoren: novi pozivi ne prosljeđuju
+se odredištu. Time ograničava čekanje, ali privremeno onemogućuje pozive.
+Sedghpour, Klein i Tordsson pokazuju da njegova korist
 kod prolaznog kvara ili preopterećenja ovisi o odabranim
 parametrima \cite{sedghpour2022empirical}. U njihovim mjerenjima, uz dobro
 podešen prekidač, količina dolaznog prometa ne utječe na otpornost usluge.
@@ -112,6 +118,12 @@ rješava ga zapisivanjem promjene stanja i poruke u istoj lokalnoj
 transakciji \cite{richardsonoutbox}. Zaseban proces zatim čita zapisane
 poruke i šalje ih uz semantiku barem jednom. Debezium taj prijenos izvodi
 čitanjem dnevnika transakcija \cite{debeziumoutbox}.
+
+Na primjeru računa \texttt{R-2026-003}, ista transakcija sprema račun i
+zadatak „pošalji podatke o ovom računu“. Ako aplikacija zatim prestane
+raditi, zadatak ostaje u bazi i radnik ga može preuzeti nakon oporavka.
+Ako odredište obradi poruku, a radnik ne uspije zabilježiti potvrdu, slanje
+se može ponoviti. Odlazni pretinac zato treba povezati s obradom duplikata.
 
 Odlazni pretinac ovdje je potkrijepljen industrijskim izvorom jer
 recenzirani primarni izvor nije pronađen. Pregledni rad o upravljanju

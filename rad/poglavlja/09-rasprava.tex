@@ -78,17 +78,11 @@ izostanak opisa atomarnosti ne dokazuje da odredište tako postupa. Rizik
 povezan sa skupnom obradom može se izbjeći slanjem pojedinačnih poruka.
 
 \paragraph{Provjera duplikata i ispravak računa.}
-Provjera S008 odbija zapis s istim složenim identifikatorom.
-Hrvatsko suženje norme nalaže da se ispravak podatka bez poreznog učinka
-izdaje pod istim brojem računa, uz indikator kopije, ali ne određuje datum
-izdavanja takvog ispravka \cite{pu2026hrcius}.
-
-Ako ispravak zadrži datum izvornika, nosi isti složeni identifikator i po
-opisanoj provjeri može biti odbijen. S novim datumom i referencom na
-prethodni račun dobiva drugi identifikator i izbjegava tu
-provjeru \cite{pu2026tehspec}. Prihvatljivost takvog dokumenta u stvarnom
-sustavu nije provjerena. Nalaz se odnosi na nedovoljno određenu vezu između
-datuma, oznake kopije, reference i provjere jedinstvenosti.
+Slučaj B2 pokazuje da prepoznavanje postojećeg ključa ne rješava pitanje
+identifikacije ispravka. Dvije varijante iz tablice~\ref{tab:b2-datum} daju
+različit rezultat opisane provjere S008. Izvedba zato mora odabrati
+varijantu i sačuvati podatke o tom izboru. Takav izbor omogućuje praćenje
+postupka, ali njegova prihvatljivost u stvarnom sustavu ostaje neprovjerena.
 
 \paragraph{Regulatorna granica pokrivenosti.}
 Nepokrivene slučajeve iz odjeljka~\ref{sec:nepokriveno} povezuje nedostatak

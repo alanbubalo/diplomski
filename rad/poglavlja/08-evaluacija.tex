@@ -10,8 +10,14 @@ kako bi se utvrdilo što obrasci mogu ublažiti, a što ostaje nepokriveno.
 \section{Metoda}
 \label{sec:metoda-evaluacije}
 
-Učinak obrasca ocjenjuje se prema očekivanom stanju sustava nakon kvara.
-Automatsko određivanje takvih mjerila još je otvoren problem. U testovima
+Učinak obrasca ocjenjuje se prema stanju sustava nakon kvara. Primjerice,
+ako odgovor na fiskalizacijski zahtjev izostane, korisno ponašanje nije
+nužno odmah uspješna fiskalizacija. Sustav treba sačuvati podatak o pokušaju
+i pokazati da ishod još nije poznat. Tako se razlikuju kvar vanjske usluge
+i propust lokalnog sustava da taj pokušaj prati.
+
+Mjerilo provjere određuje što u takvoj situaciji treba vrijediti da bi test
+prošao. Automatsko određivanje takvih mjerila još je otvoren problem. U testovima
 s ubrizgavanjem kvarova CoFI je utvrdio da je 67\,\% prijavljenih kvarova
 bilo lažno pozitivno jer su provjere zahtijevale uspjeh operacije u
 situacijama u kojima ona mora završiti
@@ -25,10 +31,13 @@ prijenosa, koje taj model ne razmatra.
 
 \paragraph{Ocjena učinka.}
 Svaka ćelija matrice ima jednu od pet vrijednosti: \emph{uklanja},
-\emph{sužava}, \emph{detektira}, \emph{ne pomaže} ili \emph{pogoršava}.
-Značenja su navedena u legendi tablice~\ref{tab:matrica}. Posljednja
-vrijednost obuhvaća rizik koji obrazac može povećati, kao u slučaju
-ponavljanja skupne poruke iz odjeljka~\ref{sec:dizajn}.
+\emph{sužava}, \emph{evidentira}, \emph{ne pomaže} ili \emph{pogoršava}.
+Ocjena \emph{sužava} znači da obrazac skraćuje razdoblje nepoznatog ishoda
+ili ublažava posljedicu. Ocjena \emph{evidentira} znači da sustav ima zapis
+o pokušaju i izostanku potvrde, ali problem ostaje. Ona ne znači da je
+utvrđen neuspjeh udaljene obrade. Cjelovita legenda nalazi se uz
+tablicu~\ref{tab:matrica}. Ocjena \emph{pogoršava} opisuje povećan rizik uz
+navedene pretpostavke, kao kod ponavljanja skupne poruke.
 
 \paragraph{Uvjetne tvrdnje.}
 Filibuster mjerilo zapisuje u obliku „ako je kvar ubrizgan u servis A, tada
@@ -54,6 +63,15 @@ slučaj D2, pa su odgovarajuće ocjene označene kao prosudbe autora.
 \section{Matrica pokrivenosti}
 \label{sec:matrica}
 
+Redak tablice~\ref{tab:matrica} predstavlja način otkazivanja, a stupac
+obrazac. Veliko slovo u ćeliji označava učinak, dok malo podignuto slovo
+navodi razinu dokaza. Primjerice, S\textsuperscript{b} u retku D1 i stupcu
+ponavljanja znači da ponavljanje ublažava posljedice nedostupnosti te da
+je taj učinak pokazan prototipom. E\textsuperscript{b} u istom retku uz
+odlazni pretinac znači da je prototip pokazao očuvanje zapisa o pokušaju,
+a ne uklanjanje nedostupnosti.
+
+
 \begin{table}[htbp]
 \centering
 \caption[Pokrivenost načina otkazivanja obrascima]{Pokrivenost jedanaest načina
@@ -71,48 +89,40 @@ odjeljka~\ref{sec:dizajn}.}
 & \parbox{1.4cm}{\centering ključ za\\dedupl.}
 & \parbox{1.35cm}{\centering prekidač} \\
 \midrule
-A1 razmijenjen bez fiskalizacije & N\textsuperscript{a} & S\textsuperscript{c} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{c} & N\textsuperscript{c} \\
-A2 fiskaliziran bez razmjene     & N\textsuperscript{a} & S\textsuperscript{a} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{c} & N\textsuperscript{c} \\
+A1 razmijenjen bez fiskalizacije & N\textsuperscript{a} & S\textsuperscript{c} & E\textsuperscript{c} & E\textsuperscript{c} & N\textsuperscript{c} & N\textsuperscript{c} \\
+A2 fiskaliziran bez razmjene     & N\textsuperscript{a} & S\textsuperscript{a} & E\textsuperscript{c} & E\textsuperscript{c} & N\textsuperscript{c} & N\textsuperscript{c} \\
 \addlinespace
-B1 istek vremena                 & D\textsuperscript{a} & S\textsuperscript{b} & D\textsuperscript{b} & D\textsuperscript{b} & S\textsuperscript{a} & N\textsuperscript{c} \\
-B2 nedovoljno određena identifikacija ispravka & N\textsuperscript{c} & N\textsuperscript{c} & S\textsuperscript{b} & D\textsuperscript{c} & N\textsuperscript{c} & N\textsuperscript{c} \\
+B1 istek vremena                 & E\textsuperscript{a} & S\textsuperscript{b} & E\textsuperscript{b} & E\textsuperscript{b} & S\textsuperscript{a} & N\textsuperscript{c} \\
+B2 nedovoljno određena identifikacija ispravka & N\textsuperscript{c} & N\textsuperscript{c} & S\textsuperscript{b} & E\textsuperscript{c} & N\textsuperscript{c} & N\textsuperscript{c} \\
 B3 neodređena atomarnost skupa   & N\textsuperscript{a} & \textbf{P}\textsuperscript{c} & S\textsuperscript{c} & S\textsuperscript{c} & S\textsuperscript{a} & N\textsuperscript{c} \\
-B4 trajno i prolazno             & N\textsuperscript{a} & N\textsuperscript{c} & N\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{c} & N\textsuperscript{c} \\
+B4 nerazdvojene vrste grešaka             & N\textsuperscript{a} & N\textsuperscript{c} & N\textsuperscript{c} & E\textsuperscript{c} & N\textsuperscript{c} & N\textsuperscript{c} \\
 \addlinespace
-C1 rok od nedefiniranog primitka & N\textsuperscript{a} & N\textsuperscript{a} & N\textsuperscript{a} & D\textsuperscript{c} & N\textsuperscript{a} & N\textsuperscript{a} \\
-C2 trenutak izdavanja            & N\textsuperscript{a} & N\textsuperscript{a} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{a} & N\textsuperscript{c} \\
+R1 rok od nedefiniranog primitka & N\textsuperscript{a} & N\textsuperscript{a} & N\textsuperscript{a} & E\textsuperscript{c} & N\textsuperscript{a} & N\textsuperscript{a} \\
+R2 trenutak izdavanja            & N\textsuperscript{a} & N\textsuperscript{a} & E\textsuperscript{c} & E\textsuperscript{c} & N\textsuperscript{a} & N\textsuperscript{c} \\
 \addlinespace
-D1 sustav nedostupan             & D\textsuperscript{a} & S\textsuperscript{b} & D\textsuperscript{b} & D\textsuperscript{b} & N\textsuperscript{c} & N\textsuperscript{c} \\
-D2 posrednik nedostupan          & D\textsuperscript{a} & S\textsuperscript{c} & D\textsuperscript{c} & D\textsuperscript{c} & N\textsuperscript{c} & S\textsuperscript{c} \\
+D1 sustav nedostupan             & E\textsuperscript{a} & S\textsuperscript{b} & E\textsuperscript{b} & E\textsuperscript{b} & N\textsuperscript{c} & N\textsuperscript{c} \\
+D2 posrednik nedostupan          & E\textsuperscript{a} & S\textsuperscript{c} & E\textsuperscript{c} & E\textsuperscript{c} & N\textsuperscript{c} & S\textsuperscript{c} \\
 \addlinespace
-E1 neuređena predaja             & D\textsuperscript{a} & S\textsuperscript{c} & D\textsuperscript{b} & D\textsuperscript{b} & S\textsuperscript{a} & N\textsuperscript{c} \\
+E1 neuređena predaja             & E\textsuperscript{a} & S\textsuperscript{c} & E\textsuperscript{b} & E\textsuperscript{b} & S\textsuperscript{a} & N\textsuperscript{c} \\
 \bottomrule
 \end{tabular}
 
 \vspace{0.4em}
 \begin{minipage}{\textwidth}
 \footnotesize
-\textbf{Vrijednosti.}
-U uklanja, način otkazivanja više ne može nastupiti \textbullet{}
-S sužava, nastupa u užem prozoru ili s manjom posljedicom \textbullet{}
-D detektira, nastupa jednako, ali sustav o njemu ima zapis: dokaz da je
-pokušao i da potvrde nema, a ne dokaz da je udaljena obrada pala \textbullet{}
-N ne pomaže \textbullet{}
-\textbf{P} pogoršava, obrazac povećava izloženost.
+\textbf{Učinak:} U uklanja mogućnost nastanka; S skraćuje razdoblje nepoznatog ishoda ili ublažava posljedice; E evidentira pokušaj bez potvrde; N ne pomaže;
+P povećava rizik uz navedene pretpostavke.
 
-\textbf{Razine.}
-\textsuperscript{a} propis ili literatura \textbullet{}
-\textsuperscript{b} pokazano prototipom \textbullet{}
-\textsuperscript{c} prosudba autora.
+\textbf{Dokaz:} \textsuperscript{a} propis ili literatura;
+\textsuperscript{b} provjera prototipom; \textsuperscript{c} prosudba autora.
 \end{minipage}
 \end{table}
 
 Vrijednost \emph{uklanja} ne pojavljuje se ni u jednoj ćeliji
 tablice~\ref{tab:matrica}. Obrasci ne uklanjaju mogućnost udaljenog otkaza
 ni obvezno razdvajanje postupaka. Mogu ublažiti posljedice i omogućiti
-praćenje ishoda. Ocjena \emph{detektira} pritom označava postojanje zapisa
-o pokušaju i izostanku potvrde. Takav zapis ne dokazuje neuspjeh udaljene
-obrade jer usluga može biti izvršena i kada odgovor izostane.
+praćenje ishoda. U nastavku su obrazložene ocjene kod kojih učinak
+posebno ovisi o konfiguraciji ili dostupnim podacima.
 
 \paragraph{Učinak prekidača ovisi o trajnom redu.}
 Prekidač zaustavlja pozive prema odredištu koje se čini nedostupnim, ali
@@ -123,57 +133,36 @@ takvog reda ostane otvoren do isteka roka, može povećati rizik zakašnjenja.
 Ocjena \emph{sužava} u retku D2 autorska je prosudba za slučaj u kojem
 poslovni sustav poruku prema posredniku trajno zadržava lokalno.
 
-\paragraph{Ključ za deduplikaciju ne određuje pravilo ispravka.}
-Provjera S008 otkriva da zapis s istim složenim identifikatorom već postoji.
-Identifikator je stabilan pri ponovnom pokušaju. Ispravak s novim datumom
-izdavanja i referencom na prethodni račun dobiva nov identifikator, dok
-ispravak koji ga zadržava može biti odbijen kao
-duplikat \cite{pu2026hrcius,pu2026tehspec}. Ključ ne određuje koju varijantu
-ispravka treba primijeniti, pa u retku B2 ima ocjenu \emph{ne pomaže}.
+\paragraph{B2: ključ i zapis predaje imaju različite uloge.}
+Ključ za deduplikaciju omogućuje provjeru postoji li zapis s istim
+identifikatorom. Ne određuje koji datum treba imati ispravak, pa u retku
+B2 dobiva ocjenu \emph{ne pomaže}. Taj nedostatak pravila opisan je u
+odjeljku~\ref{sec:b2} \cite{pu2026hrcius,pu2026tehspec}.
 
-\paragraph{B2: zapis predaje čuva podatak o rednom pokušaju.}
-Ako modelirani Sustav za fiskalizaciju vrati S008 na ponovljenu dostavu
-nepromijenjenog izvornika, zapis predaje nastao prije slanja omogućuje
-prijelaz u stanje \texttt{confirmed}, uz pretpostavke iz
-odjeljka~\ref{sec:dizajn}. Bez zapisa izvedba ne može nastaviti ponavljanje
-ni ostvariti taj prijelaz. Odjeljak~\ref{sec:scenariji} pokazuje oba ishoda.
+Zapis predaje nastao prije slanja čuva podatak o rednom pokušaju. U
+scenariju B2/1 time omogućuje da se S008 na ponovljenu dostavu
+nepromijenjenog izvornika protumači kao potvrda, uz pretpostavke iz
+tablice~\ref{tab:s008-tumacenje}. Osnovna izvedba nakon izostanka odgovora
+nema taj zapis pa ne nastavlja ponavljanje. Na toj se razlici temelji
+ocjena S\textsuperscript{b} uz odlazni pretinac.
 
-Poslovna namjera dostupna je i bez zasebnog zapisa jer dokument sadrži
-indikator kopije. Prva dostava ispravka sa zadržanim identifikatorom zato
-u obje izvedbe završava u stanju \texttt{correction-rejected}. Dokument,
-međutim, ne sadrži podatak o rednom pokušaju: prva i ponovljena dostava
-istog ispravka nose isti indikator kopije. Taj se podatak čuva u zapisu
-predaje, koji ne nastaje ako se zapisuje tek nakon odgovora, a odgovor
-izostane. Na njegovu očuvanju temelji se ocjena \emph{sužava} uz odlazni
-pretinac.
-
-Kod ponovljene dostave ispravka sa zadržanim identifikatorom S008 ostaje
-dvoznačan i uz zapis: može se odnositi na izvornik ili na raniji pokušaj
-slanja ispravka. Dokument ostaje u stanju \texttt{sent-unconfirmed}, a
-dvoznačnost se evidentira. Izgubljeni zapis predaje ne može se
-rekonstruirati iz podataka Sustava za fiskalizaciju. Prototip ne provjerava
-prihvatljivost ispravka s novim datumom i referencom na prethodni račun u
-stvarnom sustavu.
+Zapis ne pomaže jednako u svim granama. U scenariju B2/2 obje izvedbe
+prepoznaju prvu dostavu ispravka iz podataka dokumenta i bilježe odbijanje.
+U scenariju B2/3 ponovljeni ispravak ostaje bez jednoznačnog tumačenja i
+uz zapisanu namjeru. Zato ocjena glasi \emph{sužava}, a ne \emph{uklanja}.
+Ishodi svih triju grana prikazani su u odjeljku~\ref{sec:scenariji}.
 
 \paragraph{D1: oporavak unutar roka.}
-Nakon prvog poziva bez odgovora zapis namjere ostavlja dokument u stanju
-\texttt{sent-unconfirmed}. Sustav bilježi dan nastupa nemogućnosti i
-zakazuje sljedeći pokušaj prema preostalom roku. U scenariju D1 događaj
-oporavka odredišta pokreće ponavljanje prije isteka roka, nakon čega
-dokument prelazi u stanje \texttt{confirmed}. Osnovna izvedba nema zapis
-predaje na kojem bi nastavila obradu.
+U scenariju D1 predložena izvedba nakon prvog poziva bez odgovora čuva
+zapis predaje. Događaj oporavka odredišta pokreće ponavljanje i dokument
+prelazi u stanje \texttt{confirmed} prije isteka roka. Osnovna izvedba nema
+zapis na kojem bi nastavila obradu.
 
-Scenarij ne izvršava cijeli raspored iz tablice~\ref{tab:raspored} jer
-ponavljanje pokreće događaj oporavka. Provjerava bilježenje dana nastupa
-nemogućnosti i računanje zakazanog trenutka iz preostalog roka. Pokušaj
-prije tog trenutka odbijen je ako nema događaja oporavka, a slanje nakon
-isteka roka nije dopušteno. Ponavljanje u samom zakazanom trenutku izvršava
-scenarij B2.
-
-Razina \textsuperscript{b} u retku D1 odnosi se na te provjere. One
-podupiru ocjenu \emph{sužava} uz ponavljanje te \emph{detektira} uz odlazni
-pretinac i imenovano stanje. Ne dokazuju uklanjanje nedostupnosti ni
-produljenje roka.
+Ocjena S\textsuperscript{b} uz ponavljanje odnosi se na taj oporavak te na
+provjere početka i isteka roka. Scenarij ne izvršava cijeli raspored iz
+tablice~\ref{tab:raspored}; drugi pokušaj pokreće događaj oporavka.
+E\textsuperscript{b} uz odlazni pretinac i imenovano stanje označava očuvanje
+zapisa. Ti obrasci sami ne uklanjaju nedostupnost niti produljuju rok.
 
 \paragraph{B3: rizik ponavljanja cijele skupne poruke.}
 Zahtjev može sadržavati do sto zapisa. Odgovor opisuje neprihvaćen zahtjev
@@ -203,18 +192,18 @@ pojedinačnih zapisa jer sučelje dopušta i jedan zapis po poruci.
 \label{sec:nepokriveno}
 
 Nepokrivenima se smatraju slučajevi u kojima obrasci postižu najviše
-ocjenu \emph{detektira}. U tablici~\ref{tab:matrica} to su B4, C1 i C2.
+ocjenu \emph{evidentira}. U tablici~\ref{tab:matrica} to su B4, R1 i R2.
 Povezuje ih nedostatak podatka ili jednoznačnog pravila.
 
 U slučaju B4 šifrarnik ne razlikuje prolazne od trajnih grešaka. Klijent
 zato nema podatak na kojem bi temeljio odluku o ponavljanju. Obrazac tu
 razliku ne može nadomjestiti.
 
-U slučaju C1 pravni pojam primitka nije vezan uz jednoznačan tehnički
+U slučaju R1 pravni pojam primitka nije vezan uz jednoznačan tehnički
 događaj, pa primatelj nema jednoznačno polazište za računanje roka. Sustav
 može zabilježiti trenutak dolaska dokumenta do primateljeve pristupne točke i
 time učiniti odabrano polazište provjerljivim. Takav zapis ne daje
-obvezujuće tumačenje pojma primitka. U slučaju C2 trenutak izdavanja nije
+obvezujuće tumačenje pojma primitka. U slučaju R2 trenutak izdavanja nije
 kvantificiran tako da bi se mogao koristiti u izračunu rasporeda
 ponavljanja.
 
@@ -227,8 +216,8 @@ Kod neodređenosti prijenosa obrasci čuvaju namjeru, ograničavaju ponavljanje
 i omogućuju nastavak nakon oporavka. Kada nedostaje podatak ili jednoznačno
 pravilo, mogu evidentirati stanje i odabranu interpretaciju. Taj dio
 granice pokrivenosti regulatoran je i može se pomaknuti preciznijim
-pravilom ili specifikacijom. Fizikalna neodređenost udaljenog poziva ostaje
-tehničko ograničenje.
+pravilom ili specifikacijom. Nepoznat ishod zbog izostanka odgovora ostaje ograničenje mrežne
+komunikacije.
 
 Devet od 66 ćelija ima razinu \textsuperscript{b}, utemeljenu na završnim
 stanjima izvršnih scenarija i 32 testa koji ih provjeravaju. Evaluacija ne

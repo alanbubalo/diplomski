@@ -44,8 +44,10 @@ ishod prethodnog zahtjeva nije poznat.
 Autori taj problem prikazuju na primjeru reda čekanja sa standardiziranim
 sučeljem. Klijent nakon \strani{isteka vremena}{timeout} uvodi
 \strani{ponavljanje}{retry}, zbog čega dio zahtjeva može biti obrađen više
-puta. Poruke nemaju identifikator potreban za deduplikaciju, a standardizirano
-sučelje ne dopušta njegovo dodavanje. Pouzdanija izvedba reda čekanja sama ne
+puta. Deduplikacija je prepoznavanje i uklanjanje ponovljenih poruka.
+Za nju je potreban identifikator po kojem se ponovljena poruka može povezati
+s prvom. Poruke iz tog primjera nemaju takav identifikator, a
+standardizirano sučelje ne dopušta njegovo dodavanje. Pouzdanija izvedba reda čekanja sama ne
 može ukloniti to ograničenje. Pri oblikovanju sučelja zato treba odrediti
 učinak ponovljenog zahtjeva:
 
@@ -70,6 +72,11 @@ isporučena usluga odstupa od ispravne, odnosno sustav ne obavlja svoju
 funkciju. Pogreška (\emph{error}) je odstupanje stanja sustava od ispravnog,
 a uzrok (\emph{fault}) prosuđeni je ili pretpostavljeni razlog pogreške.
 Uzrok je aktivan kada proizvodi pogrešku, inače je uspavan.
+
+Primjerice, propust u kodu može pogrešno izračunati ukupan iznos računa.
+Propust je uzrok, pogrešan iznos u memoriji je pogreška, a slanje računa
+s tim iznosom korisniku predstavlja otkaz usluge. Ako sustav prije slanja
+uoči i ispravi iznos, unutarnja pogreška neće dovesti do tog otkaza.
 
 Uzrok proizvodi pogrešku koja se može širiti sustavom. Otkaz nastaje tek kada
 pogreška zahvati vanjsko stanje i utječe na isporučenu uslugu. Unutarnja
@@ -157,7 +164,8 @@ ishod od potvrđenog neuspjeha.
 \section{Semantika dostave i granice potvrde ishoda}
 \label{sec:semantika-dostave}
 
-Pri razmjeni poruka razlikuju se tri semantike dostave. Najviše jednom znači
+Semantika dostave opisuje što sustav jamči o dostavi i ponavljanju poruke.
+Razlikuju se tri osnovna jamstva. Najviše jednom znači
 da poruka neće biti obrađena više puta, ali može biti izgubljena. Barem jednom
 znači da poruka neće biti izgubljena, ali može biti obrađena više puta. Točno
 jednom podrazumijeva da poruka bude obrađena i da se njezina obrada ne ponovi.
@@ -186,7 +194,9 @@ jer su moguća i ona s beskonačno mnogo poruka. Zaseban formalni rezultat
 pokazuje nemogućnost konsenzusa u asinkronom sustavu s jednim mogućim
 otkazom procesa \cite{fischer1985impossibility}.
 
-Rad se na paradoks dvaju generala oslanja kao na ograničenje dogovora o
+U primjeru računa iz uvoda čak se i potvrda uspješne obrade može izgubiti.
+Primatelj tada zna da je obradio zahtjev, a pošiljatelj to ne zna.
+Rad se na paradoks dvaju generala oslanja kao na ograničenje takvog dogovora o
 ishodu. Iz njega ne izvodi opći teorem o nemogućnosti dostave točno jednom
 ni tvrdnju da je ponovljena obrada neizbježna.
 
@@ -194,7 +204,10 @@ Praktičan pristup kombinira dostavu barem jednom s obradom u kojoj ponovljena
 poruka ne mijenja ishod. Helland opisuje entitet koji pamti obrađene poruke i
 na ponovljenu poruku vraća odgovor koji oponaša prvi
 \cite{helland2007lifebeyond}. Idempotentnost se odnosi na učinak obrade i
-sama ne zahtijeva jednak odgovor. Za razrješavanje nepoznatog ishoda
+sama ne zahtijeva jednak odgovor. Primjerice, naredba „postavi status na
+plaćeno“ može se ponoviti bez dodatnog učinka, dok naredba „uvećaj naplaćeni
+iznos za 100 eura“ pri svakom ponavljanju mijenja iznos.
+Za razrješavanje nepoznatog ishoda
 pozivatelju treba odgovor iz kojeg može utvrditi što je učinjeno ili zaseban
 dohvat statusa. Ponavljanje ranijeg odgovora jedan je način da se to omogući.
 

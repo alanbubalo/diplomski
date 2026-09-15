@@ -30,8 +30,11 @@ servisa, AMS, adresar je kojim upravlja Porezna uprava (t.~1.).
 Metapodatkovni servis, MPS, mrežna je komponenta informacijskog
 posrednika koja identifikatore objavljuje u AMS (t.~19.).
 
-Slika~\ref{fig:tijek} prikazuje sudionike i putove kojima dokument i
-podaci o njemu putuju.
+Na slici~\ref{fig:tijek} C1 je izdavatelj, C2 njegova pristupna točka,
+C3 pristupna točka primatelja, a C4 primatelj. Vodoravni put prikazuje
+dostavu računa. Odvojene veze prema Sustavu za fiskalizaciju prikazuju
+prijavu podataka o tom računu. Potvrda na jednom putu ne potvrđuje
+završetak drugog.
 
 \begin{figure}[htbp]
 \centering
@@ -75,6 +78,10 @@ a zatim upitom REST prema tom servisu dobiva krajnju adresu pristupne
 točke primatelja \cite{pu2025ams, pu2025mps}. Oba servisa počivaju na
 standardu eDelivery BDXL 1.6, u pojednostavljenom obliku. Peppol SML i SMP
 u hrvatskom profilu se ne koriste.
+
+Za čitanje tijeka dovoljno je razlikovati uloge protokola: DNS i REST
+služe pronalasku adrese primateljeve pristupne točke, AS4 prijenosu računa
+između pristupnih točaka, a SOAP fiskalizacijskim zahtjevima i odgovorima.
 
 Tijek jednog eRačuna od sastavljanja do čuvanja ima jedanaest koraka.
 Popis razdvaja razmjenu i fiskalizaciju radi prikaza; njihov međusobni
@@ -166,6 +173,11 @@ postupak ostaje nedovršen, neodređen ili izložen roku. Odabir slučajeva
 oslanja se na inženjersko iskustvo, a njihova mogućnost obrazlaže se tekstom
 propisa i specifikacija. Analiza ne utvrđuje ponašanje postojećeg sustava.
 
+Slučajevi su grupirani prema mjestu nastanka problema. Skupina A obuhvaća
+razdvajanje kanala, B fiskalizacijsko sučelje, R rokove, D nedostupnost
+infrastrukture, a E predaju pristupnoj točki. Oznake R1 i R2 odnose se na
+probleme s rokovima; oznake C1 do C4 i dalje označavaju samo sudionike.
+
 Takav pristup odgovara taksonomiji iz odjeljka~\ref{sec:fault-error-failure}.
 Avizienis i suradnici otkaz određuju u odnosu na funkciju sustava. Usluga
 usklađena sa specifikacijom zato može otkazati ako je uzrok u samoj
@@ -236,13 +248,20 @@ slijedi ni zabrana takvog ponovnog slanja nakon isteka vremena ni postupak
 kojim bi se pouzdano utvrdio ishod prvog pokušaja.
 
 \paragraph{B2: identifikacija ispravka nije potpuno određena.}
+\phantomsection\label{sec:b2}
+Pri ponovnom slanju šalje se ista poruka jer odgovor na prethodni pokušaj
+nije stigao. Pri ispravku mijenja se podatak na već izdanom računu.
+Ta dva postupka imaju različitu namjenu, iako oba mogu nositi isti broj računa.
+
 Složeni identifikator eRačuna čine broj dokumenta, datum izdavanja, vrsta
 dokumenta i OIB izdavatelja \cite{pu2026tehspec}. Provjera S008 odbija
 zapis za koji već postoji fiskaliziran eRačun s istim složenim
 identifikatorom i istom vrstom eRačuna.
 
-Šifra potvrđuje postojanje takvog zapisa, ali ne i istovjetnost svih
-podataka ili to da ga je stvorio promatrani pokušaj. Da bi se nakon isteka
+Identifikator je, dakle, ključ sastavljen od više polja, a ne samo broj
+računa. S008 znači „zapis pod tim ključem već postoji“. Šifra sama ne
+potvrđuje da postojeći zapis sadrži sve upravo poslane podatke ni da ga
+je stvorio promatrani pokušaj. Da bi se nakon isteka
 vremena iz S008 moglo zaključiti da je prvi pokušaj uspio, moraju vrijediti
 tri pretpostavke:
 
@@ -252,8 +271,14 @@ tri pretpostavke:
   \item nema istodobnog slanja pod istim ključem.
 \end{itemize}
 
-Izvedba te pretpostavke može zabilježiti i učiniti provjerljivima. Kod
-ispravka se, međutim, pojavljuje dodatna neodređenost. Hrvatsko suženje norme
+Ako je, primjerice, izdavatelj prvi put poslao nepromijenjeni račun
+\texttt{R-2026-003}, ostao bez odgovora i zatim dobio S008 pri ponavljanju,
+uz te pretpostavke može zaključiti da je raniji pokušaj uspio. Kod ispravka
+takav zaključak nije dovoljan: postojeći zapis može biti upravo izvornik
+koji se želi ispraviti.
+
+Izvedba može zabilježiti podatke potrebne za provjeru navedenih pretpostavki.
+Kod ispravka se pojavljuje i dodatna neodređenost. Hrvatsko suženje norme
 nalaže da se ispravak podatka bez utjecaja na obračun poreza šalje pod istim
 brojem računa, uz indikator kopije postavljen na
 „true“ \cite{pu2026hrcius}. Indikator kopije nije dio identifikatora, a
@@ -268,6 +293,32 @@ specifikacija ne određuje datum izdavanja ispravka. Moguće su dvije varijante:
     Iste podatke traži članak 48.\ stavak 1.\ točka 11.\ Zakona kada
     dokument mijenja prvobitni račun.
 \end{itemize}
+
+Tablica~\ref{tab:b2-datum} prikazuje razliku na ilustrativnom primjeru
+računa \texttt{R-2026-003}, izdanog 1.~rujna 2026. Pretpostavlja se da
+je izvornik već fiskaliziran, a broj dokumenta, njegova vrsta i OIB
+izdavatelja ostaju isti u obje varijante ispravka. Datumi služe samo
+objašnjenju utjecaja jednog polja na ključ.
+
+\begin{table}[htbp]
+\centering
+\caption[Datum ispravka i provjera S008]{Utjecaj datuma ispravka na opisanu
+provjeru S008. Tablica ne prikazuje rezultate poziva stvarnom sustavu.}
+\label{tab:b2-datum}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}p{3.7cm}>{\raggedright\arraybackslash}p{7.3cm}@{}}
+\toprule
+Varijanta ispravka & Složeni identifikator & Ishod opisane provjere S008 \\
+\midrule
+Datum 1.~rujna, jednak izvorniku & Ostaje isti & Postojeći izvornik ima
+isti ključ, pa provjera odbija ispravak. \\
+\addlinespace
+Datum 2.~rujna, uz referencu na izvornik & Mijenja se zbog datuma &
+Provjera se izbjegava jer se ključ razlikuje. Ostale provjere time nisu
+potvrđene. \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 Prihvatljivost druge varijante prema svim provjerama nije potvrđena. Nalaz
 se odnosi na nedovoljno određen odnos datuma, indikatora kopije, reference i
@@ -284,9 +335,10 @@ S008. Iz same S012 ne slijedi da se provjerava svaka referenca iz skupine
 Zakon traži i da se ispravak izda u istom razdoblju oporezivanja, što
 hrvatsko suženje norme ne navodi.
 
-Razliku u kardinalnosti indikatora kopije rad ne smatra proturječjem.
-HR-CIUS ga u semantičkom modelu vodi s kardinalnošću 0..1, a fiskalizacijska
-tehnička specifikacija kao obvezan element s pojavnošću 1..1. Riječ je o
+Različita pravila o obveznosti indikatora kopije nisu nužno proturječna.
+U općem modelu računa HR-CIUS oznaka se može izostaviti ili navesti jednom
+(kardinalnost 0..1). Fiskalizacijska poruka mora je sadržavati točno jednom
+(pojavnost 1..1). Riječ je o
 dva modela: opći model računa dopušta izostanak oznake za izvornik, dok
 fiskalizacijska poruka može zahtijevati izričito \texttt{true} ili
 \texttt{false} za svaki zapis. Oba zahtjeva mogu istodobno vrijediti.
@@ -328,9 +380,9 @@ prolaznih grešaka potrebnu za odluku o ponavljanju, opisanu u
 odjeljku~\ref{sec:klasifikacija-otkaza}.
 
 % ------------------------------------------------------------
-\subsection*{C. Rokovi koji teku od nedefiniranih događaja}
+\subsection*{R. Rokovi koji teku od nedefiniranih događaja}
 
-\paragraph{C1: rok teče od nedefiniranog primitka.}
+\paragraph{R1: rok teče od nedefiniranog primitka.}
 Primatelj fiskalizira najkasnije pet radnih dana od primitka eRačuna
 (čl.~48.~st.~4.). Članak 6.\ stavak 1.\ točke 7.\ i 8.\ Pravilnika
 veže potvrdu uz prosljeđivanje krajnjem primatelju. Ne određuje, međutim,
@@ -338,7 +390,7 @@ je li mjerodavno stavljanje dokumenta na raspolaganje, njegov dohvat ili
 uvoz u poslovni sustav. Bez odabrane interpretacije tog događaja nije
 moguće jednoznačno izračunati rok u svim izvedbama.
 
-\paragraph{C2: trenutak izdavanja nije kvantificiran.}
+\paragraph{R2: trenutak izdavanja nije kvantificiran.}
 Izdavatelj fiskalizira „u trenutku izdavanja“ (čl.~48.~st.~3.), ali
 prihvatljivo odstupanje od tog trenutka nije izraženo u sekundama ili
 satima. Propis ne određuje ni kako se u odnosu na tu obvezu tumači kašnjenje
@@ -407,7 +459,7 @@ Nedovršeno i izloženo roku & A1, A2, D1, D2 &
 jedan propisani korak nije dovršen; posljedica ovisi o tome hoće li biti
 dovršen unutar primjenjivog roka \\
 \addlinespace
-Neodređeno & B1, B2, B3, B4, C1, C2, E1 &
+Neodređeno & B1, B2, B3, B4, R1, R2, E1 &
 ishod ili mjerodavni trenutak ne može se jednoznačno utvrditi iz izvora i
 podataka kojima sustav raspolaže \\
 \addlinespace
@@ -434,7 +486,7 @@ ne mogu potpuno ukloniti.
 Ograničenja izvedbe proizlaze iz svojstava raspodijeljenih sustava i iz
 propisanog tijeka.
 
-Prvu skupinu rad naziva fizikalnom. Slučaj B1 povezan je s paradoksom dvaju
+Prvu skupinu čine ograničenja mrežne komunikacije. Slučaj B1 povezan je s paradoksom dvaju
 generala iz odjeljka~\ref{sec:semantika-dostave}, za koji ne postoji
 protokol fiksne duljine koji bi zajamčio dogovor \cite{gray1978notes}.
 Dio slučaja B4 proizlazi iz toga što se istekom vremena spor proces ne može
@@ -457,10 +509,8 @@ postupanje razrađuje odjeljak~\ref{sec:pogorsanje}.
 
 Slučajevi A1 i A2 proizlaze iz odvojenog provođenja postupaka prema
 članku 48.\ stavku 3., zbog čega izvedba mora pratiti njihova međustanja.
-U slučaju B2 izvori ne određuju mjerodavan odnos datuma ispravka, indikatora
-kopije, reference na prethodni račun i provjere jedinstvenosti. Varijanta s
-novim datumom izbjegava opisanu provjeru S008, ali njezina prihvatljivost
-prema svim provjerama nije potvrđena. U slučaju D1 ograničenje ostaje ako
+U slučaju B2 nedostaje jednoznačno pravilo identifikacije ispravka,
+prikazano u tablici~\ref{tab:b2-datum}. U slučaju D1 ograničenje ostaje ako
 nedostupnost Sustava za fiskalizaciju traje dulje od posebnog roka:
 obveznik ne upravlja njegovom raspoloživošću niti može produljiti rok.
 
@@ -495,14 +545,14 @@ Predloženi dizajn povezuje obrasce sa skupinama načina otkazivanja iz
 odjeljka~\ref{sec:failure-modes}. Obrasci mogu skratiti razdoblje
 nepoznatog ishoda komunikacije. Kada izvori ne određuju mjerodavan podatak
 ili pravilo, izvedba može evidentirati odabrano tumačenje i rezultat
-postupanja, ali ne može sama razriješiti normativnu neodređenost.
+postupanja, ali ne može sama odrediti što propis pravno zahtijeva.
 
 % ------------------------------------------------------------
 \paragraph{Odvojeni entiteti i lokalne transakcije.}
 Za skupinu A dizajn primjenjuje Hellandov model entiteta s lokalnim
-transakcijama \cite{helland2007lifebeyond}. Svaki entitet ima vlastiti
-opseg serijalizacije, a poruke se među entitetima dostavljaju barem jednom i
-obrađuju idempotentno.
+transakcijama \cite{helland2007lifebeyond}. Izmjene unutar svakog entiteta imaju svoj redoslijed, kako je objašnjeno
+u odjeljku~\ref{sec:automat}. Poruke se među entitetima dostavljaju barem
+jednom i obrađuju idempotentno.
 
 Stanje razmjene dokumenta i stanje njegove fiskalizacije modeliraju se kao
 odvojeni entiteti. Svaki ima lokalnu transakciju; dizajn se ne oslanja na
@@ -550,19 +600,40 @@ S008 potvrđuje da kod odredišta postoji zapis s istim složenim
 identifikatorom. Tumačenje ovisi o tome šalje li se izvornik ili ispravak te
 je li riječ o prvoj ili ponovljenoj dostavi iste poruke.
 
-Ponovljena dostava nepromijenjenog izvornika uz tri pretpostavke iz
-odjeljka~\ref{sec:failure-modes} omogućuje zaključak da je raniji pokušaj
-uspio. Pri prvoj dostavi ispravka sa zadržanim identifikatorom šifra se
-odnosi na postojeći izvornik i označava odbijanje te varijante ispravka.
+Tablica~\ref{tab:s008-tumacenje} odvaja dva pitanja: što se šalje i koji
+je to pokušaj slanja te poruke. Odnosi se na izvornik i na ispravak koji
+zadržava njegov složeni identifikator. Varijanta s promijenjenim datumom
+zasebno je prikazana u tablici~\ref{tab:b2-datum}.
 
-Druge dvije kombinacije ostaju dvoznačne i uz zapisanu namjeru. Pri prvoj
-dostavi izvornika isti je identifikator već fiskaliziran, iako ga ovaj
-pošiljatelj prethodno nije poslao. Pri ponovljenoj dostavi ispravka sa
-zadržanim identifikatorom S008 se može odnositi na izvornik ili na raniji
-pokušaj slanja ispravka. Lokalni podaci ne razrješavaju tu razliku.
-Za ispravak s novim datumom i referencom na prethodni račun identifikator je
-drukčiji, pa se S008 prema opisanoj provjeri ne očekuje. To ne potvrđuje
-prihvatljivost takvog ispravka prema ostalim provjerama.
+\begin{table}[htbp]
+\centering
+\caption[Tumačenje S008 prema namjeri i pokušaju]{Tumačenje odgovora S008
+prema poslovnoj namjeri i pokušaju slanja.}
+\label{tab:s008-tumacenje}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{6.8cm}>{\raggedright\arraybackslash}p{3.5cm}@{}}
+\toprule
+Što se šalje & Pokušaj & Što se može zaključiti iz S008 & Ishod u modelu \\
+\midrule
+Izvornik & Prvi & Zapis s tim ključem postoji, ali nije poznato kako je
+nastao. & Nepoznat ishod \\
+\addlinespace
+Izvornik & Ponovljeni & Raniji pokušaj uspio je uz tri pretpostavke iz
+odjeljka~\ref{sec:b2}. & Potvrđeno \\
+\addlinespace
+Ispravak & Prvi & Postojeći izvornik uzrokuje odbijanje ispravka sa
+zadržanim ključem. & Ispravak odbijen \\
+\addlinespace
+Ispravak & Ponovljeni & Lokalni zapis ne razrješava odnosi li se odgovor
+na izvornik ili raniji pokušaj slanja ispravka. & Nepoznat ishod \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Za zaključak o uspjehu ponovljenog slanja izvornika nužno je da ključ
+nije ranije upotrijebljen za drugi sadržaj, da se poruka nije promijenila
+i da nema istodobnog slanja pod istim ključem. To su uvjeti tumačenja,
+a ne podaci koje sama šifra S008 potvrđuje.
 
 Prije slanja poslovni sustav treba sačuvati podatke o poslovnoj namjeri,
 rednom pokušaju dostave, datumu ispravka i referenci na prethodni račun.
@@ -575,15 +646,14 @@ odgovora.
 Takav zapis omogućuje tumačenje odgovora u odnosu na poslanu poruku i
 bilježenje slučajeva u kojima tumačenje ostaje dvoznačno. Odgovara stanju
 koje, prema Hellandu, entitet vodi o odnosu s
-partnerom \cite{helland2007lifebeyond}. Zapis pokazuje koju je varijantu
-izvedba odabrala, ali ne razrješava nedorečenost B2 niti dokazuje da su svi
-ispravci nužno odbijeni.
+partnerom \cite{helland2007lifebeyond}. Zapis tako čuva kontekst potreban za tumačenje odgovora. Granice tog
+tumačenja vidljive su u tablici~\ref{tab:s008-tumacenje}.
 
 % ------------------------------------------------------------
 \paragraph{Ponavljanje prilagođeno preostalom roku.}
 Članak 13.\ Pravilnika nalaže ponovno dostavljanje ispravne poruke nakon
 greške, dok raspored pokušaja i postupanje nakon izostanka odgovora bira
-izvedba. Rokovi iz skupine C zahtijevaju praćenje preostalog vremena.
+izvedba. Rokovi iz skupine R zahtijevaju praćenje preostalog vremena.
 Eksponencijalno odgađanje koje ovisi samo o broju pokušaja nije dovoljno.
 Poseban rok od pet radnih dana teče od dana nastanka tehničke nemogućnosti,
 a ne od oporavka (čl.~49.~st.~1.), pa raspored mora uzeti u obzir i taj
@@ -591,8 +661,9 @@ početni trenutak.
 
 Ponavljanje se provodi na jednoj razini u lancu kako se pokušaji ne bi
 množili, prema odjeljku~\ref{sec:sinkrono}. Spremnik žetona lokalno
-ograničava učestalost pokušaja i štiti od preopterećenja bez modalnog
-ponašanja prekidača. Pokušaji i čekanje između njih smanjuju vrijeme
+ograničava učestalost pokušaja i štiti od preopterećenja bez prebacivanja između
+otvorenog i zatvorenog stanja prekidača. Pokušaji i čekanje između njih smanjuju
+vrijeme
 preostalo za oporavak, što razrađuje poglavlje~\ref{ch:rasprava}.
 
 % ------------------------------------------------------------
