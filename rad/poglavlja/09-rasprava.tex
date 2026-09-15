@@ -102,11 +102,13 @@ naknadno postupanje, ali ne daje identifikator potvrđenog primitka ni
 rješenje za nedostupnost dulju od pet radnih dana. Razlika obuhvaća i
 dokaze o ispunjenju obveze i granice dopuštenog oporavka.
 
-\paragraph{Razgraničenje od sukoba zahtjeva.}
-Regulatorno inducirano ograničenje razlikuje se od sukoba zahtjeva po
-mogućnosti razrješenja, predmetu analize i vrsti nedostatka u specifikaciji.
+\paragraph{Razgraničenje od proturječnih zahtjeva.}
+Regulatorno inducirano ograničenje treba razlikovati od proturječnih zahtjeva,
+gdje dva zahtjeva na isti sustav traže postupanja koja se međusobno isključuju.
+Razlikuju se po tome tko može odlučiti o prednosti, na što se analiza odnosi i
+kakav je nedostatak u specifikaciji.
 
-Pri razrješavanju sukoba zahtjeva naručitelj može odlučiti o prioritetima.
+Kod proturječnih zahtjeva naručitelj može odlučiti koji zahtjev ima prednost.
 Obveznik nema takvu ovlast nad propisom. Odabir vlastitog tumačenja izlaže ga
 riziku sankcije i kada je tehnički obrazložen.
 
@@ -119,10 +121,10 @@ otkazivanja može ostati i nakon njihove primjene.
 Klasa pritom obuhvaća različite nedostatke. Veza datuma, oznake kopije,
 reference na prethodni račun i šifre S008 primjer je nedovoljno određene
 kombinacije pravila. Kod roka koji teče od nedefiniranog primitka nedostaje
-pravilo, pa nema dvaju zahtjeva kojima bi se mogao odrediti prioritet.
+pravilo, pa nema dvaju zahtjeva među kojima bi se mogla odrediti prednost.
 Odjeljak~\ref{sec:fault-error-failure} razlikuje uzrok u specifikaciji
-propustom od uzroka pogrešnim navodom, koji uključuje nedosljednost. Pojam
-sukoba zahtjeva ne obuhvaća oba slučaja.
+propustom od uzroka pogrešnim navodom, koji uključuje nedosljednost.
+Proturječje među zahtjevima ne obuhvaća oba uzroka.
 
 Rad se oslanja na postupak izvođenja zahtjeva iz teksta
 propisa \cite{breaux2008regulatory}. Tim postupkom ovdje izvodi načine
@@ -177,8 +179,9 @@ izvršava četiri načina otkazivanja na dvije granice. Devet ćelija matrice
 time je pokazano prototipom; ostale se temelje na citatu ili označenoj
 prosudbi autora.
 
-Učinkovitost se ocjenjuje prema tome završava li predložena izvedba pod
-istim kvarom u poznatijem i dokazivijem stanju od osnovne. Usporedba ne
+Učinkovitost se ovdje ocjenjuje po završnom stanju u koje osnovna i
+predložena izvedba dolaze nakon istog kvara. Uspoređuje se je li ishod slanja
+zabilježen i ostaje li zapis o pokušaju i izostanku potvrde. Usporedba ne
 obuhvaća performanse ni cjelovit skup alternativnih obrazaca, pa ne
 utvrđuje koja je izvedba brža ili najbolja među mogućim rješenjima.
 
@@ -201,10 +204,10 @@ odgovara dostavi barem jednom uz potiskivanje duplikata na strani primatelja
 iz odjeljka~\ref{sec:semantika-dostave}. U Zakonu, Pravilniku i tehničkoj
 specifikaciji taj obrazac nije opisan.
 
-Uputa se opisuje kao operativno pojašnjenje postupanja temeljem važećih
-propisa i dopisa Porezne uprave. Ima status mjerodavnog tumačenja regulatora,
-ali nije propis. Za provjerljivost navoda u ovom radu stranica je arhivirana
-s datumom i kontrolnom sumom.
+Porezna uprava tu rubriku opisuje kao pojašnjenje kako postupati po važećim
+propisima i po vlastitim dopisima. Takvo pojašnjenje ima status mjerodavnog
+tumačenja regulatora, ali nije propis. Za provjerljivost navoda u ovom radu
+stranica je arhivirana s datumom i kontrolnom sumom.
 
 Na transportnom sloju rizik proizlazi iz odabira verzije specifikacije.
 Hrvatski profil fiksira verziju 1.15 europskog profila

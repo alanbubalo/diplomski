@@ -47,8 +47,8 @@ održava i nakon prestanka djelovanja okidača. Ponovni pokušaji jedan su
 od najčešćih mehanizama koji održavaju takvo stanje.
 
 U njihovu primjeru aplikacija šalje bazi 280 upita u sekundi, uz kapacitet
-od 300 upita u sekundi. Nakon desetosekundnog prekida mreže nakupljeni upiti
-stižu odjednom. Kašnjenje pokreće ponavljanje svakog upita, pa promet raste
+od 300 upita u sekundi. Mreža se prekine na deset sekundi i nakupljeni upiti
+zatim stižu odjednom. Kašnjenje pokreće ponavljanje svakog upita, pa promet raste
 na 560 upita u sekundi. Dodatno opterećenje sprječava oporavak baze i
 održava potrebu za ponavljanjem. Za oporavak je potrebno smanjiti
 opterećenje ispod 150 upita u sekundi, znatno ispod početne razine.

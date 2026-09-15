@@ -115,7 +115,7 @@ redoslijed ne slijedi iz numeracije:
 Ako identifikator primatelja nije dostupan u AMS-u, izdavatelj ne odgovara
 za neizdavanje eRačuna,
 račun se može izdati u papirnatom obliku, a podaci se dostavljaju putem
-eIzvještavanja (čl.~40.~st.~1.\ i~st.~2.).
+e-izvještavanja (čl.~40.~st.~1.\ i~st.~2.).
 
 Predaja od izdavatelja njegovoj pristupnoj točki nema propisan oblik
 sučelja ni potvrde. Dostavu od pristupne točke primatelju Pravilnik,
@@ -147,7 +147,7 @@ formatom XAdES-B. Poslovnih poruka koje je obveznik dužan dostavljati ima
   \item \texttt{EvidentirajIsporukuZaKojuNijeIzdanERacun}.
 \end{itemize}
 
-Prva ide servisu eFiskalizacija, ostale tri servisu eIzvještavanje.
+Prva ide servisu e-fiskalizacija, ostale tri servisu e-izvještavanje.
 
 Jedan zahtjev nosi do sto zapisa, a odgovor sadrži najviše jednu grešku, s
 rednim brojem zapisa na koji se odnosi. Isti oblik zahtjeva i odgovora imaju
@@ -230,10 +230,10 @@ propisuje cilj obrade od dvije sekunde, za eRačune takve odredbe nema.
 
 Uputa u rubrici pitanja i odgovora uređuje ponovno slanje eRačuna na
 relacijama C1 prema C2, C2 prema C3 i prema krajnjem primatelju, uključujući
-tehničke duplikate \cite{pu2026pitanjaodgovori}. Ne odnosi se izričito na
-ponavljanje fiskalizacijskog zahtjeva SOAP. Rad zato iz nje ne izvodi
-zabranu ponavljanja tog zahtjeva nakon isteka vremena ni postupak kojim bi
-se pouzdano utvrdio njegov prethodni ishod.
+tehničke duplikate \cite{pu2026pitanjaodgovori}. Na ponovno slanje SOAP
+poruke Sustavu za fiskalizaciju uputa se izričito ne odnosi. Iz nje zato ne
+slijedi ni zabrana takvog ponovnog slanja nakon isteka vremena ni postupak
+kojim bi se pouzdano utvrdio ishod prvog pokušaja.
 
 \paragraph{B2: identifikacija ispravka nije potpuno određena.}
 Složeni identifikator eRačuna čine broj dokumenta, datum izdavanja, vrsta
@@ -418,10 +418,9 @@ postupanje unutar pet radnih dana pravovremeno je po iznimci iz
 \end{tabular}
 \end{table}
 
-Nepoznat ishod u klasi „neodređeno“ treba razlikovati od nesignaliziranog
-otkaza iz odjeljka~\ref{sec:klasifikacija-otkaza}. Prema Avizienisu,
-nesignaliziran otkaz dogodio se bez znanja sudionika. Nakon isteka vremena
-usluga je, međutim, mogla biti uspješno izvršena. Klasa „neodređeno“ stoga
+Nesignaliziran otkaz iz odjeljka~\ref{sec:klasifikacija-otkaza} dogodio se,
+prema Avizienisu, bez znanja sudionika. Nepoznat ishod slabija je tvrdnja:
+nakon isteka vremena obrada je mogla i uspjeti. Klasa „neodređeno“ zato
 obuhvaća i nesignalizirane otkaze i uspjehe za koje sudionik ne zna. Zapis
 pokušaja bez potvrde dokazuje pokušaj, ali ne i neuspjeh udaljene obrade.
 Obrasci iz poglavlja~\ref{ch:pristupi} mogu suziti tu neodređenost, ali je
@@ -438,9 +437,9 @@ propisanog tijeka.
 Prvu skupinu rad naziva fizikalnom. Slučaj B1 povezan je s paradoksom dvaju
 generala iz odjeljka~\ref{sec:semantika-dostave}, za koji ne postoji
 protokol fiksne duljine koji bi zajamčio dogovor \cite{gray1978notes}.
-Dio slučaja B4 proizlazi iz nemogućnosti da se istekom vremena razlikuje
-spor proces od otkazalog \cite{chandra1996failuredetectors}. Promjena
-propisa ne može ukloniti ta svojstva komunikacije.
+Dio slučaja B4 proizlazi iz toga što se istekom vremena spor proces ne može
+razlikovati od procesa koji je otkazao \cite{chandra1996failuredetectors}.
+Promjena propisa ne može ukloniti ta svojstva komunikacije.
 
 Za drugu skupinu rad upotrebljava radni pojam regulatorno inducirano
 ograničenje. Ono nastaje kada propis nalaže odvojene korake ili ne određuje
@@ -453,8 +452,8 @@ ispraviti \cite{sadiq2007compliance,ly2015compliance}, dok formalni model
 elektroničkog fakturiranja pretpostavlja pouzdane
 kanale \cite{attali2004chilean}. Ovdje se razmatraju granice oporavka
 kada se propisani tijek ne može mijenjati, a komunikacija može otkazati.
-Odnos tog pojma prema sukobu zahtjeva razrađen je u
-odjeljku~\ref{sec:pogorsanje}.
+Uvjete u kojima tehnički obrazac i propisana obveza mogu tražiti suprotno
+postupanje razrađuje odjeljak~\ref{sec:pogorsanje}.
 
 Slučajevi A1 i A2 proizlaze iz odvojenog provođenja postupaka prema
 članku 48.\ stavku 3., zbog čega izvedba mora pratiti njihova međustanja.
@@ -502,8 +501,8 @@ postupanja, ali ne može sama razriješiti normativnu neodređenost.
 \paragraph{Odvojeni entiteti i lokalne transakcije.}
 Za skupinu A dizajn primjenjuje Hellandov model entiteta s lokalnim
 transakcijama \cite{helland2007lifebeyond}. Svaki entitet ima vlastiti
-opseg serijalizacije, a komunikacija između entiteta temelji se na dostavi
-barem jednom i idempotentnoj obradi.
+opseg serijalizacije, a poruke se među entitetima dostavljaju barem jednom i
+obrađuju idempotentno.
 
 Stanje razmjene dokumenta i stanje njegove fiskalizacije modeliraju se kao
 odvojeni entiteti. Svaki ima lokalnu transakciju; dizajn se ne oslanja na
