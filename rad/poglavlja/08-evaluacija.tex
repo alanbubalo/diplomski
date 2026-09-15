@@ -1,61 +1,54 @@
 \chapter{Evaluacija}
 \label{ch:evaluacija}
 
-Poglavlje~\ref{ch:studija} izvelo je jedanaest načina otkazivanja, a
-odjeljak~\ref{sec:dizajn} predložio šest obrazaca. Ovo poglavlje utvrđuje
-koliko ti obrasci pokrivaju i po kojem se postupku takva tvrdnja provjerava,
-spojem analitičkog izvoda i izvršnih scenarija.
+Evaluacija uspoređuje jedanaest načina otkazivanja iz
+poglavlja~\ref{ch:studija} sa šest obrazaca iz odjeljka~\ref{sec:dizajn}.
+Matrica pokrivenosti povezuje analitičke zaključke s izvršnim scenarijima
+kako bi se utvrdilo što obrasci mogu ublažiti, a što ostaje nepokriveno.
 
 % ------------------------------------------------------------
 \section{Metoda}
 \label{sec:metoda-evaluacije}
 
-Tvrdnja da neki obrazac pomaže nije provjerljiva dok se ne kaže što bi značilo
-da ne pomaže. Automatsko izvođenje takvog mjerila otvoren je problem. CoFI je
-u testovima s ubrizgavanjem kvarova našao da je 67\,\% prijavljenih kvarova
-bilo lažno pozitivno, i to zato što provjere tvrde da je operacija uspjela u
-situacijama u kojima operacija mora
-pasti \cite{chen2020cofi}. Mjerilo izvedeno iz propisa odgovara na taj problem,
-jer propis kaže što je ispravan ishod neovisno o tome što je sustav htio
-postići.
+Učinak obrasca ocjenjuje se prema očekivanom stanju sustava nakon kvara.
+Automatsko određivanje takvih mjerila još je otvoren problem. U testovima
+s ubrizgavanjem kvarova CoFI je utvrdio da je 67\,\% prijavljenih kvarova
+bilo lažno pozitivno jer su provjere zahtijevale uspjeh operacije u
+situacijama u kojima ona mora završiti
+neuspjehom \cite{chen2020cofi}. U ovom radu mjerilo se izvodi iz propisa
+koji određuje ispravan ishod postupka.
 
-Postoji i drugi razlog zbog kojeg matrica uopće ima predmet. Formalna
-verifikacija elektroničkog fakturiranja postoji, ali pouzdanost prijenosa
-uzima kao pretpostavku, a ne kao predmet. Attali, Barros i Madelaine u popisu
-pretpostavki svoga modela čileanskog sustava navode da su komunikacijski kanali
-pouzdani i da su svi procesi u sustavu od
-povjerenja \cite{attali2004chilean}. Ono što taj model isključuje jednom
-rečenicom predmet je cijelog ovog poglavlja.
+U formalnom modelu čileanskog sustava elektroničkog fakturiranja Attali,
+Barros i Madelaine pretpostavljaju pouzdane komunikacijske kanale i procese
+od povjerenja \cite{attali2004chilean}. Ova evaluacija obuhvaća i kvarove
+prijenosa, koje taj model ne razmatra.
 
-Iz toga slijede tri pravila kojih se ostatak poglavlja drži.
+\paragraph{Ocjena učinka.}
+Svaka ćelija matrice ima jednu od pet vrijednosti: \emph{uklanja},
+\emph{sužava}, \emph{detektira}, \emph{ne pomaže} ili \emph{pogoršava}.
+Značenja su navedena u legendi tablice~\ref{tab:matrica}. Posljednja
+vrijednost obuhvaća rizik koji obrazac može povećati, kao u slučaju
+ponavljanja skupne poruke iz odjeljka~\ref{sec:dizajn}.
 
-\paragraph{Čelija nosi jednu od pet vrijednosti.}
-Vrijednosti su \emph{uklanja}, \emph{sužava}, \emph{detektira}, \emph{ne
-pomaže} i \emph{pogoršava}. Značenja su u legendi
-tablice~\ref{tab:matrica}. Kategorija \emph{pogoršava} postoji zato da matrica
-može zabilježiti i nalaz protivan obrascima, a jedan takav slučaj utvrđen je u
-odjeljku~\ref{sec:dizajn}.
+\paragraph{Uvjetne tvrdnje.}
+Filibuster mjerilo zapisuje u obliku „ako je kvar ubrizgan u servis A, tada
+mora vrijediti\ldots“. Devet takvih tvrdnji obuhvatilo je 1606
+testova \cite{meiklejohn2021filibuster}. Ocjene u matrici obrazlažu se na
+isti način. Primjerice, ako fiskalizacijski poziv istekne bez odgovora,
+ponavljanje koje prati rok u predloženoj izvedbi ostavlja dokument
+potvrđenim ili u imenovanom stanju s evidentiranim razlogom. Dokument ni
+nakon isteka roka iz članka 49.\ ne ostaje bez zapisa.
 
-\paragraph{Tvrdnja se piše kao uvjetna.}
-Filibuster mjerilo zapisuje kao uvjetnu tvrdnju oblika „ako je kvar ubrizgan u
-servis A, tada mora vrijediti\ldots“. Devet takvih tvrdnji kod njih je
-pokrilo 1606 testova \cite{meiklejohn2021filibuster}. Čelija se u prozi
-razrađuje u istom obliku. Ne „ponavljanje pomaže kod B1“, nego: ako
-fiskalizacijski poziv istekne bez odgovora, uz ponavljanje svjesno roka
-dokument završava ili potvrđen ili u imenovanom stanju s evidentiranim
-razlogom, a nikada u stanju bez zapisa nakon isteka roka iz članka 49.
+\paragraph{Razina dokaza.}
+Oznaka \textsuperscript{a} znači da tvrdnja slijedi iz propisa ili iz
+svojstva obrasca dokazanog u literaturi. Oznaka \textsuperscript{b} upućuje
+na provjeru prototipom iz poglavlja~\ref{ch:implementacija}, a
+\textsuperscript{c} na prosudbu autora.
 
-\paragraph{Svaka čelija nosi razinu.}
-Razina \textsuperscript{a} znači da tvrdnja slijedi iz propisa ili iz svojstva
-obrasca dokazanog u literaturi, pa je brani citat. Razina \textsuperscript{b}
-znači da tvrdnju pokazuje prototip iz poglavlja~\ref{ch:implementacija}.
-Razina \textsuperscript{c} znači da je tvrdnja prosudba autora.
-
-Prosudba je dopuštena, prešućena prosudba nije. Razinu \textsuperscript{b}
-nose samo one čelije koje prototip pokreće. To su slučajevi B1, B2 i D1
-na sinkronom fiskalizacijskom kanalu te E1 na granici C1 prema C2. Slučaj D2
-ima sličan oblik, ali ga prototip ne izvodi, pa ondje stoji
-\textsuperscript{c} i kada bi mehanizam bio isti.
+Razina \textsuperscript{b} odnosi se samo na ćelije provjerene izvršnim
+scenarijima za B1, B2 i D1 na sinkronom fiskalizacijskom kanalu te E1 na
+granici C1 prema C2. Sličnost mehanizma nije dovoljna za tu oznaku. Prototip ne izvršava
+slučaj D2, pa su odgovarajuće ocjene označene kao prosudbe autora.
 
 % ------------------------------------------------------------
 \section{Matrica pokrivenosti}
@@ -114,152 +107,130 @@ N ne pomaže \textbullet{}
 \end{minipage}
 \end{table}
 
-Iz tablice~\ref{tab:matrica} prvo se čita ono čega u njoj nema. Vrijednost
-\emph{uklanja} ne pojavljuje se nijednom. To nije neuspjeh
-obrazaca: oni ne uklanjaju mogućnost udaljenog otkaza ni obvezno razdvajanje
-postupaka, nego sužavaju posljedicu ili je čine dokazivom. Vrijednost
-\emph{detektira} znači da stanje može nastupiti, ali sustav o njemu ima zapis.
-Zapis dokazuje da je pokušaj poslan i da potvrda nije stigla. Da je udaljena
-obrada pala ne dokazuje, jer nakon isteka vremena usluga može biti i izvršena.
+Vrijednost \emph{uklanja} ne pojavljuje se ni u jednoj ćeliji
+tablice~\ref{tab:matrica}. Obrasci ne uklanjaju mogućnost udaljenog otkaza
+ni obvezno razdvajanje postupaka. Mogu ublažiti posljedice i omogućiti
+praćenje ishoda. Ocjena \emph{detektira} pritom označava postojanje zapisa
+o pokušaju i izostanku potvrde. Takav zapis ne dokazuje neuspjeh udaljene
+obrade jer usluga može biti izvršena i kada odgovor izostane.
 
-\paragraph{Prekidač je neutralan bez reda koji čuva poruke.}
-Sam prekidač ne rješava nijedan izvedeni način otkazivanja: samo ranije
-prekida pozive odredištu koje se čini nedostupnim. Zato je u matrici pretežno
-označen kao \emph{ne pomaže}. Ako je spojen s trajnim odlaznim pretincem i
-ponavljanjem svjesnim roka, može zaštititi lokalne resurse bez gubitka poruke;
-ako se otvori bez takvog reda i ostane otvoren do isteka roka, može povećati
-rizik zakašnjenja. Ocjena zato ovisi o sastavu obrazaca, a nije svojstvo
-samog prekidača. Redak D2 zadržava \emph{sužava} kao autorsku prosudbu za
-slučaj u kojem se poruka prema posredniku trajno zadržava lokalno.
+\paragraph{Učinak prekidača ovisi o trajnom redu.}
+Prekidač zaustavlja pozive prema odredištu koje se čini nedostupnim, ali
+sam ne rješava izvedene načine otkazivanja. U matrici je zato pretežno
+označen kao \emph{ne pomaže}. Uz trajni odlazni pretinac i ponavljanje
+svjesno roka može zaštititi lokalne resurse bez gubitka poruke. Ako bez
+takvog reda ostane otvoren do isteka roka, može povećati rizik zakašnjenja.
+Ocjena \emph{sužava} u retku D2 autorska je prosudba za slučaj u kojem
+poslovni sustav poruku prema posredniku trajno zadržava lokalno.
 
 \paragraph{Ključ za deduplikaciju ne određuje pravilo ispravka.}
-Složeni identifikator stabilan je pri ponovnom pokušaju, pa provjera S008
-ispravno otkriva da zapis s tim identifikatorom već postoji. Za ispravak je
-situacija uža: novi datum izdavanja uz referencu na prethodni račun stvara
-nov identifikator, dok ispravak koji zadržava identifikator može biti odbijen
-kao duplikat \cite{pu2026hrcius,pu2026tehspec}. Ključ sam ne odlučuje koju od
-tih grana treba primijeniti, pa je u retku B2 označen kao \emph{ne pomaže}, a
-ne kao obrazac koji nužno pogoršava stanje.
+Provjera S008 otkriva da zapis s istim složenim identifikatorom već postoji.
+Identifikator je stabilan pri ponovnom pokušaju. Ispravak s novim datumom
+izdavanja i referencom na prethodni račun dobiva nov identifikator, dok
+ispravak koji ga zadržava može biti odbijen kao
+duplikat \cite{pu2026hrcius,pu2026tehspec}. Ključ ne određuje koju varijantu
+ispravka treba primijeniti, pa u retku B2 ima ocjenu \emph{ne pomaže}.
 
-\paragraph{Redak B2 uz odlazni pretinac sužava lokalnu dvoznačnost.}
-Uvjetna tvrdnja glasi: ako modelirani Sustav za fiskalizaciju vrati šifru S008
-na ponovljenu dostavu nepromijenjenog izvornika, uz zapis predaje nastao prije
-slanja dokument završava u stanju \texttt{confirmed}; bez takvog zapisa
-ponovljena se dostava ne može ni prepoznati kao ponovljena, pa taj prijelaz
-nema. Odjeljak~\ref{sec:scenariji} pokazuje oba ishoda.
+\paragraph{B2: zapis predaje čuva podatak o rednom pokušaju.}
+Ako modelirani Sustav za fiskalizaciju vrati S008 na ponovljenu dostavu
+nepromijenjenog izvornika, zapis predaje nastao prije slanja omogućuje
+prijelaz u stanje \texttt{confirmed}, uz pretpostavke iz
+odjeljka~\ref{sec:dizajn}. Bez zapisa izvedba ne može nastaviti ponavljanje
+ni ostvariti taj prijelaz. Odjeljak~\ref{sec:scenariji} pokazuje oba ishoda.
 
-Što zapis pritom kupuje, treba precizirati, jer se dio konteksta čuva i bez
-njega. Poslovnu namjeru nosi sam dokument: indikator kopije je polje eRačuna, pa
-i izvedba koja namjeru nije zapisala iz spremljenog dokumenta izvodi da je
-predmet ispravak. Prva dostava ispravka zato u obje izvedbe završava u stanju
-\texttt{correction-rejected}. Ono što dokument ne nosi jest redni pokušaj dostave,
-jer prva i ponovljena dostava istog ispravka nose isti indikator kopije. Ta
-razlika postoji samo u zapisu predaje, a zapis nastao tek nakon odgovora nakon
-isteka vremena ne nastaje uopće. Vrijednost \emph{sužava} u ovoj čeliji zato
-stoji na sačuvanom rednom pokušaju dostave, ne na sačuvanoj namjeri.
+Poslovna namjera dostupna je i bez zasebnog zapisa jer dokument sadrži
+indikator kopije. Prva dostava ispravka sa zadržanim identifikatorom zato
+u obje izvedbe završava u stanju \texttt{correction-rejected}. Dokument,
+međutim, ne sadrži podatak o rednom pokušaju: prva i ponovljena dostava
+istog ispravka nose isti indikator kopije. Taj se podatak čuva u zapisu
+predaje, koji ne nastaje ako se zapisuje tek nakon odgovora, a odgovor
+izostane. Na njegovu očuvanju temelji se ocjena \emph{sužava} uz odlazni
+pretinac.
 
-Zapis ne razrješava svaki spoj. Kod ponovljene dostave ispravka sa zadržanim
-identifikatorom ista šifra ostaje dvoznačna i uz zapis, jer se može odnositi na
-izvornik ili na vlastiti raniji pokušaj. Dokument tada ostaje u stanju
-\texttt{sent-unconfirmed}, a dvoznačnost ulazi u evidenciju.
+Kod ponovljene dostave ispravka sa zadržanim identifikatorom S008 ostaje
+dvoznačan i uz zapis: može se odnositi na izvornik ili na raniji pokušaj
+slanja ispravka. Dokument ostaje u stanju \texttt{sent-unconfirmed}, a
+dvoznačnost se evidentira. Izgubljeni zapis predaje ne može se
+rekonstruirati iz podataka Sustava za fiskalizaciju. Prototip ne provjerava
+prihvatljivost ispravka s novim datumom i referencom na prethodni račun u
+stvarnom sustavu.
 
-Vrijednost je \emph{sužava}, ne \emph{uklanja}. Ako se zapis izgubi,
-rekonstruirati ga iz podataka Sustava za fiskalizaciju nije moguće. Ništa od
-toga ne dokazuje odgovor stvarnog sustava na ispravak s novim datumom i
-referencom na prethodni račun.
+\paragraph{D1: oporavak unutar roka.}
+Nakon prvog poziva bez odgovora zapis namjere ostavlja dokument u stanju
+\texttt{sent-unconfirmed}. Sustav bilježi dan nastupa nemogućnosti i
+zakazuje sljedeći pokušaj prema preostalom roku. U scenariju D1 događaj
+oporavka odredišta pokreće ponavljanje prije isteka roka, nakon čega
+dokument prelazi u stanje \texttt{confirmed}. Osnovna izvedba nema zapis
+predaje na kojem bi nastavila obradu.
 
-\paragraph{Redak D1 pokazuje oporavak unutar roka.}
-Ako Sustav za fiskalizaciju ne odgovori na prvi poziv, zapis namjere ostavlja
-dokument u stanju \texttt{sent-unconfirmed}, čuva dan nastupa nemogućnosti i
-iz preostalog roka zakazuje sljedeći pokušaj. Nakon zabilježenog događaja
-oporavka odredišta ponavljanje prije isteka roka vodi u stanje
-\texttt{confirmed}. Izvedba bez zapisa namjere nema predaju na kojoj bi
-nastavila.
+Scenarij ne izvršava cijeli raspored iz tablice~\ref{tab:raspored} jer
+ponavljanje pokreće događaj oporavka. Provjerava bilježenje dana nastupa
+nemogućnosti i računanje zakazanog trenutka iz preostalog roka. Pokušaj
+prije tog trenutka odbijen je ako nema događaja oporavka, a slanje nakon
+isteka roka nije dopušteno. Ponavljanje u samom zakazanom trenutku izvršava
+scenarij B2.
 
-Oznaka \textsuperscript{b} u tom retku nosi jednu ogradu.
-Ponavljanje u scenariju pokreće događaj oporavka, ne dolazak zakazanog
-trenutka, pa prototip ne izvršava cijeli raspored iz
-tablice~\ref{tab:raspored}. Pokazuje ono što uz rok jest izvršeno: dan nastupa
-je zabilježen, zakazani trenutak izračunat iz preostalog roka, pokušaj prije
-njega odbijen bez događaja oporavka, a slanje nakon isteka roka nije dopušteno.
-Ponavljanje pokrenuto na sam zakazani trenutak izvršava scenarij B2.
-Prototip time pokazuje vrijednost \emph{sužava} uz ponavljanje i vrijednost
-\emph{detektira} uz odlazni pretinac i imenovano stanje. Ne pokazuje da
-obrazac uklanja nedostupnost niti da produljuje rok.
+Razina \textsuperscript{b} u retku D1 odnosi se na te provjere. One
+podupiru ocjenu \emph{sužava} uz ponavljanje te \emph{detektira} uz odlazni
+pretinac i imenovano stanje. Ne dokazuju uklanjanje nedostupnosti ni
+produljenje roka.
 
-\paragraph{Ponavljanje cijele skupne poruke nosi rizik, uz navedene
-pretpostavke.}
-Zahtjev nosi do sto zapisa, a odgovor opisuje neprihvaćen zahtjev i prvu
-grešku zbog koje nije prihvaćen. Specifikacija time upućuje na odbijanje
-zahtjeva kao cjeline, ali ne opisuje izričito atomarnost obrade pojedinih
-zapisa \cite{pu2026tehspec}. Ovo je jedina čelija s vrijednošću
-\emph{pogoršava} i na njoj stoji dio odgovora na treće istraživačko pitanje, pa
-i pretpostavke i razina dokaza traže preciznost.
+\paragraph{B3: rizik ponavljanja cijele skupne poruke.}
+Zahtjev može sadržavati do sto zapisa. Odgovor opisuje neprihvaćen zahtjev
+i prvu grešku zbog koje je odbijen. Specifikacija time upućuje na odbijanje
+zahtjeva kao cjeline, ali izričito ne opisuje atomarnost obrade pojedinih
+zapisa \cite{pu2026tehspec}.
 
-Tvrdnja glasi uvjetno: ako odredište skup ne odbacuje atomarno i ako
-potiskivanje duplikata ne pokriva zapise koji su u prvom pokušaju prošli, tada
-ponavljanje cijelog skupa povećava izloženost dvostrukom zapisu umjesto da je
-smanji.
+Ako odredište skup ne odbacuje atomarno i ako provjera duplikata ne pokriva
+već obrađene zapise, ponavljanje cijelog skupa povećava izloženost
+dvostrukom zapisu. To je jedina ćelija s ocjenom \emph{pogoršava} i dio
+odgovora na treće istraživačko pitanje.
 
-Specifikacija ne određuje vrijede li te pretpostavke. Iz njezine šutnje ne
-slijedi da odredište skup ne odbacuje atomarno, ni da duplikate ne potiskuje;
-šutnja znači da ponašanje nije određeno, a ne da je dokazana njegova nepovoljna
-varijanta. Obrnuto također ne stoji: povoljno ponašanje neke izvedbe ne bi samo
-po sebi značilo da je specifikacija dopunjena. Ocjena u ovoj čeliji zato je
-autorska prosudba rizika u nepovoljnom scenariju i nosi razinu
-\textsuperscript{c}. Ako odredište skup odbacuje atomarno ili duplikate
-pouzdano potiskuje, učinak ponavljanja može biti drukčiji.
+Ocjena je autorska prosudba rizika u nepovoljnom scenariju, označena
+razinom \textsuperscript{c}. Specifikacija ne određuje vrijede li navedene
+pretpostavke, pa izostanak opisa ne dokazuje nepovoljno ponašanje odredišta.
+Ako se skup odbacuje atomarno ili se duplikati pouzdano potiskuju, učinak
+ponavljanja može biti drukčiji. Takvo ponašanje pojedine izvedbe ipak ne
+bi dopunilo opis u specifikaciji.
 
-Razlikovati treba i dvije stvari koje se lako spajaju. Ponovno poslan zapis nije
-isto što i uspješno stvoren dvostruki zapis na odredištu; provjera S008 postoji
-kao provjera jedinstvenosti. Ono što ponavljanje cijelog skupa povećava
-jest izloženost, ne dokazani dvostruki zapis.
-
-Iz slučaja se izlazi odricanjem od značajke sučelja. Kardinalnost dopušta i
-jedan zapis po poruci, pa se skupnost može ne koristiti, a to je nalaz o
-sučelju, ne o obrascu.
-
-\paragraph{Redci C1 i B4 gotovo su prazni.}
-U retku C1 pet od šest čelija kaže \emph{ne pomaže}. Primatelj ne može
-izračunati vlastiti rok jer pojam primitka nije definiran, a nijedan obrazac
-ne definira pravni pojam. Jedino što preostaje jest da sustav zabilježi trenutak
-u kojem je dokument stigao do njegove pristupne točke, čime dobiva obranjivo
-polazište koje propis ne daje.
-
-Redak B4 je prazan iz drugog razloga. Šifrarnik ne razlikuje prolazne od
-trajnih grešaka, pa klijent ne zna smije li ponoviti. Ponavljanje bez te
-razlike nije štetno, ali je slijepo. Ni ovdje obrazac ne može nadomjestiti
-podatak kojeg u sučelju nema.
+Ponovno slanje zapisa nije dokaz da je na odredištu nastao duplikat jer
+provjera jedinstvenosti S008 postoji. Ocjena se odnosi na povećanu
+izloženost. Rizik povezan sa skupnom obradom može se izbjeći slanjem
+pojedinačnih zapisa jer sučelje dopušta i jedan zapis po poruci.
 
 % ------------------------------------------------------------
 \section{Što ostaje nepokriveno}
 \label{sec:nepokriveno}
 
-Nepokriveno je skup redaka u kojima najviša postignuta vrijednost nije bolja
-od \emph{detektira}. Iz tablice~\ref{tab:matrica} to su B4, C1 i C2.
+Nepokrivenima se smatraju slučajevi u kojima obrasci postižu najviše
+ocjenu \emph{detektira}. U tablici~\ref{tab:matrica} to su B4, C1 i C2.
+Povezuje ih nedostatak podatka ili jednoznačnog pravila.
 
-Ta tri slučaja povezuje nedostatak ulaznog podatka ili jednoznačnog pravila.
-U B4 sučelje ne razlikuje prolazne od trajnih grešaka. U C1 pravni pojam
-primitka nije vezan uz jednoznačan tehnički događaj, a u C2 trenutak izdavanja
-nije kvantificiran tako da bi ga raspored ponavljanja mogao izračunati.
-Obrasci mogu sačuvati dokaz i imenovati stanje, ali ne mogu sami proizvesti
-nedostajući podatak ili obvezujuće tumačenje.
+U slučaju B4 šifrarnik ne razlikuje prolazne od trajnih grešaka. Klijent
+zato nema podatak na kojem bi temeljio odluku o ponavljanju. Obrazac tu
+razliku ne može nadomjestiti.
 
-Slučaj D1 u matrici doseže \emph{sužava} jer ponavljanje nakon oporavka može
-dovršiti fiskalizaciju unutar roka. Ograničenje ipak ostaje ako nedostupnost
-traje dulje od roka, jer obrazac nema mehanizam kojim bi rok produljio ili
-zakašnjelom postupku dao učinak pravovremenog.
+U slučaju C1 pravni pojam primitka nije vezan uz jednoznačan tehnički
+događaj, pa primatelj nema jednoznačno polazište za računanje roka. Sustav
+može zabilježiti trenutak dolaska dokumenta do primateljeve pristupne točke i
+time učiniti odabrano polazište provjerljivim. Takav zapis ne daje
+obvezujuće tumačenje pojma primitka. U slučaju C2 trenutak izdavanja nije
+kvantificiran tako da bi se mogao koristiti u izračunu rasporeda
+ponavljanja.
 
-Iz toga slijedi odgovor na drugo istraživačko pitanje. Obrasci tolerancije na
-greške dobro djeluju na neodređenost prijenosa: čuvaju namjeru, ograničavaju
-ponavljanje i omogućuju nastavak nakon oporavka. Slabije djeluju kada je
-neodređenost ugrađena u pravilo ili sučelje. Tada najviše mogu sačuvati trag i
-učiniti odabranu interpretaciju vidljivom. Dio granice pokrivenosti zato je
-regulatoran i može se pomaknuti preciznijim pravilom ili specifikacijom, dok
-fizikalna neodređenost udaljenog poziva ostaje tehnički problem.
+Slučaj D1 postiže ocjenu \emph{sužava} jer ponavljanje nakon oporavka može
+dovršiti fiskalizaciju unutar roka. Ako nedostupnost traje dulje, obrazac
+ne može produljiti rok ni zakašnjelom postupku dati učinak pravovremenog.
 
-% ------------------------------------------------------------
+Odgovor na drugo istraživačko pitanje zato ovisi o izvoru ograničenja.
+Kod neodređenosti prijenosa obrasci čuvaju namjeru, ograničavaju ponavljanje
+i omogućuju nastavak nakon oporavka. Kada nedostaje podatak ili jednoznačno
+pravilo, mogu evidentirati stanje i odabranu interpretaciju. Taj dio
+granice pokrivenosti regulatoran je i može se pomaknuti preciznijim
+pravilom ili specifikacijom. Fizikalna neodređenost udaljenog poziva ostaje
+tehničko ograničenje.
 
-Devet od 66 čelija nosi razinu \textsuperscript{b}. One počivaju na završnim
-stanjima iz izvršnih scenarija i iz 32 testa koji te scenarije provjeravaju, ne na mjerenju performansi. Domet i cijena tog izbora razrađeni
-su u poglavlju~\ref{ch:rasprava}.
+Devet od 66 ćelija ima razinu \textsuperscript{b}, utemeljenu na završnim
+stanjima izvršnih scenarija i 32 testa koji ih provjeravaju. Evaluacija ne
+obuhvaća mjerenje performansi. Ograničenja evaluacije i cijena obrazaca
+razrađeni su u poglavlju~\ref{ch:rasprava}.

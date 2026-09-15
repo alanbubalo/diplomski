@@ -1,57 +1,49 @@
 \chapter{Ilustrativni prototip}
 \label{ch:implementacija}
 
-Obrasci iz odjeljka~\ref{sec:dizajn} opisani su riječima. Dio tvrdnji o njima
-provjerljiv je jedino tako da se obrazac izvede i da se vidi u kojem stanju
-sustav završi. Prototip pruža izvršnu provjeru takvih tvrdnji. U dvije izvedbe
-pokreće isti kvar i uspoređuje završna stanja. Ne provjerava sukladnost formata
-ni transportnog protokola, jer su predmet stanja nakon greške.
+Ilustrativni prototip provjerava dio tvrdnji o obrascima iz
+odjeljka~\ref{sec:dizajn} usporedbom završnih stanja dviju izvedbi nakon
+istog kvara. Predložena izvedba zapisuje namjeru prije vanjskog poziva, a
+osnovna stvara zapis predaje tek nakon odgovora. Usporedba pokazuje kako
+trenutak zapisivanja utječe na praćenje ishoda i mogućnost oporavka.
 
 % ------------------------------------------------------------
 \section{Opseg i granice}
 \label{sec:opseg-prototipa}
 
-Prototip izvršava dvije granice iz referentne arhitekture. Prva je predaja od
-poslovnog sustava njegovoj pristupnoj točki, C1 prema C2, koja nosi slučaj E1.
-Druga je sinkroni kanal prema Sustavu za fiskalizaciju, na kojem pokreće
-slučajeve B1, B2 i D1. U slučaju B2 dvojnik modelira samo granu ispravka koja
-zadržava složeni identifikator računa i zato dobiva S008. Ispravak s novim
-datumom izdavanja i referencom na prethodni račun zasebna je razmatrana
-konstrukcija koju prototip ne izvodi. Time konkretni primjer obuhvaća predaju računa,
-slanje fiskalizacijske poruke, izostanak odgovora, jedan modelirani odgovor
-S008 i oporavak odredišta.
+Prototip obuhvaća komunikaciju na dvije granice referentne arhitekture.
+Na granici poslovnog sustava prema njegovoj pristupnoj točki, C1 prema C2,
+izvodi slučaj E1. Na sinkronom kanalu prema Sustavu za fiskalizaciju izvodi
+slučajeve B1, B2 i D1. Za ispravak u slučaju B2 modelira samo varijantu sa
+zadržanim složenim identifikatorom računa, koja dobiva S008. Varijantu s
+novim datumom izdavanja i referencom na prethodni račun ne izvodi.
 
-Popis onoga što prototip nema dulji je od popisa onoga što ima, i to
-namjerno:
+Predmet provjere je rukovanje greškama. Prototip ne obuhvaća:
 
 \begin{itemize}[nosep]
-  \item bez sastavljanja i provjere dokumenta UBL,
-  \item bez pravila Schematron iz hrvatskog suženja norme,
-  \item bez profila AS4 i bez ikakvog stvarnog prijenosa,
-  \item bez elektroničkog potpisa i bez infrastrukture javnog ključa,
-  \item bez otkrivanja adrese primatelja,
-  \item bez mjerenja kašnjenja i bez ubrizgavanja kvarova u više servisa.
+  \item sastavljanje i provjeru dokumenta UBL,
+  \item pravila Schematron iz hrvatskog suženja norme,
+  \item profil AS4 ni stvarni prijenos,
+  \item elektronički potpis ni infrastrukturu javnog ključa,
+  \item otkrivanje adrese primatelja,
+  \item mjerenje kašnjenja ni ubrizgavanje kvarova u više servisa.
 \end{itemize}
 
 Vanjska odredišta zamijenjena su \strani{krnjim dvojnicima}{stubs}. Dvojnik
-pristupne točke vraća potvrdu ili izostanak odgovora. Dvojnik Sustava za
-fiskalizaciju uz ta dva ishoda vraća i šifru S008. Unaprijed zadani niz odgovora
-omogućuje da se nedostupnost i oporavak ponove bez stvarne vanjske okoline.
-Prototip koji bi provjeravao UBL i govorio AS4 pokazivao bi sukladnost, a
-predmet je rukovanje greškom.
+pristupne točke simulira potvrdu ili izostanak odgovora. Dvojnik Sustava za
+fiskalizaciju može vratiti i šifru S008. Unaprijed zadani niz odgovora
+omogućuje ponovljivo ispitivanje nedostupnosti i oporavka.
 
-Izvedeno je u jeziku PHP 8.5 i okviru Laravel 13.25, kao skup konzolnih naredbi
+Prototip je izveden u jeziku PHP 8.5 i okviru Laravel 13.25, kao skup konzolnih naredbi
 nad bazom SQLite, bez mrežnog sloja i bez korisničkog sučelja.
 
 Rok od pet radnih dana računa se preskakanjem subote i nedjelje, bez kalendara
-blagdana. To utječe na datume u ispisima. Blagdani nisu predmet rada i njihov
-izostanak ne mijenja nijedan nalaz: mijenja apsolutni datum isteka roka, ne
-odnos između rasporeda i roka.
+blagdana. To pojednostavnjenje utječe na datum isteka roka u ispisima, ali
+ne mijenja odnos između rasporeda ponavljanja i roka koji se ovdje provjerava.
 
-Ispisi u ovom poglavlju su izlaz naredbi, ne prepričavanje. Izvorni kod
-prototipa nalazi se u mapi \texttt{prototip/} repozitorija koji je priložen radu
-u elektroničkom obliku, zajedno s poviješću izmjena. Cijeli se dokazni materijal
-dobiva ovim naredbama:
+Izvorni kod i povijest izmjena nalaze se u repozitoriju priloženom radu u
+elektroničkom obliku. Ispisi u poglavlju dobiveni su pokretanjem naredbi iz
+mape \texttt{prototip/}:
 
 \begin{lstlisting}[caption={[Naredbe kojima se ispisi ponavljaju]Naredbe kojima
 se ispisi iz ovog poglavlja ponavljaju. Svaki \texttt{scenario} iznova gradi
@@ -74,29 +66,22 @@ php vendor/bin/phpunit
 
 Provjereno je uz PHP 8.5.8 i Laravel 13.25.0.
 
-Dokazni sadržaj poglavlja stoji na jednoj razlici u izvedbi. Predložena izvedba
-zapisuje namjeru prije predaje, u istoj lokalnoj transakciji u kojoj nastaje i
-sam dokument. Osnovna izvedba zapis predaje stvara tek nakon što odgovor stigne.
-Obje stoje u istom kodu i biraju se prekidačem u naredbi.
-
-Usporedba dviju izvedbi vrijedi samo ako obje tumače odgovor iz onoga što im
-stvarno ostaje. Osnovna izvedba nije bez konteksta: indikator kopije je polje
-eRačuna, pa iz spremljenog dokumenta može izvesti je li predmet ispravak.
-Prototip joj taj kontekst i daje. Iz dokumenta se, međutim, ne može izvesti
-redni pokušaj dostave, jer prva i ponovljena dostava istog ispravka nose isti
-dokument. Ta razlika živi samo u zapisu predaje, a zapis koji nastaje tek nakon
-odgovora ne nastaje uopće kada odgovora nema.
-
-Iz te razlike slijede kontrasti koje odjeljak~\ref{sec:scenariji} pokazuje.
+Obje izvedbe koriste isti kod, a osnovna se odabire opcijom
+\texttt{--without-intent-record}. Obje iz indikatora kopije u spremljenom
+eRačunu mogu utvrditi šalje li se ispravak. Redni pokušaj dostave mora se
+zasebno evidentirati jer prva i ponovljena dostava sadrže isti dokument.
+Osnovna izvedba taj podatak gubi kada odgovor izostane, što pokazuju
+scenariji u odjeljku~\ref{sec:scenariji}.
 
 % ------------------------------------------------------------
 \section{Model stanja i ključne komponente}
 \label{sec:komponente}
 
-Podjela na entitete iz odjeljka~\ref{sec:dizajn} izvedena je doslovno.
-Dokument i njegova predaja pohranjeni su u odvojenim tablicama, a treća čuva
-evidenciju. Dokument i početni zapis predaje nastaju u jednoj lokalnoj
-transakciji; vanjski poziv izvršava se nakon njezina dovršetka. Ne postoji transakcija koja bi obuhvatila i lokalni zapis i ishod vanjskog
+Prema dizajnu iz odjeljka~\ref{sec:dizajn}, dokument i njegova predaja
+pohranjeni su u odvojenim tablicama, a treća čuva evidenciju. U predloženoj
+izvedbi dokument i početni zapis predaje nastaju u jednoj lokalnoj
+transakciji. Vanjski poziv izvršava se nakon njezina dovršetka. Ne postoji
+transakcija koja bi obuhvatila i lokalni zapis i ishod vanjskog
 poziva \cite{helland2007lifebeyond}. Različite tablice nisu različite
 transakcijske granice.
 
@@ -132,19 +117,18 @@ odjeljka~\ref{sec:dizajn} \cite{schneider1990statemachine}.
 koda: \texttt{prepared} je zapisana namjera prije pokušaja,
 \texttt{sent-unconfirmed} je poslano bez potvrde, \texttt{confirmed} je
 potvrđen primitak, \texttt{correction-rejected} je ispravak sa zadržanim
-identifikatorom odbijen šifrom
-S008, a \texttt{deadline-expired} je rok istekao prije potvrde. Dvostruki obrub
-označava stanje iz kojeg nema prijelaza. Samoprijelaz označen s \texttt{sent}
-je ponovno slanje, koje stanje ostavlja istim. Izostanak odgovora nije ni
-samoprijelaz: on ne pokreće nijedan prijelaz, pa dokument koji je poslan i nije
-potvrđen ostaje poslan i nepotvrđen.}
+identifikatorom odbijen šifrom S008, a \texttt{deadline-expired} označava
+istek roka prije potvrde. Dvostruki obrub označava završno stanje.
+Ponovno slanje pokreće samoprijelaz \texttt{sent}. Izostanak odgovora ne
+pokreće prijelaz, pa predaja ostaje u stanju \texttt{sent-unconfirmed}.}
 \label{fig:automat}
 \end{figure}
 
 \needspace{26\baselineskip}
-Rok iz članka 49.\ stavka 1.\ u automat ne ulazi kao stanje nego kao uvjet nad
-prijelazom i kao izričit poticaj, iz razloga koji daje
-odjeljak~\ref{sec:automat}. Listing~\ref{lst:automat} pokazuje taj uvjet.
+Rok iz članka 49.\ stavka 1.\ provjerava se uvjetima nad prijelazima, a njegov
+istek predstavlja zaseban poticaj, prema odjeljku~\ref{sec:automat}.
+Listing~\ref{lst:automat} prikazuje provjere dopuštenosti slanja i poticaja
+isteka roka.
 
 \begin{lstlisting}[language=PHP, caption={[Rok kao uvjet nad
 prijelazom]Rok kao uvjet nad prijelazom. Prijelaze pokreću poticaji iz
@@ -165,25 +149,22 @@ if ($trigger === Trigger::DEADLINE_ELAPSED && ! $expired) {
 }
 \end{lstlisting}
 
-Nedopušten prijelaz baca iznimku i ne mijenja stanje. Sustav koji nedopušten
-prijelaz tiho preskoči prestaje biti dokaz o vlastitom stanju.
+Pri nedopuštenom prijelazu iznimka obavještava pozivatelja o razlogu odbijanja,
+a stanje ostaje nepromijenjeno.
 
-Prvi uvjet je granica prototipa, ne zabrana iz propisa. Članak 49.\ stavak 1.\
-određuje rok u kojem se obveza mora izvršiti. Ne
-uspostavlja zabranu slanja nakon tog roka, a Zakon za slučaj eRačuna nema
+Zaustavljanje slanja nakon isteka roka ograničenje je prototipa. Članak 49.\
+stavak 1.\ određuje rok izvršenja obveze, ali ne zabranjuje kasnije slanje.
+Zakon za slučaj eRačuna nema
 odredbu poput one iz članka 21.\ stavka 3., koja zakašnjelu dostavu unutar
-sanacijskog roka izjednačava s pravovremenom. Model zato nakon isteka roka
-zaustavlja nove pokušaje i bilježi da potvrda nije stigla unutar roka.
-Raniji zahtjev možda je obrađen
+sanacijskog roka izjednačava s pravovremenom. Model nakon isteka roka
+bilježi da potvrda nije stigla unutar roka. Raniji zahtjev možda je obrađen
 pravodobno, pa udaljeni ishod ostaje nepoznat. Polje \texttt{ishod poznat}
 u tom stanju ima vrijednost \texttt{NE}. Zakašnjelo izvršenje i naknadno
 razrješavanje ranijeg ishoda nisu obuhvaćeni prototipom.
 
-Predaja se u odlazni pretinac zapisuje prije poziva, u istoj transakciji u
-kojoj nastaje dokument, uz ključ koji određuje
-pošiljatelj \cite{saltzer1984endtoend}. Zapisana namjera nosi i drugi posao,
-teži od prvog. Listing~\ref{lst:s008} pokazuje mjesto na kojem se šifra S008
-tumači.
+Zapis u odlaznom pretincu sadrži ključ koji određuje
+pošiljatelj \cite{saltzer1984endtoend}. Poslovna namjera i redni pokušaj
+dostave omogućuju tumačenje šifre S008 prema listingu~\ref{lst:s008}.
 
 \needspace{4\baselineskip}
 
@@ -220,35 +201,31 @@ return match (true) {
 };
 \end{lstlisting}
 
-Listing pokazuje dvije stvari. Prva je da poslovna namjera i redni pokušaj
-dostave stoje odvojeno. Ponavljanje je pokušaj dostave, ne nova vrsta
-dokumenta, pa ponovljena dostava ispravka ostaje ispravak. Izvedba koja bi pri
-ponavljanju namjeru prepisala u „ponovni pokušaj“ izgubila bi činjenicu da je
-predmet slanja ispravak i zatim bi istu šifru pročitala kao potvrdu.
+Poslovna namjera i redni pokušaj dostave vode se odvojeno. Pri ponavljanju
+ispravak zadržava svoju namjeru. Zamjenom te oznake s „ponovni pokušaj“
+izgubio bi se podatak potreban za tumačenje odgovora, pa bi se S008 mogao
+pogrešno protumačiti kao potvrda.
 
-Druga je da dva od četiri spoja ostaju dvoznačna. Kada tumačenje nije
-jednoznačno, funkcija ne pogađa, a automat tada nema prijelaz na raspolaganju.
-Zapis namjere dvoznačnost sužava; ne uklanja je. Isto vrijedi za zadnji slučaj,
-u kojem zapisa uopće nema.
-
-U evidenciju ulazi svaki prijelaz, ali i svaki trenutak u kojem tumačenje nije
-bilo jednoznačno, a to drugo je i razlog zbog kojeg tablica postoji.
+Dvije od četiri kombinacije namjere i rednog pokušaja ostaju dvoznačne.
+U tim slučajevima, kao i kada namjera nije poznata, funkcija vraća dvoznačno
+tumačenje koje ne pokreće prijelaz automata. Evidencija bilježi svaki
+prijelaz i svako dvoznačno tumačenje, uključujući vrijeme njegova nastanka.
 
 % ------------------------------------------------------------
 \section{Scenariji i ishodi}
 \label{sec:scenariji}
 
-Četiri scenarija pokrivaju po jedan način otkazivanja iz
+Četiri scenarija provjeravaju po jedan način otkazivanja iz
 odjeljka~\ref{sec:failure-modes}. Svaki se pokreće u obje izvedbe, sa zapisom
-namjere i bez njega. Sat je pritom zamrznut na jedan trenutak, pa su ispisi
-ponovljivi.
+namjere i bez njega. Scenariji upravljaju satom od unaprijed zadanog početnog
+trenutka, pa su ispisi ponovljivi.
 
 \begin{table}[htbp]
 \centering
 \caption[Scenariji i završna stanja]{Završna stanja konzolnih scenarija.
-Vrijednosti su iz izlaza naredbe \texttt{php artisan scenario}. Red B2/2 je
-jedini u kojem se izvedbe ne razlikuju, i to je nalaz: tamo poslovnu namjeru
-nosi sam dokument.}
+Vrijednosti su iz izlaza naredbe \texttt{php artisan scenario}. U retku B2/2
+obje izvedbe imaju isti ishod jer poslovnu namjeru mogu utvrditi iz
+dokumenta.}
 \label{tab:scenariji}
 \small
 \begin{tabular}{@{}p{1.1cm}p{4.0cm}p{4.0cm}p{4.0cm}@{}}
@@ -274,21 +251,20 @@ E1 & izostaje & predaja bez potvrde: 1 & predaja bez potvrde: 0 \\
 \end{table}
 
 \paragraph{B1: poziv istekne bez odgovora.}
-Sa zapisom namjere dokument nakon prvog poziva ostaje u stanju
+Sa zapisom namjere predaja nakon prvog poziva ostaje u stanju
 \texttt{sent-unconfirmed}, uz zabilježen dan nastupa nemogućnosti i zakazan
 sljedeći pokušaj. Scenarij zatim pomiče sat iza roka i pokreće pokušaj koji
 automat vodi u završno stanje \texttt{deadline-expired}, bez novog slanja.
-Ishod prethodnog poziva i tada ostaje nepoznat. Bez zapisa u
-bazi ne postoji nijedan redak o predaji, iako je račun izdan.
+Ishod prethodnog poziva i tada ostaje nepoznat. U osnovnoj izvedbi račun je
+izdan, ali zapis predaje ne postoji.
 
-Scenarij pokazuje i zašto raspored ponavljanja mora gledati rok.
-Tablica~\ref{tab:raspored} stavlja dva rasporeda jedan pokraj drugog.
+Tablica~\ref{tab:raspored} uspoređuje raspored koji uzima u obzir preostali rok
+s eksponencijalnim odmakom koji ovisi samo o broju pokušaja.
 
 \begin{table}[htbp]
 \centering
 \caption[Raspored ponavljanja prema roku i prema broju pokušaja]{Raspored
-ponavljanja uz rok koji istječe 8.~rujna u 23:59:59. Lijevi stupac gleda
-preostali rok, desni samo broj dotadašnjih pokušaja.}
+ponavljanja uz rok koji istječe 8.~rujna u 23:59:59.}
 \label{tab:raspored}
 \small
 \begin{tabular}{@{}ccc@{}}
@@ -304,47 +280,45 @@ Pokušaj & Svjestan roka & Eksponencijalni odmak \\
 \end{tabular}
 \end{table}
 
-Tablica uspoređuje dva konkretna rasporeda uz jednu osnovicu. Nije presuda o
-obitelji eksponencijalnog odmaka. Uz ovu osnovicu odmak rok uopće ne dodiruje:
-prvih pet pokušaja potroši u trideset i jednoj minuti, a
-rok prekorači tek na četrnaestom. Razlika nije u tome što odmak kasni, nego u
-tome što o roku ne zna ništa. Isti obrazac uz drukčiju osnovicu ponaša se
-posve drukčije, a propis se u tom izboru nigdje ne pojavljuje. Uvjet roka
-može se dodati i eksponencijalnom odmaku, čime razlika među stupcima nestaje;
-tablica pokazuje da uvjet treba dodati, ne da je obrazac neupotrebljiv.
+Uz odabranu osnovicu eksponencijalni odmak raspoređuje prvih pet pokušaja
+unutar trideset i jedne minute, a rok prekoračuje tek na četrnaestom pokušaju.
+Drukčija osnovica promijenila bi te trenutke, ali raspored i dalje ne bi
+uzimao rok u obzir. Provjera roka može se dodati i eksponencijalnom odmaku.
+Usporedba zato pokazuje potrebu za tom provjerom, bez općeg zaključka o
+neprimjenjivosti obrasca.
 
-Raspored svjestan roka svaki pokušaj stavlja na polovicu preostalog roka i zato
-ga po konstrukciji ne može prekoračiti. Ta konstrukcija ima cijenu, vidljivu u
-tablici. Prvi pokušaj pada tek 5.~rujna, gotovo četiri dana nakon kvara od
-1.~rujna u 09:00. Raspored koji ne zakoračuje preko roka time ne dovodi do
-bržeg oporavka; on samo jamči da nijedan pokušaj neće biti zakazan izvan roka. Ranije nego zakazano
-šalje se samo uz događaj oporavka, koji scenarij D1 pokazuje. Brookerovo
-slučajno raspršivanje razmaka isključeno je, da ispis ostane
-ponovljiv \cite{brookertimeouts}.
+U prikazanom rasporedu svjesnom roka svaki sljedeći pokušaj zakazuje se na
+polovici preostalog vremena. Takav raspored ograničava pokušaje rokom, ali
+ne osigurava brz oporavak: prvi ponovni pokušaj zakazan je tek za 5.~rujna,
+gotovo četiri dana nakon kvara od 1.~rujna u 09:00. Ranije slanje dopušteno
+je uz događaj oporavka, prikazan u scenariju D1. Brookerovo slučajno
+raspršivanje razmaka isključeno je radi ponovljivosti
+ispisa \cite{brookertimeouts}.
 
-Scenarij popunjava čelije B1 uz automat s imenovanim stanjem i B1 uz
+Scenarij provjerava ćelije B1 uz automat s imenovanim stanjem i B1 uz
 ponavljanje svjesno roka.
 
 \paragraph{E1: predaja bez potvrde.}
-Pitanje na koje scenarij odgovara nije je li dokument stigao. Pitanje je može
-li poslovni sustav znati da ga je pokušao predati. Sa zapisom namjere odgovor
-postoji i provjerljiv je bez pristupa pristupnoj točki. Bez zapisa račun
-postoji, a trag predaje ne postoji.
+Scenarij provjerava može li poslovni sustav utvrditi da je pokušao predati
+dokument, iako nema potvrdu primitka. U predloženoj izvedbi pokušaj je
+zabilježen i provjerljiv bez pristupa pristupnoj točki. U osnovnoj izvedbi
+račun postoji, ali nema zapisa predaje.
 
-Scenarij popunjava čeliju E1 uz odlazni pretinac i zapis namjere.
+Scenarij provjerava ćeliju E1 uz odlazni pretinac i zapis namjere.
 
-\paragraph{B2: ista šifra u tri modelirana spoja.}
-Scenarij ima tri dijela. U prvom se poruka ponavlja na trenutak koji je raspored
-zakazao i dobiva S008. U drugom se šalje ispravak pod istim brojem računa i
-dobiva istu šifru na prvu dostavu. U trećem ostaje bez odgovora ispravak koji se
-zatim ponavlja, pa istu šifru dobiva na ponovljenu dostavu. Svi dijelovi
-ilustriraju samo granu ispravka sa zadržanim identifikatorom; ne tvrde da bi
-stvarni sustav jednako odgovorio na ispravak s novim datumom i referencom na
-prethodni račun. Listing~\ref{lst:ispis} prepisuje završno stanje baze.
+\paragraph{B2: tumačenje šifre S008 u tri slučaja.}
+Scenarij uspoređuje tri kombinacije poslovne namjere i rednog pokušaja.
+U prvom dijelu izvornik nakon izostanka odgovora dobiva S008 pri ponovnoj
+dostavi u zakazanom trenutku. U drugom dijelu ispravak dobiva S008 pri prvoj
+dostavi. U trećem dijelu ispravak nakon izostanka odgovora dobiva S008 pri
+ponovnoj dostavi. Ispravci zadržavaju složeni identifikator izvornika.
+Scenarij ne provjerava ponašanje stvarnog sustava ni varijantu ispravka s
+novim datumom i referencom na prethodni račun.
+Listing~\ref{lst:ispis} prikazuje završno stanje baze.
 
 \begin{lstlisting}[caption={[Završno stanje baze nakon scenarija
 B2]Završno stanje nakon scenarija B2, izlaz naredbe \texttt{php artisan
-state}. Ista šifra u tri modelirana spoja, tri različita ishoda tumačenja.
+state}. Tri modelirana slučaja daju različite ishode tumačenja šifre S008.
 Radi širine stranice izostavljeni su stupac \texttt{ishod poznat} iz prve
 tablice te iz druge tablice stupac nazvan \texttt{iz}; ostalo je prepisano doslovno.},
 label={lst:ispis}, basicstyle=\ttfamily\scriptsize]
@@ -377,71 +351,56 @@ EVIDENCIJA
 +---------+-----+--------------------------------+---------------------+-------------+
 \end{lstlisting}
 
-U trećem retku evidencije prve predaje sustav je zabilježio da ishod nije
-poznat. Kasniji odgovor S008 taj trenutak razrješava, ali ga ne briše.
+Pri prvoj predaji treći redak evidencije bilježi nepoznat ishod. Kasniji
+odgovor S008 omogućuje potvrdu ranijeg pokušaja uz pretpostavke iz
+odjeljka~\ref{sec:dizajn}, a prethodni zapis ostaje u evidenciji.
 
-Treća predaja pokazuje granicu istog obrasca. Namjera je zapisana i ostala
-ispravak i nakon ponavljanja, a šifra svejedno nije dala prijelaz: kod
-ponovljene dostave ispravka sa zadržanim identifikatorom ona se može odnositi
-na izvornik ili na vlastiti raniji pokušaj. Dokument zato ostaje u stanju
-\texttt{sent-unconfirmed}, uz dva zabilježena trenutka u kojima ishod nije bio
-poznat. Zapis dvoznačnost sužava; ovaj spoj ne razrješava.
+Pri trećoj predaji S008 ostaje dvoznačan i uz zapisanu namjeru: šifra se
+može odnositi na izvornik ili na raniji pokušaj slanja ispravka sa zadržanim
+identifikatorom. Predaja ostaje u stanju \texttt{sent-unconfirmed}, uz dva
+zabilježena trenutka u kojima ishod nije bio poznat.
 
-Usporedba s osnovnom izvedbom traži da se razdvoje dva podatka koja je zapis
-mogao sačuvati. Prvi je poslovna namjera. Nju osnovna izvedba ne zapisuje, ali
-je iz spremljenog dokumenta izvodi, jer je indikator kopije polje eRačuna.
-Zato drugi dio scenarija u obje izvedbe završava jednako, u stanju
-\texttt{correction-rejected}. To je negativan nalaz i stoji izrijekom: za taj
-spoj zapis namjere nije potreban.
+U drugom dijelu obje izvedbe završavaju u stanju
+\texttt{correction-rejected} jer iz indikatora kopije mogu utvrditi da se
+šalje ispravak. Za taj slučaj zaseban zapis namjere nije potreban. Razlika
+između izvedbi pojavljuje se u prvom i trećem dijelu: nakon izostanka
+odgovora osnovna izvedba nema zapis predaje ni podatak o rednom pokušaju,
+pa ne može nastaviti ponavljanje.
 
-Drugi podatak je redni pokušaj dostave, i njega dokument ne nosi. Prva i
-ponovljena dostava istog ispravka nose isti indikator kopije. Prvi i treći dio
-scenarija to pokazuju: nakon izostanka odgovora osnovna izvedba ne ostavlja
-nijedan redak o predaji, pa se prva dostava od ponovljene ne može razlikovati i
-ponavljanje nema na što nastaviti. Ovdje se vidi zašto zapis mora nastati
-\emph{prije} predaje. U slučaju u kojem je najpotrebniji zapis nastao poslije
-odgovora ne bi nastao nikada.
-
-Scenarij zato popunjava čeliju B2 uz odlazni pretinac, ali za sačuvani redni
-pokušaj dostave, a ne za sačuvanu poslovnu namjeru.
+Scenarij provjerava ćeliju B2 uz odlazni pretinac. Pokazana korist odnosi se
+na očuvanje podatka o rednom pokušaju dostave, dok je poslovna namjera
+dostupna i iz samog dokumenta.
 
 \paragraph{D1: Sustav za fiskalizaciju privremeno je nedostupan.}
-Prvi poziv ostaje bez odgovora. Uz zapis namjere dokument završava u stanju
+Prvi poziv ostaje bez odgovora. Uz zapis namjere predaja ostaje u stanju
 \texttt{sent-unconfirmed}, zabilježen je dan nastupa nemogućnosti, a sljedeći
 pokušaj zakazan je iz preostalog roka za 5.~rujna.
 
-Dvojnik se oporavlja sljedećeg dana, dakle prije tog trenutka. Raniji poziv
-zato ne pokreće raspored nego izričit događaj oporavka odredišta, koji ulazi u
-evidenciju i zakazani pokušaj premješta na sada. Bez njega pokušaj prije
-zakazanog trenutka nije dopušten, jer raspored koji se ne provodi ne dokazuje
-ništa. Drugi poziv vraća potvrdu i dokument prelazi u stanje
-\texttt{confirmed}. Oba su poziva evidentirana, a završetak nastupa prije
-isteka roka.
+Dvojnik se oporavlja sljedećeg dana. Događaj oporavka bilježi se u
+evidenciju i pomiče zakazani pokušaj na trenutak oporavka. Bez tog događaja
+ranije slanje nije dopušteno. Drugi poziv vraća potvrdu, pa predaja prelazi
+u stanje \texttt{confirmed} prije isteka roka. Oba su poziva evidentirana.
 
-Scenarij zato pokazuje ponavljanje pokrenuto događajem oporavka unutar roka, a
-ne provedbu rasporeda iz tablice~\ref{tab:raspored}. Rok je pritom omeđivao
-ponašanje na tri načina:
+Scenarij provjerava ponavljanje pokrenuto događajem oporavka unutar roka;
+ne izvršava raspored iz tablice~\ref{tab:raspored}. Praćenje roka obuhvaća:
 
 \begin{itemize}[nosep, leftmargin=1.4cm]
-  \item iz preostalog roka izračunat je zakazani trenutak,
-  \item iz roka je izveden uvjet nad prijelazom,
-  \item zabilježen je dan nastupa nemogućnosti, od kojeg rok teče.
+  \item računanje zakazanog trenutka iz preostalog roka,
+  \item provjeru roka kao uvjeta nad prijelazom,
+  \item bilježenje dana nastupa nemogućnosti, od kojeg rok teče.
 \end{itemize}
 
-Bez zapisa namjere prvi izostanak odgovora ne ostavlja predaju na kojoj bi se
-ponavljanje moglo nastaviti. Usporedba zato ne pokazuje samo da ponavljanje
-može uspjeti, nego uvjet pod kojim je oporavak uopće moguć.
-
-Scenarij popunjava čelije D1 uz ponavljanje svjesno roka, odlazni pretinac i
+U osnovnoj izvedbi nakon prvog izostanka odgovora nema zapisa predaje, pa se
+ponavljanje ne može nastaviti. Scenarij provjerava ćelije D1 uz ponavljanje
+svjesno roka, odlazni pretinac i
 automat s imenovanim stanjem.
 
 % ------------------------------------------------------------
 
-Svaka tvrdnja iz ovog odjeljka zapisana je i kao izvršni test, u obliku koji
-Filibuster koristi za uvjetne tvrdnje \cite{meiklejohn2021filibuster}. Test ne
-provjerava da je poziv uspio nego da je završno stanje ono koje propis i
-obrazac zajedno nalažu. Prototip nosi 32 takva testa, koji zajedno izvode
-105 pojedinačnih provjera. Broj testova je broj tvrdnji o ishodu; broj
-provjera je veći jer jedna tvrdnja često provjerava stanje, zapis roka i zapis
-u evidenciji. Poglavlje~\ref{ch:evaluacija} poziva se na te tvrdnje kada
-čeliju označava kao pokazanu.
+Tvrdnje o ishodima provjeravaju se izvršnim testovima u obliku uvjetnih
+tvrdnji, prema pristupu Filibustera \cite{meiklejohn2021filibuster}.
+Očekivano završno stanje određeno je propisom i primijenjenim obrascem,
+pa uspjeh testa ne zahtijeva uspjeh poziva. Prototip sadrži 32 testa sa
+105 pojedinačnih provjera. Jedan test može provjeravati stanje, podatke o
+roku i evidenciju. Na te se rezultate oslanjaju ocjene ćelija označenih kao
+pokazane u poglavlju~\ref{ch:evaluacija}.

@@ -1,84 +1,64 @@
 \chapter{Upravljanje raspodijeljenim tijekovima}
 \label{ch:tijekovi}
 
-Poglavlje~\ref{ch:raspodijeljeni} govorilo je o jednom pozivu. Ovo poglavlje
-govori o nizu koraka koji zajedno čine jedan posao. Utvrđuje kako se stanje
-drži razumljivim kada je posao djelomično gotov, a nastavak neizvjestan.
+Poslovni tijek može obuhvaćati niz poziva prema različitim sudionicima.
+Na otkaze pojedinačnog poziva iz poglavlja~\ref{ch:raspodijeljeni} tada se
+nadovezuje pitanje kako pratiti napredak cijelog tijeka i nastaviti obradu
+kada je samo dio koraka dovršen.
 
 % ------------------------------------------------------------
 \section{Granice klasičnih transakcija}
 \label{sec:granica-transakcije}
 
-Transakcija je pojam stariji od računarstva i Gray ga tako i uvodi. Njegov
-primjer je ugovor: pregovori traju, a onda ih jedan čin
-zaključi \cite{gray1981transaction}. Iz te analogije izvodi tri svojstva.
-Konzistentnost znači da transakcija poštuje dopuštena pravila. Atomarnost
-znači da se dogodi ili se ne dogodi. Trajnost znači da se jednom počinjena
-transakcija ne može poništiti.
+Gray transakciju uspoređuje s ugovorom koji se nakon pregovora zaključuje
+jednim činom \cite{gray1981transaction}. Opisuje tri svojstva transakcije.
+Konzistentnost znači da transakcija poštuje pravila sustava. Atomarnost znači
+da se izvrše sve njezine radnje ili nijedna. Trajnost znači da učinci jednom
+počinjene transakcije ostaju sačuvani. Taj popis ne uključuje izolaciju;
+akronim ACID uveli su dvije godine kasnije Härder i
+Reuter \cite{haerder1983principles}.
 
-U tom popisu izolacije nema. Četveroslovni
-akronim ACID, koji se danas navodi kao da je oduvijek postojao, uveli su
-dvije godine kasnije Härder i Reuter \cite{haerder1983principles}.
-
-Gray odmah dodaje ogradu koja je za ovaj rad važnija od samih svojstava.
-Ugovor se može poništiti samo ako je od početka bio nezakonit. Inače se
-loša transakcija ispravlja daljnjim transakcijama.
-
-Prijelaz s jednog sudionika na više njih rješava dvofazno počinjanje, koje
-Gray izlaže u istoj bilježnici u kojoj i paradoks dvaju
-generala \cite{gray1978notes}. Koordinator u prvoj fazi pita sve sudionike
+Za koordinaciju transakcije s više sudionika Gray opisuje dvofazno
+počinjanje \cite{gray1978notes}. U prvoj fazi koordinator pita sve sudionike
 jesu li spremni. Sudionik koji pristane mora prije odgovora trajno zapisati
-dovoljno podataka da poslije može i poništiti i ponoviti. U drugoj fazi
-koordinator zapisuje odluku i šalje je svima.
+podatke potrebne za poništavanje i ponavljanje transakcije. U drugoj fazi
+koordinator zapisuje odluku i šalje je sudionicima.
 
-Uspjeh tog protokola Gray pripisuje jednoj stvari: odluka o počinjanju
-središnja je i nije vremenski ograničena. Ta rečenica sadrži i cijenu.
-Sudionik koji je glasao za počinjanje čeka presudu i sam je ne smije
-donijeti. Ako koordinator u tom trenutku otkaže, sudionik po Grayevu
-opisu pri oporavku pita koordinatora je li transakcija počinjena ili
-prekinuta. Dok koordinatora nema, sudionik ne zna, a resursi koje drži
-ostaju zaključani.
+Odluka o počinjanju je središnja i nije vremenski ograničena. Sudionik koji
+je pristao na počinjanje mora čekati odluku koordinatora. Ako koordinator
+otkaže, sudionik ne može sam odlučiti o ishodu, a resursi ostaju zaključani.
+Pri oporavku mora od koordinatora doznati je li transakcija počinjena ili
+prekinuta. Bailis i Ghodsi opisuju isto ograničenje pri razdvajanju mreže:
+ako procesi ne mogu komunicirati, izmjene se ne mogu sinkrono proširiti na
+sve sudionike bez blokiranja \cite{bailis2013eventual}.
 
-Bailis i Ghodsi to izriču izravno za razdvojenu mrežu. Kada dva procesa ne
-mogu komunicirati, izmjene se ne mogu sinkrono proširiti na sve, a da se
-pritom ne
-blokira \cite{bailis2013eventual}.
+U studiji slučaja iz poglavlja~\ref{ch:studija} dvofazno počinjanje nije
+primjenjivo preko kanala razmjene i fiskalizacije. Nijedno od tih sučelja ne
+nudi fazu pripreme ni glasanje, pa ne može sudjelovati u zajedničkom
+protokolu atomarnog dovršetka.
 
-Za studiju slučaja iz poglavlja~\ref{ch:studija} rasprava završava ranije
-nego što bi trebala. Dvofazno počinjanje preko dva kanala nije isključeno
-zato što je skupo ili zato što bi koordinator blokirao. Isključeno je zato
-što nijedno od dvaju sučelja u takvom protokolu ne sudjeluje. Ni razmjena
-preko pristupnih točaka ni fiskalizacijski poziv ne nude fazu pripreme ni
-glasanje, pa presudu koordinatora nema kome uputiti.
+Članak 48.\ stavak 3.\ nalaže da se fiskalizacija provodi odvojeno od
+postupka razmjene. Odredba ne uređuje transakcijsku organizaciju izvedbe, pa
+se iz nje ne izvodi zabrana lokalne koordinacije dvaju postupaka. Zbog
+izostanka zajedničkog protokola izvedba ipak mora pratiti međustanja u
+kojima je jedan postupak dovršen, a drugi nije.
 
-Propis to tehničko stanje dodatno omeđuje. Članak 48.\ stavak 3.\ nalaže da
-se fiskalizacija provodi odvojeno od postupka razmjene, dakle kao dva
-postupka, a ne kao jedan. Rad iz te odredbe ne izvodi zabranu svake
-koordinacije dvaju postupaka u lokalnoj bazi, jer odredba o transakcijskoj
-organizaciji izvedbe ne govori. Izvodi uže: zajedničkog protokola atomarnog
-dovršetka nema, pa izvedba mora računati na međustanja u kojima je jedan
-postupak dovršen, a drugi nije.
-
-Ono što preostaje kada atomarnost otpadne obično se zove eventualnom
-konzistentnošću. Bailis i Ghodsi je definiraju kao jamstvo da će, ako nema
-novih izmjena nekog podatka, sva čitanja tog podatka na kraju vratiti istu
-vrijednost. Isti autori ne skrivaju koliko je to slabo. Ni u jednom
-trenutku korisnik ne može isključiti nekonzistentno ponašanje, a jedino
-jamstvo je da će se u nekom trenutku u budućnosti dogoditi nešto dobro.
-
-Slabo jamstvo ipak nije jedino dostupno. Autori pokazuju da se uz visoku
-raspoloživost mogu zadržati i jača svojstva, među njima uzročna
-konzistentnost. Navode i rezultat po kojem je ona gornja granica onoga što se
-pod razdvajanjem mreže može postići. Za ovaj rad iz
-toga slijedi metodološko pravilo. Reći da sustav nije konzistentan ne znači
-mnogo; treba imenovati koje jamstvo daje.
+Jedno od jamstava u raspodijeljenim sustavima jest eventualna konzistentnost.
+Bailis i Ghodsi definiraju je kao jamstvo da će, ako nema novih izmjena nekog
+podatka, sva čitanja tog podatka na kraju vratiti istu vrijednost. To ne
+jamči konzistentnost čitanja u određenom trenutku. Autori opisuju i jača
+svojstva koja se mogu zadržati uz visoku raspoloživost, među njima uzročnu
+konzistentnost. Prema rezultatu koji navode, ona je gornja granica
+konzistentnosti ostvarive uz raspoloživost pri razdvajanju
+mreže \cite{bailis2013eventual}. Pri opisu sustava zato treba navesti koje
+jamstvo konzistentnosti daje.
 
 % ------------------------------------------------------------
 \section{Saga i kompenzacija}
 \label{sec:saga}
 
-Kada atomarnost preko granice otpadne, popravljanje prelazi iz protokola u
-poslovnu logiku. Gray taj prijelaz imenuje \cite{gray1981transaction}:
+Učinci počinjene transakcije mogu se naknadno izmijeniti kompenzacijskom
+transakcijom. Gray taj postupak opisuje ovako \cite{gray1981transaction}:
 
 \begin{quote}
 „Nakon što se transakcija počini, njezini se učinci mogu izmijeniti samo
@@ -91,33 +71,26 @@ underpaid, the corrective action is to run another transaction which pays an
 additional sum. Such post facto transactions are called compensating
 transactions.}“ \cite{gray1981transaction}} \end{quote}
 
-Primjer kojim Gray pokazuje granice klasične transakcije je putnička
-agencija. Agent dogovara let, pa automobil, pa hotel, pa naplaćuje karticu.
-Kupac zatim otkaže putovanje. Svaka pojedina interakcija bila je transakcija
-s tuđom organizacijom. Tu Gray izvodi rečenicu koja opisuje svaki tijek preko
-vanjskog sudionika. Agent ne može jednostrano prekinuti interakciju nakon što
-je dovršena, nego mora izvesti kompenzacijsku transakciju koja prethodnu
-poništava.
+Primjer je putnička agencija koja rezervira let, automobil i hotel te
+naplaćuje karticu. Ako kupac otkaže putovanje, agent ne može jednostrano
+poništiti dovršene transakcije s drugim organizacijama. Mora izvesti
+kompenzacijske transakcije kojima ispravlja njihove učinke.
 
-Garcia-Molina i Salem taj obrazac su formalizirali pod imenom
-saga \cite{garciamolina1987sagas}. Dugotrajna transakcija je saga ako se može
-napisati kao niz transakcija koje se smiju izmjenjivati s drugima. Sustav
-jamči da će ili sve transakcije u sagi uspjeti, ili će se izvesti
-kompenzacijske transakcije koje djelomično izvođenje isprave. Cijena je
-poznata: međustanja sage vide se izvana, pa saga nije izolirana.
+Garcia-Molina i Salem formalizirali su obrazac
+sage \cite{garciamolina1987sagas}. Dugotrajna transakcija dijeli se na niz
+transakcija koje se mogu izmjenjivati s drugim transakcijama. Sustav jamči
+da će svi koraci uspjeti ili će kompenzacijske transakcije ispraviti učinke
+djelomičnog izvođenja. Međustanja su pritom vidljiva drugim transakcijama,
+pa saga ne osigurava izolaciju.
 
-Izvedba sage traži i odluku o tome tko vodi niz. Orkestracija stavlja jednog
-voditelja koji poziva korake redom. Koreografija razdjeljuje odluku na
-sudionike koji reagiraju na
-događaje \cite{megargel2021orchestration}. Za tijek koji ovaj rad opisuje
-izbor slijedi iz propisa, ne iz ukusa. Za ispravno izdavanje, zaprimanje i
-fiskalizaciju odgovara porezni obveznik (čl.~58.~st.~2.). Kada odgovornost
-za ishod nosi jedan sudionik, niz vodi taj sudionik.
+Orkestracija i koreografija razlikuju se po načinu vođenja tog niza. U
+orkestraciji jedan sudionik poziva korake redom, dok u koreografiji sudionici
+reagiraju na događaje \cite{megargel2021orchestration}. U promatranom tijeku
+za ispravno izdavanje, zaprimanje i fiskalizaciju odgovara porezni obveznik
+(čl.~58.~st.~2.). Zato u predloženoj izvedbi obveznik vodi niz koraka i prati
+njihov ishod.
 
-Poglavlje~\ref{ch:studija} ovisi o tome ima li u fiskalizaciji što
-kompenzirati.
-
-Odgovor daje Grayeva podjela sastavnica transakcije na četiri vrste:
+Primjenjivost kompenzacije ovisi o vrsti radnje. Gray razlikuje:
 
 \begin{itemize}[nosep, leftmargin=1.4cm]
   \item radnje nad nezaštićenim objektima,
@@ -126,35 +99,27 @@ Odgovor daje Grayeva podjela sastavnica transakcije na četiri vrste:
   \item stvarne radnje, za koje kaže da se mogu odgoditi, ali ne i poništiti.
 \end{itemize}
 
-Fiskalizacija pripada posljednjoj vrsti. Dostava podataka Poreznoj upravi
-zakonska je obveza, ne rezervacija. Propis ne predviđa poruku kojom bi obveznik
-povukao provedenu fiskalizaciju. Predviđa odgodu, i to omeđenu: pet radnih
-dana kod tehničke nemogućnosti (čl.~49.~st.~1.).
+U toj podjeli fiskalizacija pripada posljednjoj vrsti. Propis ne predviđa
+poruku kojom bi obveznik povukao provedenu fiskalizaciju. Kod tehničke
+nemogućnosti dopušta odgodu uz rok od pet radnih dana
+(čl.~49.~st.~1.). Na fiskalizaciju je zato primjenjiv dio obrasca sage koji
+prati lokalne korake i evidentira napredak, dok kompenzacija provedene
+fiskalizacije nije dostupna. Odjeljak~\ref{sec:dizajn} razrađuje takvu primjenu
+u obliku odgode uz zapis o napretku.
 
-Na fiskalizaciju je primjenjiv onaj dio obrasca sage koji prati niz lokalnih
-koraka i evidentira njihov napredak. Kompenzacija nije primjenjiva, jer koraci
-nisu poništivi. Poglavlje~\ref{ch:studija} iz obrasca preuzima odgodu uz zapis
-o napretku.
-
-Helland i Campbell isti zaključak izvode iz druge strane. Kada se poslovno
-pravilo provodi asinkrono, ono postaje vjerojatnosno, jer sustav koji ga
-provodi ne zna hoće li biti dostupan da ga
-provede \cite{helland2009quicksand}. Njihov zaključak je da sustav ili snosi
-trošak sinkrone potvrde, ili se povremeno mora ispričati. Fiskalizaciji drugi
-izlaz nije dostupan. Propis ne predviđa naknadnu ispriku kao način rješavanja
-propuštene prijave, a propuštanje roka je prekršaj (čl.~73.~st.~1.~t.~21.).
-
-Iz toga slijedi granica koju odjeljak~\ref{sec:dizajn} razrađuje. Skup
-poslovnih poruka ne sadrži nijednu koja bi provedenu fiskalizaciju poništila,
-pa kompenzacija nema predmet.
+Helland i Campbell opisuju ograničenje asinkronog provođenja poslovnih
+pravila: njihovo ispunjenje ovisi o budućoj dostupnosti sustava, pa postaje
+vjerojatnosno \cite{helland2009quicksand}. Kao mogućnosti navode sinkronu
+potvrdu uz pripadajući trošak ili prihvaćanje povremenog neispunjenja obveze.
+Kod fiskalizacije propuštanje roka predstavlja prekršaj
+(čl.~73.~st.~1.~t.~21.).
 
 % ------------------------------------------------------------
 \section{Stanje kao automat}
 \label{sec:automat}
 
-Ako se posao ne može zatvoriti u jednu transakciju, mora se moći opisati
-kao stanje. Schneider daje karakterizaciju koja je za to
-dovoljna \cite{schneider1990statemachine}:
+Napredak tijeka koji obuhvaća više transakcija može se pratiti automatom
+stanja. Schneider njegovo ponašanje opisuje ovako \cite{schneider1990statemachine}:
 
 \begin{quote}
 „Izlazi automata stanja potpuno su određeni nizom zahtjeva koje obrađuje,
@@ -164,47 +129,33 @@ determined by the sequence of requests it processes, independent of time and
 any other activity in a system.}“ \cite{schneider1990statemachine}}
 \end{quote}
 
-Dvije riječi u toj rečenici nose posljedice. Prva je niz. Stanje ovisi o
-redoslijedu obrađenih zahtjeva, pa se dva sustava koja su obradila isti niz
-nalaze u istom stanju.
+Redoslijed obrađenih zahtjeva određuje stanje automata. Determinizam pritom
+nije idempotentnost. Automat koji vodi brojač i dvaput obradi naredbu za
+povećanje povećat će brojač dvaput. Kako ponovljena obrada takve naredbe ne bi
+mijenjala stanje, poruka mora nositi identifikator zahtjeva, a automat mora
+pamtiti koje je zahtjeve već obradio.
 
-Odatle se lako izvede više nego što u rečenici stoji. Determinizam nije
-idempotentnost. Automat koji vodi brojač i dvaput primi istu naredbu povećat
-će brojač dvaput, jer su to dva zahtjeva u nizu, a ne jedan. Kako ponavljanje
-ne bi mijenjalo stanje, poruka mora nositi identifikator zahtjeva, a automat
-mora pamtiti koje je zahtjeve već obradio.
+Schneider razlikuje određenost izlaza nizom zahtjeva od uvjeta da svi
+primjerci obrade zahtjeve u istom redoslijedu. Popuštanje uvjeta redoslijeda
+veže uz komutativnost operacija. Sam skup poruka zato nije dovoljan za
+određivanje stanja. Zbog mrežnog kašnjenja redoslijed obrade ne mora
+odgovarati ni redoslijedu slanja ni redoslijedu primitka zahtjeva.
 
-Schneider to i razdvaja: jedno je da niz zahtjeva određuje izlaze, a drugo da
-svi primjerci obrade zahtjeve u istom redoslijedu. Popuštanje uvjeta redoslijeda
-Schneider veže uz komutativnost operacija. Jednak skup poruka u drukčijem
-redoslijedu zato ne daje jednako stanje.
+Za primjenu automata na fiskalizaciju treba opisati i vremenske uvjete:
+„u trenutku izdavanja“ i „pet radnih dana“. Istek roka može se prikazati kao
+izričit događaj koji sustav dostavlja automatu. Rok se može uključiti i kao
+uvjet nad prijelazom: poruka pokreće prijelaz, a uvjet određuje je li dopušten.
+Poglavlje~\ref{ch:implementacija} primjenjuje oba pristupa i obrazlaže njihov
+izbor. To su mogućnosti izvedbe, a ne jedino teorijski dopušteno rješenje.
 
-Druga je vrijeme. Izlazi ne ovise o vremenu. Schneider uz uvjete redoslijeda
-dodaje napomenu da zbog kašnjenja u mreži automat neće nužno obraditi
-zahtjeve redom kojim su poslani ni redom kojim su primljeni.
+Helland opisuje organizaciju sustava u kojoj svaki entitet ima vlastiti
+opseg serijalizacije \cite{helland2007lifebeyond}. Transakcije se izvršavaju
+unutar entiteta, a među entitetima poruke se dostavljaju barem jednom i
+obrađuju idempotentno. Svaki entitet pamti što je već obradio. Za opis uzročnog
+poretka događaja koristi se pojam uzročnog prethođenja, koji je uveo
+Lamport \cite{lamport1978time}.
 
-Tu se model razilazi s propisom, a poglavlje~\ref{ch:studija} tu razliku
-nasljeđuje. Model je određen nizom poruka, a rokovi u propisu mjere se satom. „U trenutku
-izdavanja“ i „pet radnih dana“ su vremenske veličine. Model automata ih ne
-zabranjuje. Protek roka može se modelirati kao izričit događaj, koji netko
-mora dostaviti, i tada je redovan član niza. Može se modelirati i kao uvjet
-nad prijelazom, čime prijelaze pokreću samo poruke, a rok odlučuje je li
-prijelaz dopušten. Poglavlje~\ref{ch:implementacija} koristi oboje i
-obrazlaže zašto, ali oba su izvedbena izbora, a ne jedino teorijski dopušteno
-rješenje.
-
-Helland ta dva svijeta spaja u
-praksi \cite{helland2007lifebeyond}. Sustav se dijeli na entitete, svaki sa
-svojim opsegom serijalizacije, a među njima putuju poruke koje se šalju
-barem jednom i obrađuju idempotentno. Transakcija postoji, ali samo unutar
-entiteta. Preko granice entiteta postoje poruke i zapamćeno stanje o tome
-što je već obrađeno.
-
-Da bi se o stanjima uopće govorilo kao o uređenima, potreban je pojam
-uzročnog prethođenja, koji je uveo Lamport \cite{lamport1978time}.
-
-Odatle slijedi model koji poglavlje~\ref{ch:studija} treba.
-Životni ciklus dokumenta opisuje se kao automat čija su stanja izrijekom
-imenovana, uključujući ona koja propis ne imenuje. Stanje
-„poslano, nepotvrđeno“ nije rupa u izvedbi. To je stanje u kojem se sustav
-nalazi dok čeka odgovor koji možda nikada ne stigne.
+U studiji slučaja životni ciklus dokumenta opisuje se automatom koji
+izričito uključuje i stanja koja propis ne imenuje. Stanje „poslano,
+nepotvrđeno“ označava da je poruka poslana, ali potvrda nije primljena, pa
+ishod udaljene obrade ostaje nepoznat.

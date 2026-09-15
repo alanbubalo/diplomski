@@ -1,37 +1,31 @@
 \chapter{Pristupi toleranciji na greške}
 \label{ch:pristupi}
 
-Ovo poglavlje ne donosi nov rezultat. Ono skuplja rječnik, jer
-odjeljak~\ref{sec:dizajn} bira iz skupa obrazaca, a izbor bez imenovanog
-skupa ne može se obrazložiti. Svaki obrazac dobiva tri stvari: što rješava,
-po kojoj cijeni i gdje odmaže.
-
-Obrasci otpornosti opisuju se obično kao dodaci koji sustav čine boljim.
-Mjerenja koja slijede pokazuju da svaki od njih ima režim u kojem stanje
-pogoršava, pa treća stavka dobiva jednaku razradu kao prve dvije.
+Poglavlje opisuje obrasce čija se primjenjivost razmatra u
+odjeljku~\ref{sec:dizajn}. Uz način rada svakog obrasca razmatraju se uvjeti
+primjene i mogući učinci na opterećenje, kašnjenje i oporavak sustava.
 
 % ------------------------------------------------------------
 \section{Sinkrona komunikacija}
 \label{sec:sinkrono}
 
-Istek vremena je prvi obrazac i jedini bez kojeg ostali nemaju smisla.
-Klijent koji čeka drži resurse, pa dovoljno takvih klijenata iscrpi memoriju,
-dretve ili priključke \cite{brookertimeouts}. Istek vremena je gornja granica
-tog čekanja.
+Istek vremena ograničava koliko dugo klijent čeka odgovor. Tijekom čekanja
+klijent zauzima resurse, pa velik broj takvih poziva može iscrpiti memoriju,
+dretve ili priključke \cite{brookertimeouts}. Kako je objašnjeno u
+odjeljku~\ref{sec:detekcija-otkaza}, prekid čekanja ne dokazuje da je
+primatelj otkazao.
 
-Teško je odabrati vrijednost. Prevelika vrijednost obesmišljava mehanizam.
-Premala ga pretvara u izvor kvara, jer prerano proglašava neuspjeh i time
-šalje na poslužitelj promet koji mu nije trebao. Brooker opisuje postupak
-koji Amazon koristi: bira se prihvatljiv udio lažnih isteka, primjerice
-0,1\,\%, pa se gleda odgovarajući percentil kašnjenja odredišne usluge, u tom
-primjeru p99,9.
+Predugo čekanje produljuje zauzeće resursa. Prekratko čekanje uzrokuje lažne
+isteke i može potaknuti nepotrebne ponovne pokušaje. Brooker opisuje
+Amazonov postupak odabira vremena čekanja prema prihvatljivom udjelu lažnih
+isteka. Za udio od 0,1\,\% uzima se odgovarajući percentil kašnjenja
+odredišne usluge, p99,9.
 
-Odjeljak~\ref{sec:detekcija-otkaza} već je rekao da istek vremena nije
-opažanje otkaza; ovdje se dodaje da ima cijenu.
-
-Ponovni pokušaj je drugi obrazac. Opravdava ga Grayeva pretpostavka iz
-odjeljka~\ref{sec:klasifikacija-otkaza}: ako je većina kvarova prolazna,
-drugi pokušaj najčešće uspije. Brooker isti mehanizam opisuje drukčije:
+Ponavljanje se oslanja na Grayevo objašnjenje prolaznih kvarova iz
+odjeljka~\ref{sec:klasifikacija-otkaza}. Prema njegovoj pretpostavci,
+vraćanje stanja programa na početno i ponovno izvođenje operacije često
+omogućuju oporavak. Ponovni pokušaji pritom dodatno opterećuju odredište,
+što Brooker opisuje ovako:
 
 \begin{quote}
 „Ponovni pokušaji su sebični. Drugim riječima, kada klijent ponovno
@@ -40,107 +34,96 @@ uspjeha.“\footnote{„\emph{Retries are “selfish.” In other words, when a
 client retries, it spends more of the server's time to get a higher chance
 of success.}“ \cite{brookertimeouts}} \end{quote}
 
-Cijena postaje vidljiva kada se pokušaji slažu jedan na drugi. Brooker
-navodi lanac od pet slojeva u kojem svaki sloj neovisno pokušava tri puta.
-Opterećenje na dnu lanca raste 243 puta, jer se pokušaji množe. Njegov
-zaključak je da se za jeftine operacije ponavlja na jednoj jedinoj razini
-u lancu.
+Ponavljanja na više razina mogu višestruko povećati opterećenje. U
+Brookerovu primjeru pet slojeva neovisno izvodi po tri pokušaja, pa broj
+poziva na dnu lanca raste 243 puta. Za jeftine operacije zato preporučuje
+ponavljanje na jednoj razini lanca.
 
-Bronson i suradnici isti mehanizam smještaju u širi obrazac koji zovu
-\strani{metastabilnim otkazom}{metastable failure} \cite{bronson2021metastable}. Njihova definicija traži
-tri stanja. Sustav je stabilan, pa ga rast opterećenja dovodi u ranjivo
-stanje, pa okidač uzrokuje loše stanje koje ostaje i nakon što okidač
-nestane. Autori izrijekom kažu da ponovni pokušaj zahtjeva jest jedan od
-najčešćih mehanizama koji takvo stanje održava.
+Bronson i suradnici opisuju kako ponavljanje može održavati
+\strani{metastabilni otkaz}{metastable failure}
+\cite{bronson2021metastable}. Rast opterećenja najprije dovodi stabilan
+sustav u ranjivo stanje. Okidač ga zatim dovodi u stanje otkaza koje se
+održava i nakon prestanka djelovanja okidača. Ponovni pokušaji jedan su
+od najčešćih mehanizama koji održavaju takvo stanje.
 
-Njihov primjer je poučan jer je brojčan. Aplikacija šalje bazi 280 upita u
-sekundi, a baza je zdrava do 300. Nakon desetosekundnog prekida mreže sve
-nakupljene poruke stižu odjednom, kašnjenje raste, pa se svaki upit ponavlja
-i promet se penje na 560 upita u sekundi. Baza se ne oporavlja jer promet ne
-pada, a promet ne pada jer se baza ne oporavlja. Za izlazak iz tog stanja
-opterećenje se mora spustiti ispod 150 upita u sekundi, dakle znatno ispod
-razine na kojoj je problem počeo.
+U njihovu primjeru aplikacija šalje bazi 280 upita u sekundi, uz kapacitet
+od 300 upita u sekundi. Nakon desetosekundnog prekida mreže nakupljeni upiti
+stižu odjednom. Kašnjenje pokreće ponavljanje svakog upita, pa promet raste
+na 560 upita u sekundi. Dodatno opterećenje sprječava oporavak baze i
+održava potrebu za ponavljanjem. Za oporavak je potrebno smanjiti
+opterećenje ispod 150 upita u sekundi, znatno ispod početne razine.
 
-\strani{Eksponencijalno odgađanje}{exponential backoff} ublažava taj učinak tako što razmak između
-pokušaja raste. Odgađanje se u praksi omeđuje najvećom vrijednošću, jer
-eksponencijalna funkcija brzo naraste, ali onda svi klijenti pokušavaju
-istim najvećim tempom. Odatle treći obrazac, \strani{drhtanje}{jitter}, koje razmaku dodaje
-slučajnu komponentu. Razlog je korelacija. Ako se svi neuspjeli pozivi
-odgode za jednako dugo, pri ponovnom pokušaju opet nastaje isti zastoj.
+\strani{Eksponencijalno odgađanje}{exponential backoff} povećava razmak
+između ponovnih pokušaja. Razmak se ograničava najvećom vrijednošću, no
+klijenti koji dosegnu tu vrijednost mogu nastaviti pokušavati istodobno.
+\strani{Drhtanje}{jitter} razmaku dodaje slučajnu komponentu kako bi se
+pokušaji rasporedili u vremenu i smanjilo istodobno opterećenje odredišta.
 
-\strani{Prekidač}{circuit breaker} je četvrti obrazac. On zaustavlja pozive prema odredištu kada udio
-grešaka prijeđe prag. Time štiti kašnjenje na račun dostupnosti. Za razliku
-od prethodnih, oko njega literatura nije jednoglasna.
+\strani{Prekidač}{circuit breaker} zaustavlja pozive prema odredištu kada
+udio grešaka prijeđe zadani prag. Time ograničava čekanje, ali privremeno
+onemogućuje pozive. Sedghpour, Klein i Tordsson pokazuju da njegova korist
+kod prolaznog kvara ili preopterećenja ovisi o odabranim
+parametrima \cite{sedghpour2022empirical}. U njihovim mjerenjima, uz dobro
+podešen prekidač, količina dolaznog prometa ne utječe na otpornost usluge.
+Prekratak red čekanja povećava broj odbačenih zahtjeva, a predug onemogućuje
+jamstvo prihvatljivog vremena odziva.
 
-Sedghpour, Klein i Tordsson izmjerili su ga sustavno i sami napominju da
-takvih mjerenja prije nije bilo \cite{sedghpour2022empirical}. Njihovi
-zaključci su uvjetni. Prekidač koristi kod prolaznog kvara ili preopterećenja.
-Ako je dobro podešen, količina dolaznog prometa ne utječe na otpornost usluge.
-Ali dobru vrijednost, njihovim riječima, nije jednostavno pronaći, jer
-ovisi o više čimbenika. Prekratak red čekanja povećava broj odbačenih zahtjeva, a
-predug onemogućuje jamstvo prihvatljivog vremena odziva.
+Brooker upozorava da ponašanje prekidača ovisno o njegovu stanju otežava
+testiranje i može produljiti oporavak. Amazon umjesto toga lokalno
+ograničava ponovne pokušaje \strani{spremnikom žetona}{token bucket}.
+Pokušaji se izvode dok ima žetona, a nakon njihova iscrpljenja nastavljaju
+se stalnim sporijim tempom. Primjenu prekidača zato treba obrazložiti uz
+odabir njegovih parametara i razmatranje alternativnog ograničavanja
+ponavljanja.
 
-Brooker ide dalje i prekidač otvoreno dovodi u pitanje. Prekidači uvode
-modalno ponašanje koje je teško testirati i mogu znatno produljiti oporavak.
-Umjesto njih Amazon ograničava ponovne pokušaje lokalno, \strani{spremnikom žetona}{token bucket},
-pa se pokušava dok ima žetona, a zatim stalnim sporijim tempom.
+Hystrix, knjižnica koja je popularizirala prekidač, ovdje služi kao
+povijesni primjer \cite{christensen2012hystrix}. Prebačena je u način
+održavanja i više se ne razvija, pa se ne navodi kao preporuka za novu
+izvedbu.
 
-Za odjeljak~\ref{sec:dizajn} iz toga slijedi obveza. Prekidač se ne uzima
-zato što je poznat. Ako uđe, mora imati podešene vrijednosti i obrazloženje;
-ako ne uđe, mora se reći zašto.
-
-Posljednji obrazac ove skupine nije mehanizam nego svojstvo sučelja. Brooker
-ga imenuje kao uvjet: sučelja s popratnim učincima nisu sigurna za ponavljanje
-osim ako ne jamče idempotentnost. Time se ponovni pokušaj vraća na pitanje iz
-odjeljka~\ref{sec:djelomicni-otkaz}, koje se postavlja sučelju, a ne izvedbi.
-
-Hystrix, knjižnica koja je prekidač popularizirala, spominje se ovdje samo
-kao podrijetlo pojma \cite{christensen2012hystrix}. Netflix ju je prebacio u
-način održavanja i ne razvija je dalje, pa preporuka za novu izvedbu iz nje
-ne slijedi.
+Sigurnost ponavljanja ovisi i o svojstvima sučelja. Brooker za operacije s
+popratnim učincima zahtijeva idempotentnost. Ponovljeni poziv tada ne mijenja
+učinak već provedene obrade. To je zahtjev prema sučelju opisan u
+odjeljku~\ref{sec:djelomicni-otkaz}.
 
 % ------------------------------------------------------------
 \section{Asinkrona komunikacija}
 \label{sec:asinkrono}
 
-Kada pozivatelj ne mora čekati odgovor, obrasci se mijenjaju. Umjesto da se
-nosi s neizvjesnošću u trenutku poziva, sustav je odgađa i bilježi.
+U asinkronoj komunikaciji pošiljatelj predaje poruku redu čekanja, a radnik
+je preuzima i obrađuje naknadno. Predaja poruke zato ne potvrđuje da je
+obrada dovršena. Razlika između dostave i učinka obrade iz
+odjeljka~\ref{sec:semantika-dostave} vrijedi i za ovaj način komunikacije.
 
-Red čekanja i radnik su osnovni par. Pošiljatelj poruku predaje redu i time
-je posao za njega gotov. Radnik poruku uzima i obrađuje kada može. Hohpe i
-Woolf skupu takvih rješenja dali su imena koja se i danas
-koriste \cite{hohpe2003eip}. \strani{Jamčena dostava}{guaranteed delivery} znači da red poruku čuva u
-trajnoj memoriji dok je netko ne preuzme. \strani{Kanal mrtvih pisama}{dead letter channel} prihvaća poruke
-koje se ne mogu obraditi, da ne bi blokirale ostale. \strani{Idempotentni primatelj}{idempotent receiver}
-je onaj koji ponovljenu poruku prepoznaje i ne obrađuje je dvaput.
+Hohpe i Woolf opisuju obrasce za pouzdanu razmjenu poruka
+\cite{hohpe2003eip}. \strani{Jamčena dostava}{guaranteed delivery}
+podrazumijeva trajnu pohranu poruke do preuzimanja.
+\strani{Kanal mrtvih pisama}{dead letter channel} izdvaja poruke koje se
+ne mogu obraditi kako ne bi blokirale ostale.
+\strani{Idempotentni primatelj}{idempotent receiver} prepoznaje ponovljenu
+poruku i sprječava ponavljanje njezine obrade.
 
-Cijena tog para je pomak u vremenu. Pošiljatelj zna da je poruka predana, ne
-da je posao obavljen. To je razlika koju su Saltzer i suradnici opisali u
-odjeljku~\ref{sec:semantika-dostave}, a predaja u red je premješta.
+Ako sustav mijenja stanje u bazi i zasebno šalje poruku, jedan postupak
+može uspjeti, a drugi ne. Uspješno zapisivanje uz neuspjelo slanje ostavlja
+promjenu bez poslane poruke. Obrnut ishod znači da je poruka poslana iako
+promjena nije zapisana. Taj se problem naziva
+\strani{dvostruki zapis}{dual write}. \strani{Odlazni pretinac}{outbox}
+rješava ga zapisivanjem promjene stanja i poruke u istoj lokalnoj
+transakciji \cite{richardsonoutbox}. Zaseban proces zatim čita zapisane
+poruke i šalje ih uz semantiku barem jednom. Debezium taj prijenos izvodi
+čitanjem dnevnika transakcija \cite{debeziumoutbox}.
 
-Nezgodan dio je spoj s bazom podataka. Sustav koji u istom koraku mijenja
-vlastito stanje i šalje poruku ima dva odredišta i jednu obradu. Ako
-zapisivanje uspije, a slanje padne, poruka nikada ne ode. Ako slanje uspije, a
-zapisivanje padne, poruka govori o promjeni koje nema. Problem se zove
-\strani{dvostruki zapis}{dual write}, a rješenje je \strani{odlazni
-pretinac}{outbox} \cite{richardsonoutbox}. Poruka se u istoj transakciji zapisuje u
-tablicu u istoj bazi, pa je zapis stanja i zapis namjere jedan atomaran čin.
-Zaseban proces zatim čita tu tablicu i šalje poruke. Tu se primjenjuje
-semantika barem jednom. Debezium takav prijenos izvodi čitanjem dnevnika
-transakcija \cite{debeziumoutbox}.
+Odlazni pretinac ovdje je potkrijepljen industrijskim izvorom jer
+recenzirani primarni izvor nije pronađen. Pregledni rad o upravljanju
+podacima u mikroservisima ne obrađuje ni odlazni pretinac ni dvostruki
+zapis \cite{laigner2021data}. Obrazac se zato u radu navodi kao
+industrijska praksa.
 
-Za odlazni pretinac ovaj rad koristi industrijski izvor, jer recenzirani
-primarni izvor nije nađen. Pregledni rad o upravljanju podacima u
-mikroservisima, koji bi mu bio prirodno mjesto, ne spominje ni odlazni pretinac
-ni dvostruki zapis \cite{laigner2021data}. Obrazac je nastao u praksi i u
-praksi se opisuje, pa se ovdje i navodi kao industrijska praksa, a ne kao
-rezultat istraživanja.
-
-Eliminacija duplikata zatvara skupinu. Odjeljak~\ref{sec:semantika-dostave}
-pokazao je gdje mora stajati: na krajevima, jer duplikate koje aplikacija
-sama proizvede prijenosni sloj ne vidi kao duplikate. Izvedba traži ključ po
-kojem se dvije poruke prepoznaju kao ista poruka. Taj ključ mora dolaziti od
-pošiljatelja, ne od primatelja. Ključ koji generira primatelj pri svakom
-zahtjevu je nov, pa ne razlikuje ponovljeni zahtjev od novog.
-
-Poglavlje~\ref{ch:studija} pokazuje sučelje kod kojeg je to točno pitanje.
+Pri dostavi barem jednom eliminacija duplikata provodi se na krajevima sustava.
+Kako je obrazloženo u odjeljku~\ref{sec:semantika-dostave}, prijenosni sloj
+ne može prepoznati duplikate koje proizvede sama aplikacija. Primatelju je
+potreban ključ pošiljatelja koji ostaje isti pri ponovnom slanju iste
+poruke. Identifikator koji primatelj stvara za svaki zahtjev ne omogućuje
+to razlikovanje jer svaki pokušaj dobiva novu vrijednost. Ulogu
+identifikatora u fiskalizacijskom sučelju razmatra
+poglavlje~\ref{ch:studija}.
