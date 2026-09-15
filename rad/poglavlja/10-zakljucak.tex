@@ -1,81 +1,76 @@
 \chapter{Zaključak}
 \label{ch:zakljucak}
 
-Šifra S008 u fiskalizaciji eRačuna pokazuje da kod odredišta postoji zapis s
-istim složenim identifikatorom. Sama ne otkriva je li prethodno slanje završilo
-potvrdom, ni je li zapis stvorio promatrani pokušaj. Kod ispravka
-objavljeni dokumenti daju dva relevantna mehanizma: oznaku kopije uz zadržavanje
-broja računa te referencu na prethodni račun. O datumu ispravka ne kažu ništa,
-pa njihov odnos prema provjeri jedinstvenosti ostaje neodređen. Rad zato ne
-zaključuje da je svaki ispravak blokiran, nego da izvedba mora zapisati
-poslovnu namjeru, redni pokušaj dostave i odabranu granu kako bi njezin ishod
-bio naknadno objašnjiv. Ni taj zapis ne razrješava svaki slučaj: ponovljena
-dostava ispravka sa zadržanim identifikatorom ostaje dvoznačna.
+U promatranom tijeku fiskalizacije eRačuna ograničenja oporavka proizlaze iz
+svojstava raspodijeljene razmjene, ali i iz propisanog razdvajanja postupaka,
+nedostajućih podataka i nedovoljno preciznih pravila. Za drugu skupinu rad
+koristi pojam \emph{regulatorno inducirano ograničenje}. Pojam služi analizi
+ove studije slučaja i ne predstavlja novu opću teoriju.
 
-Taj primjer pripada širem nalazu: uz svojstva raspodijeljene razmjene, dio
-ograničenja nastaje i iz razdvojenog regulatornog tijeka, nedostajućih podataka
-i nedovoljno preciznih pravila. Rad za to koristi radni naziv
-regulatorno inducirano ograničenje. Naziv sažima nalaz studije slučaja; ne
-predstavlja tvrdnju da je iscrpnim pregledom uspostavljena nova opća teorija.
+Primjer je šifra S008, koja potvrđuje postojanje zapisa s istim složenim
+identifikatorom. Ne otkriva koji ga je pokušaj stvorio ni je li prethodno
+slanje potvrđeno. Kod ispravka nije potpuno određen odnos datuma, oznake
+kopije i reference na prethodni račun prema provjeri jedinstvenosti.
+Zapisivanje poslovne namjere, rednog pokušaja dostave i odabrane grane
+omogućuje naknadno tumačenje ishoda. Ipak, ponovljena dostava ispravka sa
+zadržanim identifikatorom ostaje dvoznačna. Nalaz se odnosi na nedovoljno
+određen opis sučelja, a ne na dokaz da sustav odbija svaki ispravak.
 
 % ------------------------------------------------------------
 \section*{Odgovori na istraživačka pitanja}
 
 \paragraph{RQ1.}
-Iz propisanog tijeka izvedeno je jedanaest načina otkazivanja, grupiranih po
-uzroku: propisano razdvajanje kanala, sinkroni kanal bez definirane semantike
-kvara, rokovi vezani uz nedovoljno određene događaje, ispad infrastrukture i
-neuređena granica između poslovnog sustava i pristupne točke. Kvalitativna
-klasifikacija razlikuje nedovršen tijek izložen roku, neodređen ishod i
-oporavak unutar posebnog roka. Neodređen ishod jest područje na kojem obrasci
-mogu najviše pomoći.
+Iz propisanog tijeka izvedeno je jedanaest načina otkazivanja u pet skupina:
+razdvajanje kanala, sinkroni kanal bez definirane semantike kvara, rokovi
+vezani uz nedovoljno određene događaje, ispad infrastrukture i neuređena
+granica između poslovnog sustava i pristupne točke. Prema ishodu razlikuju se
+nedovršen tijek izložen roku, neodređen ishod i oporavak unutar posebnog roka.
 
 \paragraph{RQ2.}
-Matrica od jedanaest načina otkazivanja i šest obrazaca pokazuje da vrijednost
-\emph{uklanja} ne nastupa nijednom. Obrasci pokrivaju ono što nastaje iz
-svojstava raspodijeljene razmjene: čuvaju namjeru, ograničavaju ponavljanje i
-omogućuju nastavak nakon oporavka. Kada nedostaje podatak ili jednoznačno
-pravilo, najviše mogu detektirati stanje i sačuvati dokaz o odabranoj
-interpretaciji. Granica pokrivenosti zato je dijelom tehnička, a dijelom
-regulatorna. Tehnički se dio pomiče boljim dizajnom, a regulatorni preciznijim
-pravilom, sučeljem ili dokazom primitka.
+U matrici jedanaest načina otkazivanja i šest obrazaca nijedna ćelija nema
+ocjenu \emph{uklanja}. Obrasci čuvaju namjeru, ograničavaju ponavljanje i
+omogućuju nastavak nakon oporavka. Time mogu skratiti razdoblje nepoznatog
+ishoda ili omogućiti njegovo evidentiranje. Kada nedostaje podatak ili jednoznačno pravilo,
+najviše mogu detektirati stanje i sačuvati dokaz o odabranoj interpretaciji.
+Za razrješavanje takvih slučajeva potrebno je preciznije pravilo, sučelje
+ili dokaz primitka.
 
 \paragraph{RQ3.}
-Cijena je izražena u tri stvari i ocijenjena kvalitativno. Složenost raste jer
-sustav mora imenovati i dokazivati međustanja. Kašnjenje raste zbog isteka
-vremena i ponavljanja, a njegov je pravni značaj vezan uz redovni trenutak
-fiskalizacije i poseban rok od pet radnih dana iz članka 49. Prekidač zato nije
-sam po sebi štetan: uz trajni red i raspored svjestan roka može zaštititi
-lokalne resurse, a bez njih može potrošiti vrijeme za oporavak. Jedina čelija
-s vrijednošću \emph{pogoršava} jest ponovno slanje cijele skupne poruke kada
-atomarnost obrade zapisa nije izričito opisana, i to kao označena prosudba
-rizika uz navedene pretpostavke, a ne kao dokazano ponašanje odredišta.
+Troškovi obrazaca ocijenjeni su kvalitativno. Složenost raste zbog praćenja
+međustanja, a istek vremena i ponavljanje povećavaju kašnjenje. Rizik
+prekoračenja roka ovisi o redovnom trenutku fiskalizacije i posebnom roku od
+pet radnih dana iz članka 49. Prekidač uz trajni red i raspored koji prati
+rok može zaštititi lokalne resurse. Bez njih može smanjiti vrijeme preostalo
+za oporavak.
+
+Jedina ocjena \emph{pogoršava} odnosi se na ponavljanje cijele skupne poruke
+ako obrada nije atomarna i provjera duplikata ne pokriva već obrađene zapise.
+To je autorska prosudba rizika uz navedene pretpostavke, a ne dokazano
+ponašanje odredišta.
 
 % ------------------------------------------------------------
 \section*{Granice i nadogradnje}
 
-Evaluacija je analitička, uz izvršne scenarije za četiri načina otkazivanja na
-dvije granice i 32 testa koji te scenarije provjeravaju. Devet od 66
-čelija matrice pokazano je prototipom. Usporedba osnovne i predložene izvedbe
-utvrđuje koja ostavlja poznatije i dokazivije stanje. Ne mjeri performanse i ne
-tvrdi da su odabrani obrasci najbolji među svim alternativama. Prototip uz to rok od pet radnih dana računa bez kalendara blagdana, a ni
-produkcijska ni demo validacija nisu obuhvaćene. Studija slučaja je referentna arhitektura, pa rad
-ne može reći koliko se izvedenih slučajeva u praksi pojavljuje.
+Evaluacija je analitička, uz prototip koji provjerava četiri načina
+otkazivanja na dvije granice. Prototip sadrži 32 testa i podupire devet od 66
+ćelija matrice. Usporedba osnovne i predložene izvedbe pokazuje razlike u
+poznavanju i dokazivosti završnih stanja. Performanse i cjelovit skup
+alternativnih obrazaca nisu uspoređeni, pa rezultat ne potvrđuje da je
+predložena izvedba najbolja među svim rješenjima.
 
-Iz tih granica slijede tri konkretne nadogradnje.
+Prototip računa rok bez kalendara blagdana. Validacija u produkcijskoj i demo
+okolini nije provedena, a referentna arhitektura izvedena je iz dokumenata.
+Rad zato ne utvrđuje pojavnost ni učestalost izvedenih načina otkazivanja u
+praksi.
 
-Prva je mjerenje u demo okolini Sustava za fiskalizaciju, koju Pravilnik
-propisuje, uz vjerodajnicu izdanu za tu svrhu. Čelije koje sada stoje na
-prosudbi autora dobile bi mjerenje kao podlogu. Da bi takav rezultat bio
-ponovljiv, uz njega moraju stajati opis okoline, verzije, ulazi i postupak.
+Daljnji rad obuhvaća mjerenja u propisanoj demo okolini Sustava za
+fiskalizaciju, uz odgovarajuću vjerodajnicu. Njima bi se provjerile ocjene
+koje sada počivaju na autorskoj prosudbi. Za ponovljivost treba zabilježiti
+okolinu, verzije, ulaze i postupak.
 
-Druga je proširenje prototipa na razmjenu između pristupnih točaka i predaju
-primatelju. Time bi se uz sadašnje dvije granice izvršio slučaj D2 i provjerila
-granica prema primatelju, čime bi se zatvorio cijeli put dokumenta iz
-referentne arhitekture.
-
-Treća je provjera ponašanja stvarne demo izvedbe za kombinacije datuma
-izdavanja, oznake kopije, reference \texttt{PrethodniERacun} i šifre S008.
-Time bi se utvrdilo koju granu Porezna uprava prihvaća i odgovara li ponašanje
-objavljenoj tehničkoj specifikaciji. Rad tvrdi da odnos tih elemenata nije
-potpuno određen dokumentima, a ne da izvedba nužno odbija ispravak.
+Proširenje prototipa na razmjenu između pristupnih točaka i predaju primatelju
+omogućilo bi izvršnu provjeru slučaja D2 i preostalog dijela referentnog
+tijeka. U demo okolini treba provjeriti i kombinacije datuma ispravka, oznake
+kopije, reference \texttt{PrethodniERacun} i šifre S008. Time bi se utvrdilo
+koje varijante ispravka sustav prihvaća i odgovara li njegovo ponašanje
+objavljenoj specifikaciji.

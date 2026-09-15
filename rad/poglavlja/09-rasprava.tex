@@ -1,171 +1,156 @@
 \chapter{Rasprava}
 \label{ch:rasprava}
 
-Poglavlje~\ref{ch:evaluacija} pokazalo je što obrasci pokrivaju. Ovo poglavlje
-utvrđuje što koštaju i u kojim slučajevima ta cijena nadmašuje korist.
+Rezultati iz poglavlja~\ref{ch:evaluacija} pokazuju da učinak obrazaca ovisi
+o načinu otkazivanja i konfiguraciji. Rasprava razmatra složenost njihove
+primjene, posljedice kašnjenja i ograničenja provedene evaluacije.
 
 % ------------------------------------------------------------
 \section{Cijena obrazaca}
 \label{sec:cijena}
 
-Cijena se ovdje mjeri u tri stvari: u složenosti izvedbe, u dodanom
-kašnjenju i u riziku da dokument prekorači propisani rok. Rad ih ocjenjuje
-kvalitativno: složenost argumentira, učinke kašnjenja preuzima iz literature,
-a rizik roka izvodi iz propisa. Ne iznosi vlastita mjerenja performansi.
+Cijena obrazaca obuhvaća složenost izvedbe, dodatno kašnjenje i rizik
+prekoračenja propisanog roka. Procjena je kvalitativna: složenost se razmatra
+na predloženoj izvedbi, učinci kašnjenja preuzimaju se iz literature, a rizik
+prekoračenja roka izvodi se iz propisa. Vlastita mjerenja performansi nisu
+provedena.
 
 \paragraph{Složenost.}
-Sustav koji bi samo pozvao sučelje i zapisao ishod trebao bi jedno polje.
-Izvedba iz poglavlja~\ref{ch:implementacija} umjesto toga nosi tri tablice, pet
-stanja, automat s uvjetom nad prijelazom i evidenciju koja pamti i trenutke u
-kojima ishod nije bio poznat. Ta složenost je cijena imenovanja stanja koje
-propis ne imenuje.
+Izvedba iz poglavlja~\ref{ch:implementacija} sadrži tri tablice, pet stanja,
+automat s uvjetom nad prijelazom i evidenciju pokušaja. Takav model zahtijeva
+više podataka i pravila od zapisivanja ishoda poziva u jedno polje, ali
+omogućuje praćenje i onih pokušaja za koje odgovor nije primljen.
 
-Cijenu ne plaćaju svi jednako. Obveznik koji je fiskalizaciju izveo kao poziv
-unutar postojeće transakcije mora razdvojiti ono što mu je dosad bilo jedno, a
-razdvajanje mu umjesto poslovne značajke donosi samo sposobnost da odgovori na
-pitanje što se dogodilo.
+Opseg potrebnih promjena ovisi o postojećoj izvedbi. Ako se fiskalizacijski
+poziv izvršava unutar postojeće transakcije, treba ga izdvojiti i zasebno
+pratiti njegov ishod. Time se uvodi evidencija tijeka obrade, uključujući
+stanja koja propis ne imenuje.
 
 \paragraph{Kašnjenje.}
-Istek vremena i ponavljanje dodaju kašnjenje po definiciji. Mjera toga postoji.
-Odjeljak~\ref{sec:sinkrono} naveo je Brookerov primjer u kojem pet slojeva s po
-tri pokušaja opterećenje na dnu lanca poveća 243 puta \cite{brookertimeouts}.
-Sedghpour, Klein i Tordsson mjerili su isti učinak na prekidačima i našli da
-loše postavljen prekidač povećava kašnjenje umjesto da ga
-smanji \cite{sedghpour2022empirical}.
+Čekanje do isteka vremena i ponovni pokušaji produljuju obradu. Ponavljanje
+ujedno povećava opterećenje: u Brookerovu primjeru iz
+odjeljka~\ref{sec:sinkrono} pet slojeva s po tri pokušaja povećava opterećenje
+na dnu lanca 243 puta \cite{brookertimeouts}. Sedghpour, Klein i Tordsson
+pokazuju da loše podešen prekidač može povećati
+kašnjenje \cite{sedghpour2022empirical}.
 
-Na fiskalizacijskom kanalu to kašnjenje ima druge posljedice. U uslužnoj
-arhitekturi čekanje snosi korisnik. Fiskalizacija je obveza prijave, a ne dio
-kupovnog tijeka, pa ondje nijedan korisnik ne čeka. Kašnjenje zato smanjuje
-vrijeme preostalo do isteka roka.
+Za fiskalizacijski kanal kašnjenje je važno zbog roka za ispunjenje obveze
+prijave. Dulje čekanje i razmaci između pokušaja smanjuju vrijeme preostalo
+za oporavak.
 
 \paragraph{Rizik prekoračenja roka.}
-Ta cijena slijedi iz propisa, ne iz arhitekture.
 Izdavatelj u redovnom tijeku fiskalizira „u trenutku izdavanja“
-(čl.~48.~st.~3.), dok članak 49.\ za tehničku nemogućnost propisuje poseban rok
-od pet radnih dana od dana nastanka nemogućnosti. Red čekanja zato nije sam po
-sebi kašnjenje protivno propisu ako omogućuje dovršetak unutar tog posebnog
-roka. Rizik nastaje kada raspored ne prati rok, kada ne čuva dan nastanka
-nemogućnosti ili kada ispad traje dulje od pet radnih dana.
+(čl.~48.~st.~3.), dok članak 49.\ za tehničku nemogućnost propisuje poseban
+rok od pet radnih dana od dana nastanka nemogućnosti. Čekanje u redu zato
+nije samo po sebi protivno propisu ako se postupak dovrši unutar tog
+posebnog roka. Rizik nastaje kada sustav ne bilježi dan nastanka nemogućnosti,
+kada raspored ne prati rok ili kada ispad traje dulje od pet radnih dana.
 
-Ponovni pokušaj koji
-uspije iz četvrtog pokušaja tehnički je uspio, ali njegov pravni učinak ovisi
-o tome je li dovršen unutar primjenjivog roka. Zato broj pokušaja nije dovoljno
-mjerilo uspjeha; raspored mora pratiti i preostalo vrijeme.
+Uspješan ponovni pokušaj ispunjava tehnički cilj, ali njegov pravni učinak
+ovisi o dovršetku unutar primjenjivog roka. Raspored zato mora pratiti
+preostalo vrijeme, uz broj pokušaja.
 
 % ------------------------------------------------------------
-\section{Gdje obrasci smanjuju usklađenost}
+\section{Uvjeti u kojima obrasci mogu smanjiti usklađenost}
 \label{sec:pogorsanje}
 
-Drugi dio trećeg istraživačkog pitanja traži slučajeve u kojima obrazac
-otpornosti usklađenost pogoršava. Matrica označava jedan takav slučaj:
-ponavljanje cijele skupne poruke kada atomarnost obrade pojedinih zapisa nije
-izričito opisana. Ocjena je autorska prosudba rizika, jer specifikacija opisuje
+Matrica označava jedan slučaj mogućeg pogoršanja usklađenosti: ponavljanje
+cijele skupne poruke kada atomarnost obrade pojedinih zapisa nije izričito
+opisana. Ocjena je autorska prosudba rizika, jer specifikacija opisuje
 neprihvaćen zahtjev i prvu grešku, ali ne razrađuje stanje svakog zapisa.
-Za prekidač i deduplikaciju nalaz je
-također uvjetan, pa nijedan obrazac nije označen kao sam po sebi štetan.
+Učinak prekidača i deduplikacije također ovisi o uvjetima primjene, pa
+nijedan obrazac nije ocijenjen kao sam po sebi štetan.
 
-\paragraph{Prekidač bez trajnog reda može povećati rizik roka.}
-Prekidač je napravljen da prestane slati kada odredište ne odgovara. Time
-štedi lokalne resurse i ograničava kaskadno opterećenje. Prema Sustavu za
-fiskalizaciju mora se, međutim, promatrati zajedno s člankom 49.: rok od pet
-radnih dana teče od dana nastanka nemogućnosti. Ako prekidač radi uz trajni
-odlazni pretinac, čuva poruku i dopušta probne pozive prema rasporedu svjesnom
-roka, može biti koristan. Ako samo zaustavi slanje i izgubi vezu s rokom,
-povećava rizik da oporavak ne bude iskorišten na vrijeme. Matrica ga zato kao
-samostalan obrazac označava pretežno neutralnim.
+\paragraph{Prekidač i preostali rok.}
+Prekidač zaustavlja pozive prema nedostupnom odredištu, čime štedi lokalne
+resurse i ograničava kaskadno opterećenje. Na fiskalizacijskom kanalu pritom
+mora uzeti u obzir rok iz članka 49. Ako trajni odlazni pretinac čuva poruku,
+a raspored dopušta probne pozive prema preostalom roku, prekidač može biti
+koristan. Zaustavljanje slanja bez praćenja roka povećava rizik da
+se fiskalizacija ne dovrši na vrijeme nakon oporavka odredišta. Matrica zato
+samostalnom prekidaču pretežno dodjeljuje ocjenu \emph{ne pomaže}.
 
-\paragraph{Provjera duplikata ostavlja izbor grane ispravka otvorenim.}
-Provjera S008 odbija zapis s istim složenim identifikatorom, što je ispravno
-ponašanje za duplikat. Hrvatsko suženje norme uz to nalaže da se ispravak
-podatka bez poreznog učinka izdaje pod istim brojem računa, uz indikator
-kopije \cite{pu2026hrcius}. O datumu izdavanja takvog ispravka ne kaže ništa, pa
-ostaju dva puta. Ispravak koji zadrži datum izvornika nosi isti složeni
-identifikator i po opisanoj provjeri može biti odbijen. Ispravak s novim datumom i
-referencom na prethodni račun nosi drugi identifikator i tu provjeru
-izbjegava. Je li takav dokument u stvarnom sustavu prihvatljiv, rad nije
-provjerio \cite{pu2026tehspec}. Neodređena ostaje veza između datuma, oznake
-kopije, reference i provjere jedinstvenosti.
+\paragraph{Ponavljanje skupne poruke.}
+Ako obrada nije atomarna i provjera jedinstvenosti ne pokriva prethodno
+obrađene zapise, ponavljanje cijele skupne poruke povećava izloženost
+dvostrukom zapisu. Odjeljak~\ref{sec:matrica} razrađuje te pretpostavke;
+izostanak opisa atomarnosti ne dokazuje da odredište tako postupa. Rizik
+povezan sa skupnom obradom može se izbjeći slanjem pojedinačnih poruka.
 
-Treći mehanizam pripada sučelju, a ne izvedbi. Ponavljanje skupne poruke
-povećava izloženost dvostrukom zapisu ako obrada nije atomarna i prethodno
-obrađene zapise ne pokriva provjera jedinstvenosti. Pod kojim pretpostavkama
-ta izloženost prelazi u štetu, razrađuje odjeljak~\ref{sec:matrica}. Ta se
-izloženost izbjegava slanjem pojedinačnih poruka umjesto skupnih.
+\paragraph{Provjera duplikata i ispravak računa.}
+Provjera S008 odbija zapis s istim složenim identifikatorom.
+Hrvatsko suženje norme nalaže da se ispravak podatka bez poreznog učinka
+izdaje pod istim brojem računa, uz indikator kopije, ali ne određuje datum
+izdavanja takvog ispravka \cite{pu2026hrcius}.
 
-\paragraph{Dio granice pokrivenosti je regulatoran.}
-Odjeljak~\ref{sec:nepokriveno} pokazao je da nepokriveni slučajevi nastaju iz
-propisa, a ne iz svojstava raspodijeljene razmjene. Za njih bi mehanizam značio
-da izvedba sama odluči ono što propis nije odlučio.
+Ako ispravak zadrži datum izvornika, nosi isti složeni identifikator i po
+opisanoj provjeri može biti odbijen. S novim datumom i referencom na
+prethodni račun dobiva drugi identifikator i izbjegava tu
+provjeru \cite{pu2026tehspec}. Prihvatljivost takvog dokumenta u stvarnom
+sustavu nije provjerena. Nalaz se odnosi na nedovoljno određenu vezu između
+datuma, oznake kopije, reference i provjere jedinstvenosti.
 
-Da regulatorni mehanizam postoji, pokazuje isti zakon. Za promet u krajnjoj
-potrošnji Sustav za fiskalizaciju vraća Jedinstveni identifikator računa
-(čl.~15.~st.~3.) i uređuje naknadno postupanje. Za fiskalizaciju eRačuna
-članak 49.\ također uređuje naknadno postupanje, ali ne daje identifikator
-potvrđenog primitka ni rješenje za nedostupnost dulju od pet radnih dana.
-Razlika je zato i u regulatorno određenim dokazima i u granicama oporavka.
+\paragraph{Regulatorna granica pokrivenosti.}
+Nepokrivene slučajeve iz odjeljka~\ref{sec:nepokriveno} povezuje nedostatak
+podatka ili jednoznačnog pravila. Tehnički obrazac može evidentirati odabrano
+tumačenje, ali mu ne može dati obvezujuće pravno značenje.
+
+Zakon za promet u krajnjoj potrošnji predviđa Jedinstveni identifikator
+računa koji vraća Sustav za fiskalizaciju (čl.~15.~st.~3.) i uređuje
+naknadno postupanje. Za fiskalizaciju eRačuna članak 49.\ također uređuje
+naknadno postupanje, ali ne daje identifikator potvrđenog primitka ni
+rješenje za nedostupnost dulju od pet radnih dana. Razlika obuhvaća i
+dokaze o ispunjenju obveze i granice dopuštenog oporavka.
 
 \paragraph{Razgraničenje od sukoba zahtjeva.}
-Pojam regulatorno induciranog ograničenja potrebno je razgraničiti od sukoba
-zahtjeva, koji inženjerstvo zahtjeva već ima. Tri razlike govore protiv
-svođenja prvog pojma na drugi.
+Regulatorno inducirano ograničenje razlikuje se od sukoba zahtjeva po
+mogućnosti razrješenja, predmetu analize i vrsti nedostatka u specifikaciji.
 
-Prvo, sukob zahtjeva pretpostavlja onoga tko ga smije razriješiti. Postupci
-otkrivanja i razrješavanja sukoba računaju na naručitelja koji odlučuje o
-prioritetu. Ovdje takvog naručitelja nema. Obveznik nije stranka koja smije
-odlučiti što propis znači, a svaka odabrana interpretacija sama postaje
-izloženost sankciji, neovisno o tome koliko je dobro obrazložena.
+Pri razrješavanju sukoba zahtjeva naručitelj može odlučiti o prioritetima.
+Obveznik nema takvu ovlast nad propisom. Odabir vlastitog tumačenja izlaže ga
+riziku sankcije i kada je tehnički obrazložen.
 
-Drugo, pojmovi pripadaju različitim fazama. Literatura o usklađenosti modelira
-kontrolne ciljeve nad poslovnim procesom \cite{sadiq2007compliance} i prati usklađenost
-tijekom izvođenja \cite{ly2015compliance}, dakle radi s procesom koji se smije
-ispraviti. Tvrdnja ovoga rada nije o dokumentu zahtjeva nego o prostoru
-obrazaca. Način otkazivanja ostaje i nakon što je obrazac primijenjen, pa je
-riječ o dosegu obrazaca, a ne o sadržaju zahtjeva.
+Literatura o usklađenosti modelira kontrolne ciljeve nad poslovnim
+procesom \cite{sadiq2007compliance} i prati usklađenost tijekom
+izvođenja \cite{ly2015compliance}. Predmet je proces koji se može mijenjati
+radi usklađivanja. Ovaj rad ispituje doseg tehničkih obrazaca: način
+otkazivanja može ostati i nakon njihove primjene.
 
-Treće, klasa nije jednorodna. Odnos datuma, oznake kopije, reference na
-prethodni račun i šifre S008 primjer je nedovoljno određene kombinacije
-pravila. Kod roka koji teče od nedefiniranog primitka pravilo izostaje, pa nema
-dvaju zahtjeva između kojih bi se prioritet mogao postaviti.
-Odjeljak~\ref{sec:fault-error-failure} tu razliku već imenuje kao uzrok u
-specifikaciji propustom i uzrok pogrešnim navodom, među koje ide i
-nedosljednost, pa bi svođenje cijele klase na sukob zahtjeva spojilo ono što
-taksonomija razdvaja.
+Klasa pritom obuhvaća različite nedostatke. Veza datuma, oznake kopije,
+reference na prethodni račun i šifre S008 primjer je nedovoljno određene
+kombinacije pravila. Kod roka koji teče od nedefiniranog primitka nedostaje
+pravilo, pa nema dvaju zahtjeva kojima bi se mogao odrediti prioritet.
+Odjeljak~\ref{sec:fault-error-failure} razlikuje uzrok u specifikaciji
+propustom od uzroka pogrešnim navodom, koji uključuje nedosljednost. Pojam
+sukoba zahtjeva ne obuhvaća oba slučaja.
 
-Izvođenje zahtjeva iz teksta propisa ima uzor u
-literaturi \cite{breaux2008regulatory}, a ovaj rad taj postupak koristi.
-Razlika je u onome što se izvodi. Ondje se izvode zahtjevi koje sustav mora
-ispuniti, a ovdje načini na koje sustav može otkazati iako je sve zahtjeve
-ispunio.
+Rad se oslanja na postupak izvođenja zahtjeva iz teksta
+propisa \cite{breaux2008regulatory}. Tim postupkom ovdje izvodi načine
+otkazivanja koji mogu nastati i uz ispunjene zahtjeve.
 
 % ------------------------------------------------------------
 \section{Ograničenja}
 \label{sec:ogranicenja}
 
-Evaluacija je analitička, ne empirijska. Tvrdnje o pokrivenosti izvedene su iz
-propisa i iz svojstava obrazaca dokazanih u literaturi, a ne iz mjerenja na
-izvedenom sustavu.
+Evaluacija se temelji na analizi propisa i svojstava obrazaca iz literature,
+uz izvršnu provjeru dijela nalaza u prototipu. Ni produkcijska ni demo
+validacija nisu provedene, pa rezultati ne opisuju stvarno ponašanje
+Sustava za fiskalizaciju ni učestalost izvedenih načina otkazivanja.
 
-Razlog nije nedostupnost okoline. Demo okolina Sustava za fiskalizaciju
-postoji, Pravilnik je propisuje za testiranje sukladnosti prije rada u
-produkciji (čl.~18.\ Pravilnika \cite{nn2026pravilnikeracun}), a tehnička
-specifikacija objavljuje i njezinu adresu \cite{pu2026tehspec}. Pristup joj
-traži aplikativni certifikat s upisanim osobnim identifikacijskim brojem,
-dakle vjerodajnicu pravne osobe upisane kao obveznik ili posrednik.
+Demo okolina postoji: Pravilnik je propisuje za testiranje sukladnosti prije
+rada u produkciji (čl.~18.\ Pravilnika \cite{nn2026pravilnikeracun}), a
+tehnička specifikacija objavljuje njezinu adresu \cite{pu2026tehspec}.
+Pristup zahtijeva aplikativni certifikat s osobnim identifikacijskim brojem
+pravne osobe upisane kao obveznik ili posrednik. Rad je metodološki ograničen
+na referentnu arhitekturu čiji se analitički nalazi mogu provjeriti iz
+javnih dokumenata, bez pristupa vanjskom sustavu. Mjerenje pod vjerodajnicom
+sudionika kojeg rad ne bi smio imenovati ne bi zadovoljilo taj uvjet.
 
-Iz toga slijedi razlog metodološke naravi, ne organizacijske. Rad je postavljen
-tako da svaka tvrdnja stoji na javno dostupnom dokumentu i da je čitatelj može
-provjeriti bez pristupa ijednom sustavu. Mjerenje provedeno pod tuđom
-vjerodajnicom taj uvjet ne bi zadovoljilo, jer rad sudionika ne bi smio
-imenovati.
-
-Time se ne tvrdi da je mjerenje slabija vrsta dokaza. Mjerenje i analiza
-specifikacije provjeravaju različite stvari: prvo pokazuje kako se jedna
-izvedba ponaša, drugo što izvori dopuštaju i prešućuju. Ponovljivost mjerenja
-uz to traži opis okoline, verzije, ulaze i postupak. Ni produkcijska ni demo validacija nisu obuhvaćene, pa rad ne tvrdi ništa o
-stvarnom ponašanju Sustava za fiskalizaciju.
-
-Prijavljeni opseg operacionaliziran je tablicom~\ref{tab:sljedivost}. Ona
-razdvaja analitičku pokrivenost cijelog tijeka od opsega izvršnog prototipa.
+Analiza specifikacije utvrđuje što izvori određuju, dopuštaju i ostavljaju
+neodređenim, dok mjerenje pokazuje ponašanje pojedine izvedbe. Za ponovljivost
+mjerenja trebalo bi navesti okolinu, verzije, ulaze i postupak.
+Tablica~\ref{tab:sljedivost} povezuje prijavljeni opseg rada s analitičkom
+pokrivenošću cijelog tijeka i opsegom prototipa.
 
 \begin{table}[htbp]
 \centering
@@ -187,58 +172,42 @@ Učinkovitiji pristup & Usporedba završnih stanja pokazuje smanjuje li zapis na
 \end{tabular}
 \end{table}
 
-Evaluacija scenarijima provedena je u dvije razine. Matrica izvodi očekivani
-ishod za svih 66 spojeva načina otkazivanja i obrasca. Prototip izvršava četiri
-načina otkazivanja na dvije granice. Devet čelija zato nosi razinu pokazanog,
-dok ostale stoje na citatu ili na označenoj prosudbi autora.
+Matrica obuhvaća svih 66 kombinacija načina otkazivanja i obrasca, a prototip
+izvršava četiri načina otkazivanja na dvije granice. Devet ćelija matrice
+time je pokazano prototipom; ostale se temelje na citatu ili označenoj
+prosudbi autora.
 
-Učinkovitost ovdje znači da predložena izvedba pod istim kvarom završava u
-poznatijem i dokazivijem stanju od osnovne. Ne znači da je brža niti da je
-najbolja među svim mogućim rješenjima. Usporedbe performansi i cjelovitog skupa
-alternativnih obrazaca nema.
+Učinkovitost se ocjenjuje prema tome završava li predložena izvedba pod
+istim kvarom u poznatijem i dokazivijem stanju od osnovne. Usporedba ne
+obuhvaća performanse ni cjelovit skup alternativnih obrazaca, pa ne
+utvrđuje koja je izvedba brža ili najbolja među mogućim rješenjima.
 
-Studija slučaja je referentna arhitektura izvedena iz objavljenih dokumenata, a
-ne opažanje nekog postojećeg sustava. To je ujedno njezina prednost i njezina
-granica. Svaka tvrdnja stoji na citatu i provjerljiva je bez pristupa ijednom
-sustavu. Rad zato ne može reći
-koliko se od izvedenih slučajeva u praksi pojavljuje, ni koliko su česti.
+\paragraph{Rizik povezan s načinom objave izvora.}
+Dio operativnih pravila objavljen je u dokumentaciji Porezne uprave izvan
+Narodnih novina. Dokumentacija se mijenja izdavanjem novih verzija, bez
+pročišćenog teksta. Tehnička specifikacija i hrvatsko suženje norme sadrže
+povijest promjena s verzijom, opisom i datumom \cite{pu2026tehspec,pu2026hrcius}.
+Taj sažetak ne omogućuje provjeru potpunosti izmjena bez usporedbe cjelovitih
+tekstova.
 
-\paragraph{Rizik koji nastaje iz načina objave.}
-Dio operativnog detalja na koji se izvedba mora osloniti ne nalazi se u
-Narodnim novinama nego u dokumentaciji koju izdaje Porezna uprava. Ta se
-dokumentacija mijenja izdavanjem nove verzije, bez pročišćenog teksta.
+Rubrika pitanja i odgovora nema oznaku verzije ni povijest promjena. Nakon
+izmjene stranice izvorni oblik navoda nije moguće ponovno pronaći na samoj
+stranici. To otežava provjeru pravila o duplikatima, koja su razrađena
+isključivo u toj rubrici \cite{pu2026pitanjaodgovori}. Prema uputi, eRačun
+pod istim brojem smije se poslati samo jednom, ponovno slanje bez oznake
+kopije smatra se neregularnim, a pristupna točka primatelja mora vratiti
+potvrdu neovisno o tome je li dokument već zaprimila. Posljednje pravilo
+odgovara dostavi barem jednom uz potiskivanje duplikata na strani primatelja
+iz odjeljka~\ref{sec:semantika-dostave}. U Zakonu, Pravilniku i tehničkoj
+specifikaciji taj obrazac nije opisan.
 
-Zapis o razlikama pritom postoji. Tehnička
-specifikacija počinje tablicom povijesti promjena s verzijom, opisom promjene i
-datumom, a jednak pregled ima i hrvatsko suženje
-norme \cite{pu2026tehspec,pu2026hrcius}. Sažetak izmjena ipak nije strojni
-usporedni prikaz dviju verzija i njegovu potpunost čitatelj ne može provjeriti.
-Izmjenu treba pronaći u tekstu, a ne pročitati iz razlike.
+Uputa se opisuje kao operativno pojašnjenje postupanja temeljem važećih
+propisa i dopisa Porezne uprave. Ima status mjerodavnog tumačenja regulatora,
+ali nije propis. Za provjerljivost navoda u ovom radu stranica je arhivirana
+s datumom i kontrolnom sumom.
 
-Rubrika pitanja i odgovora nosi teži oblik istog rizika. Ona je mrežna
-stranica bez oznake verzije i bez povijesti promjena, pa se navod iz nje ne
-može ponovno pronaći u obliku u kojem je pročitan.
-
-Taj rizik pogađa i semantiku duplikata, razrađenu isključivo u rubrici
-pitanja i odgovora \cite{pu2026pitanjaodgovori}. Ondje stoji da se eRačun pod istim
-brojem smije poslati samo jednom, da se ponovno slanje bez oznake kopije
-smatra neregularnim i da pristupna točka primatelja mora vratiti potvrdu
-neovisno o tome je li dokument već zaprimila. Zadnje pravilo je dostava
-barem jednom uz potiskivanje duplikata na strani primatelja, dakle obrazac iz
-odjeljka~\ref{sec:semantika-dostave}. U Zakonu, Pravilniku i
-tehničkoj specifikaciji taj obrazac se ne pojavljuje.
-
-Uputa se sama opisuje kao operativno pojašnjenje postupanja temeljem važećih
-propisa i dopisa Porezne uprave. Njezin je status time određen: mjerodavno je
-tumačenje regulatora, ali nije propis. Pravilo o postupanju s duplikatima time
-stoji izvan propisa.
-
-Isti oblik rizika pojavljuje se i na transportnom sloju. Hrvatski profil
-fiksira verziju 1.15 europskog profila AS4 \cite{cef2020as4v115}, koja je u
-međuvremenu označena kao zamijenjena, dok drugi sudionici europske mreže
-fiksiraju drugu verziju istog dokumenta. Dvije izvedbe mogu time biti sukladne
-svaka svojoj referenci, a nesukladne međusobno.
-
-Riječ je o uvjetu pod kojim se pouzdanost gradi. Sustav se teško može
-učiniti pouzdanim prema izvoru čije izmjene čitatelj ne može pratiti. Rad se s
-tim suočio i pri vlastitom citiranju, pa je stranica s uputama arhivirana s datumom i kontrolnom sumom.
+Na transportnom sloju rizik proizlazi iz odabira verzije specifikacije.
+Hrvatski profil fiksira verziju 1.15 europskog profila
+AS4 \cite{cef2020as4v115}, koja je u međuvremenu označena kao zamijenjena,
+dok drugi sudionici europske mreže fiksiraju drugu verziju. Izvedbe zato mogu
+biti sukladne svaka svojoj referenci, a međusobno nesukladne.
