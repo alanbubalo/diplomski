@@ -35,34 +35,36 @@ fiskalizacija eRačuna, obrasci otpornosti, ograničenje uvjetovano propisima
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
 
-This thesis analyses the application of fault tolerance patterns to eInvoice
-fiscalization in Croatia. From 2026, an eInvoice issuer must deliver the document
-to its recipient and report the data to the Tax Administration. Since exchange
-and fiscalization are separate procedures, one may succeed while the other
-fails. The analysis draws on the Act, the Ordinance and the technical
-specification, allowing the derived findings to be verified without access to
-an actual system.
+This paper analyzes the application of fault-tolerance patterns in the
+fiscalization of e-invoices in Croatia. Starting in 2026, an e-invoice issuer
+must deliver the document to the recipient and report the data to the Tax
+Administration. Since exchange and fiscalization are carried out separately,
+one process may succeed while the other fails. The analysis is based on the
+relevant Act, Ordinance, and technical specifications, allowing the derived
+findings to be verified without access to the actual system.
 
-Eleven failure modes are derived from the prescribed workflow. They include
-incomplete procedures, unknown outcomes and difficulties in determining
-deadlines. One case shows that the documentation does not specify precisely
-enough how to distinguish an invoice correction from a duplicate. The thesis
-uses \emph{regulation-induced constraint} as a working term for constraints
-arising from the mandated architecture or insufficiently specified rules.
+Eleven failure scenarios were derived from the prescribed workflow. These
+include incomplete processes, unknown outcomes, and difficulties regarding
+timeframes. One case reveals that the documentation does not specify
+precisely enough how to distinguish an invoice correction from a duplicate.
+To address limitations arising from the prescribed architecture or
+insufficiently defined rules, the paper employs the term \emph{regulation-imposed
+imitation}.
 
-A matrix compares the eleven failure modes with six patterns. Each rating
-states whether it is based on regulation or literature, a prototype check,
-or the author's judgement. The prototype compares two implementations: one
-records intent before sending, while the other creates a submission record
-only after receiving a response. Four selected scenarios show how the timing
-of this record affects outcome tracking and the ability to resume processing.
+A matrix compares the eleven failure scenarios against six patterns. For each
+assessment, the basis is indicated: whether it relies on regulations or
+literature, prototype verification, or the author's judgment. The prototype
+compares two implementations: one records the intent before transmission,
+while the other creates the submission record only after receiving a response.
+Using four selected scenarios, it demonstrates how the timing of recording
+affects outcome tracking and the continuation of processing.
 
-In the cases examined, the patterns do not eliminate any failure mode.
-They can mitigate consequences or preserve a record of an attempt whose
-outcome is unknown. Their effect depends on where they are applied and how
-they are configured. The actual system has not been tested, so the findings
-describe constraints derived from documents and the outcomes of modelled
-scenarios.
+In the cases examined, the patterns do not eliminate any of the failure
+scenarios. They can, however, mitigate consequences or preserve a record of an
+attempt with an unknown outcome. Their effectiveness depends on the point of
+application and the system configuration. The behavior of the actual system
+has not been verified; therefore, the findings describe limitations derived
+from documents and the outcomes of modeled scenarios.
 
 \vspace{1em}
 \noindent\textbf{Keywords:} fault tolerance, distributed systems, eInvoice
