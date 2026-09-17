@@ -91,8 +91,8 @@ pohranjeni su u odvojenim tablicama, a treća čuva evidenciju. U predloženoj
 izvedbi dokument i početni zapis predaje nastaju u jednoj lokalnoj
 transakciji. Vanjski poziv izvršava se nakon njezina dovršetka. Ne postoji
 transakcija koja bi obuhvatila i lokalni zapis i ishod vanjskog
-poziva \cite{helland2007lifebeyond}. Različite tablice nisu različite
-transakcijske granice.
+poziva \cite{helland2007lifebeyond}. Različite tablice same po sebi ne
+predstavljaju različite transakcijske granice.
 
 Životni ciklus predaje opisan je automatom sa slike \ref{fig:automat}. Stanje
 \texttt{sent-unconfirmed} označava nepoznat ishod slanja. Istek roka vodi u
@@ -170,7 +170,7 @@ u tom stanju ima vrijednost \texttt{NE}. Zakašnjelo izvršenje i naknadno
 razrješavanje ranijeg ishoda nisu obuhvaćeni prototipom.
 
 Zapis u odlaznom pretincu sadrži ključ koji određuje
-pošiljatelj \cite{saltzer1984endtoend}. Poslovna namjera i redni pokušaj
+pošiljatelj \cite{saltzer1984endtoend}. Poslovna namjera i redni broj pokušaja
 dostave omogućuju tumačenje šifre S008 prema listingu \ref{lst:s008}.
 Listing provodi četiri odluke iz tablice \ref{tab:s008-tumacenje}:
 dvije kombinacije daju jednoznačan prijelaz, a dvije zadržavaju nepoznat
@@ -180,7 +180,7 @@ ishod. Posljednja grana obrađuje nedostatak podatka o namjeri.
 
 \begin{lstlisting}[language=PHP, caption={[Tumačenje šifre S008 uz
 zapisanu namjeru]Tumačenje šifre S008 u modeliranoj grani. Šifru tumači spoj
-poslovne namjere i rednog pokušaja dostave.}, label={lst:s008}]
+poslovne namjere i rednog broja pokušaja dostave.}, label={lst:s008}]
 return match (true) {
     $intent === Intent::ORIGINAL && $repeatDelivery => Interpretation::unambiguous(
         Trigger::CONFIRMATION_FROM_S008,
@@ -211,12 +211,12 @@ return match (true) {
 };
 \end{lstlisting}
 
-Poslovna namjera i redni pokušaj dostave vode se odvojeno. Pri ponavljanju
+Poslovna namjera i redni broj pokušaja dostave vode se odvojeno. Pri ponavljanju
 ispravak zadržava svoju namjeru. Zamjenom te oznake s „ponovni pokušaj“
 izgubio bi se podatak potreban za tumačenje odgovora, pa bi se S008 mogao
 pogrešno protumačiti kao potvrda.
 
-Dvije od četiri kombinacije namjere i rednog pokušaja ostaju dvoznačne.
+Dvije od četiri kombinacije namjere i rednog broja pokušaja ostaju dvoznačne.
 U tim slučajevima, kao i kada namjera nije poznata, funkcija vraća dvoznačno
 tumačenje koje ne pokreće prijelaz automata. Evidencija bilježi svaki
 prijelaz i svako dvoznačno tumačenje, uključujući vrijeme njegova nastanka.
@@ -317,7 +317,7 @@ račun postoji, ali nema zapisa predaje.
 Scenarij provjerava ćeliju E1 uz odlazni pretinac i zapis namjere.
 
 \paragraph{B2: tumačenje šifre S008 u tri slučaja.}
-Scenarij uspoređuje tri kombinacije poslovne namjere i rednog pokušaja.
+Scenarij uspoređuje tri kombinacije poslovne namjere i rednog broja pokušaja.
 U prvom dijelu izvornik nakon izostanka odgovora dobiva S008 pri ponovnoj
 dostavi u zakazanom trenutku. U drugom dijelu ispravak dobiva S008 pri prvoj
 dostavi. U trećem dijelu ispravak nakon izostanka odgovora dobiva S008 pri
@@ -376,11 +376,11 @@ U drugom dijelu obje izvedbe završavaju u stanju
 \texttt{correction-rejected} jer iz indikatora kopije mogu utvrditi da se
 šalje ispravak. Za taj slučaj zaseban zapis namjere nije potreban. Razlika
 između izvedbi pojavljuje se u prvom i trećem dijelu: nakon izostanka
-odgovora osnovna izvedba nema zapis predaje ni podatak o rednom pokušaju,
+odgovora osnovna izvedba nema zapis predaje ni podatak o rednom broju pokušaja,
 pa ne može nastaviti ponavljanje.
 
 Scenarij provjerava ćeliju B2 uz odlazni pretinac. Pokazana korist odnosi se
-na očuvanje podatka o rednom pokušaju dostave, dok je poslovna namjera
+na očuvanje podatka o rednom broju pokušaja dostave, dok je poslovna namjera
 dostupna i iz samog dokumenta.
 
 \paragraph{D1: Sustav za fiskalizaciju privremeno je nedostupan.}

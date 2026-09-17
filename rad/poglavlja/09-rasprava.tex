@@ -1,15 +1,15 @@
 \chapter{Rasprava}
 \label{ch:rasprava}
 
-Rezultati iz poglavlja \ref{ch:evaluacija} pokazuju da učinak obrazaca ovisi
-o načinu otkazivanja i konfiguraciji. Taj učinak ima cijenu u složenosti
-izvedbe i kašnjenju, a evaluacija koja ga je utvrdila ima vlastite granice.
+Rezultati iz poglavlja \ref{ch:evaluacija} pokazuju da učinci obrazaca ovise
+o načinu otkazivanja i konfiguraciji. Ti učinci imaju cijenu u složenosti
+izvedbe i kašnjenju, a evaluacija koja ih je utvrdila ima svoja ograničenja.
 
 % ------------------------------------------------------------
-\section{Cijena obrazaca}
+\section{Trošak obrazaca}
 \label{sec:cijena}
 
-Cijena obrazaca obuhvaća složenost izvedbe, dodatno kašnjenje i rizik
+Trošak obrazaca obuhvaća složenost izvedbe, dodatno kašnjenje i rizik
 prekoračenja propisanog roka. Procjena je kvalitativna: složenost se razmatra
 na predloženoj izvedbi, učinci kašnjenja preuzimaju se iz literature, a rizik
 prekoračenja roka izvodi se iz propisa. Vlastita mjerenja performansi nisu
@@ -63,7 +63,8 @@ obrazac nije ocijenjen kao sam po sebi štetan.
 
 \paragraph{Prekidač i preostali rok.}
 Prekidač zaustavlja pozive prema nedostupnom odredištu, čime štedi lokalne
-resurse i ograničava kaskadno opterećenje. Na fiskalizacijskom kanalu pritom
+resurse, smanjuje opterećenje odredišnog sustava i ograničava rizik kaskadnog
+otkaza. Na fiskalizacijskom kanalu pritom
 mora uzeti u obzir rok iz članka 49. Ako trajni odlazni pretinac čuva poruku,
 a raspored dopušta probne pozive prema preostalom roku, prekidač može biti
 koristan. Zaustavljanje slanja bez praćenja roka povećava rizik da
@@ -97,14 +98,14 @@ rješenje za nedostupnost dulju od pet radnih dana. Razlika obuhvaća i
 dokaze o ispunjenju obveze i granice dopuštenog oporavka.
 
 \paragraph{Razgraničenje od proturječnih zahtjeva.}
-Regulatorno inducirano ograničenje treba razlikovati od proturječnih zahtjeva,
+Ograničenje uvjetovano propisima treba razlikovati od proturječnih zahtjeva,
 gdje dva zahtjeva na isti sustav traže postupanja koja se međusobno isključuju.
 Razlikuju se po tome tko može odlučiti o prednosti, na što se analiza odnosi i
 kakav je nedostatak u specifikaciji.
 
 Kod proturječnih zahtjeva naručitelj može odlučiti koji zahtjev ima prednost.
 Obveznik nema takvu ovlast nad propisom. Odabir vlastitog tumačenja izlaže ga
-riziku sankcije i kada je tehnički obrazložen.
+riziku sankcije čak i kada je tehnički obrazložen.
 
 Literatura o usklađenosti modelira kontrolne ciljeve nad poslovnim
 procesom \cite{sadiq2007compliance} i prati usklađenost tijekom
@@ -201,10 +202,10 @@ specifikaciji taj obrazac nije opisan.
 Porezna uprava tu rubriku opisuje kao pojašnjenje kako postupati po važećim
 propisima i po vlastitim dopisima. Takvo pojašnjenje ima status mjerodavnog
 tumačenja regulatora, ali nije propis. Za provjerljivost navoda u ovom radu
-stranica je arhivirana s datumom i kontrolnom sumom.
+stranica je arhivirana s datumom i kontrolnim zbrojem.
 
 Na transportnom sloju rizik proizlazi iz odabira verzije specifikacije.
-Hrvatski profil fiksira verziju 1.15 europskog profila
+Hrvatski profil određuje primjenu verzije 1.15 europskog profila
 AS4 \cite{cef2020as4v115}, koja je u međuvremenu označena kao zamijenjena,
-dok drugi sudionici europske mreže fiksiraju drugu verziju. Izvedbe zato mogu
-biti sukladne svaka svojoj referenci, a međusobno nesukladne.
+dok drugi sudionici europske mreže primjenjuju druge verzije. Izvedbe zato
+mogu biti sukladne svaka svojoj referenci, a međusobno nesukladne.

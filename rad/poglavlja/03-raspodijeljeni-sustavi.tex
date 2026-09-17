@@ -13,14 +13,14 @@ poglavlju \ref{ch:studija}.
 Waldo i suradnici razlikuju lokalno računanje, ograničeno na jedan adresni
 prostor, od raspodijeljenog računanja, koje uključuje pozive u drugi adresni
 prostor \cite{waldo1994note}. Udaljena komponenta može biti na drugom računalu,
-a pozivatelj o njoj zna samo koje sučelje podržava.
+a pozivatelj zna samo koje sučelje podržava.
 
 Autori navode četiri razlike: latenciju, pristup memoriji, djelomični otkaz i
 istodobnost (konkurentnost). Prve dvije smatraju potencijalno rješivima, dok
 druge dvije zahtijevaju drukčiji pristup oblikovanju sustava.
 
 Lokalni poziv može zaustaviti ili srušiti proces, no pozivatelj i pozvana
-funkcija dijele adresni prostor i sudbinu procesa. Kod distribuiranog poziva,
+funkcija dijele adresni prostor i sudbinu procesa. Pri raspodijeljenom pozivu
 udaljena komponenta može nastaviti s obradom čak i nakon što je pozivatelj
 prestao čekati. Ne postoji zajednički posrednik koji bi pouzdano utvrdio
 koja je komponenta otkazala i o tome obavijestio ostale. Waldo i suradnici
@@ -68,7 +68,7 @@ Taksonomija Avizienisa i suradnika razlikuje kvar, pogrešku i otkaz sustava
 \cite{avizienis2004taxonomy}. Otkaz (\emph{failure}) je događaj u kojem
 isporučena usluga odstupa od ispravne, odnosno sustav ne obavlja svoju
 funkciju. Pogreška (\emph{error}) je odstupanje stanja sustava od ispravnog,
-a kvar (\emph{fault}) prosuđeni je ili pretpostavljeni uzrok pogreške.
+a kvar (\emph{fault}) procijenjeni je ili pretpostavljeni uzrok pogreške.
 Kvar je aktivan kada proizvodi pogrešku, inače je uspavan.
 
 Primjerice, propust u kodu može pogrešno izračunati ukupan iznos računa.
@@ -77,7 +77,7 @@ s tim iznosom korisniku predstavlja otkaz usluge. Ako sustav prije slanja
 uoči i ispravi iznos, unutarnja pogreška neće dovesti do tog otkaza.
 
 Kvar proizvodi pogrešku koja se može širiti sustavom. Otkaz nastaje tek kada
-pogreška zahvati vanjsko stanje i utječe na isporučenu uslugu. Unutarnja
+pogreška utječe na izvana vidljivo ponašanje usluge. Unutarnja
 pogreška zato ne mora dovesti do otkaza. Ovaj rad analizira načine
 otkazivanja, odnosno odstupanja vidljiva korisniku usluge.
 
@@ -108,7 +108,7 @@ Prema području otkaz može biti sadržajni ili vremenski. Kod sadržajnog otkaz
 isporučeni podatak odstupa od ispravnog. Kod vremenskog odstupa trenutak
 isporuke ili njezino trajanje, pa je usluga prerana ili prekasna. Ako su i
 sadržaj i vrijeme neispravni, sustav se zaustavlja ili isporučuje neuredno.
-Poseban slučaj zaustavljanja je tiha isporuka, u kojoj se ne šalje nijedna
+Poseban slučaj zaustavljanja jest tihi otkaz, pri kojem se ne šalje nijedna
 poruka.
 
 Prema uočljivosti otkaz je signaliziran kada sustav o njemu obavijesti
@@ -189,7 +189,7 @@ jednom generalu nedostaje potrebna potvrda. Ako mu ta potvrda nije potrebna,
 protokol se može skratiti i početna pretpostavka ne vrijedi.
 
 Rezultat se odnosi na protokol \emph{fiksne duljine}. Gray zatim opisuje
-protokol u dvije faze koji popušta to ograničenje i može zahtijevati
+dvofazni protokol koji popušta to ograničenje i može zahtijevati
 proizvoljno mnogo poruka. Time završetak nije zajamčen u svim izvođenjima,
 jer su moguća i ona s beskonačno mnogo poruka. Zaseban formalni rezultat
 pokazuje nemogućnost konsenzusa u asinkronom sustavu s jednim mogućim

@@ -3,7 +3,7 @@
 
 Evaluacija uspoređuje jedanaest načina otkazivanja iz
 poglavlja \ref{ch:studija} sa šest obrazaca iz odjeljka \ref{sec:dizajn}.
-Matrica pokrivenosti povezuje analitičke zaključke s izvršnim scenarijima
+Matrica pokrivenosti povezuje analitičke zaključke sa scenarijima izvršenja
 kako bi se utvrdilo što obrasci mogu ublažiti, a što ostaje nepokriveno.
 
 % ------------------------------------------------------------
@@ -13,7 +13,7 @@ kako bi se utvrdilo što obrasci mogu ublažiti, a što ostaje nepokriveno.
 Učinak obrasca ocjenjuje se prema stanju sustava nakon kvara. Primjerice,
 ako odgovor na fiskalizacijski zahtjev izostane, korisno ponašanje nije
 nužno odmah uspješna fiskalizacija. Sustav treba sačuvati podatak o pokušaju
-i pokazati da ishod još nije poznat. Tako se razlikuju kvar vanjske usluge
+i naznačiti da ishod još nije poznat. Tako se razlikuju kvar vanjske usluge
 i propust lokalnog sustava da taj pokušaj prati.
 
 Mjerilo provjere određuje što u takvoj situaciji treba vrijediti da bi test
@@ -25,8 +25,8 @@ neuspjehom \cite{chen2020cofi}. U ovom radu mjerilo se izvodi iz propisa
 koji određuje ispravan ishod postupka.
 
 U formalnom modelu čileanskog sustava elektroničkog fakturiranja Attali,
-Barros i Madelaine pretpostavljaju pouzdane komunikacijske kanale i procese
-od povjerenja \cite{attali2004chilean}. Ova evaluacija obuhvaća i kvarove
+Barros i Madelaine pretpostavljaju pouzdane komunikacijske kanale i pouzdane
+procese \cite{attali2004chilean}. Ova evaluacija obuhvaća i kvarove
 prijenosa, koje taj model ne razmatra.
 
 \paragraph{Ocjena učinka.}
@@ -35,12 +35,12 @@ Svaka ćelija matrice ima jednu od pet vrijednosti: \emph{uklanja},
 Ocjena \emph{sužava} znači da obrazac skraćuje razdoblje nepoznatog ishoda
 ili ublažava posljedicu. Ocjena \emph{evidentira} znači da sustav ima zapis
 o pokušaju i izostanku potvrde, ali problem ostaje. Ona ne znači da je
-utvrđen neuspjeh udaljene obrade. Cjelovita legenda nalazi se uz
+utvrđen neuspjeh udaljene obrade. Potpuna legenda dana je uz
 tablicu \ref{tab:matrica}. Ocjena \emph{pogoršava} opisuje povećan rizik uz
 navedene pretpostavke, kao kod ponavljanja skupne poruke.
 
 \paragraph{Uvjetne tvrdnje.}
-Filibuster mjerilo zapisuje u obliku „ako je kvar ubrizgan u servis A, tada
+Mjerilo se u Filibusteru zapisuje u obliku „ako je kvar ubrizgan u servis A, tada
 mora vrijediti\ldots“. Devet takvih tvrdnji obuhvatilo je 1606
 testova \cite{meiklejohn2021filibuster}. Ocjene u matrici obrazlažu se na
 isti način. Primjerice, ako fiskalizacijski poziv istekne bez odgovora,
@@ -54,8 +54,8 @@ svojstva obrasca dokazanog u literaturi. Oznaka \textsuperscript{b} upućuje
 na provjeru prototipom iz poglavlja \ref{ch:implementacija}, a
 \textsuperscript{c} na prosudbu autora.
 
-Razina \textsuperscript{b} odnosi se samo na ćelije provjerene izvršnim
-scenarijima za B1, B2 i D1 na sinkronom fiskalizacijskom kanalu te E1 na
+Razina \textsuperscript{b} dodjeljuje se samo ćelijama provjerenima scenarijima
+izvršenja za B1, B2 i D1 na sinkronom fiskalizacijskom kanalu te E1 na
 granici C1 prema C2. Sličnost mehanizma nije dovoljna za tu oznaku. Prototip ne izvršava
 slučaj D2, pa su odgovarajuće ocjene označene kao prosudbe autora.
 
@@ -121,15 +121,15 @@ P povećava rizik uz navedene pretpostavke.
 Vrijednost \emph{uklanja} ne pojavljuje se ni u jednoj ćeliji
 tablice \ref{tab:matrica}. Obrasci ne uklanjaju mogućnost udaljenog otkaza
 ni obvezno razdvajanje postupaka. Mogu ublažiti posljedice i omogućiti
-praćenje ishoda. U nastavku su obrazložene ocjene kod kojih učinak
-posebno ovisi o konfiguraciji ili dostupnim podacima.
+praćenje ishoda. U nastavku su obrazložene ocjene čiji učinak posebno ovisi
+o konfiguraciji ili dostupnim podacima.
 
-\paragraph{Učinak prekidača ovisi o trajnom redu.}
+\paragraph{Učinak prekidača ovisi o trajnom redu čekanja.}
 Prekidač zaustavlja pozive prema odredištu koje se čini nedostupnim, ali
 sam ne rješava izvedene načine otkazivanja. U matrici je zato pretežno
 označen kao \emph{ne pomaže}. Uz trajni odlazni pretinac i ponavljanje
 svjesno roka može zaštititi lokalne resurse bez gubitka poruke. Ako bez
-takvog reda ostane otvoren do isteka roka, može povećati rizik zakašnjenja.
+takvog reda čekanja ostane otvoren do isteka roka, može povećati rizik zakašnjenja.
 Ocjena \emph{sužava} u retku D2 autorska je prosudba za slučaj u kojem
 poslovni sustav poruku prema posredniku trajno zadržava lokalno.
 
@@ -165,14 +165,14 @@ E\textsuperscript{b} uz odlazni pretinac i imenovano stanje označava očuvanje
 zapisa. Ti obrasci sami ne uklanjaju nedostupnost niti produljuju rok.
 
 \paragraph{B3: rizik ponavljanja cijele skupne poruke.}
-Zahtjev može sadržavati do sto zapisa. Odgovor opisuje neprihvaćen zahtjev
-i prvu grešku zbog koje je odbijen. Specifikacija time upućuje na odbijanje
+Zahtjev može sadržavati do stotinu zapisa. Odgovor opisuje neprihvaćen zahtjev
+i prvu grešku zbog koje je odbijen. Specifikacija stoga upućuje na odbijanje
 zahtjeva kao cjeline, ali izričito ne opisuje atomarnost obrade pojedinih
 zapisa \cite{pu2026tehspec}.
 
 Ako odredište skup ne odbacuje atomarno i ako provjera duplikata ne pokriva
 već obrađene zapise, ponavljanje cijelog skupa povećava izloženost
-dvostrukom zapisu. To je jedina ćelija s ocjenom \emph{pogoršava} i dio
+dvostrukom zapisu. To je jedina ćelija s ocjenom \emph{pogoršava} i dio je
 odgovora na treće istraživačko pitanje.
 
 Ocjena je autorska prosudba rizika u nepovoljnom scenariju, označena

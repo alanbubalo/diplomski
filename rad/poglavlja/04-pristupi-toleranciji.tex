@@ -124,7 +124,8 @@ Na primjeru računa \texttt{R-2026-003}, ista transakcija sprema račun i
 zadatak „pošalji podatke o ovom računu“. Ako aplikacija zatim prestane
 raditi, zadatak ostaje u bazi i radnik ga može preuzeti nakon oporavka.
 Ako odredište obradi poruku, a radnik ne uspije zabilježiti potvrdu, slanje
-se može ponoviti. Odlazni pretinac zato treba povezati s obradom duplikata.
+se može ponoviti. Odlazni pretinac zato treba povezati s deduplikacijom na
+strani primatelja.
 
 Odlazni pretinac ovdje je potkrijepljen industrijskim izvorom jer
 recenzirani primarni izvor nije pronađen. Pregledni rad o upravljanju
@@ -133,7 +134,7 @@ zapis \cite{laigner2021data}. Obrazac se zato u radu navodi kao
 industrijska praksa.
 
 Pri dostavi barem jednom eliminacija duplikata provodi se na krajevima sustava.
-Kako je obrazloženo u odjeljku \ref{sec:semantika-dostave}, prijenosni sloj
+Kako je obrazloženo u odjeljku \ref{sec:semantika-dostave}, transportni sloj
 ne može prepoznati duplikate koje proizvede sama aplikacija. Primatelju je
 potreban ključ pošiljatelja koji ostaje isti pri ponovnom slanju iste
 poruke. Identifikator koji primatelj stvara za svaki zahtjev ne omogućuje

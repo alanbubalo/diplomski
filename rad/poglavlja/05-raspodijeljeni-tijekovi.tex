@@ -74,13 +74,13 @@ additional sum. Such post facto transactions are called compensating
 transactions.}“ \cite{gray1981transaction}} \end{quote}
 
 Primjer je putnička agencija koja rezervira let, automobil i hotel te
-naplaćuje karticu. Ako kupac otkaže putovanje, agent ne može jednostrano
+tereti karticu. Ako kupac otkaže putovanje, agent ne može jednostrano
 poništiti dovršene transakcije s drugim organizacijama. Mora izvesti
 kompenzacijske transakcije kojima ispravlja njihove učinke.
 
 Garcia-Molina i Salem formalizirali su obrazac
 sage \cite{garciamolina1987sagas}. Dugotrajna transakcija dijeli se na niz
-transakcija koje se mogu izmjenjivati s drugim transakcijama. Sustav jamči
+transakcija koje se mogu ispreplitati s drugim transakcijama. Sustav jamči
 da će svi koraci uspjeti ili će kompenzacijske transakcije ispraviti učinke
 djelomičnog izvođenja. Međustanja su pritom vidljiva drugim transakcijama,
 pa saga ne osigurava izolaciju.
