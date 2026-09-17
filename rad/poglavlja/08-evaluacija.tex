@@ -2,7 +2,7 @@
 \label{ch:evaluacija}
 
 Evaluacija uspoređuje jedanaest načina otkazivanja iz
-poglavlja~\ref{ch:studija} sa šest obrazaca iz odjeljka~\ref{sec:dizajn}.
+poglavlja \ref{ch:studija} sa šest obrazaca iz odjeljka \ref{sec:dizajn}.
 Matrica pokrivenosti povezuje analitičke zaključke s izvršnim scenarijima
 kako bi se utvrdilo što obrasci mogu ublažiti, a što ostaje nepokriveno.
 
@@ -36,7 +36,7 @@ Ocjena \emph{sužava} znači da obrazac skraćuje razdoblje nepoznatog ishoda
 ili ublažava posljedicu. Ocjena \emph{evidentira} znači da sustav ima zapis
 o pokušaju i izostanku potvrde, ali problem ostaje. Ona ne znači da je
 utvrđen neuspjeh udaljene obrade. Cjelovita legenda nalazi se uz
-tablicu~\ref{tab:matrica}. Ocjena \emph{pogoršava} opisuje povećan rizik uz
+tablicu \ref{tab:matrica}. Ocjena \emph{pogoršava} opisuje povećan rizik uz
 navedene pretpostavke, kao kod ponavljanja skupne poruke.
 
 \paragraph{Uvjetne tvrdnje.}
@@ -51,7 +51,7 @@ nakon isteka roka iz članka 49.\ ne ostaje bez zapisa.
 \paragraph{Razina dokaza.}
 Oznaka \textsuperscript{a} znači da tvrdnja slijedi iz propisa ili iz
 svojstva obrasca dokazanog u literaturi. Oznaka \textsuperscript{b} upućuje
-na provjeru prototipom iz poglavlja~\ref{ch:implementacija}, a
+na provjeru prototipom iz poglavlja \ref{ch:implementacija}, a
 \textsuperscript{c} na prosudbu autora.
 
 Razina \textsuperscript{b} odnosi se samo na ćelije provjerene izvršnim
@@ -63,7 +63,7 @@ slučaj D2, pa su odgovarajuće ocjene označene kao prosudbe autora.
 \section{Matrica pokrivenosti}
 \label{sec:matrica}
 
-Redak tablice~\ref{tab:matrica} predstavlja način otkazivanja, a stupac
+Redak tablice \ref{tab:matrica} predstavlja način otkazivanja, a stupac
 obrazac. Veliko slovo u ćeliji označava učinak, dok malo podignuto slovo
 navodi razinu dokaza. Primjerice, S\textsuperscript{b} u retku D1 i stupcu
 ponavljanja znači da ponavljanje ublažava posljedice nedostupnosti te da
@@ -75,8 +75,8 @@ a ne uklanjanje nedostupnosti.
 \begin{table}[htbp]
 \centering
 \caption[Pokrivenost načina otkazivanja obrascima]{Pokrivenost jedanaest načina
-otkazivanja iz odjeljka~\ref{sec:failure-modes} sa šest obrazaca iz
-odjeljka~\ref{sec:dizajn}.}
+otkazivanja iz odjeljka \ref{sec:failure-modes} sa šest obrazaca iz
+odjeljka \ref{sec:dizajn}.}
 \label{tab:matrica}
 \footnotesize
 \setlength{\tabcolsep}{3.5pt}
@@ -119,7 +119,7 @@ P povećava rizik uz navedene pretpostavke.
 \end{table}
 
 Vrijednost \emph{uklanja} ne pojavljuje se ni u jednoj ćeliji
-tablice~\ref{tab:matrica}. Obrasci ne uklanjaju mogućnost udaljenog otkaza
+tablice \ref{tab:matrica}. Obrasci ne uklanjaju mogućnost udaljenog otkaza
 ni obvezno razdvajanje postupaka. Mogu ublažiti posljedice i omogućiti
 praćenje ishoda. U nastavku su obrazložene ocjene kod kojih učinak
 posebno ovisi o konfiguraciji ili dostupnim podacima.
@@ -137,12 +137,12 @@ poslovni sustav poruku prema posredniku trajno zadržava lokalno.
 Ključ za deduplikaciju omogućuje provjeru postoji li zapis s istim
 identifikatorom. Ne određuje koji datum treba imati ispravak, pa u retku
 B2 dobiva ocjenu \emph{ne pomaže}. Taj nedostatak pravila opisan je u
-odjeljku~\ref{sec:b2} \cite{pu2026hrcius,pu2026tehspec}.
+odjeljku \ref{sec:b2} \cite{pu2026hrcius,pu2026tehspec}.
 
 Zapis predaje nastao prije slanja čuva podatak o rednom pokušaju. U
 scenariju B2/1 time omogućuje da se S008 na ponovljenu dostavu
 nepromijenjenog izvornika protumači kao potvrda, uz pretpostavke iz
-tablice~\ref{tab:s008-tumacenje}. Osnovna izvedba nakon izostanka odgovora
+tablice \ref{tab:s008-tumacenje}. Osnovna izvedba nakon izostanka odgovora
 nema taj zapis pa ne nastavlja ponavljanje. Na toj se razlici temelji
 ocjena S\textsuperscript{b} uz odlazni pretinac.
 
@@ -150,7 +150,7 @@ Zapis ne pomaže jednako u svim granama. U scenariju B2/2 obje izvedbe
 prepoznaju prvu dostavu ispravka iz podataka dokumenta i bilježe odbijanje.
 U scenariju B2/3 ponovljeni ispravak ostaje bez jednoznačnog tumačenja i
 uz zapisanu namjeru. Zato ocjena glasi \emph{sužava}, a ne \emph{uklanja}.
-Ishodi svih triju grana prikazani su u odjeljku~\ref{sec:scenariji}.
+Ishodi svih triju grana prikazani su u odjeljku \ref{sec:scenariji}.
 
 \paragraph{D1: oporavak unutar roka.}
 U scenariju D1 predložena izvedba nakon prvog poziva bez odgovora čuva
@@ -160,7 +160,7 @@ zapis na kojem bi nastavila obradu.
 
 Ocjena S\textsuperscript{b} uz ponavljanje odnosi se na taj oporavak te na
 provjere početka i isteka roka. Scenarij ne izvršava cijeli raspored iz
-tablice~\ref{tab:raspored}; drugi pokušaj pokreće događaj oporavka.
+tablice \ref{tab:raspored}; drugi pokušaj pokreće događaj oporavka.
 E\textsuperscript{b} uz odlazni pretinac i imenovano stanje označava očuvanje
 zapisa. Ti obrasci sami ne uklanjaju nedostupnost niti produljuju rok.
 
@@ -192,7 +192,7 @@ pojedinačnih zapisa jer sučelje dopušta i jedan zapis po poruci.
 \label{sec:nepokriveno}
 
 Nepokrivenima se smatraju slučajevi u kojima obrasci postižu najviše
-ocjenu \emph{evidentira}. U tablici~\ref{tab:matrica} to su B4, R1 i R2.
+ocjenu \emph{evidentira}. U tablici \ref{tab:matrica} to su B4, R1 i R2.
 Povezuje ih nedostatak podatka ili jednoznačnog pravila.
 
 U slučaju B4 šifrarnik ne razlikuje prolazne od trajnih grešaka. Klijent
@@ -222,4 +222,4 @@ komunikacije.
 Devet od 66 ćelija ima razinu \textsuperscript{b}, utemeljenu na završnim
 stanjima izvršnih scenarija i 32 testa koji ih provjeravaju. Evaluacija ne
 obuhvaća mjerenje performansi. Ograničenja evaluacije i cijena obrazaca
-razrađeni su u poglavlju~\ref{ch:rasprava}.
+razrađeni su u poglavlju \ref{ch:rasprava}.

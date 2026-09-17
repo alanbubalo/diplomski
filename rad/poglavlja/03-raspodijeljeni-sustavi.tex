@@ -4,7 +4,7 @@
 Poziv preko mreže uvodi načine otkazivanja kojih nema kod lokalnog poziva.
 Rukovanje njima zahtijeva da sučelje odredi postupanje kada odgovor izostane
 ili se zahtjev ponovi. Ti pojmovi služe analizi fiskalizacijskog tijeka u
-poglavlju~\ref{ch:studija}.
+poglavlju \ref{ch:studija}.
 
 % ------------------------------------------------------------
 \section{Raspodijeljeni sustav i djelomični otkaz}
@@ -15,18 +15,16 @@ prostor, od raspodijeljenog računanja, koje uključuje pozive u drugi adresni
 prostor \cite{waldo1994note}. Udaljena komponenta može biti na drugom računalu,
 a pozivatelj o njoj zna samo koje sučelje podržava.
 
-Autori navode četiri razlike: kašnjenje, pristup memoriji, djelomični otkaz i
-istodobnost. Prve dvije smatraju potencijalno premostivima, dok druge dvije
-zahtijevaju drukčiji pristup oblikovanju sustava.
-\strani{Djelomični otkaz}{partial failure} nastaje kada jedna komponenta
-prestane raditi, a ostale nastave.
+Autori navode četiri razlike: latenciju, pristup memoriji, djelomični otkaz i
+istodobnost (konkurentnost). Prve dvije smatraju potencijalno rješivima, dok
+druge dvije zahtijevaju drukčiji pristup oblikovanju sustava.
 
-Lokalni poziv može zastati ili srušiti proces, ali pozivatelj i pozvana
-funkcija dijele adresni prostor i sudbinu procesa. Kod raspodijeljenog poziva
-udaljena komponenta može nastaviti obradu i nakon što je pozivatelj prestao
-čekati. Pritom nema zajedničkog posrednika koji bi pouzdano utvrdio koja je
-komponenta otkazala i obavijestio ostale. Waldo i suradnici to ograničenje
-opisuju ovako:
+Lokalni poziv može zaustaviti ili srušiti proces, no pozivatelj i pozvana
+funkcija dijele adresni prostor i sudbinu procesa. Kod distribuiranog poziva,
+udaljena komponenta može nastaviti s obradom čak i nakon što je pozivatelj
+prestao čekati. Ne postoji zajednički posrednik koji bi pouzdano utvrdio
+koja je komponenta otkazala i o tome obavijestio ostale. Waldo i suradnici
+to ograničenje opisuju na sljedeći način:
 
 \begin{quote}
 „U raspodijeljenom sustavu otkaz mrežne veze ne razlikuje se od otkaza
@@ -59,44 +57,44 @@ to be asked: what happens if the client chooses to repeat this operation
 with the exact same parameters as previously?}“ \cite{waldo1994note}}
 \end{quote}
 
-Poglavlje~\ref{ch:studija} razmatra isto pitanje za fiskalizacijsko sučelje,
+Poglavlje \ref{ch:studija} razmatra isto pitanje za fiskalizacijsko sučelje,
 čija su pravila određena propisom i sudionik ih ne može samostalno mijenjati.
 
 % ------------------------------------------------------------
-\section{Pojmovi: uzrok, pogreška i otkaz}
+\section{Pojmovi: kvar, pogreška i otkaz}
 \label{sec:fault-error-failure}
 
-Taksonomija Avizienisa i suradnika razlikuje uzrok, pogrešku i otkaz sustava
+Taksonomija Avizienisa i suradnika razlikuje kvar, pogrešku i otkaz sustava
 \cite{avizienis2004taxonomy}. Otkaz (\emph{failure}) je događaj u kojem
 isporučena usluga odstupa od ispravne, odnosno sustav ne obavlja svoju
 funkciju. Pogreška (\emph{error}) je odstupanje stanja sustava od ispravnog,
-a uzrok (\emph{fault}) prosuđeni je ili pretpostavljeni razlog pogreške.
-Uzrok je aktivan kada proizvodi pogrešku, inače je uspavan.
+a kvar (\emph{fault}) prosuđeni je ili pretpostavljeni uzrok pogreške.
+Kvar je aktivan kada proizvodi pogrešku, inače je uspavan.
 
 Primjerice, propust u kodu može pogrešno izračunati ukupan iznos računa.
-Propust je uzrok, pogrešan iznos u memoriji je pogreška, a slanje računa
+Propust je kvar, pogrešan iznos u memoriji je pogreška, a slanje računa
 s tim iznosom korisniku predstavlja otkaz usluge. Ako sustav prije slanja
 uoči i ispravi iznos, unutarnja pogreška neće dovesti do tog otkaza.
 
-Uzrok proizvodi pogrešku koja se može širiti sustavom. Otkaz nastaje tek kada
+Kvar proizvodi pogrešku koja se može širiti sustavom. Otkaz nastaje tek kada
 pogreška zahvati vanjsko stanje i utječe na isporučenu uslugu. Unutarnja
 pogreška zato ne mora dovesti do otkaza. Ovaj rad analizira načine
 otkazivanja, odnosno odstupanja vidljiva korisniku usluge.
 
 Autori ispravnost usluge određuju prema funkciji sustava. Usluga može
 odgovarati specifikaciji, a ipak biti neprihvatljiva korisniku, što upućuje na
-uzrok u samoj specifikaciji. Takvi uzroci uključuju propuste i pogrešne navode,
+kvar u samoj specifikaciji. Takvi kvarovi uključuju propuste i pogrešne navode,
 poput neopravdanih pretpostavki ili nedosljednosti. Ta podjela omogućuje
-analizu uzroka u propisima koji određuju fiskalizacijski tijek u
-poglavlju~\ref{ch:studija}.
+analizu kvarova u propisima koji određuju fiskalizacijski tijek u
+poglavlju \ref{ch:studija}.
 
-Uzroci se razlikuju i po postojanosti te ponovljivosti aktiviranja. Trajni
-uzrok prisutan je neprekidno, a prolazni je vremenski ograničen. Uzroci čije
+Kvarovi se razlikuju i po postojanosti te ponovljivosti aktiviranja. Trajni
+kvar prisutan je neprekidno, a prolazni je vremenski ograničen. Kvarovi čije
 se aktiviranje može ponoviti nazivaju se čvrstima, a oni čije aktiviranje
 nije ponovljivo neuhvatljivima. Ta podjela određuje ima li ponovni pokušaj
-izgleda za uspjeh: prolazni uzrok može nestati do sljedećeg pokušaja, trajni
+izgleda za uspjeh: prolazni kvar može nestati do sljedećeg pokušaja, trajni
 neće. Pošiljatelj tu razliku mora moći prepoznati iz odgovora, što
-odjeljak~\ref{sec:failure-modes} razmatra na fiskalizacijskom sučelju.
+odjeljak \ref{sec:failure-modes} razmatra na fiskalizacijskom sučelju.
 
 % ------------------------------------------------------------
 \section{Klasifikacija otkaza}
@@ -126,7 +124,7 @@ vraćanja stanja programa na početno često omogućuje oporavak
 
 \begin{quote}
 „Pretpostavljam da postoji sličan fenomen u softveru: većina proizvodnih
-programskih uzroka je meka. Ako se stanje programa vrati na početno i
+programskih kvarova je meka. Ako se stanje programa vrati na početno i
 operacija ponovi, operacija najčešće neće pasti drugi
 put.“\footnote{„\emph{I conjecture that there is a similar phenomenon in
 software -- most production software faults are soft. If the program state
@@ -232,7 +230,7 @@ them}“ \cite{saltzer1984endtoend}} \end{quote}
 
 Mrežna potvrda dostave također ne dokazuje da je odredišna aplikacija
 postupila po poruci. Potvrdu o učinku obrade može dati odredišna aplikacija.
-Poglavlje~\ref{ch:studija} razmatra granice utvrđivanja ishoda na
+Poglavlje \ref{ch:studija} razmatra granice utvrđivanja ishoda na
 fiskalizacijskom sučelju.
 
 Gilbert i Lynch formaliziraju drugo ograničenje, poznato kao CAP. U
@@ -245,5 +243,5 @@ razmatra i izbor između kašnjenja i konzistentnosti kada razdvajanja
 nema \cite{abadi2012consistency}.
 
 CAP se ovdje ne primjenjuje izravno jer predmet rada nije replicirana baza
-podataka. Analiza u poglavlju~\ref{ch:studija} odnosi se na dva odvojena
+podataka. Analiza u poglavlju \ref{ch:studija} odnosi se na dva odvojena
 kanala obrade istog dokumenta bez zajedničkog protokola atomarnog dovršetka.

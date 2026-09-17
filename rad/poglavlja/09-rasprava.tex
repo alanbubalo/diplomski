@@ -1,7 +1,7 @@
 \chapter{Rasprava}
 \label{ch:rasprava}
 
-Rezultati iz poglavlja~\ref{ch:evaluacija} pokazuju da učinak obrazaca ovisi
+Rezultati iz poglavlja \ref{ch:evaluacija} pokazuju da učinak obrazaca ovisi
 o načinu otkazivanja i konfiguraciji. Taj učinak ima cijenu u složenosti
 izvedbe i kašnjenju, a evaluacija koja ga je utvrdila ima vlastite granice.
 
@@ -16,7 +16,7 @@ prekoračenja roka izvodi se iz propisa. Vlastita mjerenja performansi nisu
 provedena.
 
 \paragraph{Složenost.}
-Izvedba iz poglavlja~\ref{ch:implementacija} sadrži tri tablice, pet stanja,
+Izvedba iz poglavlja \ref{ch:implementacija} sadrži tri tablice, pet stanja,
 automat s uvjetom nad prijelazom i evidenciju pokušaja. Takav model zahtijeva
 više podataka i pravila od zapisivanja ishoda poziva u jedno polje, ali
 omogućuje praćenje i onih pokušaja za koje odgovor nije primljen.
@@ -29,7 +29,7 @@ stanja koja propis ne imenuje.
 \paragraph{Kašnjenje.}
 Čekanje do isteka vremena i ponovni pokušaji produljuju obradu. Ponavljanje
 ujedno povećava opterećenje: u Brookerovu primjeru iz
-odjeljka~\ref{sec:sinkrono} pet slojeva s po tri pokušaja povećava opterećenje
+odjeljka \ref{sec:sinkrono} pet slojeva s po tri pokušaja povećava opterećenje
 na dnu lanca 243 puta \cite{brookertimeouts}. Sedghpour, Klein i Tordsson
 pokazuju da loše podešen prekidač može povećati
 kašnjenje \cite{sedghpour2022empirical}.
@@ -44,7 +44,7 @@ Izdavatelj u redovnom tijeku fiskalizira „u trenutku izdavanja“
 rok od pet radnih dana od dana nastanka nemogućnosti. Čekanje u redu zato
 nije samo po sebi protivno propisu ako se postupak dovrši unutar tog
 posebnog roka. Rizik nastaje kada sustav ne bilježi dan nastanka nemogućnosti,
-kada raspored ne prati rok ili kada ispad traje dulje od pet radnih dana.
+kada raspored ne prati rok ili kada nedostupnost traje dulje od pet radnih dana.
 
 Uspješan ponovni pokušaj ispunjava tehnički cilj, ali njegov pravni učinak
 ovisi o dovršetku unutar primjenjivog roka. Raspored zato mora pratiti
@@ -73,19 +73,19 @@ samostalnom prekidaču pretežno dodjeljuje ocjenu \emph{ne pomaže}.
 \paragraph{Ponavljanje skupne poruke.}
 Ako obrada nije atomarna i provjera jedinstvenosti ne pokriva prethodno
 obrađene zapise, ponavljanje cijele skupne poruke povećava izloženost
-dvostrukom zapisu. Odjeljak~\ref{sec:matrica} razrađuje te pretpostavke;
+dvostrukom zapisu. Odjeljak \ref{sec:matrica} razrađuje te pretpostavke;
 izostanak opisa atomarnosti ne dokazuje da odredište tako postupa. Rizik
 povezan sa skupnom obradom može se izbjeći slanjem pojedinačnih poruka.
 
 \paragraph{Provjera duplikata i ispravak računa.}
 Slučaj B2 pokazuje da prepoznavanje postojećeg ključa ne rješava pitanje
-identifikacije ispravka. Dvije varijante iz tablice~\ref{tab:b2-datum} daju
+identifikacije ispravka. Dvije varijante iz tablice \ref{tab:b2-datum} daju
 različit rezultat opisane provjere S008. Izvedba zato mora odabrati
 varijantu i sačuvati podatke o tom izboru. Takav izbor omogućuje praćenje
 postupka, ali njegova prihvatljivost u stvarnom sustavu ostaje neprovjerena.
 
 \paragraph{Regulatorna granica pokrivenosti.}
-Nepokrivene slučajeve iz odjeljka~\ref{sec:nepokriveno} povezuje nedostatak
+Nepokrivene slučajeve iz odjeljka \ref{sec:nepokriveno} povezuje nedostatak
 podatka ili jednoznačnog pravila. Tehnički obrazac može evidentirati odabrano
 tumačenje, ali mu ne može dati obvezujuće pravno značenje.
 
@@ -116,9 +116,9 @@ Klasa pritom obuhvaća različite nedostatke. Veza datuma, oznake kopije,
 reference na prethodni račun i šifre S008 primjer je nedovoljno određene
 kombinacije pravila. Kod roka koji teče od nedefiniranog primitka nedostaje
 pravilo, pa nema dvaju zahtjeva među kojima bi se mogla odrediti prednost.
-Odjeljak~\ref{sec:fault-error-failure} razlikuje uzrok u specifikaciji
-propustom od uzroka pogrešnim navodom, koji uključuje nedosljednost.
-Proturječje među zahtjevima ne obuhvaća oba uzroka.
+Odjeljak \ref{sec:fault-error-failure} razlikuje kvar u specifikaciji
+propustom od kvara pogrešnim navodom, koji uključuje nedosljednost.
+Proturječje među zahtjevima ne obuhvaća oba kvara.
 
 Rad se oslanja na postupak izvođenja zahtjeva iz teksta
 propisa \cite{breaux2008regulatory}. Tim postupkom ovdje izvodi načine
@@ -145,7 +145,7 @@ sudionika kojeg rad ne bi smio imenovati ne bi zadovoljilo taj uvjet.
 Analiza specifikacije utvrđuje što izvori određuju, dopuštaju i ostavljaju
 neodređenim, dok mjerenje pokazuje ponašanje pojedine izvedbe. Za ponovljivost
 mjerenja trebalo bi navesti okolinu, verzije, ulaze i postupak.
-Tablica~\ref{tab:sljedivost} povezuje prijavljeni opseg rada s analitičkom
+Tablica \ref{tab:sljedivost} povezuje prijavljeni opseg rada s analitičkom
 pokrivenošću cijelog tijeka i opsegom prototipa.
 
 \begin{table}[htbp]
@@ -195,7 +195,7 @@ pod istim brojem smije se poslati samo jednom, ponovno slanje bez oznake
 kopije smatra se neregularnim, a pristupna točka primatelja mora vratiti
 potvrdu neovisno o tome je li dokument već zaprimila. Posljednje pravilo
 odgovara dostavi barem jednom uz potiskivanje duplikata na strani primatelja
-iz odjeljka~\ref{sec:semantika-dostave}. U Zakonu, Pravilniku i tehničkoj
+iz odjeljka \ref{sec:semantika-dostave}. U Zakonu, Pravilniku i tehničkoj
 specifikaciji taj obrazac nije opisan.
 
 Porezna uprava tu rubriku opisuje kao pojašnjenje kako postupati po važećim

@@ -2,7 +2,7 @@
 \label{ch:tijekovi}
 
 Poslovni tijek može obuhvaćati niz poziva prema različitim sudionicima.
-Na otkaze pojedinačnog poziva iz poglavlja~\ref{ch:raspodijeljeni} tada se
+Na otkaze pojedinačnog poziva iz poglavlja \ref{ch:raspodijeljeni} tada se
 nadovezuje pitanje kako pratiti napredak cijelog tijeka i nastaviti obradu
 kada je samo dio koraka dovršen.
 
@@ -34,7 +34,7 @@ prekinuta. Bailis i Ghodsi opisuju isto ograničenje pri razdvajanju mreže:
 ako procesi ne mogu komunicirati, izmjene se ne mogu sinkrono proširiti na
 sve sudionike bez blokiranja \cite{bailis2013eventual}.
 
-U studiji slučaja iz poglavlja~\ref{ch:studija} dvofazno počinjanje nije
+U studiji slučaja iz poglavlja \ref{ch:studija} dvofazno počinjanje nije
 primjenjivo preko kanala razmjene i fiskalizacije. Nijedno od tih sučelja ne
 nudi fazu pripreme ni glasanje, pa ne može sudjelovati u zajedničkom
 protokolu atomarnog dovršetka.
@@ -106,7 +106,7 @@ poruku kojom bi obveznik povukao provedenu fiskalizaciju. Kod tehničke
 nemogućnosti dopušta odgodu uz rok od pet radnih dana
 (čl.~49.~st.~1.). Na fiskalizaciju je zato primjenjiv dio obrasca sage koji
 prati lokalne korake i evidentira napredak, dok kompenzacija provedene
-fiskalizacije nije dostupna. Odjeljak~\ref{sec:dizajn} razrađuje takvu primjenu
+fiskalizacije nije dostupna. Odjeljak \ref{sec:dizajn} razrađuje takvu primjenu
 u obliku odgode uz zapis o napretku.
 
 Helland i Campbell opisuju ograničenje asinkronog provođenja poslovnih
@@ -153,7 +153,7 @@ Za primjenu automata na fiskalizaciju treba opisati i vremenske uvjete:
 „u trenutku izdavanja“ i „pet radnih dana“. Istek roka može se prikazati kao
 izričit događaj koji sustav dostavlja automatu. Rok se može uključiti i kao
 uvjet nad prijelazom: poruka pokreće prijelaz, a uvjet određuje je li dopušten.
-Poglavlje~\ref{ch:implementacija} primjenjuje oba pristupa i obrazlaže njihov
+Poglavlje \ref{ch:implementacija} primjenjuje oba pristupa i obrazlaže njihov
 izbor. To su mogućnosti izvedbe, a ne jedino teorijski dopušteno rješenje.
 
 Helland opisuje organizaciju sustava u kojoj svaki entitet ima vlastiti

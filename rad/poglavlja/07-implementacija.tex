@@ -2,7 +2,7 @@
 \label{ch:implementacija}
 
 Ilustrativni prototip provjerava dio tvrdnji o obrascima iz
-odjeljka~\ref{sec:dizajn} usporedbom završnih stanja dviju izvedbi nakon
+odjeljka \ref{sec:dizajn} usporedbom završnih stanja dviju izvedbi nakon
 istog kvara. Predložena izvedba zapisuje namjeru prije vanjskog poziva, a
 osnovna stvara zapis predaje tek nakon odgovora.
 
@@ -80,13 +80,13 @@ Obje izvedbe koriste isti kod, a osnovna se odabire opcijom
 eRačunu mogu utvrditi šalje li se ispravak. Redni pokušaj dostave mora se
 zasebno evidentirati jer prva i ponovljena dostava sadrže isti dokument.
 Osnovna izvedba taj podatak gubi kada odgovor izostane, što pokazuju
-scenariji u odjeljku~\ref{sec:scenariji}.
+scenariji u odjeljku \ref{sec:scenariji}.
 
 % ------------------------------------------------------------
 \section{Model stanja i ključne komponente}
 \label{sec:komponente}
 
-Prema dizajnu iz odjeljka~\ref{sec:dizajn}, dokument i njegova predaja
+Prema dizajnu iz odjeljka \ref{sec:dizajn}, dokument i njegova predaja
 pohranjeni su u odvojenim tablicama, a treća čuva evidenciju. U predloženoj
 izvedbi dokument i početni zapis predaje nastaju u jednoj lokalnoj
 transakciji. Vanjski poziv izvršava se nakon njezina dovršetka. Ne postoji
@@ -94,11 +94,11 @@ transakcija koja bi obuhvatila i lokalni zapis i ishod vanjskog
 poziva \cite{helland2007lifebeyond}. Različite tablice nisu različite
 transakcijske granice.
 
-Životni ciklus predaje opisan je automatom sa slike~\ref{fig:automat}. Stanje
+Životni ciklus predaje opisan je automatom sa slike \ref{fig:automat}. Stanje
 \texttt{sent-unconfirmed} označava nepoznat ishod slanja. Istek roka vodi u
 \texttt{deadline-expired}, ali ne otkriva je li raniji zahtjev obrađen.
 Oba stanja zato zadržavaju nepoznat udaljeni ishod, uz obrazloženje iz
-odjeljka~\ref{sec:dizajn} \cite{schneider1990statemachine}.
+odjeljka \ref{sec:dizajn} \cite{schneider1990statemachine}.
 
 \begin{figure}[htbp]
 \centering
@@ -133,13 +133,13 @@ otkriva ishod ranije udaljene obrade.}
 
 \needspace{18\baselineskip}
 Rok iz članka 49.\ stavka 1.\ provjerava se uvjetima nad prijelazima, a njegov
-istek predstavlja zaseban poticaj, prema odjeljku~\ref{sec:automat}.
-Listing~\ref{lst:automat} prikazuje provjere dopuštenosti slanja i poticaja
+istek predstavlja zaseban poticaj, prema odjeljku \ref{sec:automat}.
+Listing \ref{lst:automat} prikazuje provjere dopuštenosti slanja i poticaja
 isteka roka.
 
 \begin{lstlisting}[language=PHP, caption={[Rok kao uvjet nad
 prijelazom]Rok kao uvjet nad prijelazom. Prijelaze pokreću poticaji iz
-slike~\ref{fig:automat}, a rok samo odlučuje je li poticaj dopušten.},
+slike \ref{fig:automat}, a rok samo odlučuje je li poticaj dopušten.},
 label={lst:automat}]
 if ($trigger === Trigger::SENT && $expired) {
     // Granica prototipa, ne zakonska zabrana slanja.
@@ -171,8 +171,8 @@ razrješavanje ranijeg ishoda nisu obuhvaćeni prototipom.
 
 Zapis u odlaznom pretincu sadrži ključ koji određuje
 pošiljatelj \cite{saltzer1984endtoend}. Poslovna namjera i redni pokušaj
-dostave omogućuju tumačenje šifre S008 prema listingu~\ref{lst:s008}.
-Listing provodi četiri odluke iz tablice~\ref{tab:s008-tumacenje}:
+dostave omogućuju tumačenje šifre S008 prema listingu \ref{lst:s008}.
+Listing provodi četiri odluke iz tablice \ref{tab:s008-tumacenje}:
 dvije kombinacije daju jednoznačan prijelaz, a dvije zadržavaju nepoznat
 ishod. Posljednja grana obrađuje nedostatak podatka o namjeri.
 
@@ -226,7 +226,7 @@ prijelaz i svako dvoznačno tumačenje, uključujući vrijeme njegova nastanka.
 \label{sec:scenariji}
 
 Četiri scenarija provjeravaju po jedan način otkazivanja iz
-odjeljka~\ref{sec:failure-modes}. Svaki se pokreće u obje izvedbe, sa zapisom
+odjeljka \ref{sec:failure-modes}. Svaki se pokreće u obje izvedbe, sa zapisom
 namjere i bez njega. Scenariji upravljaju satom od unaprijed zadanog početnog
 trenutka, pa su ispisi ponovljivi.
 
@@ -268,7 +268,7 @@ automat vodi u završno stanje \texttt{deadline-expired}, bez novog slanja.
 Ishod prethodnog poziva i tada ostaje nepoznat. U osnovnoj izvedbi račun je
 izdan, ali zapis predaje ne postoji.
 
-Tablica~\ref{tab:raspored} uspoređuje raspored koji uzima u obzir preostali rok
+Tablica \ref{tab:raspored} uspoređuje raspored koji uzima u obzir preostali rok
 s eksponencijalnim odmakom koji ovisi samo o broju pokušaja.
 
 \begin{table}[H]
@@ -324,7 +324,7 @@ dostavi. U trećem dijelu ispravak nakon izostanka odgovora dobiva S008 pri
 ponovnoj dostavi. Ispravci zadržavaju složeni identifikator izvornika.
 Scenarij ne provjerava ponašanje stvarnog sustava ni varijantu ispravka s
 novim datumom i referencom na prethodni račun.
-Listing~\ref{lst:ispis} prikazuje završno stanje baze.
+Listing \ref{lst:ispis} prikazuje završno stanje baze.
 
 \noindent\begin{minipage}{\textwidth}
 \begin{lstlisting}[caption={[Završno stanje baze nakon scenarija
@@ -365,7 +365,7 @@ EVIDENCIJA
 
 Pri prvoj predaji treći redak evidencije bilježi nepoznat ishod. Kasniji
 odgovor S008 omogućuje potvrdu ranijeg pokušaja uz pretpostavke iz
-odjeljka~\ref{sec:dizajn}, a prethodni zapis ostaje u evidenciji.
+odjeljka \ref{sec:dizajn}, a prethodni zapis ostaje u evidenciji.
 
 Pri trećoj predaji S008 ostaje dvoznačan i uz zapisanu namjeru: šifra se
 može odnositi na izvornik ili na raniji pokušaj slanja ispravka sa zadržanim
@@ -394,7 +394,7 @@ ranije slanje nije dopušteno. Drugi poziv vraća potvrdu, pa predaja prelazi
 u stanje \texttt{confirmed} prije isteka roka. Oba su poziva evidentirana.
 
 Scenarij provjerava ponavljanje pokrenuto događajem oporavka unutar roka;
-ne izvršava raspored iz tablice~\ref{tab:raspored}. Praćenje roka obuhvaća:
+ne izvršava raspored iz tablice \ref{tab:raspored}. Praćenje roka obuhvaća:
 
 \begin{itemize}[nosep, leftmargin=1.4cm]
   \item računanje zakazanog trenutka iz preostalog roka,
@@ -415,4 +415,4 @@ Očekivano završno stanje određeno je propisom i primijenjenim obrascem,
 pa uspjeh testa ne zahtijeva uspjeh poziva. Prototip sadrži 32 testa sa
 105 pojedinačnih provjera. Jedan test može provjeravati stanje, podatke o
 roku i evidenciju. Na te se rezultate oslanjaju ocjene ćelija označenih kao
-pokazane u poglavlju~\ref{ch:evaluacija}.
+pokazane u poglavlju \ref{ch:evaluacija}.

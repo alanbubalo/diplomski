@@ -2,7 +2,7 @@
 \label{ch:pozadina}
 
 Poglavlje opisuje pravni i tehnički okvir iz kojeg
-poglavlje~\ref{ch:studija} izvodi načine otkazivanja. Usporedba fiskalizacije
+poglavlje \ref{ch:studija} izvodi načine otkazivanja. Usporedba fiskalizacije
 u krajnjoj potrošnji i fiskalizacije eRačuna pokazuje razlike u potvrdi
 primitka i postupanju pri tehničkim poteškoćama.
 
@@ -10,49 +10,23 @@ primitka i postupanju pri tehničkim poteškoćama.
 \section{Fiskalizacija u Hrvatskoj}
 \label{sec:fiskalizacija-hr}
 
-Fiskalizacijom porezna uprava dobiva podatke o transakcijama u trenutku
-njihova nastanka, umjesto naknadno putem poreznih prijava. Hrvatski sustav
+Fiskalizacijom porezna uprava dobiva podatke o transakcijama čim one
+nastanu, umjesto naknadno putem poreznih prijava. Hrvatski sustav
 izvorno je pokrivao samo promet u krajnjoj potrošnji, odnosno račune koje
 poslovni subjekt izdaje potrošaču
 (\strani{poslovanje prema potrošaču}{business-to-consumer}, B2C).
 
-Razlog uvođenja fiskalizacije jest smanjenje razlike između poreza koji bi
-po zakonu trebao biti naplaćen i stvarno naplaćenog poreza. Za PDV se ta
-razlika naziva jazom PDV-a. U Uniji je za 2020.\ procijenjena na 93 milijarde
-eura, od čega se 40 do 60 milijardi pripisuje prijevarama, prije svega
-prijevari unutar Zajednice s nepostojećim trgovcem
-(uvodna izjava~3.) \cite{eu2025vida}. Izvještavanje o pojedinačnim
-transakcijama poreznoj upravi omogućuje unakrsnu usporedbu podataka i
-djeluje odvraćajuće na neusklađenost
-(uvodna izjava~4.). Hrvatska fiskalizacija uvedena je prije te direktive,
-sa svrhom smanjenja istog jaza.
+Prema Zakonu o fiskalizaciji \cite{nn2025zakonfiskalizacija}, obveznik pri
+izdavanju računa elektronički potpisuje njegove elemente i dostavlja ih
+Sustavu za fiskalizaciju (čl.~15.). Nakon provjere sustav vraća Jedinstveni
+identifikator računa (JIR), koji služi kao dokaz o provedenoj fiskalizaciji,
+ili poruku o odbijanju.
 
-Mehanizam fiskalizacije B2C propisan je Zakonom o
-fiskalizaciji \cite{nn2025zakonfiskalizacija}. Obveznik pri izdavanju
-svakog računa elektronički potpisuje elemente računa i dostavlja ih
-Sustavu za fiskalizaciju putem uspostavljene elektroničke veze
-(čl.~15.~st.~1.). Sustav provjerava jesu li dostavljeni svi propisani
-elementi i jesu li potpisani ispravnim certifikatom (st.~2.). Ako jesu,
-vraća obvezniku Jedinstveni identifikator računa, JIR (st.~3.). Ako JIR
-ne može odrediti, vraća poruku o odbijanju (st.~4.). JIR obvezniku služi
-kao dokaz o ispunjenoj obvezi.
-
-Zakon uređuje i slučaj kada veza ne radi. Obveznik tada izdaje račune bez
-JIR-a (čl.~21.~st.~1.) i u roku od dva radna dana dužan je uspostaviti
-vezu te dostaviti elemente svih tako izdanih računa (st.~2.). Postupanje
-unutar tog roka smatra se ispravnom fiskalizacijom:
-
-\begin{quote}
-„Za račune izdane prema stavku 1.\ ovoga članka smatra se da je ispravno
-proveden postupak fiskalizacije računa ako se postupi u roku propisanom
-stavkom 2.\ ovoga članka.“ \hfill (čl.~21.~st.~3.)
-\end{quote}
-
-Za potpuni prestanak rada uređaja propisano je izdavanje računa iz uvezane
-knjige računa ovjerene putem sustava ePorezna (čl.~22.). Fiskalizacija
-eRačuna ima vlastiti poseban rok za tehničku nemogućnost, ali nema JIR ni
-jednak izvanmrežni postupak. Razlike razrađuje
-odjeljak~\ref{sec:fiskalizacija-2-0}.
+Ako veza ne radi, obveznik može izdati račun bez JIR-a, ali njegove elemente
+mora dostaviti u roku od dva radna dana. Postupanje unutar tog roka smatra se
+ispravnom fiskalizacijom (čl.~21.). Fiskalizacija eRačuna ima zaseban rok za
+tehničku nemogućnost, ali nema JIR ni jednak izvanmrežni postupak. Te su
+razlike važne za načine otkazivanja analizirane u nastavku rada.
 
 % ------------------------------------------------------------
 \section{Fiskalizacija 2.0}
@@ -111,7 +85,7 @@ dana nakon što je eRačun izdan.“ \hfill (čl.~48.~st.~3.)
 
 Razmjena dokumenta i prijava podataka o njemu zato se odvijaju odvojenim
 kanalima. Posljedice tog obveznog razdvajanja razrađuje
-poglavlje~\ref{ch:studija}.
+poglavlje \ref{ch:studija}.
 
 Zakon uređuje i ispravak eRačuna. Kada se ispravlja podatak koji ne utječe
 na obračun poreza, eRačun se \emph{može} u istom razdoblju oporezivanja
@@ -187,8 +161,4 @@ izmjena i dopuna.“ \hfill (čl.~2.~st.~1.~t.~9.)
 Hrvatsko suženje norme, poznato kao HR-CIUS \cite{pu2026hrcius}, time
 dobiva istu obvezujuću snagu kao i sama norma. Porezna uprava taj dokument
 mijenja izvan Narodnih novina. Posljedice takvog načina objave razmatra
-poglavlje~\ref{ch:rasprava}.
-
-Paket ViDA \cite{eu2025vida} uvodi elektroničko fakturiranje i
-izvještavanje o transakcijama na razini Unije. Na obveze prikazane u ovom
-poglavlju ne utječe, ali hrvatske promjene smješta u širi okvir.
+poglavlje \ref{ch:rasprava}.

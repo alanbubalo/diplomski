@@ -2,7 +2,7 @@
 \label{ch:pristupi}
 
 Poglavlje opisuje obrasce čija se primjenjivost razmatra u
-odjeljku~\ref{sec:dizajn}. Nijedan od njih ne djeluje bezuvjetno: uz način
+odjeljku \ref{sec:dizajn}. Nijedan od njih ne djeluje bezuvjetno: uz način
 rada svakoga idu uvjeti primjene i cijena u opterećenju, kašnjenju ili
 oporavku sustava.
 
@@ -17,7 +17,7 @@ i kada će privremeno zaustaviti pozive.
 Istek vremena ograničava koliko dugo klijent čeka odgovor. Tijekom čekanja
 klijent zauzima resurse, pa velik broj takvih poziva može iscrpiti memoriju,
 dretve ili priključke \cite{brookertimeouts}. Kako je objašnjeno u
-odjeljku~\ref{sec:detekcija-otkaza}, prekid čekanja ne dokazuje da je
+odjeljku \ref{sec:detekcija-otkaza}, prekid čekanja ne dokazuje da je
 primatelj otkazao.
 
 Predugo čekanje produljuje zauzeće resursa. Prekratko čekanje uzrokuje lažne
@@ -28,7 +28,7 @@ odredišne usluge, 99,9.\ percentil. To je vrijeme
 unutar kojeg završi 99,9\,\% promatranih poziva.
 
 Ponavljanje se oslanja na Grayevo objašnjenje prolaznih kvarova iz
-odjeljka~\ref{sec:klasifikacija-otkaza}. Prema njegovoj pretpostavci,
+odjeljka \ref{sec:klasifikacija-otkaza}. Prema njegovoj pretpostavci,
 vraćanje stanja programa na početno i ponovno izvođenje operacije često
 omogućuju oporavak. Ponovni pokušaji pritom dodatno opterećuju odredište,
 što Brooker opisuje ovako:
@@ -91,7 +91,7 @@ izvedbu.
 Sigurnost ponavljanja ovisi i o svojstvima sučelja. Brooker za operacije s
 popratnim učincima zahtijeva idempotentnost. Ponovljeni poziv tada ne mijenja
 učinak već provedene obrade. To je zahtjev prema sučelju opisan u
-odjeljku~\ref{sec:djelomicni-otkaz}.
+odjeljku \ref{sec:djelomicni-otkaz}.
 
 % ------------------------------------------------------------
 \section{Asinkrona komunikacija}
@@ -100,7 +100,7 @@ odjeljku~\ref{sec:djelomicni-otkaz}.
 U asinkronoj komunikaciji pošiljatelj predaje poruku redu čekanja, a radnik
 je preuzima i obrađuje naknadno. Predaja poruke zato ne potvrđuje da je
 obrada dovršena. Razlika između dostave i učinka obrade iz
-odjeljka~\ref{sec:semantika-dostave} vrijedi i za ovaj način komunikacije.
+odjeljka \ref{sec:semantika-dostave} vrijedi i za ovaj način komunikacije.
 
 Hohpe i Woolf opisuju obrasce za pouzdanu razmjenu poruka
 \cite{hohpe2003eip}. \strani{Jamčena dostava}{guaranteed delivery}
@@ -133,10 +133,10 @@ zapis \cite{laigner2021data}. Obrazac se zato u radu navodi kao
 industrijska praksa.
 
 Pri dostavi barem jednom eliminacija duplikata provodi se na krajevima sustava.
-Kako je obrazloženo u odjeljku~\ref{sec:semantika-dostave}, prijenosni sloj
+Kako je obrazloženo u odjeljku \ref{sec:semantika-dostave}, prijenosni sloj
 ne može prepoznati duplikate koje proizvede sama aplikacija. Primatelju je
 potreban ključ pošiljatelja koji ostaje isti pri ponovnom slanju iste
 poruke. Identifikator koji primatelj stvara za svaki zahtjev ne omogućuje
 to razlikovanje jer svaki pokušaj dobiva novu vrijednost. Ulogu
 identifikatora u fiskalizacijskom sučelju razmatra
-poglavlje~\ref{ch:studija}.
+poglavlje \ref{ch:studija}.
