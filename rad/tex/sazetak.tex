@@ -1,71 +1,27 @@
 \chapter*{Sažetak}
 \addcontentsline{toc}{chapter}{Sažetak}
 
-Rad analizira primjenu obrazaca tolerancije na greške u fiskalizaciji eRačuna
-u Hrvatskoj. Od 2026.\ izdavatelj eRačuna mora dostaviti dokument primatelju i
-prijaviti podatke Poreznoj upravi. Budući da se razmjena i fiskalizacija provode
-odvojeno, jedan postupak može uspjeti, a drugi ne. Analiza se temelji na Zakonu,
-Pravilniku i tehničkoj specifikaciji, što omogućuje provjeru izvedenih nalaza
-bez pristupa stvarnom sustavu.
+Rad analizira otpornost procesa fiskalizacije e-računa u Hrvatskoj na djelomične kvarove i nepoznate ishode komunikacije. Proces obuhvaća najmanje dvije zasebne aktivnosti: dostavu e-računa primatelju i prijavu podataka Poreznoj upravi. Jedna aktivnost može uspjeti, a druga završiti neuspjehom ili nepoznatim ishodom. Sustav tada može ponovno poslati zahtjev, stvoriti duplikat ili ostati bez pouzdane osnove za nastavak obrade.
 
-Iz propisanog tijeka izvedeno je jedanaest načina otkazivanja. Obuhvaćaju
-nedovršene postupke, nepoznate ishode i poteškoće s određivanjem rokova.
-Jedan od slučajeva pokazuje da dokumentacija ne određuje dovoljno precizno
-kako razlikovati ispravak računa od duplikata. Za ograničenja koja proizlaze
-iz propisane arhitekture ili nedovoljno određenih pravila rad upotrebljava
-radni pojam \emph{ograničenje uvjetovano propisima}.
+Analiza zakona, pravilnika i tehničkih specifikacija utvrdila je jedanaest takvih scenarija. Za svaki scenarij provjerena je primjenjivost šest obrazaca tolerancije na greške iz stručne literature. Prototip dodatno provjerava dio nalaza usporedbom dviju strategija: bilježenja namjere prije slanja i bilježenja uspješne predaje nakon primitka odgovora.
 
-Matrica uspoređuje jedanaest načina otkazivanja sa šest obrazaca. Za svaku
-ocjenu navodi se temelji li se na propisu ili literaturi, provjeri
-prototipom ili prosudbi autora. Prototip uspoređuje dvije izvedbe: jedna
-zapisuje namjeru prije slanja, a druga zapis predaje stvara tek nakon
-odgovora. U četiri odabrana scenarija prikazuje kako trenutak zapisivanja
-utječe na praćenje ishoda i nastavak obrade.
+Rezultati potvrđuju da obrasci mogu ublažiti posljedice određenih kvarova. Sustav bilježi pokušaje obrade i sigurnije ponavlja zahtjeve, ali time ne uklanja probleme u protokolu i regulatornim pravilima. U nekim situacijama nije moguće utvrditi je li prethodni zahtjev obrađen. Bez dodatnog pravila nije moguće razlikovati siguran ponovni pokušaj od stvaranja duplikata.
 
-U razmatranim slučajevima obrasci ne uklanjaju nijedan način otkazivanja.
-Mogu ublažiti posljedice ili sačuvati zapis o pokušaju čiji ishod nije
-poznat. Njihov učinak ovisi o mjestu primjene i konfiguraciji. Ponašanje
-stvarnog sustava nije provjereno, pa nalazi opisuju ograničenja izvedena
-iz dokumenata i ishode modeliranih scenarija.
+Rad zaključuje da se otpornost sustava ne može postići isključivo primjenom softverskih obrazaca, već ovisi i o pravilima protokola, dostupnim identifikatorima te preciznosti regulatornih specifikacija.
 
 \vspace{1em}
-\noindent\textbf{Ključne riječi:} tolerancija na greške, raspodijeljeni sustavi,
-fiskalizacija eRačuna, obrasci otpornosti, ograničenje uvjetovano propisima
+\noindent\textbf{Ključne riječi:} obrasci tolerancije na greške, raspodijeljeni sustavi, fiskalizacija e-računa, načini otkazivanja, regulatorna ograničenja
 
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
 
-This paper analyzes the application of fault-tolerance patterns in the
-fiscalization of e-invoices in Croatia. Starting in 2026, an e-invoice issuer
-must deliver the document to the recipient and report the data to the Tax
-Administration. Since exchange and fiscalization are carried out separately,
-one process may succeed while the other fails. The analysis is based on the
-relevant Act, Ordinance, and technical specifications, allowing the derived
-findings to be verified without access to the actual system.
+This paper analyzes the resilience of the e-invoice fiscalization process in Croatia against partial failures and unknown communication outcomes. The process comprises at least two distinct activities: delivering the e-invoice to the recipient and reporting data to the Tax Administration. Due to their decoupling, one activity may succeed while the other fails or results in an unknown outcome; this can lead to re-transmission, the creation of duplicates, or an inability to reliably continue processing.
 
-Eleven failure scenarios were derived from the prescribed workflow. These
-include incomplete processes, unknown outcomes, and difficulties regarding
-timeframes. One case reveals that the documentation does not specify
-precisely enough how to distinguish an invoice correction from a duplicate.
-To address limitations arising from the prescribed architecture or
-insufficiently defined rules, the paper employs the term \emph{regulation-imposed
-imitation}.
+Based on relevant legislation, regulations, and technical specifications, eleven such scenarios were identified. For each scenario, the applicability of six fault-tolerance patterns from the literature was analyzed. Some findings were further validated using a prototype that compared two request-logging strategies: logging the intent prior to transmission versus logging successful submission after receiving a response.
 
-A matrix compares the eleven failure scenarios against six patterns. For each
-assessment, the basis is indicated: whether it relies on regulations or
-literature, prototype verification, or the author's judgment. The prototype
-compares two implementations: one records the intent before transmission,
-while the other creates the submission record only after receiving a response.
-Using four selected scenarios, it demonstrates how the timing of recording
-affects outcome tracking and the continuation of processing.
+The results indicate that the identified patterns can mitigate the consequences of certain failures—for instance, by maintaining records of processing attempts or enabling safer request re-transmission—but cannot eliminate problems inherent to the protocol itself and the regulatory rules. Specifically, situations were identified where the system cannot reliably determine whether a previous request was processed and, consequently, cannot distinguish a safe retry from the creation of a duplicate without additional rules.
 
-In the cases examined, the patterns do not eliminate any of the failure
-scenarios. They can, however, mitigate consequences or preserve a record of an
-attempt with an unknown outcome. Their effectiveness depends on the point of
-application and the system configuration. The behavior of the actual system
-has not been verified; therefore, the findings describe limitations derived
-from documents and the outcomes of modeled scenarios.
+The paper concludes that system resilience cannot be achieved solely through the application of software patterns but also depends on protocol rules, available identifiers, and the precision of regulatory specifications.
 
 \vspace{1em}
-\noindent\textbf{Keywords:} fault tolerance, distributed systems, eInvoice
-fiscalization, resilience patterns, regulation-induced constraint
+\noindent\textbf{Keywords:} fault-tolerance patterns, distributed systems, e-invoice fiscalization, failure modes, regulatory constraints

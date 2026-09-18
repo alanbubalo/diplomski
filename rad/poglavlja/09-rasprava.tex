@@ -19,7 +19,7 @@ provedena.
 Izvedba iz poglavlja \ref{ch:implementacija} sadrži tri tablice, pet stanja,
 automat s uvjetom nad prijelazom i evidenciju pokušaja. Takav model zahtijeva
 više podataka i pravila od zapisivanja ishoda poziva u jedno polje, ali
-omogućuje praćenje i onih pokušaja za koje odgovor nije primljen.
+sustav bilježi i pokušaje za koje odgovor nije primljen.
 
 Opseg potrebnih promjena ovisi o postojećoj izvedbi. Ako se fiskalizacijski
 poziv izvršava unutar postojeće transakcije, treba ga izdvojiti i zasebno
@@ -82,8 +82,8 @@ povezan sa skupnom obradom može se izbjeći slanjem pojedinačnih poruka.
 Slučaj B2 pokazuje da prepoznavanje postojećeg ključa ne rješava pitanje
 identifikacije ispravka. Dvije varijante iz tablice \ref{tab:b2-datum} daju
 različit rezultat opisane provjere S008. Izvedba zato mora odabrati
-varijantu i sačuvati podatke o tom izboru. Takav izbor omogućuje praćenje
-postupka, ali njegova prihvatljivost u stvarnom sustavu ostaje neprovjerena.
+varijantu i sačuvati podatke o tom izboru. Sustav tako bilježi postupak.
+Nije poznato prihvaća li stvarni sustav odabranu varijantu.
 
 \paragraph{Regulatorna granica pokrivenosti.}
 Nepokrivene slučajeve iz odjeljka \ref{sec:nepokriveno} povezuje nedostatak
@@ -92,7 +92,7 @@ tumačenje, ali mu ne može dati obvezujuće pravno značenje.
 
 Zakon za promet u krajnjoj potrošnji predviđa Jedinstveni identifikator
 računa koji vraća Sustav za fiskalizaciju (čl.~15.~st.~3.) i uređuje
-naknadno postupanje. Za fiskalizaciju eRačuna članak 49.\ također uređuje
+naknadno postupanje. Za fiskalizaciju e-računa članak 49.\ također uređuje
 naknadno postupanje, ali ne daje identifikator potvrđenog primitka ni
 rješenje za nedostupnost dulju od pet radnih dana. Razlika obuhvaća i
 dokaze o ispunjenju obveze i granice dopuštenog oporavka.
@@ -100,8 +100,8 @@ dokaze o ispunjenju obveze i granice dopuštenog oporavka.
 \paragraph{Razgraničenje od proturječnih zahtjeva.}
 Ograničenje uvjetovano propisima treba razlikovati od proturječnih zahtjeva,
 gdje dva zahtjeva na isti sustav traže postupanja koja se međusobno isključuju.
-Razlikuju se po tome tko može odlučiti o prednosti, na što se analiza odnosi i
-kakav je nedostatak u specifikaciji.
+Tri obilježja određuju vrstu problema: tko može odlučiti o prednosti, na što
+se analiza odnosi i kakav je nedostatak u specifikaciji.
 
 Kod proturječnih zahtjeva naručitelj može odlučiti koji zahtjev ima prednost.
 Obveznik nema takvu ovlast nad propisom. Odabir vlastitog tumačenja izlaže ga
@@ -164,7 +164,7 @@ Istek vremena i ponavljanje & Primijenjeni u dizajnu i izvršeni u scenarijima B
 Prekidač i saga & Istraženi kao kandidati. Prekidač je uvjetno primjenjiv uz trajni red i raspored svjestan roka, a saga zadržava evidentirani niz bez kompenzacije. \\
 Cijeli tijek računa & Pokriven referentnom arhitekturom. Prototip izvršava granicu C1 prema C2 i sinkroni kanal prema Sustavu za fiskalizaciju. \\
 Scenariji grešaka & Četiri načina otkazivanja pokrenuta su u osnovnoj i predloženoj izvedbi. \\
-Učinkovitiji pristup & Usporedba završnih stanja pokazuje smanjuje li zapis namjere nepoznat ishod i omogućuje li oporavak. \\
+Učinkovitiji pristup & Prototip provjerava smanjuje li zapis namjere nepoznat ishod i podupire li oporavak. \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -185,13 +185,13 @@ Dio operativnih pravila objavljen je u dokumentaciji Porezne uprave izvan
 Narodnih novina. Dokumentacija se mijenja izdavanjem novih verzija, bez
 pročišćenog teksta. Tehnička specifikacija i hrvatsko suženje norme sadrže
 povijest promjena s verzijom, opisom i datumom \cite{pu2026tehspec,pu2026hrcius}.
-Taj sažetak ne omogućuje provjeru potpunosti izmjena bez usporedbe cjelovitih
-tekstova.
+Iz tog sažetka nije moguće utvrditi potpunost izmjena bez usporedbe
+cjelovitih tekstova.
 
 Rubrika pitanja i odgovora nema oznaku verzije ni povijest promjena. Nakon
 izmjene stranice izvorni oblik navoda nije moguće ponovno pronaći na samoj
 stranici. To otežava provjeru pravila o duplikatima, koja su razrađena
-isključivo u toj rubrici \cite{pu2026pitanjaodgovori}. Prema uputi, eRačun
+isključivo u toj rubrici \cite{pu2026pitanjaodgovori}. Prema uputi, e-račun
 pod istim brojem smije se poslati samo jednom, ponovno slanje bez oznake
 kopije smatra se neregularnim, a pristupna točka primatelja mora vratiti
 potvrdu neovisno o tome je li dokument već zaprimila. Posljednje pravilo
@@ -204,7 +204,7 @@ propisima i po vlastitim dopisima. Takvo pojašnjenje ima status mjerodavnog
 tumačenja regulatora, ali nije propis. Za provjerljivost navoda u ovom radu
 stranica je arhivirana s datumom i kontrolnim zbrojem.
 
-Na transportnom sloju rizik proizlazi iz odabira verzije specifikacije.
+Na transportnom sloju rizik ovisi o odabranoj verziji specifikacije.
 Hrvatski profil određuje primjenu verzije 1.15 europskog profila
 AS4 \cite{cef2020as4v115}, koja je u međuvremenu označena kao zamijenjena,
 dok drugi sudionici europske mreže primjenjuju druge verzije. Izvedbe zato

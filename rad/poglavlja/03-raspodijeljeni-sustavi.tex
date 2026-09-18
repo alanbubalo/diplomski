@@ -36,8 +36,8 @@ failure of a processor on the other side of that link.}“
 Iz samog izostanka odgovora pozivatelj ne može utvrditi što se dogodilo.
 Zahtjev je mogao biti izgubljen na putu, primatelj je mogao otkazati prije
 obrade ili nakon obrade, prije slanja odgovora, a mogao je biti izgubljen i
-odgovor na povratku. Sučelje zato mora omogućiti dosljedno postupanje i kada
-ishod prethodnog zahtjeva nije poznat.
+odgovor na povratku. Sučelje zato mora odrediti postupanje i kada ishod
+prethodnog zahtjeva nije poznat.
 
 Autori taj problem prikazuju na primjeru reda čekanja sa standardiziranim
 sučeljem. Klijent nakon \strani{isteka vremena}{timeout} uvodi
@@ -82,11 +82,11 @@ pogreška zato ne mora dovesti do otkaza. Ovaj rad analizira načine
 otkazivanja, odnosno odstupanja vidljiva korisniku usluge.
 
 Autori ispravnost usluge određuju prema funkciji sustava. Usluga može
-odgovarati specifikaciji, a ipak biti neprihvatljiva korisniku, što upućuje na
-kvar u samoj specifikaciji. Takvi kvarovi uključuju propuste i pogrešne navode,
-poput neopravdanih pretpostavki ili nedosljednosti. Ta podjela omogućuje
-analizu kvarova u propisima koji određuju fiskalizacijski tijek u
-poglavlju \ref{ch:studija}.
+odgovarati specifikaciji, a ipak biti neprihvatljiva korisniku. Tada je kvar
+u samoj specifikaciji. Takvi kvarovi uključuju propuste i pogrešne navode,
+poput neopravdanih pretpostavki ili nedosljednosti. Poglavlje
+\ref{ch:studija} prema toj podjeli analizira kvarove u propisima koji
+određuju fiskalizacijski tijek.
 
 Kvarovi se razlikuju i po postojanosti te ponovljivosti aktiviranja. Trajni
 kvar prisutan je neprekidno, a prolazni je vremenski ograničen. Kvarovi čije
@@ -119,7 +119,7 @@ reagirati.
 
 Primjenjivost ponavljanja ovisi o tome može li novi pokušaj uspjeti nakon
 neuspjelog. Gray iznosi pretpostavku da ponovno izvođenje operacije nakon
-vraćanja stanja programa na početno često omogućuje oporavak
+vraćanja stanja programa na početno često vraća sustav u ispravno stanje
 \cite{gray1986whystop}:
 
 \begin{quote}
@@ -166,14 +166,14 @@ ishod od potvrđenog neuspjeha.
 \label{sec:semantika-dostave}
 
 Semantika dostave opisuje što sustav jamči o dostavi i ponavljanju poruke.
-Razlikuju se tri osnovna jamstva. Najviše jednom znači
+Postoje tri osnovna jamstva. Najviše jednom znači
 da poruka neće biti obrađena više puta, ali može biti izgubljena. Barem jednom
 znači da poruka neće biti izgubljena, ali može biti obrađena više puta. Točno
 jednom podrazumijeva da poruka bude obrađena i da se njezina obrada ne ponovi.
 
-Odustajanje od ponovnog slanja omogućuje semantiku najviše jednom, dok se
-semantika barem jednom ostvaruje ponavljanjem do primitka potvrde. Za analizu
-jamstava pritom treba razlikovati:
+Ako pošiljatelj odustane od ponovnog slanja, dostava ima semantiku najviše
+jednom. Ponavljanje do primitka potvrde daje semantiku barem jednom. Za
+analizu jamstava pritom treba razlikovati:
 
 \begin{itemize}[nosep, leftmargin=1.4cm]
   \item prijenos poruke,
@@ -208,9 +208,8 @@ na ponovljenu poruku vraća odgovor koji oponaša prvi
 sama ne zahtijeva jednak odgovor. Primjerice, naredba „postavi status na
 plaćeno“ može se ponoviti bez dodatnog učinka, dok naredba „uvećaj naplaćeni
 iznos za 100 eura“ pri svakom ponavljanju mijenja iznos.
-Za razrješavanje nepoznatog ishoda
-pozivatelju treba odgovor iz kojeg može utvrditi što je učinjeno ili zaseban
-dohvat statusa. Ponavljanje ranijeg odgovora jedan je način da se to omogući.
+Bez odgovora o provedenoj radnji ili zasebnog dohvata statusa nije moguće
+utvrditi ishod. Primatelj taj podatak može dati ponavljanjem ranijeg odgovora.
 
 Saltzer, Reed i Clark argumentom s kraja na kraj objašnjavaju zašto
 komunikacijski podsustav ne može sam potpuno osigurati funkcije koje ovise o

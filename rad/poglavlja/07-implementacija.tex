@@ -39,7 +39,7 @@ Predmet provjere je rukovanje greškama. Prototip ne obuhvaća:
 Vanjska odredišta zamijenjena su \strani{krnjim dvojnicima}{stubs}. Dvojnik
 pristupne točke simulira potvrdu ili izostanak odgovora. Dvojnik Sustava za
 fiskalizaciju može vratiti i šifru S008. Unaprijed zadani niz odgovora
-omogućuje ponovljivo ispitivanje nedostupnosti i oporavka. Dvojnici su
+prototipu služi za ponovljivu provjeru nedostupnosti i oporavka. Dvojnici su
 lokalne programske zamjene za vanjske servise: vraćaju unaprijed zadane
 odgovore, bez stvarnog slanja računa.
 
@@ -77,7 +77,7 @@ Provjereno je uz PHP 8.5.8 i Laravel 13.25.0.
 
 Obje izvedbe koriste isti kod, a osnovna se odabire opcijom
 \texttt{--without-intent-record}. Obje iz indikatora kopije u spremljenom
-eRačunu mogu utvrditi šalje li se ispravak. Redni pokušaj dostave mora se
+e-računu mogu utvrditi šalje li se ispravak. Redni pokušaj dostave mora se
 zasebno evidentirati jer prva i ponovljena dostava sadrže isti dokument.
 Osnovna izvedba taj podatak gubi kada odgovor izostane, što pokazuju
 scenariji u odjeljku \ref{sec:scenariji}.
@@ -161,7 +161,7 @@ a stanje ostaje nepromijenjeno.
 
 Zaustavljanje slanja nakon isteka roka ograničenje je prototipa. Članak 49.\
 stavak 1.\ određuje rok izvršenja obveze, ali ne zabranjuje kasnije slanje.
-Zakon za slučaj eRačuna nema
+Zakon za slučaj e-računa nema
 odredbu poput one iz članka 21.\ stavka 3., koja zakašnjelu dostavu unutar
 sanacijskog roka izjednačava s pravovremenom. Model nakon isteka roka
 bilježi da potvrda nije stigla unutar roka. Raniji zahtjev možda je obrađen
@@ -171,7 +171,7 @@ razrješavanje ranijeg ishoda nisu obuhvaćeni prototipom.
 
 Zapis u odlaznom pretincu sadrži ključ koji određuje
 pošiljatelj \cite{saltzer1984endtoend}. Poslovna namjera i redni broj pokušaja
-dostave omogućuju tumačenje šifre S008 prema listingu \ref{lst:s008}.
+dostave određuju kako prototip tumači šifru S008 prema listingu \ref{lst:s008}.
 Listing provodi četiri odluke iz tablice \ref{tab:s008-tumacenje}:
 dvije kombinacije daju jednoznačan prijelaz, a dvije zadržavaju nepoznat
 ishod. Posljednja grana obrađuje nedostatak podatka o namjeri.
@@ -364,7 +364,7 @@ EVIDENCIJA
 \end{minipage}
 
 Pri prvoj predaji treći redak evidencije bilježi nepoznat ishod. Kasniji
-odgovor S008 omogućuje potvrdu ranijeg pokušaja uz pretpostavke iz
+odgovor S008 potvrđuje raniji pokušaj uz pretpostavke iz
 odjeljka \ref{sec:dizajn}, a prethodni zapis ostaje u evidenciji.
 
 Pri trećoj predaji S008 ostaje dvoznačan i uz zapisanu namjeru: šifra se

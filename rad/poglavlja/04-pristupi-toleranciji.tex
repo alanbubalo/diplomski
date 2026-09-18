@@ -30,8 +30,8 @@ unutar kojeg završi 99,9\,\% promatranih poziva.
 Ponavljanje se oslanja na Grayevo objašnjenje prolaznih kvarova iz
 odjeljka \ref{sec:klasifikacija-otkaza}. Prema njegovoj pretpostavci,
 vraćanje stanja programa na početno i ponovno izvođenje operacije često
-omogućuju oporavak. Ponovni pokušaji pritom dodatno opterećuju odredište,
-što Brooker opisuje ovako:
+vraćaju sustav u ispravno stanje. Ponovni pokušaji pritom dodatno opterećuju
+odredište, što Brooker opisuje ovako:
 
 \begin{quote}
 „Ponovni pokušaji su sebični. Drugim riječima, kada klijent ponovno
@@ -137,7 +137,8 @@ Pri dostavi barem jednom eliminacija duplikata provodi se na krajevima sustava.
 Kako je obrazloženo u odjeljku \ref{sec:semantika-dostave}, transportni sloj
 ne može prepoznati duplikate koje proizvede sama aplikacija. Primatelju je
 potreban ključ pošiljatelja koji ostaje isti pri ponovnom slanju iste
-poruke. Identifikator koji primatelj stvara za svaki zahtjev ne omogućuje
-to razlikovanje jer svaki pokušaj dobiva novu vrijednost. Ulogu
+poruke. Prema identifikatoru koji primatelj stvara za svaki zahtjev nije
+moguće utvrditi je li poruka ponovljena jer svaki pokušaj dobiva novu
+vrijednost. Ulogu
 identifikatora u fiskalizacijskom sučelju razmatra
 poglavlje \ref{ch:studija}.

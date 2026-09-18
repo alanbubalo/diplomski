@@ -3,19 +3,23 @@
 
 Rad pokazuje da za oporavak nakon kvara nije dovoljno samo ponavljati
 slanje. Sustav mora znati što je pokušao, koji je odgovor primio i koliko
-vremena ostaje do roka. Zapis namjere prije slanja omogućuje da se obrada
-nastavi i kada odgovor izostane.
+vremena ostaje do roka. Sustav bilježi namjeru prije slanja i nastavlja
+obradu i kada odgovor izostane.
 
-Mogućnosti oporavka ograničavaju i pravila postupka. Primjerice, tehnički
-obrazac ne može odrediti koji datum treba imati ispravak računa ako to
-izvori ne određuju. Ne može ni produljiti rok kada vanjski sustav ostane
-nedostupan. Za ograničenja koja proizlaze iz propisane arhitekture ili
-nedovoljno preciznih pravila rad koristi pojam \emph{ograničenje uvjetovano
-propisima}. Pojam služi analizi ove studije slučaja.
+Mogućnosti oporavka ne ovise samo o tehničkom rješenju, nego i o pravilima
+postupka. Ako propisi ili tehnička dokumentacija ne određuju koji datum
+ispravak računa treba sadržavati, aplikacija tu odluku ne može donijeti
+sama. Isto tako, aplikacija ne može samostalno produljiti propisani rok
+samo zato što vanjski sustav nije dostupan. Neke probleme nije moguće
+riješiti samo promjenom programske implementacije. Uzrok su propisana
+arhitektura sustava ili pravila koja nisu dovoljno precizna.
+U ovom radu takvi se slučajevi nazivaju \emph{ograničenjima
+uvjetovanima propisima}.
 
-Slučaj S008 pokazuje granicu lokalne evidencije. Podatak o tome šalje li
-se izvornik ili ispravak, zajedno s rednim brojem pokušaja dostave,
-omogućuje tumačenje nekih odgovora. Ponovljena dostava ispravka sa
+Slučaj S008 pokazuje granicu lokalne evidencije. Sustav zato treba
+zabilježiti šalje li izvornik računa ili njegov ispravak. Korisno je
+zabilježiti i redni broj pokušaja dostave. Ti podaci pomažu pri
+tumačenju odgovora vanjskog sustava. Ponovljena dostava ispravka sa
 zadržanim identifikatorom ipak ostaje dvoznačna. Nalaz opisuje nedovoljno
 određeno sučelje, a ne dokazuje da stvarni sustav odbija svaki ispravak.
 
@@ -26,17 +30,18 @@ određeno sučelje, a ne dokazuje da stvarni sustav odbija svaki ispravak.
 Iz propisanog tijeka izvedeno je jedanaest načina otkazivanja u pet skupina:
 razdvajanje kanala, sinkroni kanal bez definirane semantike otkaza, rokovi
 vezani uz nedovoljno određene događaje, nedostupnost infrastrukture i neuređena
-granica između poslovnog sustava i pristupne točke. Prema ishodu razlikuju se
-nedovršen tijek izložen roku, neodređen ishod i oporavak unutar posebnog roka.
+granica između poslovnog sustava i pristupne točke. Načini otkazivanja
+završavaju jednim od tri ishoda: nedovršenim tijekom izloženim roku,
+neodređenim ishodom ili oporavkom unutar posebnog roka.
 
 \paragraph{RQ2.}
 U matrici jedanaest načina otkazivanja i šest obrazaca nijedna ćelija nema
-ocjenu \emph{uklanja}. Obrasci čuvaju namjeru, ograničavaju ponavljanje i
-omogućuju nastavak nakon oporavka. Time mogu skratiti razdoblje nepoznatog
-ishoda ili omogućiti njegovo evidentiranje. Kada nedostaje podatak ili jednoznačno pravilo,
-najviše mogu evidentirati stanje i sačuvati dokaz o odabranoj interpretaciji.
-Za razrješavanje takvih slučajeva potrebno je preciznije pravilo, sučelje
-ili dokaz o primitku.
+ocjenu \emph{uklanja}. Sustav prema tim obrascima bilježi namjeru, ograničava
+ponavljanje i nastavlja obradu nakon oporavka. Time može skratiti razdoblje
+nepoznatog ishoda ili ga zabilježiti. Kada nedostaje podatak ili jednoznačno
+pravilo, sustav može zabilježiti samo stanje i sačuvati dokaz o odabranom
+tumačenju. Bez preciznijeg pravila, sučelja ili dokaza o primitku nije moguće
+utvrditi ishod.
 
 \paragraph{RQ3.}
 Troškovi obrazaca ocijenjeni su kvalitativno. Složenost raste zbog praćenja
@@ -71,9 +76,9 @@ fiskalizaciju, uz odgovarajuću vjerodajnicu. Njima bi se provjerile ocjene
 koje sada počivaju na autorskoj prosudbi. Za ponovljivost treba zabilježiti
 okolinu, verzije, ulaze i postupak.
 
-Proširenje prototipa na razmjenu između pristupnih točaka i predaju primatelju
-omogućilo bi izvršnu provjeru slučaja D2 i preostalog dijela referentnog
-tijeka. U demo okolini treba provjeriti i kombinacije datuma ispravka, oznake
-kopije, reference \texttt{PrethodniERacun} i šifre S008. Time bi se utvrdilo
-koje varijante ispravka sustav prihvaća i odgovara li njegovo ponašanje
-objavljenoj specifikaciji.
+Prototip treba proširiti na razmjenu između pristupnih točaka i predaju
+primatelju te dodatno testirati slučaj D2 i preostali dio referentnog tijeka.
+U demo okolini potrebno je dodatno testirati kombinacije datuma ispravka,
+oznake kopije, reference \texttt{PrethodniERacun} i šifre S008. Ti bi testovi
+pokazali koje varijante ispravka sustav prihvaća i odgovara li njegovo
+ponašanje objavljenoj specifikaciji.

@@ -5,9 +5,9 @@
 \section{Problem}
 \label{sec:problem}
 
-Izdavatelj eRačuna ima dvije odvojene zadaće: slanje računa primatelju
+Izdavatelj e-računa ima dvije odvojene zadaće: slanje računa primatelju
 i dostavu podataka o računu Poreznoj upravi. Drugi postupak se naziva
-fiskalizacija eRačuna. Budući da se ti postupci odvijaju odvojeno, uspješna
+fiskalizacija e-računa. Budući da se ti postupci odvijaju odvojeno, uspješna
 dostava računa ne znači da je i njegova fiskalizacija bila uspješna.
 Obveze i rokovi opisani su u odjeljku \ref{sec:fiskalizacija-2-0}.
 
@@ -21,16 +21,16 @@ rok za ispunjenje obveze.
 Obrasci tolerancije na greške uobičajeni su pristupi rješavanju takvih
 situacija. Sustav može, primjerice, ograničiti vrijeme čekanja na odgovor,
 ponoviti prijenos ili trajno zabilježiti namjeravanu poruku prije njezina
-slanja. Taj zapis omogućuje nastavak obrade čak i ako odgovor nije primljen.
+slanja. Sustav prema tom zapisu nastavlja obradu i kada odgovor nije primljen.
 
-Neke poteškoće proizlaze iz same prirode mrežne komunikacije. Druge nastaju
+Neke poteškoće uzrokuje sama mrežna komunikacija. Druge nastaju
 jer propisi i tehnička dokumentacija ne određuju potrebne postupke s
 dovoljnom preciznošću. Primjer za to su ispravci računa: sustav mora
 razlikovati novi sadržaj od ponovnog slanja postojeće poruke, no pravila za
 identifikaciju nisu u potpunosti definirana. Taj je scenarij detaljnije
-obrađen u odjeljku \ref{sec:failure-modes}. Za opis ograničenja koja
-proizlaze iz propisane arhitekture ili nedovoljno definiranih pravila, u
-ovom se radu koristi izraz \emph{ograničenje uvjetovano propisima}.
+obrađen u odjeljku \ref{sec:failure-modes}. Za ograničenja koja uzrokuje
+propisana arhitektura ili nedovoljno određena pravila ovaj rad koristi izraz
+\emph{ograničenje uvjetovano propisima}.
 
 Rad ispituje koliko tehnički obrasci mogu pomoći kada se pravila vanjskog
 sustava ne mogu mijenjati. Pritom razlikuje uspješno izvršenje obveze od
@@ -41,7 +41,7 @@ oporavak, ali sam po sebi ne potvrđuje da je zahtjev obrađen.
 \section{Ciljevi i istraživačka pitanja}
 \label{sec:ciljevi}
 
-Cilj rada je utvrditi gdje propisani tijek fiskalizacije eRačuna može
+Cilj rada je utvrditi gdje propisani tijek fiskalizacije e-računa može
 ostati nedovršen ili s nepoznatim ishodom te koliko obrasci tolerancije na
 greške mogu ublažiti te probleme. Takvi se slučajevi u radu nazivaju
 \emph{načinima otkazivanja}. Analiza se temelji na objavljenim dokumentima,
@@ -51,12 +51,12 @@ Rad odgovara na tri istraživačka pitanja, označena kraticom RQ:
 
 \begin{description}[leftmargin=1.6cm, style=nextline]
   \item[RQ1] Koji se načini otkazivanja mogu izvesti iz propisanog tijeka
-  fiskalizacije eRačuna? U kojem stanju nakon njih ostaje postupak
+  fiskalizacije e-računa? U kojem stanju nakon njih ostaje postupak
   izvršenja zakonske obveze?
 
   \item[RQ2] Koje slučajeve obrasci mogu ublažiti, koje mogu samo
-  evidentirati, a na koje nemaju učinka? Proizlaze li ta ograničenja iz
-  svojstava raspodijeljenih sustava ili iz propisa?
+  evidentirati, a na koje nemaju učinka? Uzrokuju li ta ograničenja svojstva
+  raspodijeljenih sustava ili propisi?
 
   \item[RQ3] U kojoj mjeri obrasci povećavaju složenost izvedbe, kašnjenje i
   rizik od prekoračenja roka? Pod kojim uvjetima mogu otežati izvršenje

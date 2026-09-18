@@ -37,7 +37,7 @@ prije predaje; osnovna zapis predaje stvara tek nakon odgovora.
 
 Usporedba je namjerno poštena: osnovna izvedba tumači odgovor iz svega što joj
 stvarno ostaje, pa poslovnu namjeru izvodi iz spremljenog dokumenta
-(`Invoice::derivedIntent()`, indikator kopije je polje eRačuna). Iz dokumenta se
+(`Invoice::derivedIntent()`, indikator kopije je polje e-računa). Iz dokumenta se
 ne može izvesti redni pokušaj dostave, i to je ono što zapis prije predaje
 doista kupuje.
 

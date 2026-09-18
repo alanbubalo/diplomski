@@ -120,8 +120,8 @@ P povećava rizik uz navedene pretpostavke.
 
 Vrijednost \emph{uklanja} ne pojavljuje se ni u jednoj ćeliji
 tablice \ref{tab:matrica}. Obrasci ne uklanjaju mogućnost udaljenog otkaza
-ni obvezno razdvajanje postupaka. Mogu ublažiti posljedice i omogućiti
-praćenje ishoda. U nastavku su obrazložene ocjene čiji učinak posebno ovisi
+ni obvezno razdvajanje postupaka. Mogu ublažiti posljedice. Sustav pritom
+bilježi ishod. U nastavku su obrazložene ocjene čiji učinak posebno ovisi
 o konfiguraciji ili dostupnim podacima.
 
 \paragraph{Učinak prekidača ovisi o trajnom redu čekanja.}
@@ -134,14 +134,14 @@ Ocjena \emph{sužava} u retku D2 autorska je prosudba za slučaj u kojem
 poslovni sustav poruku prema posredniku trajno zadržava lokalno.
 
 \paragraph{B2: ključ i zapis predaje imaju različite uloge.}
-Ključ za deduplikaciju omogućuje provjeru postoji li zapis s istim
-identifikatorom. Ne određuje koji datum treba imati ispravak, pa u retku
+Sustav prema ključu za deduplikaciju provjerava postoji li zapis s istim
+identifikatorom. Ključ ne određuje koji datum treba imati ispravak, pa u retku
 B2 dobiva ocjenu \emph{ne pomaže}. Taj nedostatak pravila opisan je u
 odjeljku \ref{sec:b2} \cite{pu2026hrcius,pu2026tehspec}.
 
 Zapis predaje nastao prije slanja čuva podatak o rednom pokušaju. U
-scenariju B2/1 time omogućuje da se S008 na ponovljenu dostavu
-nepromijenjenog izvornika protumači kao potvrda, uz pretpostavke iz
+scenariju B2/1 sustav prema tom podatku tumači S008 na ponovljenu dostavu
+nepromijenjenog izvornika kao potvrdu, uz pretpostavke iz
 tablice \ref{tab:s008-tumacenje}. Osnovna izvedba nakon izostanka odgovora
 nema taj zapis pa ne nastavlja ponavljanje. Na toj se razlici temelji
 ocjena S\textsuperscript{b} uz odlazni pretinac.
@@ -213,8 +213,9 @@ ne može produljiti rok ni zakašnjelom postupku dati učinak pravovremenog.
 
 Odgovor na drugo istraživačko pitanje zato ovisi o izvoru ograničenja.
 Kod neodređenosti prijenosa obrasci čuvaju namjeru, ograničavaju ponavljanje
-i omogućuju nastavak nakon oporavka. Kada nedostaje podatak ili jednoznačno
-pravilo, mogu evidentirati stanje i odabranu interpretaciju. Taj dio
+i sustav nakon oporavka nastavlja obradu. Kada nedostaje podatak ili
+jednoznačno pravilo, sustav može zabilježiti samo stanje i odabrano
+tumačenje. Taj dio
 granice pokrivenosti regulatoran je i može se pomaknuti preciznijim
 pravilom ili specifikacijom. Nepoznat ishod zbog izostanka odgovora ostaje ograničenje mrežne
 komunikacije.
