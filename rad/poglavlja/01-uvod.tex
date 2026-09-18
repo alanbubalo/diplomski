@@ -5,54 +5,51 @@
 \section{Problem}
 \label{sec:problem}
 
-Izdavatelj e-računa ima dvije odvojene zadaće: slanje računa primatelju
-i dostavu podataka o računu Poreznoj upravi. Drugi postupak se naziva
-fiskalizacija e-računa. Budući da se ti postupci odvijaju odvojeno, uspješna
-dostava računa ne znači da je i njegova fiskalizacija bila uspješna.
+Izdavatelj e-računa mora poslati račun primatelju i podatke o računu dostaviti
+Poreznoj upravi. Dostava podataka Poreznoj upravi naziva se fiskalizacija
+e-računa. Ta su dva postupka odvojena. Zato dostavljen račun ne mora biti i
+uspješno fiskaliziran.
 Obveze i rokovi opisani su u odjeljku \ref{sec:fiskalizacija-2-0}.
 
-Izdavatelj šalje podatke o računu \texttt{R-2026-003}, no odgovor izostaje.
-Moguće je da zahtjev nije stigao do Porezne uprave. Također je moguće da je
-zahtjev obrađen, ali je sam odgovor izgubljen. U svakom slučaju, izdavatelj
-vidi isto: zahtjev je poslan, ali potvrda nije zaprimljena. Mora odlučiti
-hoće li ga ponovno poslati, kako spriječiti dvostruku obradu i kako pratiti
-rok za ispunjenje obveze.
+Izdavatelj šalje podatke o računu \texttt{R-2026-003}, ali ne dobiva odgovor.
+Možda zahtjev nije stigao do Porezne uprave. Možda ga je Porezna uprava
+obradila, ali se odgovor izgubio. Izdavatelj ne može razlikovati ta dva
+slučaja. Mora odlučiti hoće li zahtjev poslati ponovno. Pritom mora spriječiti
+dvostruku obradu i paziti na rok za ispunjenje obveze.
 
-Obrasci tolerancije na greške uobičajeni su pristupi rješavanju takvih
-situacija. Sustav može, primjerice, ograničiti vrijeme čekanja na odgovor,
-ponoviti prijenos ili trajno zabilježiti namjeravanu poruku prije njezina
-slanja. Sustav prema tom zapisu nastavlja obradu i kada odgovor nije primljen.
+Obrasci tolerancije na greške pomažu sustavu da nastavi raditi u takvim
+situacijama. Sustav može ograničiti čekanje na odgovor ili ponovno poslati
+zahtjev. Može i trajno zapisati poruku prije slanja. Ako odgovor izostane,
+prema tom zapisu može nastaviti obradu.
 
-Neke poteškoće uzrokuje sama mrežna komunikacija. Druge nastaju
-jer propisi i tehnička dokumentacija ne određuju potrebne postupke s
-dovoljnom preciznošću. Primjer za to su ispravci računa: sustav mora
-razlikovati novi sadržaj od ponovnog slanja postojeće poruke, no pravila za
-identifikaciju nisu u potpunosti definirana. Taj je scenarij detaljnije
-obrađen u odjeljku \ref{sec:failure-modes}. Za ograničenja koja uzrokuje
-propisana arhitektura ili nedovoljno određena pravila ovaj rad koristi izraz
-\emph{ograničenje uvjetovano propisima}.
+Neke poteškoće uzrokuje mrežna komunikacija. Druge uzrokuju neprecizni
+propisi i tehnička dokumentacija. Pri ispravku računa sustav mora razlikovati
+novi sadržaj od ponovnog slanja iste poruke. Pravila za to razlikovanje nisu
+potpuno određena. Odjeljak \ref{sec:failure-modes} detaljnije obrađuje taj
+slučaj. Ograničenje koje proizlazi iz propisane arhitekture ili nepreciznog
+pravila u radu se naziva \emph{ograničenje uvjetovano propisima}.
 
 Rad ispituje koliko tehnički obrasci mogu pomoći kada se pravila vanjskog
-sustava ne mogu mijenjati. Pritom razlikuje uspješno izvršenje obveze od
-postojanja zapisa o pokušaju. Zapis da je zahtjev poslan koristan je za
-oporavak, ali sam po sebi ne potvrđuje da je zahtjev obrađen.
+sustava ne mogu mijenjati. Pritom razlikuje izvršenu obvezu od zabilježenog
+pokušaja. Zapis o poslanom zahtjevu pomaže pri oporavku, ali ne dokazuje da
+je zahtjev obrađen.
 
 % ------------------------------------------------------------
 \section{Ciljevi i istraživačka pitanja}
 \label{sec:ciljevi}
 
-Cilj rada je utvrditi gdje propisani tijek fiskalizacije e-računa može
-ostati nedovršen ili s nepoznatim ishodom te koliko obrasci tolerancije na
-greške mogu ublažiti te probleme. Takvi se slučajevi u radu nazivaju
-\emph{načinima otkazivanja}. Analiza se temelji na objavljenim dokumentima,
-pa se njezini zaključci mogu provjeriti bez pristupa stvarnom sustavu.
+Cilj rada je pronaći mjesta na kojima fiskalizacija e-računa može stati ili
+završiti bez poznatog ishoda. Rad zatim ispituje koliko obrasci tolerancije na
+greške pomažu u tim slučajevima. Takav se slučaj u radu naziva
+\emph{načinom otkazivanja}. Analiza se temelji na objavljenim dokumentima.
+Zato se zaključci mogu provjeriti bez pristupa stvarnom sustavu.
 
 Rad odgovara na tri istraživačka pitanja, označena kraticom RQ:
 
 \begin{description}[leftmargin=1.6cm, style=nextline]
-  \item[RQ1] Koji se načini otkazivanja mogu izvesti iz propisanog tijeka
-  fiskalizacije e-računa? U kojem stanju nakon njih ostaje postupak
-  izvršenja zakonske obveze?
+  \item[RQ1] Koji načini otkazivanja proizlaze iz propisanog tijeka
+  fiskalizacije e-računa? U kojem stanju nakon njih ostaje izvršenje
+  zakonske obveze?
 
   \item[RQ2] Koje slučajeve obrasci mogu ublažiti, koje mogu samo
   evidentirati, a na koje nemaju učinka? Uzrokuju li ta ograničenja svojstva
@@ -63,39 +60,38 @@ Rad odgovara na tri istraživačka pitanja, označena kraticom RQ:
   zakonske obveze?
 \end{description}
 
-Rezultati obuhvaćaju katalog jedanaest načina otkazivanja i matricu koja
-ih povezuje sa šest obrazaca. Svaka ćelija matrice opisuje učinak jednog
-obrasca na jedan slučaj te navodi na čemu se ocjena temelji. Matrica time
-daje podlogu za izbor obrazaca uz poznate uvjete i ograničenja njihove primjene.
+Rezultat rada čine katalog jedanaest načina otkazivanja i matrica koja ih
+povezuje sa šest obrazaca. Svaka ćelija opisuje kako jedan obrazac utječe na
+jedan način otkazivanja i obrazlaže tu ocjenu. Matrica tako pomaže pri izboru
+obrasca i pokazuje uvjete u kojima se on može primijeniti.
 
-Ne pojavljuju se svi slučajevi u svakoj arhitekturi. Obveznik koji koristi
-informacijskog posrednika, odnosno vanjskog pružatelja usluge razmjene i
-fiskalizacije, ovisi i o predaji dokumenta tom posredniku. Obveznik koji sam
-obavlja ulogu pristupne točke nema tu dodatnu granicu. Uloge sudionika
-objašnjava poglavlje \ref{ch:pozadina}.
+Ne pojavljuju se svi načini otkazivanja u svakoj arhitekturi. Obveznik može
+koristiti informacijskog posrednika, odnosno vanjskog pružatelja usluge
+razmjene i fiskalizacije. Tada ovisi i o tome hoće li dokument uspješno
+predati posredniku. Obveznik koji sam obavlja ulogu pristupne točke nema taj
+dodatni korak. Poglavlje \ref{ch:pozadina} objašnjava uloge sudionika.
 
 % ------------------------------------------------------------
 \section{Opseg i struktura}
 \label{sec:opseg-rada}
 
-Studija slučaja opisuje referentnu arhitekturu: model sudionika i njihovih
-veza izveden iz propisa. Obuhvaća cijeli propisani tijek, a ilustrativni
-prototip provjerava četiri odabrana načina otkazivanja. Oni se pojavljuju
-pri predaji dokumenta pristupnoj točki i pri slanju zahtjeva Sustavu za
-fiskalizaciju.
+Studija slučaja iz propisa izvodi model sudionika i njihovih veza. Taj model
+naziva se referentna arhitektura i obuhvaća cijeli propisani tijek.
+Ilustrativni prototip provjerava četiri odabrana načina otkazivanja. Oni se
+pojavljuju pri predaji dokumenta pristupnoj točki i pri slanju zahtjeva
+Sustavu za fiskalizaciju.
 
-Prototip uspoređuje dvije izvedbe nakon istog kvara. U osnovnoj izvedbi zapis
-predaje nastaje tek nakon odgovora, dok se u predloženoj namjera zapisuje
-prije slanja.
-Uspoređuje se može li sustav utvrditi što je pokušao i nastaviti obradu
-kada odgovor izostane. Propusnost i vrijeme odziva nisu mjerila ove
-evaluacije. Njezin opseg i ograničenja obrazlaže poglavlje \ref{ch:rasprava}.
+Prototip uspoređuje dvije izvedbe nakon istog kvara. Osnovna izvedba bilježi
+predaju tek nakon odgovora. Predložena izvedba prije slanja bilježi što
+namjerava poslati. Usporedba pokazuje može li sustav nakon izostanka odgovora
+utvrditi što je pokušao i nastaviti obradu. Evaluacija ne mjeri propusnost ni
+vrijeme odziva. Poglavlje \ref{ch:rasprava} obrazlaže njezin opseg i
+ograničenja.
 
-Poglavlje \ref{ch:pozadina} opisuje pravni i tehnički kontekst.
-Poglavlja \ref{ch:raspodijeljeni} do \ref{ch:tijekovi} objašnjavaju
-raspodijeljene sustave, obrasce tolerancije na greške i praćenje tijeka
-obrade. Poglavlje \ref{ch:studija} izvodi načine otkazivanja i odgovara na
-RQ1. Poglavlje \ref{ch:implementacija} opisuje prototip, a
-poglavlje \ref{ch:evaluacija} matricom i scenarijima odgovara na RQ2.
-Poglavlje \ref{ch:rasprava} razmatra troškove i ograničenja obrazaca te
-odgovara na RQ3.
+Poglavlje \ref{ch:pozadina} opisuje pravni i tehnički kontekst. Poglavlja
+\ref{ch:raspodijeljeni} do \ref{ch:tijekovi} objašnjavaju raspodijeljene
+sustave, obrasce tolerancije na greške i praćenje obrade. Poglavlje
+\ref{ch:studija} prepoznaje načine otkazivanja i odgovara na RQ1. Poglavlje
+\ref{ch:implementacija} opisuje prototip. Poglavlje \ref{ch:evaluacija}
+odgovara na RQ2 pomoću matrice i scenarija. Poglavlje \ref{ch:rasprava}
+razmatra troškove i ograničenja obrazaca te odgovara na RQ3.
