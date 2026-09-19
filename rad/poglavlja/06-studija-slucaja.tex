@@ -167,6 +167,67 @@ Oznaka A obuhvaća razdvojene kanale, B fiskalizacijsko sučelje, R rokove,
 D nedostupnu infrastrukturu, a E predaju pristupnoj točki. R1 i R2 su
 slučajevi povezani s rokovima. Oznake C1 do C4 i dalje označavaju sudionike.
 
+Tablica \ref{tab:pregled-otkaza} daje sažetu kartu slučajeva prije njihove
+pojedinačne analize. Stupac o lokalnom sustavu razlikuje rješavanje problema
+od bilježenja stanja ili ublažavanja posljedice.
+
+\begin{table}[htbp]
+\centering
+\caption[Sažeti pregled načina otkazivanja]{Problem, uzrok, posljedica i
+doseg lokalnog sustava za jedanaest načina otkazivanja.}
+\label{tab:pregled-otkaza}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}p{4.1cm}@{}}
+\toprule
+Problem & Uzrok & Posljedica & Može li ga lokalni sustav riješiti? \\
+\midrule
+A1: razmijenjen, nije fiskaliziran & Propis razdvaja dva kanala &
+Fiskalizacijska obveza ostaje nedovršena & Djelomično. Može pratiti oba
+ishoda i ponavljati fiskalizaciju. \\
+\addlinespace
+A2: fiskaliziran, nije razmijenjen & Propis ne određuje redoslijed &
+Primatelj nema račun koji je fiskaliziran & Djelomično. Može nastaviti
+razmjenu i evidentirati neupareni ishod. \\
+\addlinespace
+B1: odgovor izostane & Mrežni kvar ili spor odgovor & Ishod obrade ostaje
+nepoznat & Djelomično. Može spremiti namjeru i ograničeno ponavljati. \\
+\addlinespace
+B2: ispravak i ponavljanje dijele ključ & Datum ispravka i značenje S008
+nisu potpuno određeni & Ispravak se može zamijeniti za duplikat & Ne u
+cijelosti. Lokalni zapis sužava tumačenje, ali ne određuje pravilo. \\
+\addlinespace
+B3: atomarnost skupa nije određena & Odgovor navodi samo prvu grešku &
+Nije poznato koji su zapisi obrađeni & Djelomično. Pojedinačno slanje
+izbjegava rizik skupnog ponavljanja. \\
+\addlinespace
+B4: vrste grešaka nisu razdvojene & Šifrarnik ne označava prolaznost &
+Klijent ne zna treba li ponoviti zahtjev & Ne. Potrebna je klasifikacija u
+vanjskom sučelju ili pravilu. \\
+\addlinespace
+R1: početak roka nije određen & Primitak nije vezan uz jedan događaj &
+Rok se ne može jednoznačno izračunati & Ne. Može zabilježiti odabrani
+događaj, ali ne dati pravno tumačenje. \\
+\addlinespace
+R2: dopušteno odstupanje nije određeno & Izraz „u trenutku izdavanja“ nije
+kvantificiran & Nije poznato kada red uzrokuje povredu & Ne. Može skratiti
+čekanje, ali ne odrediti dopušteno trajanje. \\
+\addlinespace
+D1: Sustav za fiskalizaciju nije dostupan & Kvar vanjske infrastrukture &
+Postupak ostaje nedovršen, a rok teče & Djelomično. Može ponavljati unutar
+roka, ali ne produljiti rok. \\
+\addlinespace
+D2: posrednik nije dostupan & Raspoloživost i čuvanje poruke nisu propisani &
+Obveznik ne može dovršiti predaju & Djelomično. Može trajno čuvati poruku i
+pratiti predaju. \\
+\addlinespace
+E1: predaja od C1 prema C2 nije uređena & Nema propisanog sučelja ni potvrde &
+Izdavatelj možda nema dokaz predaje & Djelomično. Može ugovoriti potvrdu i
+čuvati lokalni zapis. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 Avizienis i suradnici otkaz određuju prema funkciji sustava. Sustav zato
 može raditi točno prema specifikaciji, a ipak ne ispuniti svoju svrhu ako
 specifikacija ne uređuje važan slučaj \cite{avizienis2004taxonomy}. To je
@@ -416,8 +477,10 @@ sučelju.
 % ------------------------------------------------------------
 \subsection*{Klasifikacija po posljedici}
 
-Tablica \ref{tab:posljedice} razvrstava slučajeve prema onome što sustav
-može dokazati. Taj razvrstaj ne određuje pravni ishod.
+Sažeti pregled u tablici \ref{tab:pregled-otkaza} pokazuje uzrok i doseg
+lokalnog sustava za svaki slučaj. Slučajevi se prema onome što sustav može
+dokazati svrstavaju u tri završna stanja. Taj razvrstaj ne određuje pravni
+ishod.
 
 \begin{table}[htbp]
 \centering
