@@ -3,53 +3,50 @@
 
 Rad pokazuje da za oporavak nakon kvara nije dovoljno samo ponavljati
 slanje. Sustav mora znati što je pokušao, koji je odgovor primio i koliko
-vremena ostaje do roka. Sustav bilježi namjeru prije slanja i nastavlja
-obradu i kada odgovor izostane.
+vremena ostaje do roka. Zato prije slanja bilježi namjeru. Ako odgovor
+izostane, taj mu zapis omogućuje da poslije nastavi obradu.
 
-Mogućnosti oporavka ne ovise samo o tehničkom rješenju, nego i o pravilima
-postupka. Ako propisi ili tehnička dokumentacija ne određuju koji datum
-ispravak računa treba sadržavati, aplikacija tu odluku ne može donijeti
-sama. Isto tako, aplikacija ne može samostalno produljiti propisani rok
-samo zato što vanjski sustav nije dostupan. Neke probleme nije moguće
-riješiti samo promjenom programske implementacije. Uzrok su propisana
-arhitektura sustava ili pravila koja nisu dovoljno precizna.
-U ovom radu takvi se slučajevi nazivaju \emph{ograničenjima
-uvjetovanima propisima}.
+Pravila postupka također ograničavaju oporavak. Ako ni propisi ni tehnička
+dokumentacija ne određuju datum ispravka računa, aplikacija ga ne može
+odabrati. Ne može ni produljiti propisani rok kada vanjski sustav nije
+dostupan. Promjena programa zato ne rješava svaki problem. U ovom se radu
+problemi uzrokovani propisanom arhitekturom ili nepreciznim pravilima
+nazivaju \emph{ograničenjima uvjetovanima propisima}.
 
-Slučaj S008 pokazuje granicu lokalne evidencije. Sustav zato treba
-zabilježiti šalje li izvornik računa ili njegov ispravak. Korisno je
-zabilježiti i redni broj pokušaja dostave. Ti podaci pomažu pri
-tumačenju odgovora vanjskog sustava. Ponovljena dostava ispravka sa
-zadržanim identifikatorom ipak ostaje dvoznačna. Nalaz opisuje nedovoljno
-određeno sučelje, a ne dokazuje da stvarni sustav odbija svaki ispravak.
+Slučaj S008 pokazuje što lokalna evidencija može, a što ne može razjasniti.
+Sustav treba zabilježiti šalje li izvorni račun ili ispravak. Treba
+zabilježiti i broj pokušaja dostave. Ti podaci pomažu protumačiti odgovor
+vanjskog sustava. Ipak, nije jasno što će se dogoditi pri ponovljenom slanju
+ispravka koji zadržava isti identifikator. To znači da opis sučelja nije
+dovoljno precizan. Ne znači da stvarni sustav odbija svaki ispravak.
 
 % ------------------------------------------------------------
 \section*{Odgovori na istraživačka pitanja}
 
 \paragraph{RQ1.}
-Iz propisanog tijeka izvedeno je jedanaest načina otkazivanja u pet skupina:
+U propisanom je tijeku prepoznato jedanaest načina otkazivanja u pet skupina:
 razdvajanje kanala, sinkroni kanal bez definirane semantike otkaza, rokovi
 vezani uz nedovoljno određene događaje, nedostupnost infrastrukture i neuređena
-granica između poslovnog sustava i pristupne točke. Načini otkazivanja
-završavaju jednim od tri ishoda: nedovršenim tijekom izloženim roku,
-neodređenim ishodom ili oporavkom unutar posebnog roka.
+granica između poslovnog sustava i pristupne točke. Nakon otkaza tijek ostaje
+nedovršen i rok nastavlja teći, ishod ostaje nepoznat ili se sustav oporavi
+unutar posebnog roka.
 
 \paragraph{RQ2.}
-U matrici jedanaest načina otkazivanja i šest obrazaca nijedna ćelija nema
-ocjenu \emph{uklanja}. Sustav prema tim obrascima bilježi namjeru, ograničava
-ponavljanje i nastavlja obradu nakon oporavka. Time može skratiti razdoblje
-nepoznatog ishoda ili ga zabilježiti. Kada nedostaje podatak ili jednoznačno
-pravilo, sustav može zabilježiti samo stanje i sačuvati dokaz o odabranom
-tumačenju. Bez preciznijeg pravila, sučelja ili dokaza o primitku nije moguće
-utvrditi ishod.
+Matrica uspoređuje jedanaest načina otkazivanja sa šest obrazaca. Nijedna od
+66 kombinacija nema ocjenu \emph{uklanja}. Obrasci pomažu sustavu da zabilježi
+namjeru, ograniči ponavljanje i nastavi obradu nakon oporavka. Mogu skratiti
+vrijeme tijekom kojega ishod nije poznat ili barem zabilježiti takvo stanje.
+Ako nedostaje podatak ili jasno pravilo, sustav može samo sačuvati stanje i
+dokaz o primijenjenom tumačenju. Za utvrđivanje ishoda tada treba preciznije
+pravilo, jasnije sučelje ili dokaz o primitku.
 
 \paragraph{RQ3.}
-Troškovi obrazaca ocijenjeni su kvalitativno. Složenost raste zbog praćenja
-međustanja, a istek vremena i ponavljanje povećavaju kašnjenje. Rizik
-prekoračenja roka ovisi o redovnom trenutku fiskalizacije i posebnom roku od
-pet radnih dana iz članka 49. Prekidač uz trajni red i raspored koji prati
-rok može zaštititi lokalne resurse. Bez njih može smanjiti vrijeme preostalo
-za oporavak.
+Troškovi obrazaca ocijenjeni su kvalitativno. Praćenje svakog koraka obrade
+povećava složenost. Čekanje na istek vremena i novi pokušaji povećavaju
+kašnjenje. Rizik prekoračenja roka ovisi o tome kada počinje fiskalizacija i
+o posebnom roku od pet radnih dana iz članka 49. Prekidač može zaštititi
+lokalne resurse ako se rabi s trajnim redom i rasporedom koji prati rok. Bez
+njih može ostaviti manje vremena za oporavak.
 
 Jedina ocjena \emph{pogoršava} odnosi se na ponavljanje cijele skupne poruke
 ako obrada nije atomarna i provjera duplikata ne pokriva već obrađene zapise.
@@ -59,22 +56,22 @@ ponašanje odredišta.
 % ------------------------------------------------------------
 \section*{Granice i nadogradnje}
 
-Evaluacija je analitička, uz prototip koji provjerava četiri načina
-otkazivanja na dvije granice. Prototip sadrži 32 testa i podupire devet od 66
-ćelija matrice. Usporedba osnovne i predložene izvedbe pokazuje razlike u
-poznavanju i dokazivosti završnih stanja. Performanse i cjelovit skup
-alternativnih obrazaca nisu uspoređeni, pa rezultat ne potvrđuje da je
-predložena izvedba najbolja među svim rješenjima.
+Evaluacija se većinom temelji na analizi. Prototip provjerava četiri načina
+otkazivanja na dvije granice. Sadrži 32 testa i podupire devet od 66 ocjena u
+matrici. Usporedba pokazuje koliko osnovna i predložena izvedba mogu utvrditi
+i dokazati konačno stanje obrade. Performanse nisu mjerene, a nisu uspoređeni
+ni svi mogući obrasci. Zato rezultat ne potvrđuje da je predložena izvedba
+bolja od svakog drugog rješenja.
 
-Prototip računa rok bez kalendara blagdana. Validacija u produkcijskoj i demo
-okolini nije provedena, a referentna arhitektura izvedena je iz dokumenata.
-Rad zato ne utvrđuje pojavnost ni učestalost izvedenih načina otkazivanja u
-praksi.
+Prototip pri računanju roka ne uzima u obzir blagdane. Nije provjeren u
+produkcijskoj ni demo okolini, a referentna arhitektura izvedena je iz
+dokumenata. Rad zato ne pokazuje pojavljuju li se opisani otkazi u praksi ni
+koliko se često pojavljuju.
 
-Daljnji rad obuhvaća mjerenja u propisanoj demo okolini Sustava za
-fiskalizaciju, uz odgovarajuću vjerodajnicu. Njima bi se provjerile ocjene
-koje sada počivaju na autorskoj prosudbi. Za ponovljivost treba zabilježiti
-okolinu, verzije, ulaze i postupak.
+Ocjene koje se sada temelje na autorskoj prosudbi treba provjeriti mjerenjima
+u propisanoj demo okolini Sustava za fiskalizaciju. Za to je potrebna
+odgovarajuća vjerodajnica. Kako bi se mjerenja mogla ponoviti, treba
+zabilježiti okolinu, verzije, ulaze i postupak.
 
 Prototip treba proširiti na razmjenu između pristupnih točaka i predaju
 primatelju te dodatno testirati slučaj D2 i preostali dio referentnog tijeka.
