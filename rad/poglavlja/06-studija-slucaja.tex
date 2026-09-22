@@ -74,13 +74,16 @@ pristupne točke. Upitom nad \kratica{sustavom imena domena}{domain name
 system}{DNS} prema AMS-u dobiva adresu primateljeva MPS-a. Zatim
 \kraticaen{REST}{representational state transfer} upitom prema MPS-u dobiva
 krajnju adresu \cite{pu2025ams, pu2025mps}. Oba servisa upotrebljavaju
-pojednostavljeni eDelivery BDXL 1.6. Hrvatski profil ne upotrebljava
+pojednostavljeni eDelivery \kraticaen{BDXL}{business document metadata
+service location} 1.6. Hrvatski profil ne upotrebljava
 Peppolove servise
 \kraticaen{SML}{service metadata locator} i
 \kraticaen{SMP}{service metadata publishing}.
 
-DNS i REST pronalaze adresu. AS4 prenosi račun između pristupnih točaka.
-SOAP prenosi fiskalizacijske zahtjeve i odgovore.
+DNS i REST pronalaze adresu. \kraticaen{AS4}{applicability statement 4}
+prenosi račun između pristupnih točaka.
+\kraticaen{SOAP}{simple object access protocol} prenosi fiskalizacijske
+zahtjeve i odgovore.
 
 Od sastavljanja do čuvanja e-račun prolazi kroz sljedeće korake. Numeracija
 ne određuje redoslijed između razmjene i fiskalizacije:
@@ -139,7 +142,8 @@ Fiskalizacija je, za razliku od razmjene, sinkrona. Sustav za
 fiskalizaciju odmah odgovara na zahtjev \cite{pu2026tehspec}. Poruke se
 šalju protokolom SOAP 1.1 u obliku \emph{document/literal} preko jednosmjerne
 \kratica{sigurnosti transportnog sloja}{transport layer security}{TLS}.
-Zahtjev se potpisuje formatom XAdES-B. Obveznik šalje četiri vrste poslovnih
+Zahtjev se potpisuje formatom \kraticaen{XAdES}{XML advanced electronic
+signatures}, oznake XAdES-B. Obveznik šalje četiri vrste poslovnih
 poruka:
 
 \begin{itemize}[itemsep=1pt, topsep=4pt]
