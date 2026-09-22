@@ -1,4 +1,4 @@
-\chapter{Pristupi toleranciji na greške}
+\section{Pristupi toleranciji na greške}
 \label{ch:pristupi}
 
 Poglavlje opisuje obrasce za ublažavanje grešaka. Odjeljak
@@ -7,14 +7,14 @@ pomaže samo u određenim uvjetima. Pogrešna primjena može povećati
 opterećenje, produljiti čekanje ili usporiti oporavak sustava.
 
 % ------------------------------------------------------------
-\section{Sinkrona komunikacija}
+\subsection{Sinkrona komunikacija}
 \label{sec:sinkrono}
 
 Kod sinkronog poziva klijent šalje zahtjev i čeka odgovor odredišta.
 Obrasci u ovom odjeljku određuju koliko će čekati, kada će pokušati ponovno
 i kada će privremeno zaustaviti pozive.
 
-\subsection{Istek vremena}
+\subsubsection*{Istek vremena}
 
 Istek vremena ograničava koliko dugo klijent čeka odgovor. Tijekom čekanja
 poziv zauzima memoriju, dretvu ili priključak. Pozivi koji dugo čekaju mogu
@@ -29,7 +29,7 @@ lažnih isteka. Ako je prihvatljivo 0,1\,\% lažnih isteka, granica se postavlja
 na 99,9.\ percentil kašnjenja odredišne usluge. Do te granice završi
 99,9\,\% promatranih poziva.
 
-\subsection{Ponovni pokušaji}
+\subsubsection*{Ponovni pokušaji}
 
 Ponovni pokušaj može ukloniti posljedice prolaznog kvara opisanog u odjeljku
 \ref{sec:klasifikacija-otkaza}. Gray polazi od toga da povratak programa u
@@ -69,7 +69,7 @@ slati zahtjeve istodobno. \strani{Drhtanje}{jitter} dodaje slučajno
 odstupanje tom razmaku. Time raspoređuje pokušaje kroz vrijeme i smanjuje
 vršno opterećenje odredišta.
 
-\subsection{Ograničavanje poziva}
+\subsubsection*{Ograničavanje poziva}
 
 \strani{Prekidač}{circuit breaker} zaustavlja pozive prema odredištu kada
 udio grešaka prijeđe zadani prag. Tada je prekidač otvoren i novi se pozivi
@@ -99,7 +99,7 @@ mijenja rezultat već provedene obrade. Odjeljak
 \ref{sec:djelomicni-otkaz} opisuje taj zahtjev.
 
 % ------------------------------------------------------------
-\section{Asinkrona komunikacija}
+\subsection{Asinkrona komunikacija}
 \label{sec:asinkrono}
 
 U asinkronoj komunikaciji pošiljatelj predaje poruku redu čekanja, a radnik
@@ -107,7 +107,7 @@ je obrađuje poslije. Potvrda da je red primio poruku ne znači da je radnik
 dovršio obradu. Odjeljak \ref{sec:semantika-dostave} zato razlikuje dostavu
 poruke od učinka njezine obrade.
 
-\subsection{Pouzdana dostava poruka}
+\subsubsection*{Pouzdana dostava poruka}
 
 Hohpe i Woolf opisuju obrasce za pouzdanu razmjenu poruka
 \cite{hohpe2003eip}. \strani{Jamčena dostava}{guaranteed delivery}
@@ -117,7 +117,7 @@ moguće obraditi kako ne bi blokirale ostale poruke.
 \strani{Idempotentni primatelj}{idempotent receiver} prepoznaje poruku koju
 je već obradio i ne ponavlja njezin učinak.
 
-\subsection{Odlazni pretinac}
+\subsubsection*{Odlazni pretinac}
 
 Ako sustav mijenja stanje u bazi i zasebno šalje poruku, jedan postupak
 može uspjeti, a drugi ne. Uspješno zapisivanje uz neuspjelo slanje ostavlja

@@ -6,7 +6,7 @@
 %  Build:  latexmk -pdf main.tex
 %  Clean:  latexmk -c
 % ============================================================
-\documentclass[12pt,a4paper,oneside]{book}
+\documentclass[a4paper,12pt]{article}
 
 \input{tex/preamble}
 
@@ -38,37 +38,56 @@
 
 \input{tex/naslovnica}
 
-\frontmatter
-\pagenumbering{roman}
+% Prednji dio nije numeriran; arapska jedinica pada na Uvod.
+\pagenumbering{gobble}
 
 % Izjave se predaju kao zasebne stranice, na službenim obrascima;
 % tex/izjave.tex nosi njihov doslovan tekst.
 % \input{tex/izjave}
 \input{tex/sazetak}
+\clearpage
 
+\selectlanguage{croatian}
 \tableofcontents
-\listoffigures
-\listoftables
+\clearpage
 
-\mainmatter
 \pagenumbering{arabic}
 
 \input{poglavlja/01-uvod}
+\newpage
 \input{poglavlja/02-pozadina}
+\newpage
 \input{poglavlja/03-raspodijeljeni-sustavi}
+\newpage
 \input{poglavlja/04-pristupi-toleranciji}
+\newpage
 \input{poglavlja/05-raspodijeljeni-tijekovi}
+\newpage
 \input{poglavlja/06-studija-slucaja}
+\newpage
 \input{poglavlja/07-implementacija}
+\newpage
 \input{poglavlja/08-evaluacija}
+\newpage
 \input{poglavlja/09-rasprava}
+\newpage
 \input{poglavlja/10-zakljucak}
+\newpage
 
 % ---- Literatura --------------------------------------------
-\backmatter
 \begingroup
 \setlength{\emergencystretch}{3em}
 \printbibliography[heading=bibintoc,title={Literatura}]
 \endgroup
+
+% ---- Popisi slika i tablica --------------------------------
+% Oba popisa ulaze u sadržaj ručno: tocbibind bi uz biblatex tražio notbib.
+\clearpage
+\addcontentsline{toc}{section}{\listfigurename}
+\listoffigures
+
+\clearpage
+\addcontentsline{toc}{section}{\listtablename}
+\listoftables
 
 \end{document}

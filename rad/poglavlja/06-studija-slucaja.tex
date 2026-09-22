@@ -1,4 +1,4 @@
-\chapter{Studija slučaja: Fiskalizacija 2.0}
+\section{Studija slučaja: Fiskalizacija 2.0}
 \label{ch:studija}
 
 Poglavlje analizira gdje fiskalizacija e-računa može zapeti ili završiti s
@@ -7,7 +7,7 @@ specifikacijama. Ne opisuje konkretan sustav, nego sudionike, kanale i
 obveze koje mora imati svako usklađeno rješenje.
 
 % ------------------------------------------------------------
-\section{Arhitektura i tijek dokumenta}
+\subsection{Arhitektura i tijek dokumenta}
 \label{sec:arhitektura}
 
 E-račun prolazi kroz dvije pristupne točke (čl.~37.~st.~1.). Izdavatelj
@@ -164,7 +164,7 @@ fiskalizacije jedini je dokaz sinkroni odgovor. Ta razlika stvara neke od
 problema opisanih u nastavku.
 
 % ------------------------------------------------------------
-\section{Identifikacija načina otkazivanja}
+\subsection{Identifikacija načina otkazivanja}
 \label{sec:failure-modes}
 
 U nastavku se izdvajaju situacije u kojima postupak može ostati nedovršen,
@@ -188,7 +188,7 @@ doseg lokalnog sustava za jedanaest načina otkazivanja.}
 \label{tab:pregled-otkaza}
 \footnotesize
 \setlength{\tabcolsep}{4pt}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}p{4.1cm}@{}}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.1938\textwidth}>{\raggedright\arraybackslash}p{0.2125\textwidth}>{\raggedright\arraybackslash}p{0.2375\textwidth}>{\raggedright\arraybackslash}p{0.2562\textwidth}@{}}
 \toprule
 Problem & Uzrok & Posljedica & Može li ga lokalni sustav riješiti? \\
 \midrule
@@ -251,7 +251,7 @@ zabranjuje da ih izvedba koordinira. Izvedba ipak mora zabilježiti slučaj u
 kojem je jedan postupak dovršen, a drugi nije.
 
 % ------------------------------------------------------------
-\subsection*{A. Propisano razdvajanje kanala}
+\subsubsection*{A. Propisano razdvajanje kanala}
 
 \paragraph{A1: razmijenjen, nije fiskaliziran.}
 Dostava između pristupnih točaka može uspjeti i biti potvrđena
@@ -279,7 +279,7 @@ iz članka 68.\ stavka 2.\ označit će ga kao neuparenog, ali propis ne kaže
 što obveznik zatim mora učiniti.
 
 % ------------------------------------------------------------
-\subsection*{B. Sinkroni kanal bez definirane semantike otkaza}
+\subsubsection*{B. Sinkroni kanal bez definirane semantike otkaza}
 
 \paragraph{B1: istek vremena s nepoznatim ishodom.}
 Komunikacija sa Sustavom za fiskalizaciju je sinkrona, ali tehnička
@@ -357,7 +357,7 @@ samo kako datum mijenja ključ.
 provjeru S008. Tablica ne prikazuje rezultate poziva stvarnom sustavu.}
 \label{tab:b2-datum}
 \small
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}p{3.7cm}>{\raggedright\arraybackslash}p{7.3cm}@{}}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.2250\textwidth}>{\raggedright\arraybackslash}p{0.2313\textwidth}>{\raggedright\arraybackslash}p{0.4562\textwidth}@{}}
 \toprule
 Varijanta ispravka & Složeni identifikator & Ishod opisane provjere S008 \\
 \midrule
@@ -427,7 +427,7 @@ trajnu grešku od prolazne. Ta je razlika potrebna za odluku o ponavljanju,
 kao što opisuje odjeljak \ref{sec:klasifikacija-otkaza}.
 
 % ------------------------------------------------------------
-\subsection*{R. Rokovi koji teku od nedefiniranih događaja}
+\subsubsection*{R. Rokovi koji teku od nedefiniranih događaja}
 
 \paragraph{R1: rok teče od nedefiniranog primitka.}
 Primatelj mora fiskalizirati račun najkasnije pet radnih dana od primitka
@@ -445,7 +445,7 @@ može zakasniti, a nije jasno kada kašnjenje postaje povreda obveze. Zakon
 navodi rok, dok ga tehnička specifikacija ne razrađuje.
 
 % ------------------------------------------------------------
-\subsection*{D. Ispad infrastrukture i granica posebnog roka}
+\subsubsection*{D. Ispad infrastrukture i granica posebnog roka}
 
 \paragraph{D1: Sustav za fiskalizaciju nedostupan.}
 Članak 49.\ stavak 1.\ obuhvaća tehnički kvar i prekid internetske veze, bez
@@ -466,7 +466,7 @@ fiskalizaciju (st.~2.). Obveznik tako odgovara i kada postupak zaustavi kvar
 posrednika kojim ne upravlja i o kojem možda nije obaviješten.
 
 % ------------------------------------------------------------
-\subsection*{E. Neregulirana granica}
+\subsubsection*{E. Neregulirana granica}
 
 \paragraph{E1: predaja od izdavatelja pristupnoj točki nije uređena.}
 Propisana potvrda vrijedi za razmjenu između pristupnih točaka
@@ -486,7 +486,7 @@ izdavatelja. Može li izdavatelj provjeriti predaju zato ovisi o odabranom
 sučelju.
 
 % ------------------------------------------------------------
-\subsection*{Klasifikacija po posljedici}
+\subsubsection*{Klasifikacija po posljedici}
 
 Sažeti pregled u tablici \ref{tab:pregled-otkaza} pokazuje uzrok i doseg
 lokalnog sustava za svaki slučaj. Slučajevi se prema onome što sustav može
@@ -499,7 +499,7 @@ ishod.
 obzirom na zakonsku obvezu.}
 \label{tab:posljedice}
 \small
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.1cm}p{3.2cm}p{7.2cm}@{}}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.2562\textwidth}p{0.2000\textwidth}p{0.4500\textwidth}@{}}
 \toprule
 \textsc{Klasa} & \textsc{Slučajevi} & \textsc{Zašto} \\
 \midrule
@@ -527,7 +527,7 @@ udaljene obrade. Obrasci iz poglavlja \ref{ch:pristupi} mogu smanjiti tu
 neizvjesnost, ali je ne mogu ukloniti.
 
 % ------------------------------------------------------------
-\subsection*{Dva izvora ograničenja}
+\subsubsection*{Dva izvora ograničenja}
 \phantomsection
 \label{sec:dvije-vrste}
 
@@ -582,7 +582,7 @@ Popis nije iscrpan. Odjeljak \ref{sec:ogranicenja} zasebno razmatra rizik
 pravila koja su objavljena u operativnim uputama, a ne u propisima.
 
 % ------------------------------------------------------------
-\section{Dizajn otpornog rješenja}
+\subsection{Dizajn otpornog rješenja}
 \label{sec:dizajn}
 
 Predloženi dizajn pokazuje kako sustav može obraditi opisane slučajeve.
@@ -651,7 +651,7 @@ prikazan je u tablici \ref{tab:b2-datum}.
 prema poslovnoj namjeri i pokušaju slanja.}
 \label{tab:s008-tumacenje}
 \small
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{6.8cm}>{\raggedright\arraybackslash}p{3.5cm}@{}}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.1250\textwidth}>{\raggedright\arraybackslash}p{0.1250\textwidth}>{\raggedright\arraybackslash}p{0.4250\textwidth}>{\raggedright\arraybackslash}p{0.2188\textwidth}@{}}
 \toprule
 Što se šalje & Pokušaj & Što se može zaključiti iz S008 & Ishod u modelu \\
 \midrule

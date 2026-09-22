@@ -23,7 +23,6 @@ rad/            LaTeX dokument
   tex/            naslovnica, sažetak
                   izjave.tex je u repou, ali nije uključen u build
   poglavlja/      01-uvod.tex ... 10-zakljucak.tex
-                  prilog-sutnje.tex je u repou, ali nije uključen u build
   references.bib  literatura (biblatex/biber, stil IEEE)
 
 prototip/       ilustrativni prototip (Laravel, konzolno), vlastiti README

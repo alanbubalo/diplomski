@@ -1,5 +1,5 @@
-\chapter*{Sažetak}
-\addcontentsline{toc}{chapter}{Sažetak}
+\selectlanguage{croatian}
+\begin{abstract}
 
 Rad analizira otpornost procesa fiskalizacije e-računa u Hrvatskoj na djelomične kvarove i nepoznate ishode komunikacije. Proces obuhvaća najmanje dvije zasebne aktivnosti: dostavu e-računa primatelju i prijavu podataka Poreznoj upravi. Jedna aktivnost može uspjeti, a druga završiti neuspjehom ili nepoznatim ishodom. Sustav tada može ponovno poslati zahtjev, stvoriti duplikat ili ostati bez pouzdane osnove za nastavak obrade.
 
@@ -12,19 +12,25 @@ Rad zaključuje da se otpornost sustava ne može postići isključivo primjenom 
 Izvorni kod prototipa i tekst rada nalaze se u javnom repozitoriju
 \url{https://github.com/alanbubalo/diplomski}.
 
-\vspace{1em}
+\end{abstract}
+\begin{small}
 \noindent\textbf{Ključne riječi:} obrasci tolerancije na greške, raspodijeljeni sustavi, fiskalizacija e-računa, načini otkazivanja, regulatorna ograničenja
+\end{small}
 
-\chapter*{Abstract}
-\addcontentsline{toc}{chapter}{Abstract}
+\bigskip
+
+\selectlanguage{english}
+\begin{abstract}
 
 This paper analyzes the resilience of the e-invoice fiscalization process in Croatia against partial failures and unknown communication outcomes. The process comprises at least two distinct activities: delivering the e-invoice to the recipient and reporting data to the Tax Administration. Due to their decoupling, one activity may succeed while the other fails or results in an unknown outcome; this can lead to re-transmission, the creation of duplicates, or an inability to reliably continue processing.
 
 Based on relevant legislation, regulations, and technical specifications, eleven such scenarios were identified. For each scenario, the applicability of six fault-tolerance patterns from the literature was analyzed. Some findings were further validated using a prototype that compared two request-logging strategies: logging the intent prior to transmission versus logging successful submission after receiving a response.
 
-The results indicate that the identified patterns can mitigate the consequences of certain failures—for instance, by maintaining records of processing attempts or enabling safer request re-transmission—but cannot eliminate problems inherent to the protocol itself and the regulatory rules. Specifically, situations were identified where the system cannot reliably determine whether a previous request was processed and, consequently, cannot distinguish a safe retry from the creation of a duplicate without additional rules.
+The results indicate that the identified patterns can mitigate the consequences of certain failures (for instance, by maintaining records of processing attempts or enabling safer request re-transmission), but cannot eliminate problems inherent to the protocol itself and the regulatory rules. Specifically, situations were identified where the system cannot reliably determine whether a previous request was processed and, consequently, cannot distinguish a safe retry from the creation of a duplicate without additional rules.
 
 The paper concludes that system resilience cannot be achieved solely through the application of software patterns but also depends on protocol rules, available identifiers, and the precision of regulatory specifications.
 
-\vspace{1em}
+\end{abstract}
+\begin{small}
 \noindent\textbf{Keywords:} fault-tolerance patterns, distributed systems, e-invoice fiscalization, failure modes, regulatory constraints
+\end{small}

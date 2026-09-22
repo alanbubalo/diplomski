@@ -3,52 +3,40 @@
 % ============================================================
 
 % ---- Kodiranje i jezik -------------------------------------
+% Kodiranje T1 drži dijakritike kao jedan znak. U OT1 su složeni, pa đ ispada
+% iz tekstualnog sloja PDF-a i pretraživanje ne nalazi riječi koje ga imaju.
 \usepackage[T1]{fontenc}          % UTF-8 je zadan od LaTeX 2018, inputenc nije potreban
 \usepackage{lmodern}
-\usepackage[croatian]{babel}
+% Engleski je glavni jezik dokumenta, a hrvatski uključuje
+% \selectlanguage{croatian} prije sadržaja u main.tex i vrijedi do kraja rada.
+\usepackage[croatian,english]{babel}
 \usepackage{csquotes}             % biblatex ga traži uz babel
 % Babel prevodi \appendix kao „Dodatak"; u hrvatskim radovima je uvriježeno „Prilog".
 \addto\captionscroatian{\renewcommand{\appendixname}{Prilog}}
 
 % ---- Raspored stranice -------------------------------------
-% Pravilnik o diplomskome radu, čl. 5: A4, margine 2,5 cm, tekst 12 pt,
-% prored 1,5; podrubne bilješke 10 pt, prored 1,0.
-\usepackage[a4paper,margin=2.5cm]{geometry}
-\usepackage{setspace}
-\onehalfspacing
+\usepackage{geometry}
+\geometry{
+  a4paper,
+  left=1.25in,
+  right=1.25in,
+  top=1in,
+}
 \usepackage[hang,flushmargin]{footmisc}
-\renewcommand{\footnotelayout}{\setstretch{1.0}}   % bilješke: prored 1,0
-\usepackage{indentfirst}          % uvuci i prvi odlomak nakon naslova
 \usepackage{microtype}
 
-% Numeriraju se poglavlja i odjeljci (2.1), ne i pododjeljci.
-\setcounter{secnumdepth}{1}
-\setcounter{tocdepth}{1}
-
-% ---- Zaglavlje i podnožje ----------------------------------
-% Zadani stil klase book stavlja naslov poglavlja u zaglavlje verzalom
-% („POGLAVLJE 2. POZADINA I KONTEKST") i broj stranice uz vanjski rub
-% zaglavlja. Oboje je uklonjeno: zaglavlje je prazno, bez crte, a broj
-% stranice ide u donji desni kut.
-%
-% Stil plain se redefinira zato što book na prvoj stranici svakog
-% poglavlja sam poziva \thispagestyle{plain}. Bez toga bi broj stranice
-% na tim stranicama ostao centriran.
-\usepackage{fancyhdr}
-\pagestyle{fancy}
-\fancyhf{}
-\fancyfoot[R]{\thepage}
-\renewcommand{\headrulewidth}{0pt}
-\fancypagestyle{plain}{%
-  \fancyhf{}%
-  \fancyfoot[R]{\thepage}%
-  \renewcommand{\headrulewidth}{0pt}%
-}
+% Numeriraju se dvije razine naslova (4.1), niže ne. Poglavlje je \section,
+% odjeljak \subsection. Pododjeljci idu kao \subsubsection* i \paragraph,
+% bez broja i bez stavke u sadržaju.
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
 
 % ---- Grafika i tablice -------------------------------------
 \usepackage{graphicx}
 \graphicspath{{slike/}}
 \usepackage{float}
+% Širine stupaca u tablicama pisane su u dijelovima \textwidth, a ne u
+% centimetrima, pa prate marginu i ne prelijevaju se kad se ona promijeni.
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{array}
@@ -134,10 +122,11 @@
 % ---- Poveznice (učitati pri kraju) -------------------------
 \usepackage[hidelinks]{hyperref}
 \usepackage{cleveref}
-\crefname{chapter}{poglavlje}{poglavlja}
-\Crefname{chapter}{Poglavlje}{Poglavlja}
-\crefname{section}{odjeljak}{odjeljci}
-\Crefname{section}{Odjeljak}{Odjeljci}
+% Poglavlje je \section, pa nazivi idu jednu razinu niže od uobičajenih.
+\crefname{section}{poglavlje}{poglavlja}
+\Crefname{section}{Poglavlje}{Poglavlja}
+\crefname{subsection}{odjeljak}{odjeljci}
+\Crefname{subsection}{Odjeljak}{Odjeljci}
 \crefname{figure}{slika}{slike}
 \Crefname{figure}{Slika}{Slike}
 \crefname{table}{tablica}{tablice}
@@ -155,7 +144,7 @@
 \makeatletter
 \newcommand{\popistodo}{%
   \clearpage
-  \chapter*{Popis nedovršenog}%
+  \section*{Popis nedovršenog}%
   \markboth{Popis nedovršenog}{}%
   \@starttoc{tdo}%
 }

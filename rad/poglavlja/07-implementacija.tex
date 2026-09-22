@@ -1,4 +1,4 @@
-\chapter{Ilustrativni prototip}
+\section{Ilustrativni prototip}
 \label{ch:implementacija}
 
 Prototip pokazuje što se događa kada vanjski sustav ne odgovori. Uspoređuje
@@ -15,7 +15,7 @@ treba nastaviti. Tom se usporedbom provjerava dio obrazaca iz
 odjeljka \ref{sec:dizajn}.
 
 % ------------------------------------------------------------
-\section{Opseg i granice}
+\subsection{Opseg i granice}
 \label{sec:opseg-prototipa}
 
 Prototip provjerava dvije komunikacijske veze iz referentne arhitekture.
@@ -86,7 +86,7 @@ pokušaja mora spremiti zasebno. Osnovna izvedba taj podatak gubi kada odgovor
 izostane. Posljedice se vide u odjeljku \ref{sec:scenariji}.
 
 % ------------------------------------------------------------
-\section{Kako prototip čuva stanje predaje}
+\subsection{Kako prototip čuva stanje predaje}
 \label{sec:komponente}
 
 Prema dizajnu iz odjeljka \ref{sec:dizajn}, prototip ima tri tablice. Prva
@@ -226,7 +226,7 @@ namjera nije poznata. Tada prototip ne mijenja stanje predaje. U povijest
 ipak sprema odgovor, tumačenje i vrijeme događaja.
 
 % ------------------------------------------------------------
-\section{Scenariji i ishodi}
+\subsection{Scenariji i ishodi}
 \label{sec:scenariji}
 
 Prototip izvodi četiri kvara iz odjeljka \ref{sec:failure-modes}. Svaki kvar
@@ -241,7 +241,7 @@ obje izvedbe imaju isti ishod jer poslovnu namjeru mogu utvrditi iz
 dokumenta.}
 \label{tab:scenariji}
 \small
-\begin{tabular}{@{}p{1.1cm}p{4.0cm}p{4.0cm}p{4.0cm}@{}}
+\begin{tabular}{@{}p{0.0688\textwidth}p{0.2400\textwidth}p{0.2680\textwidth}p{0.2680\textwidth}@{}}
 \toprule
 & Odgovor & Sa zapisom namjere & Bez zapisa namjere \\
 \midrule
