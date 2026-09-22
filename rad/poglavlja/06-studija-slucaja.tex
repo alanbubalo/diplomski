@@ -22,10 +22,11 @@ Zakon definira sve glavne sudionike. Pristupna točka je porezni obveznik
 ili informacijski posrednik koji ispunjava tehničke uvjete
 (čl.~2.~st.~1.~t.~25.). Sustav za fiskalizaciju pripada Poreznoj upravi te
 zaprima, kontrolira i obrađuje podatke (t.~5.). Zakon za njega ne
-upotrebljava uobičajenu kraticu CIS. Porezna uprava vodi adresar
-metapodatkovnih servisa, AMS (t.~1.). Informacijski posrednik ima
-metapodatkovni servis, MPS, koji podatke za pronalazak primatelja objavljuje
-u AMS-u (t.~19.).
+upotrebljava naziv \kraticahr{Centralni informacijski sustav}{CIS},
+uobičajen u tehničkoj dokumentaciji. Točka~1. definira i
+\kraticahr{adresar metapodatkovnih servisa}{AMS}, koji vodi Porezna uprava. Informacijski posrednik ima
+\kraticahr{metapodatkovni servis}{MPS}. Taj servis podatke za pronalazak
+primatelja objavljuje u AMS-u (t.~19.).
 
 Na slici \ref{fig:tijek} C1 je izdavatelj, C2 njegova pristupna točka, C3
 pristupna točka primatelja, a C4 primatelj. Račun putuje vodoravno. C2 i C3
@@ -53,7 +54,7 @@ računa zato ne potvrđuje uspjeh fiskalizacije, ni obrnuto.
   \node[kut, below=1.5cm of sredina] (cis) {Sustav za\\fiskalizaciju};
 
   \draw[tok] (c1) -- (c2);
-  \draw[tok] (c2) -- node[ozn, above] {AS4\\One-way/Push} (c3);
+  \draw[tok] (c2) -- node[ozn, above] {AS4\\\emph{One-way/Push}} (c3);
   \draw[tok] (c3) -- (c4);
   \draw[tok, dashed] (c2) -- node[ozn, left] {DNS\\REST} (ams);
   \draw[tok] (c2) -- node[ozn, left, pos=0.55] {SOAP} (cis);
@@ -69,10 +70,14 @@ adrese, koje dokument ne prenosi.}
 Prije zaprimanja e-računa primatelj mora objaviti svoj identifikator u
 AMS-u. Promjenu podataka mora prijaviti odmah (čl.~44.~st.~1.\ i~st.~4.).
 Pristupna točka izdavatelja zatim u dva koraka pronalazi adresu primateljeve
-pristupne točke. DNS upitom prema AMS-u dobiva URL primateljeva MPS-a, a
-REST upitom prema MPS-u dobiva krajnju adresu \cite{pu2025ams, pu2025mps}.
-Oba servisa upotrebljavaju pojednostavljeni eDelivery BDXL 1.6. Hrvatski
-profil ne upotrebljava Peppol SML i SMP.
+pristupne točke. Upitom nad \kratica{sustavom imena domena}{domain name
+system}{DNS} prema AMS-u dobiva adresu primateljeva MPS-a. Zatim
+\kraticaen{REST}{representational state transfer} upitom prema MPS-u dobiva
+krajnju adresu \cite{pu2025ams, pu2025mps}. Oba servisa upotrebljavaju
+pojednostavljeni eDelivery BDXL 1.6. Hrvatski profil ne upotrebljava
+Peppolove servise
+\kraticaen{SML}{service metadata locator} i
+\kraticaen{SMP}{service metadata publishing}.
 
 DNS i REST pronalaze adresu. AS4 prenosi račun između pristupnih točaka.
 SOAP prenosi fiskalizacijske zahtjeve i odgovore.
@@ -123,7 +128,7 @@ primitak. Ne određuje tehnički način prosljeđivanja ni trenutak u kojem se
 račun smatra primljenim u poslovnom sustavu primatelja.
 
 Pristupne točke razmjenjuju račun asinkrono putem protokola AS4
-(čl.~7.~st.~6. Pravilnika). Obrazac One-way/Push znači da pošiljatelj ne
+(čl.~7.~st.~6. Pravilnika). Obrazac \emph{One-way/Push} znači da pošiljatelj ne
 čeka poslovni odgovor, nego samo tehničku potvrdu primitka
 (čl.~2.~st.~1.~t.~11.). Hrvatski profil eRačun-AS4 temelji se na profilu
 eDelivery AS4 1.15 \cite{pu2025as4profil, cef2020as4v115}. Pri neuspjehu
@@ -132,9 +137,10 @@ Primatelj primitak dokazuje potpisanom potvrdom.
 
 Fiskalizacija je, za razliku od razmjene, sinkrona. Sustav za
 fiskalizaciju odmah odgovara na zahtjev \cite{pu2026tehspec}. Poruke se
-šalju protokolom SOAP 1.1 u obliku document/literal preko jednosmjernog
-TLS-a. Zahtjev se potpisuje formatom XAdES-B. Obveznik šalje četiri vrste
-poslovnih poruka:
+šalju protokolom SOAP 1.1 u obliku \emph{document/literal} preko jednosmjerne
+\kratica{sigurnosti transportnog sloja}{transport layer security}{TLS}.
+Zahtjev se potpisuje formatom XAdES-B. Obveznik šalje četiri vrste poslovnih
+poruka:
 
 \begin{itemize}[itemsep=1pt, topsep=4pt]
   \item \texttt{EvidentirajERacun}, za fiskalizaciju e-računa,
@@ -250,9 +256,10 @@ fiskalizacijski poziv ne uspije. Razlog je odvajanje postupaka iz članka
 48.\ stavka 3.\ Fiskalizacijska obveza iz članka 47.\ tada ostaje
 nedovršena.
 
-Odgovor Sustava za fiskalizaciju navodi je li zahtjev prihvaćen i sadrži
-UUID zahtjeva. Prema tehničkoj specifikaciji, UUID olakšava pronalazak
-poruke u slučaju greške \cite{pu2026tehspec}. Novi se UUID stvara za svaki
+Odgovor Sustava za fiskalizaciju navodi je li zahtjev prihvaćen. Sadrži i
+\kratica{univerzalno jedinstven identifikator}{universally unique
+identifier}{UUID} toga zahtjeva. Prema tehničkoj specifikaciji, UUID
+olakšava pronalazak poruke u slučaju greške \cite{pu2026tehspec}. Novi se UUID stvara za svaki
 zahtjev, pa označava poziv, a ne račun. Zato nema istu ulogu kao JIR.
 
 Kod fiskalizacije u krajnjoj potrošnji sustav određuje JIR i vraća ga
@@ -409,7 +416,7 @@ Isti oblik odgovora imaju i poruke o naplati i o odbijanju. Pitanje zato
 nije ograničeno na jednu vrstu poruke.
 
 \paragraph{B4: trajne i prolazne greške nisu razdvojene.}
-Šifrarnik ne navodi nakon kojih se grešaka zahtjev smije ponoviti. WSDL ne
+Šifrarnik ne navodi nakon kojih se grešaka zahtjev smije ponoviti. \kraticaen{WSDL}{web services description language} ne
 definira protokolske greške, pa se poslovne greške vraćaju u uspješnom SOAP
 odgovoru \cite{pu2026tehspec}. Klijent zato iz odgovora ne može razlikovati
 trajnu grešku od prolazne. Ta je razlika potrebna za odluku o ponavljanju,

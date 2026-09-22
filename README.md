@@ -2,7 +2,18 @@
 
 Obrasci tolerancije na greške u raspodijeljenim sustavima: studija slučaja Fiskalizacije 2.0
 
-Sveučilište Jurja Dobrile u Puli, Fakultet informatike u Puli
+Sveučilište Jurja Dobrile u Puli, Fakultet informatike
+
+- Student: Alan Bubalo, JMBAG 0303098591, redoviti student
+- Studijski smjer: Sveučilišni diplomski studij Informatika
+- Kolegij: Raspodijeljeni sustavi
+- Mentor: izv. prof. dr. sc. Nikola Tanković
+- Znanstveno područje: Društvene znanosti
+- Znanstveno polje: Informacijske znanosti
+- Znanstvena grana: Informacijski sustavi i informatologija
+- Pula, rujan 2026.
+
+Repozitorij: https://github.com/alanbubalo/diplomski
 
 ## Struktura repoa
 
@@ -29,7 +40,7 @@ latexmk -c                # počisti pomoćne datoteke
 ## Opseg evaluacije
 
 Evaluacija je analitička. Spaja matricu *način otkazivanja × obrazac* s ilustrativnim
-prototipom. Svaka čelija matrice nosi razinu tvrdnje: (a) citat, (b) prototip ili
+prototipom. Svaka ćelija matrice nosi razinu tvrdnje: (a) citat, (b) prototip ili
 (c) prosudba autora. Prešućena prosudba je ono što pada na obrani.
 
 Empirijska evaluacija je izvan opsega. Nema sustava pod testom, chaos enginea, harnessa

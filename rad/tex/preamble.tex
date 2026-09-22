@@ -21,6 +21,10 @@
 \usepackage{indentfirst}          % uvuci i prvi odlomak nakon naslova
 \usepackage{microtype}
 
+% Numeriraju se poglavlja i odjeljci (2.1), ne i pododjeljci.
+\setcounter{secnumdepth}{1}
+\setcounter{tocdepth}{1}
+
 % ---- Zaglavlje i podnožje ----------------------------------
 % Zadani stil klase book stavlja naslov poglavlja u zaglavlje verzalom
 % („POGLAVLJE 2. POZADINA I KONTEKST") i broj stranice uz vanjski rub
@@ -159,3 +163,10 @@
 
 % Strani termin pri prvom spominjanju: \strani{prekidač}{circuit breaker}
 \newcommand{\strani}[2]{#1 (\emph{#2})}
+
+% Kratica pri prvoj uporabi: \kratica{puni naziv}{engleski izvornik}{KRATICA}
+\newcommand{\kratica}[3]{#1 (engl.\ \emph{#2}, skraćeno #3)}
+% Kratica bez ustaljenog hrvatskog naziva: \kraticaen{KRATICA}{engleski izvornik}
+\newcommand{\kraticaen}[2]{#1 (engl.\ \emph{#2})}
+% Domaća kratica, bez engleskog izvornika: \kraticahr{puni naziv}{KRATICA}
+\newcommand{\kraticahr}[2]{#1 (skraćeno #2)}

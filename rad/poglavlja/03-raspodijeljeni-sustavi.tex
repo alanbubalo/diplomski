@@ -127,7 +127,7 @@ is reinitialized and the failed operation retried, the operation will
 usually not fail the second time.}“ \cite{gray1986whystop}}
 \end{quote}
 
-Gray čvrste kvarove naziva Bohrbug, a meke Heisenbug. Meke je kvarove teško
+Gray čvrste kvarove naziva \emph{Bohrbug}, a meke \emph{Heisenbug}. Meke je kvarove teško
 ponoviti jer samo ispitivanje može promijeniti uvjete u kojima nastaju. Gray
 svoju pretpostavku podupire analizom dnevnika grešaka, ali ne određuje koliko
 često ponavljanje uspijeva. Ponovni pokušaj zato nije jamstvo uspjeha.
@@ -224,11 +224,14 @@ je zahtjev obradila. Poglavlje \ref{ch:studija} provjerava daje li
 fiskalizacijsko sučelje dovoljno podataka za utvrđivanje ishoda.
 
 Gilbert i Lynch opisuju drugo ograničenje, poznato kao CAP
-\cite{gilbert2002brewer}. Kada mreža razdvoji čvorove repliciranog sustava,
-sustav ne može za svaki zahtjev istodobno jamčiti odgovor i strogo usklađene
-podatke. Mora privremeno odbiti dio zahtjeva ili dopustiti da čvorovi daju
-različite rezultate. I kada nema razdvajanja, manjem kašnjenju može se dati
-prednost pred trenutačnom usklađenošću \cite{abadi2012consistency}.
+\cite{gilbert2002brewer}. Kratica dolazi od engleskih naziva za usklađenost,
+dostupnost i otpornost na razdvajanje mreže: \emph{consistency},
+\emph{availability} i \emph{partition tolerance}. Kada mreža razdvoji
+čvorove repliciranog sustava, sustav ne može za svaki zahtjev istodobno
+jamčiti odgovor i strogo usklađene podatke. Mora privremeno odbiti dio
+zahtjeva ili dopustiti da čvorovi daju različite rezultate. I kada nema
+razdvajanja, manjem kašnjenju može se dati prednost pred trenutačnom
+usklađenošću \cite{abadi2012consistency}.
 
 CAP se ne primjenjuje izravno na ovaj rad jer fiskalizacijski tijek nije
 replicirana baza podataka. Ovdje je bitan jednostavniji problem: isti dokument
